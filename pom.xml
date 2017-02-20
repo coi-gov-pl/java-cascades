@@ -14,6 +14,10 @@
         <url>http://coi.gov.pl/</url>
     </organization>
 
+    <modules>
+        <module>cascades-contract</module>
+    </modules>
+
     <properties>
         <maven.required.version>3.0.4</maven.required.version>
         <netbeans.hint.license>apache20</netbeans.hint.license>
@@ -36,6 +40,14 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Provided -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>1.16.8</version>
+                <scope>provided</scope>
+            </dependency>
+
             <!-- Test -->
             <dependency>
                 <groupId>junit</groupId>
@@ -54,6 +66,12 @@
     </dependencyManagement>
 
     <dependencies>
+        <!-- Provided -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+        </dependency>
+
         <!-- Runtime -->
         <dependency>
             <groupId>com.google.guava</groupId>
