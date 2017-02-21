@@ -6,10 +6,37 @@
     <parent>
         <artifactId>cascades-pom</artifactId>
         <groupId>pl.gov.coi.cascades</groupId>
-        <version>1.0-SNAPSHOT</version>
+        <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <artifactId>cascades-contract</artifactId>
     <name>Cascades :: Contract</name>
+
+    <dependencies>
+        <!-- Provided -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- Runtime -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pl.wavesoftware</groupId>
+            <artifactId>eid-exceptions</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
