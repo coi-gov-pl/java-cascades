@@ -16,8 +16,8 @@ public class Configuration {
     private final Driver driver;
     @Getter
     private final boolean tryToReuse;
-    private final Optional<String> instanceName;
-    private final Optional<NetworkBind> cascadesServerNetworkBind;
+    private final String instanceName;
+    private final NetworkBind cascadesServerNetworkBind;
     private static final int DEFAULT_PORT = 7890;
     private static final String DEFAULT_HOST = "localhost";
     private static final NetworkBind DEFAULT_NETWORK_BIND = new NetworkBind() {
@@ -41,10 +41,10 @@ public class Configuration {
         this.migration = migration;
         this.driver = driver;
         this.tryToReuse = true;
-        this.instanceName = Optional.fromNullable(instanceName);
+        this.instanceName = instanceName;
         this.cascadesServerNetworkBind = cascadesServerNetworkBind != null ?
-                Optional.of(cascadesServerNetworkBind) :
-                Optional.of(DEFAULT_NETWORK_BIND);
+                cascadesServerNetworkBind :
+                DEFAULT_NETWORK_BIND;
     }
 
     public Configuration(Server server,
@@ -57,17 +57,17 @@ public class Configuration {
         this.migration = migration;
         this.driver = driver;
         this.tryToReuse = tryToReuse;
-        this.instanceName = Optional.fromNullable(instanceName);
+        this.instanceName = instanceName;
         this.cascadesServerNetworkBind = cascadesServerNetworkBind != null ?
-                Optional.of(cascadesServerNetworkBind) :
-                Optional.of(DEFAULT_NETWORK_BIND);
+                cascadesServerNetworkBind :
+                DEFAULT_NETWORK_BIND;
     }
 
     public Optional<String> getInstanceName() {
-        return instanceName;
+        return Optional.fromNullable(instanceName);
     }
 
     public Optional<NetworkBind> getCascadesServerNetworkBind() {
-        return cascadesServerNetworkBind;
+        return Optional.fromNullable(cascadesServerNetworkBind);
     }
 }

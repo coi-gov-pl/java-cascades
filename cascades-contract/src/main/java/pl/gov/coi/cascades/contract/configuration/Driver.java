@@ -11,7 +11,7 @@ public class Driver {
 
 	@Getter
 	private final DatabaseType type;
-	private final Optional<TemplateId> templateId;
+	private final TemplateId templateId;
 
 	/**
 	 * Required argument constructor.
@@ -21,7 +21,7 @@ public class Driver {
 	public Driver(DatabaseType type,
 				  @Nullable TemplateId templateId) {
 		this.type = type;
-		this.templateId = Optional.fromNullable(templateId);
+		this.templateId = templateId;
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class Driver {
 	 * @return Optional id of template.
 	 */
 	public Optional<TemplateId> getTemplateId() {
-		return templateId;
+		return Optional.fromNullable(templateId);
 	}
 
 }

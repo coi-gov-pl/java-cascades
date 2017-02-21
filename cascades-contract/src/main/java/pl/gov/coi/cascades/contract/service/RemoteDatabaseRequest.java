@@ -13,7 +13,7 @@ public class RemoteDatabaseRequest {
 	private final TemplateId id;
 	@Getter
 	private final Class<DatabaseType> type;
-	private final Optional<String> instanceName;
+	private final String instanceName;
 
 	/**
 	 * Required argument constructor.
@@ -26,7 +26,7 @@ public class RemoteDatabaseRequest {
 								 @Nullable String instanceName) {
 		this.id = id;
 		this.type = type;
-		this.instanceName = Optional.fromNullable(instanceName);
+		this.instanceName = instanceName;
 	}
 
 	/**
@@ -34,6 +34,6 @@ public class RemoteDatabaseRequest {
 	 * @return Name of instance.
 	 */
 	public Optional<String> getInstanceName() {
-		return instanceName;
+		return Optional.fromNullable(instanceName);
 	}
 }
