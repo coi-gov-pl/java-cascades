@@ -36,9 +36,9 @@ public class RemoteDatabaseRequestTest {
     public void setUp() {
         instanceName = "PESEL";
         remoteDatabaseRequest = new RemoteDatabaseRequest(
-                templateId,
-                DatabaseType.class,
-                instanceName
+            DatabaseType.class,
+            templateId,
+            instanceName
         );
     }
 
@@ -46,9 +46,9 @@ public class RemoteDatabaseRequestTest {
     public void testDefaultConstructor() throws Exception {
         // when
         RemoteDatabaseRequest actual = new RemoteDatabaseRequest(
-                templateId,
-                DatabaseType.class,
-                instanceName
+            DatabaseType.class,
+            templateId,
+            instanceName
         );
 
         // then

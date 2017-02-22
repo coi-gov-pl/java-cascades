@@ -1,16 +1,15 @@
 package pl.gov.coi.cascades.contract.service;
 
 import lombok.Getter;
-import org.slf4j.Logger;
+import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
-import pl.wavesoftware.eid.exceptions.Eid;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
+/**
+ * Remote database instance specification describes a created remote database connection parameters
+ */
 public class RemoteDatabaseSpec {
 
 	@Getter
@@ -23,9 +22,6 @@ public class RemoteDatabaseSpec {
 	private final NetworkBind networkBind;
 	@Getter
 	private final UsernameAndPasswordCredentials credentials;
-	@Getter
-	private final URL connectionURL;
-	private final Logger logger;
 
 	/**
 	 * Required argument constructor.
@@ -38,30 +34,22 @@ public class RemoteDatabaseSpec {
 	public RemoteDatabaseSpec(DatabaseType type,
 							  DatabaseId id,
 							  String databaseName,
-							  Logger logger,
 							  NetworkBind networkBind,
 							  UsernameAndPasswordCredentials credentials) {
 		this.type = type;
 		this.id = id;
 		this.databaseName = databaseName;
-		this.logger = logger;
 		this.networkBind = networkBind;
 		this.credentials = credentials;
-		this.connectionURL = getAsConnectionURL();
 	}
 
-	private URL getAsConnectionURL() {
-		URL url = null;
-		try {
-			url = new URL("http", networkBind.getHost(), networkBind.getPort(), "");
-		} catch (MalformedURLException e) {
-			logger.error(new Eid("20170221:133843")
-					.makeLogMessage(
-							e.getMessage()
-					)
-			);
-		}
-		return url;
+    /**
+     * Returns a valid connection string to be used in JDBC
+     * @return a valid connection string
+     */
+	public String getConnectionString() {
+        ConnectionStringProducer producer = type.getConnectionStringProducer();
+        return producer.produce(networkBind, databaseName);
 	}
 
 }

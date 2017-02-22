@@ -1,17 +1,13 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
 @ToString
+@RequiredArgsConstructor
 public class DatabaseId {
 
+    @Getter
 	private final String id;
-
-	/**
-	 * Required argument constructor.
-	 * @param id Given id of database.
-	 */
-	public DatabaseId(String id) {
-		this.id = id;
-	}
 }

@@ -80,10 +80,10 @@ public class ConfigurationTest {
     @Test
     public void testGetCascadesServerNetworkBind() throws Exception {
         // when
-        Optional<NetworkBind> actual = configuration.getCascadesServerNetworkBind();
+        NetworkBind actual = configuration.getNetworkBind();
 
         // then
-        assertEquals(Optional.fromNullable(networkBind), actual);
+        assertEquals(networkBind, actual);
     }
 
 }

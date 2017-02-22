@@ -1,17 +1,13 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.ToString;
 
+@RequiredArgsConstructor
 @ToString
 public class TemplateId {
 
+    @Getter
 	private final String id;
-
-	/**
-	 * Required argument constructor.
-	 * @param id Given id of template.
-	 */
-	public TemplateId(String id) {
-		this.id = id;
-	}
 }

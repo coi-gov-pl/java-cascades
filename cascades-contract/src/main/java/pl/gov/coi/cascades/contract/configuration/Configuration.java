@@ -2,11 +2,20 @@ package pl.gov.coi.cascades.contract.configuration;
 
 import com.google.common.base.Optional;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 
 import javax.annotation.Nullable;
 
+/**
+ * Configuration class for all Cascades operations
+ */
 public class Configuration {
+
+    private static final String DEFAULT_HOST = "localhost";
+    private static final int DEFAULT_PORT = 7890;
+    private static final NetworkBind DEFAULT_NETWORK_BIND =
+        new SimpleNetworkBind(DEFAULT_HOST, DEFAULT_PORT);
 
     @Getter
     private final Server server;
@@ -16,58 +25,67 @@ public class Configuration {
     private final Driver driver;
     @Getter
     private final boolean tryToReuse;
+    @Nullable
     private final String instanceName;
-    private final NetworkBind cascadesServerNetworkBind;
-    private static final int DEFAULT_PORT = 7890;
-    private static final String DEFAULT_HOST = "localhost";
-    private static final NetworkBind DEFAULT_NETWORK_BIND = new NetworkBind() {
-        @Override
-        public String getHost() {
-            return DEFAULT_HOST;
-        }
+    @Getter
+    private final NetworkBind networkBind;
 
-        @Override
-        public int getPort() {
-            return DEFAULT_PORT;
-        }
-    };
-
+    /**
+     * Constructor that sets tryToReuse to true
+     *
+     * @param server       application server definitions
+     * @param migration    database migrations definitions
+     * @param driver       database driver definitions
+     * @param instanceName name of the database instance that will be operated upon
+     * @param networkBind  a target network bind to Cascades server
+     */
     public Configuration(Server server,
                          Migration migration,
                          Driver driver,
                          @Nullable String instanceName,
-                         @Nullable NetworkBind cascadesServerNetworkBind) {
-        this.server = server;
-        this.migration = migration;
-        this.driver = driver;
-        this.tryToReuse = true;
-        this.instanceName = instanceName;
-        this.cascadesServerNetworkBind = cascadesServerNetworkBind != null ?
-                cascadesServerNetworkBind :
-                DEFAULT_NETWORK_BIND;
+                         @Nullable NetworkBind networkBind) {
+        this(server, migration, driver, true, instanceName, networkBind);
     }
 
+    /**
+     * Default constructor
+     *
+     * @param server       application server definitions
+     * @param migration    database migrations definitions
+     * @param driver       database driver definitions
+     * @param tryToReuse   information if database should be try to reused
+     * @param instanceName name of the database instance that will be operated upon
+     * @param networkBind  a target network bind to Cascades server
+     */
     public Configuration(Server server,
                          Migration migration,
                          Driver driver,
                          boolean tryToReuse,
                          @Nullable String instanceName,
-                         @Nullable NetworkBind cascadesServerNetworkBind) {
+                         @Nullable NetworkBind networkBind) {
         this.server = server;
         this.migration = migration;
         this.driver = driver;
         this.tryToReuse = tryToReuse;
         this.instanceName = instanceName;
-        this.cascadesServerNetworkBind = cascadesServerNetworkBind != null ?
-                cascadesServerNetworkBind :
-                DEFAULT_NETWORK_BIND;
+        this.networkBind = Optional
+            .fromNullable(networkBind)
+            .or(DEFAULT_NETWORK_BIND);
     }
 
+    /**
+     * A getter for database instance name
+     *
+     * @return an optional instance name
+     */
     public Optional<String> getInstanceName() {
         return Optional.fromNullable(instanceName);
     }
 
-    public Optional<NetworkBind> getCascadesServerNetworkBind() {
-        return Optional.fromNullable(cascadesServerNetworkBind);
+    @RequiredArgsConstructor
+    @Getter
+    private static final class SimpleNetworkBind implements NetworkBind {
+        private final String host;
+        private final int port;
     }
 }

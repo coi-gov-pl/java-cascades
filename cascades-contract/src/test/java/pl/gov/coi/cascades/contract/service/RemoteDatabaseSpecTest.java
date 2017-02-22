@@ -7,13 +7,17 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.slf4j.Logger;
+import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -30,13 +34,13 @@ public class RemoteDatabaseSpecTest {
     private DatabaseType databaseType;
 
     @Mock
-    private Logger logger;
-
-    @Mock
     private NetworkBind networkBind;
 
     @Mock
     private UsernameAndPasswordCredentials credentials;
+
+    @Mock
+    private ConnectionStringProducer connectionStringProducer;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -50,19 +54,40 @@ public class RemoteDatabaseSpecTest {
     }
 
     @Test
-    public void testDefaultConstructor() throws Exception {
+    public void testDefaultConstructor() {
         // when
         RemoteDatabaseSpec actual = new RemoteDatabaseSpec(
-                databaseType,
-                databaseId,
-                databaseName,
-                logger,
-                networkBind,
-                credentials
+            databaseType,
+            databaseId,
+            databaseName,
+            networkBind,
+            credentials
         );
 
         // then
         assertNotNull(actual);
+    }
+
+    @Test
+    public void testGetConnectionString() {
+        // given
+        RemoteDatabaseSpec spec = new RemoteDatabaseSpec(
+            databaseType,
+            databaseId,
+            databaseName,
+            networkBind,
+            credentials
+        );
+        when(databaseType.getConnectionStringProducer())
+            .thenReturn(connectionStringProducer);
+        when(connectionStringProducer.produce(any(NetworkBind.class), anyString()))
+            .thenReturn("db-conn");
+
+        // when
+        String conn = spec.getConnectionString();
+
+        // then
+        assertEquals("db-conn", conn);
     }
 
 }

@@ -7,24 +7,28 @@ import lombok.Getter;
 
 import javax.annotation.Nullable;
 
+/**
+ * This is request of creation of remote database instance
+ */
 public class RemoteDatabaseRequest {
 
-	@Getter
-	private final TemplateId id;
+	@Nullable
+	private final TemplateId templateId;
 	@Getter
 	private final Class<DatabaseType> type;
+	@Nullable
 	private final String instanceName;
 
 	/**
 	 * Required argument constructor.
-	 * @param id Given id of template.
 	 * @param type Given type of database.
-	 * @param instanceName Given name of instance.
+     * @param templateId Given id of template (Optional).
+     * @param instanceName Given name of instance (Optional).
 	 */
-	public RemoteDatabaseRequest(TemplateId id,
-								 Class<DatabaseType> type,
+	public RemoteDatabaseRequest(Class<DatabaseType> type,
+                                 @Nullable TemplateId templateId,
 								 @Nullable String instanceName) {
-		this.id = id;
+		this.templateId = templateId;
 		this.type = type;
 		this.instanceName = instanceName;
 	}
@@ -36,4 +40,12 @@ public class RemoteDatabaseRequest {
 	public Optional<String> getInstanceName() {
 		return Optional.fromNullable(instanceName);
 	}
+
+    /**
+     * Getter for optional {@link TemplateId}
+     * @return an optional template id
+     */
+    public Optional<TemplateId> getTemplateId() {
+        return Optional.fromNullable(templateId);
+    }
 }

@@ -39,11 +39,12 @@ public interface ConfigurationBuilder {
 	ConfigurationBuilder instanceName(String name);
 
 	/**
-	 * Method gives configuration builder for given information if database is reused. The default value is set to true.
-	 * @param isReused Information if database is reused.
+	 * Method gives configuration builder for given information if database is reused.
+	 * The default value is set to true.
+	 * @param tryToReuse Information if database is reused.
 	 * @return Builder of configuration.
 	 */
-	ConfigurationBuilder tryToReuse(boolean isReused);
+	ConfigurationBuilder tryToReuse(boolean tryToReuse);
 
 	/**
 	 * Method gives configuration builder for given network bind.
