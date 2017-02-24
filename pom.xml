@@ -3,6 +3,13 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>1.4.2.RELEASE</version>
+        <relativePath/>
+    </parent>
+
     <groupId>pl.gov.coi.cascades</groupId>
     <artifactId>cascades-pom</artifactId>
     <version>0.1.0-SNAPSHOT</version>
@@ -40,7 +47,9 @@
     </prerequisites>
 
     <modules>
+        <module>app</module>
         <module>cascades-contract</module>
+        <module>cascades-server</module>
     </modules>
 
     <scm>
@@ -135,6 +144,11 @@
                 <groupId>pl.wavesoftware</groupId>
                 <artifactId>eid-exceptions</artifactId>
                 <version>1.2.0</version>
+            </dependency>
+            <dependency>
+                <groupId>net.sf.m-m-m</groupId>
+                <artifactId>mmm-util-backport-java.util.function</artifactId>
+                <version>1.0.1</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
