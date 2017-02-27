@@ -5,8 +5,8 @@ import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
-import pl.gov.coi.cascades.server.domain.contract.Error;
-import pl.gov.coi.cascades.server.domain.contract.LaunchNewDatabaseInstanceResponse;
+import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.server.domain.LaunchNewDatabaseInstanceResponse;
 
 @RequiredArgsConstructor
 public class NewDatabaseInstancePresenter implements LaunchNewDatabaseInstanceResponse {

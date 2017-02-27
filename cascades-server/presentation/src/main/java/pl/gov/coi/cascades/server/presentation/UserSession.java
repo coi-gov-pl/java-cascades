@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.presentation;
 
-import pl.gov.coi.cascades.server.domain.model.User;
+import pl.gov.coi.cascades.server.domain.User;
 
 public interface UserSession {
 

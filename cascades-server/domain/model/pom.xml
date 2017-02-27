@@ -9,8 +9,8 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>cascades-server-domain-contract</artifactId>
-    <name>Cascades :: Server :: Domain :: Contract</name>
+    <artifactId>cascades-server-domain-model</artifactId>
+    <name>Cascades :: Server :: Domain :: Model</name>
 
     <dependencies>
         <!-- Provided -->
@@ -42,12 +42,7 @@
         <dependency>
             <groupId>pl.gov.coi.cascades</groupId>
             <artifactId>cascades-contract</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>pl.gov.coi.cascades</groupId>
-            <artifactId>cascades-server-domain-model</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>${project.version}</version>
         </dependency>
     </dependencies>
 

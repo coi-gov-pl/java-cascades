@@ -16,6 +16,7 @@
     <modules>
         <module>contract</module>
         <module>logic</module>
+        <module>model</module>
     </modules>
 
 </project>

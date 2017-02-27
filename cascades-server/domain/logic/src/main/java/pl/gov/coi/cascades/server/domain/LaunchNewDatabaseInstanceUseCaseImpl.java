@@ -1,9 +1,5 @@
 package pl.gov.coi.cascades.server.domain;
 
-import pl.gov.coi.cascades.server.domain.contract.LaunchNewDatabaseInstanceRequest;
-import pl.gov.coi.cascades.server.domain.contract.LaunchNewDatabaseInstanceResponse;
-import pl.gov.coi.cascades.server.domain.contract.LaunchNewDatabaseInstanceUseCase;
-
 public class LaunchNewDatabaseInstanceUseCaseImpl implements LaunchNewDatabaseInstanceUseCase {
 
     /**
