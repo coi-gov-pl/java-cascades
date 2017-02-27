@@ -47,9 +47,9 @@
     </prerequisites>
 
     <modules>
-        <module>app</module>
         <module>cascades-contract</module>
         <module>cascades-server</module>
+        <module>app</module>
     </modules>
 
     <scm>
@@ -133,12 +133,6 @@
                 <artifactId>jsr305</artifactId>
                 <scope>provided</scope>
                 <version>3.0.1</version>
-            </dependency>
-            <dependency>
-                <groupId>org.slf4j</groupId>
-                <artifactId>slf4j-api</artifactId>
-                <version>1.7.20</version>
-                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>pl.wavesoftware</groupId>
