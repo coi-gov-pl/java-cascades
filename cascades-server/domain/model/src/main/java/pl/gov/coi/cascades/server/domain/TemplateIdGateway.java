@@ -3,6 +3,8 @@ package pl.gov.coi.cascades.server.domain;
 import com.google.common.base.Optional;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 
+import javax.annotation.Nullable;
+
 public interface TemplateIdGateway {
 
     /**
@@ -11,6 +13,6 @@ public interface TemplateIdGateway {
      * @param templateId Given template of id.
      * @return An optional of template of id.
      */
-    Optional<TemplateId> find(String templateId);
+    Optional<TemplateId> find(@Nullable String templateId);
 
 }

@@ -12,4 +12,21 @@
     <artifactId>cascades-server-configuration</artifactId>
     <name>Cascades :: Server :: Configuration</name>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>pl.gov.coi.cascades</groupId>
+            <artifactId>cascades-server-domain-logic</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.gov.coi.cascades</groupId>
+            <artifactId>cascades-server-persistence-stub</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
+
 </project>
