@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
@@ -9,6 +10,7 @@ import java.util.Optional;
 /**
  * Class for providing request information for launching new database instance.
  */
+@Builder
 public class LaunchNewDatabaseInstanceRequest {
 
     @Getter
