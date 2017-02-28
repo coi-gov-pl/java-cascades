@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 

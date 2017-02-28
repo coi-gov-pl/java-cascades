@@ -24,12 +24,12 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>net.sf.m-m-m</groupId>
-            <artifactId>mmm-util-backport-java.util.function</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.google.code.findbugs</groupId>
             <artifactId>jsr305</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 

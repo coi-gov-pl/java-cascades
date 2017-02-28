@@ -3,4 +3,4 @@
  * @since 21.02.17.
  */
 @javax.annotation.ParametersAreNonnullByDefault
-package pl.gov.coi.cascades.spring;
+package pl.gov.coi.cascades.server;

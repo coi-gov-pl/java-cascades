@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
@@ -10,6 +11,7 @@ import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.util.Date;
 
+@Builder
 @RequiredArgsConstructor
 public class DatabaseInstance {
 

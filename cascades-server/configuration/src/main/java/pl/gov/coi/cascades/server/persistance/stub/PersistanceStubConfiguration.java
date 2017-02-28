@@ -11,6 +11,7 @@ import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
  */
 @Configuration
 class PersistanceStubConfiguration {
+
     @Bean
     TemplateIdGateway produceTemplateIdGateway() {
         return new TemplateIdGatewayStub();
@@ -24,6 +25,11 @@ class PersistanceStubConfiguration {
     @Bean
     UserGatewayStub produceUserGateway() {
         return new UserGatewayStub();
+    }
+
+    @Bean
+    DatabaseLimitGatewayStub produceDatabaseLimitGateway() {
+        return new DatabaseLimitGatewayStub();
     }
 
 }

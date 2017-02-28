@@ -14,6 +14,7 @@
     <name>Cascades :: Server</name>
 
     <modules>
+        <module>app</module>
         <module>configuration</module>
         <module>domain</module>
         <module>presentation</module>

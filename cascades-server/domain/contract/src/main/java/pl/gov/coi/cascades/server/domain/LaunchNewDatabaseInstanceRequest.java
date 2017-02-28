@@ -1,9 +1,10 @@
 package pl.gov.coi.cascades.server.domain;
 
-import com.google.common.base.Optional;
 import lombok.Getter;
+import pl.wavesoftware.eid.utils.EidPreconditions;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Class for providing request information for launching new database instance.
@@ -31,8 +32,8 @@ public class LaunchNewDatabaseInstanceRequest {
                                             User user,
                                             @Nullable String templateId,
                                             @Nullable String instanceName) {
-        this.typeClassName = typeClassName;
-        this.user = user;
+        this.typeClassName = EidPreconditions.checkNotNull(typeClassName, "20170228:153927");
+        this.user = EidPreconditions.checkNotNull(user, "20170228:153954");
         this.templateId = templateId;
         this.instanceName = instanceName;
     }
@@ -43,7 +44,7 @@ public class LaunchNewDatabaseInstanceRequest {
      * @return Optional id of template.
      */
     public Optional<String> getTemplateId() {
-        return Optional.fromNullable(templateId);
+        return Optional.ofNullable(templateId);
     }
 
     /**
@@ -52,7 +53,7 @@ public class LaunchNewDatabaseInstanceRequest {
      * @return Optional instance name of database.
      */
     public Optional<String> getInstanceName() {
-        return Optional.fromNullable(instanceName);
+        return Optional.ofNullable(instanceName);
     }
 
 }

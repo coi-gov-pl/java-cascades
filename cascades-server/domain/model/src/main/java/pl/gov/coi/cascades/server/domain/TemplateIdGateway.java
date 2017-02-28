@@ -1,9 +1,9 @@
 package pl.gov.coi.cascades.server.domain;
 
-import com.google.common.base.Optional;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public interface TemplateIdGateway {
 

@@ -16,4 +16,7 @@ public class User {
     private final String email;
 	private final Collection<DatabaseInstance> databases;
 
+    public void addDatabaseInstance(DatabaseInstance databaseInstance) {
+        databases.add(databaseInstance);
+    }
 }

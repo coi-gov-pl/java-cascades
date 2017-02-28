@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.server.domain;
 
-import com.google.common.base.Optional;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -8,6 +7,8 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
+import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -65,7 +66,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
         Optional<String> actual = launchNewDatabaseInstanceRequest.getTemplateId();
 
         // then
-        assertEquals(Optional.fromNullable(templateId), actual);
+        assertEquals(Optional.ofNullable(templateId), actual);
     }
 
     @Test
@@ -74,7 +75,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
         Optional<String> actual = launchNewDatabaseInstanceRequest.getInstanceName();
 
         // then
-        assertEquals(Optional.fromNullable(instanceName), actual);
+        assertEquals(Optional.ofNullable(instanceName), actual);
     }
 
 }

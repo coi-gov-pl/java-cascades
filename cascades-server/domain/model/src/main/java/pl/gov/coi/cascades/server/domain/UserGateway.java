@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public interface UserGateway {
 

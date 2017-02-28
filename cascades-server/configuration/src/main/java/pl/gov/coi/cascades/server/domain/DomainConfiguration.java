@@ -13,11 +13,17 @@ public class DomainConfiguration {
     @Bean
     LaunchNewDatabaseInstanceUseCase produceLaunchNewDatabaseUseCase(TemplateIdGateway templateIdGateway,
                                                                      DatabaseInstanceGateway databaseInstanceGateway,
-                                                                     UserGateway userGateway) {
-        return new LaunchNewDatabaseInstanceUseCaseImpl(
-            templateIdGateway,
-            databaseInstanceGateway,
-            userGateway
-        );
+                                                                     UserGateway userGateway,
+                                                                     DatabaseLimitGateway databaseLimitGateway,
+                                                                     DatabaseIdGeneratorService databaseIdGeneratorService,
+                                                                     UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService) {
+        return LaunchNewDatabaseInstanceUseCaseImpl.builder()
+            .credentialsGeneratorService(credentialsGeneratorService)
+            .databaseIdGeneratorService(databaseIdGeneratorService)
+            .databaseInstanceGateway(databaseInstanceGateway)
+            .databaseLimitGateway(databaseLimitGateway)
+            .templateIdGateway(templateIdGateway)
+            .userGateway(userGateway)
+            .build();
     }
 }
