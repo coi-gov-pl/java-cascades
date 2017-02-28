@@ -20,4 +20,8 @@
         <module>persistance-stub</module>
     </modules>
 
+    <properties>
+        <sonar.java.source>8</sonar.java.source>
+    </properties>
+
 </project>
