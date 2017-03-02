@@ -1,9 +1,11 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import java.io.Serializable;
+
 /**
  * This interface represents credentials in form of username and password
  */
-public interface UsernameAndPasswordCredentials {
+public interface UsernameAndPasswordCredentials extends Serializable {
 
     /**
      * Method gives name of user.

@@ -14,7 +14,7 @@ final class ErrorImpl implements Error {
 
     @Override
     public String getMessage() {
-        return null;
+        return message;
     }
 
     @Override

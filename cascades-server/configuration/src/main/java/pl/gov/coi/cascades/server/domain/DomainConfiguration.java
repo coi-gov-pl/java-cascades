@@ -26,4 +26,5 @@ public class DomainConfiguration {
             .userGateway(userGateway)
             .build();
     }
+
 }

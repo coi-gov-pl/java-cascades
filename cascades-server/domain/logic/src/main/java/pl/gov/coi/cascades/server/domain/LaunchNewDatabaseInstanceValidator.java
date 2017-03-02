@@ -34,7 +34,6 @@ class LaunchNewDatabaseInstanceValidator {
         return response.isSuccessful();
     }
 
-
     TemplateId getTemplateId() {
         return checkNotNull(templateId, "20170228:163337");
     }
@@ -50,7 +49,7 @@ class LaunchNewDatabaseInstanceValidator {
     private void validateDatabaseType() {
         databaseTypeDTO.onFail(response::addError)
             .onSuccess(databaseType1 -> {
-                setDatabaseType(databaseType1);
+                LaunchNewDatabaseInstanceValidator.this.setDatabaseType(databaseType1);
                 response.setDatabaseType(databaseType1);
             })
             .resolve();
@@ -61,7 +60,7 @@ class LaunchNewDatabaseInstanceValidator {
     }
 
     private void validateLimitOfDatabases() {
-        User user = getUser();
+        User gotUser = getUser();
         if (databaseLimitGateway.isGlobalLimitExceeded()) {
             Error errorMessage = new ErrorImpl(
                 String.format(
@@ -71,11 +70,11 @@ class LaunchNewDatabaseInstanceValidator {
             );
             response.addError(errorMessage);
         }
-        if (databaseLimitGateway.isPersonalLimitExceeded(user)) {
+        if (databaseLimitGateway.isPersonalLimitExceeded(gotUser)) {
             Error errorMessage = new ErrorImpl(
                 String.format(
                     "Personal limit of %d launched database instances has been reached",
-                    databaseLimitGateway.getPersonalLimitPerUser(user)
+                    databaseLimitGateway.getPersonalLimitPerUser(gotUser)
                 )
             );
             response.addError(errorMessage);

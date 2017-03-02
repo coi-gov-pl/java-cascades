@@ -1,9 +1,11 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import java.io.Serializable;
+
 /**
  * This interface represents a network bind that is a pair of host and port.
  */
-public interface NetworkBind {
+public interface NetworkBind extends Serializable {
 
     /**
      * Method gives network's host.

@@ -31,6 +31,8 @@ public class DatabaseInstance {
     private final UsernameAndPasswordCredentials credentials;
     @Getter
     private final NetworkBind networkBind;
+    @Getter
+    private final String status;
     private final Date created;
 
     /**

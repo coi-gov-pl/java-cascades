@@ -8,7 +8,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 
 import static org.junit.Assert.assertEquals;
@@ -22,6 +21,7 @@ public class RemoteDatabaseRequestTest {
 
     private RemoteDatabaseRequest remoteDatabaseRequest;
     private String instanceName;
+    private String typeClassName;
 
     @Mock
     private TemplateId templateId;
@@ -35,8 +35,9 @@ public class RemoteDatabaseRequestTest {
     @Before
     public void setUp() {
         instanceName = "PESEL";
+        typeClassName = "typeClassName";
         remoteDatabaseRequest = new RemoteDatabaseRequest(
-            DatabaseType.class,
+            typeClassName,
             templateId,
             instanceName
         );
@@ -46,7 +47,7 @@ public class RemoteDatabaseRequestTest {
     public void testDefaultConstructor() throws Exception {
         // when
         RemoteDatabaseRequest actual = new RemoteDatabaseRequest(
-            DatabaseType.class,
+            typeClassName,
             templateId,
             instanceName
         );

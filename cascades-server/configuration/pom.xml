@@ -27,6 +27,11 @@
             <artifactId>cascades-server-persistence-stub</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pl.gov.coi.cascades</groupId>
+            <artifactId>cascades-server-presentation</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
 
 </project>

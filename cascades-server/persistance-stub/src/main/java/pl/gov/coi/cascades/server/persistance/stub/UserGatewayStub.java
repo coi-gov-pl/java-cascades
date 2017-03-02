@@ -22,7 +22,7 @@ public final class UserGatewayStub implements UserGateway {
 
     @Override
     public void save(User user) {
-
+        users.replace(user.getUsername(), user);
     }
 
     public void addUser(User user) {
