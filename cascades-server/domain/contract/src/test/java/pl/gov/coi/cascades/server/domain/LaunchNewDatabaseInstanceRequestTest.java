@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoRule;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -76,6 +77,20 @@ public class LaunchNewDatabaseInstanceRequestTest {
 
         // then
         assertEquals(Optional.ofNullable(instanceName), actual);
+    }
+
+    @Test
+    public void testBuilder() {
+        // when
+        LaunchNewDatabaseInstanceRequest requestBuilder = LaunchNewDatabaseInstanceRequest.builder()
+            .instanceName(instanceName)
+            .user(user)
+            .typeClassName(typeClassName)
+            .templateId(templateId)
+            .build();
+
+        // then
+        assertThat(requestBuilder).isNotNull();
     }
 
 }
