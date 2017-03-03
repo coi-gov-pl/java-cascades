@@ -40,7 +40,6 @@ public class NewDatabaseInstanceController implements CascadesLaunchService {
      * @param request Given database creation request.
      * @return a future of remote database specification
      */
-
     @RequestMapping(
         value = "/databases",
         method = RequestMethod.POST,
@@ -53,7 +52,7 @@ public class NewDatabaseInstanceController implements CascadesLaunchService {
     }
 
     @Override
-    public Future<RemoteDatabaseSpec> launchDatabase(@RequestBody RemoteDatabaseRequest request) {
+    public Future<RemoteDatabaseSpec> launchDatabase(RemoteDatabaseRequest request) {
         User user = userSession.getSignedInUser();
 
         LaunchNewDatabaseInstanceRequestBuilder requestBuilder = LaunchNewDatabaseInstanceRequest.builder()
