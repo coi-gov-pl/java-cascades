@@ -1,35 +1,37 @@
 package pl.gov.coi.cascades.contract.service;
 
 import com.google.common.base.Optional;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
 import lombok.Getter;
+import pl.gov.coi.cascades.contract.domain.TemplateId;
 
 import javax.annotation.Nullable;
+import java.io.Serializable;
 
 /**
  * This is request of creation of remote database instance
  */
-public class RemoteDatabaseRequest {
+public class RemoteDatabaseRequest implements Serializable {
 
-	@Nullable
-	private final TemplateId templateId;
+    private static final long serialVersionUID = 42L;
+
 	@Getter
-	private final Class<DatabaseType> type;
+	private final String typeClassName;
+    @Nullable
+    private final TemplateId templateId;
 	@Nullable
 	private final String instanceName;
 
 	/**
 	 * Required argument constructor.
-	 * @param type Given type of database.
+	 * @param typeClassName Given type of database (a class name).
      * @param templateId Given id of template (Optional).
      * @param instanceName Given name of instance (Optional).
 	 */
-	public RemoteDatabaseRequest(Class<DatabaseType> type,
+	public RemoteDatabaseRequest(String typeClassName,
                                  @Nullable TemplateId templateId,
 								 @Nullable String instanceName) {
-		this.templateId = templateId;
-		this.type = type;
+		this.typeClassName = typeClassName;
+        this.templateId = templateId;
 		this.instanceName = instanceName;
 	}
 

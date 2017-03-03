@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <artifactId>cascades-pom</artifactId>
+        <groupId>pl.gov.coi.cascades</groupId>
+        <version>0.1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>cascades-server</artifactId>
+    <packaging>pom</packaging>
+    <name>Cascades :: Server</name>
+
+    <modules>
+        <module>app</module>
+        <module>configuration</module>
+        <module>domain</module>
+        <module>presentation</module>
+        <module>persistance-stub</module>
+    </modules>
+
+    <properties>
+        <sonar.java.source>8</sonar.java.source>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Override Spring Data release train provided by Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Fowler-SR2</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>3.6.2</version> <!-- for Java 8 support -->
+                <scope>test</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>1.5.1.RELEASE</version>
+                    <executions>
+                        <execution>
+                            <id>default</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

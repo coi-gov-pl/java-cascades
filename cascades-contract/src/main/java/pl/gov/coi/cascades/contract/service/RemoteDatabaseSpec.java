@@ -7,10 +7,14 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
+import java.io.Serializable;
+
 /**
  * Remote database instance specification describes a created remote database connection parameters
  */
-public class RemoteDatabaseSpec {
+public class RemoteDatabaseSpec implements Serializable {
+
+    private static final long serialVersionUID = 42L;
 
 	@Getter
 	private final DatabaseType type;

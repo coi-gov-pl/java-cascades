@@ -1,9 +1,11 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import java.io.Serializable;
+
 /**
  * A type of the database
  */
-public interface DatabaseType {
+public interface DatabaseType extends Serializable {
 
     /**
      * Method gives name of database type.
