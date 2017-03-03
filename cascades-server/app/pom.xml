@@ -9,7 +9,7 @@
     </parent>
 
 	<artifactId>cascades-server-app</artifactId>
-    <name>Cascades :: Server Application</name>
+    <name>Cascades :: Server :: Spring Application</name>
 
 	<dependencies>
 		<dependency>
@@ -24,7 +24,7 @@
         </dependency>
         <dependency>
             <groupId>pl.gov.coi.cascades</groupId>
-            <artifactId>cascades-server</artifactId>
+            <artifactId>cascades-server-persistence-stub</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

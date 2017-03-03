@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.contract;
 
+import pl.gov.coi.cascades.contract.service.CascadesDeleteService;
 import pl.gov.coi.cascades.contract.service.CascadesLaunchService;
 
 import javax.security.auth.login.Configuration;
@@ -11,6 +12,6 @@ public interface CascadesFactory {
 	 * @param configuration Given configuration.
 	 * @param service Given service.
 	 */
-	Cascades create(Configuration configuration, CascadesLaunchService service);
+	Cascades create(Configuration configuration, CascadesLaunchService service, CascadesDeleteService cascadesDeleteService);
 
 }

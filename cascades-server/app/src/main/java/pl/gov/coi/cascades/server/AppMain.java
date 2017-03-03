@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 
-@SpringBootApplication(exclude = AppMain.class)
+@SpringBootApplication
 public class AppMain {
     private static AppMain instance;
     private ConfigurableApplicationContext ctx;

@@ -27,6 +27,21 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- Override Spring Data release train provided by Spring Boot -->
+            <dependency>
+                <groupId>org.springframework.data</groupId>
+                <artifactId>spring-data-releasetrain</artifactId>
+                <version>Fowler-SR2</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>1.5.1.RELEASE</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>org.assertj</groupId>
                 <artifactId>assertj-core</artifactId>
@@ -35,5 +50,25 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <version>1.5.1.RELEASE</version>
+                    <executions>
+                        <execution>
+                            <id>default</id>
+                            <goals>
+                                <goal>repackage</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
 
 </project>

@@ -10,7 +10,7 @@
     </parent>
 
     <artifactId>cascades-server-persistence-stub</artifactId>
-    <name>Cascades :: Server :: Persistence</name>
+    <name>Cascades :: Server :: Persistence Stub</name>
 
     <dependencies>
         <dependency>
