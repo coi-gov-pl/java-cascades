@@ -2,6 +2,8 @@ package pl.gov.coi.cascades.server.domain;
 
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 
+import java.util.UUID;
+
 /**
  * Class for generating id for databases.
  */
@@ -14,7 +16,9 @@ public class DatabaseIdGeneratorService {
      * @return Id of database.
      */
     public DatabaseId generate(String instanceName) {
-        throw new UnsupportedOperationException();
+        UUID uniqueKey = UUID.randomUUID();
+        String uuid = uniqueKey.toString().replace("-","");
+        return new DatabaseId(instanceName.concat(uuid));
     }
 
     /**
@@ -23,7 +27,9 @@ public class DatabaseIdGeneratorService {
      * @return Id of database.
      */
     public DatabaseId generate() {
-        throw new UnsupportedOperationException();
+        UUID uniqueKey = UUID.randomUUID();
+        String uuid = uniqueKey.toString().replace("-","");
+        return new DatabaseId(uuid);
     }
 
 }
