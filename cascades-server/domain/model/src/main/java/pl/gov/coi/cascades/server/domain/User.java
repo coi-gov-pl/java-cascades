@@ -15,6 +15,7 @@ public class User {
     private final String id;
     @Getter
     private final String email;
+    @Getter
 	private final Collection<DatabaseInstance> databases = new HashSet<>();
 
     public void addDatabaseInstance(DatabaseInstance databaseInstance) {
