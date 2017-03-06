@@ -30,7 +30,7 @@ public class DatabaseInstance {
     @Getter
     private final UsernameAndPasswordCredentials credentials;
     @Getter
-    private final NetworkBind networkBind;
+    private NetworkBind networkBind;
     @Getter
     private final String status;
     private final Date created;
@@ -51,7 +51,8 @@ public class DatabaseInstance {
      * @return Instance of database.
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
-        throw new UnsupportedOperationException();
+        this.networkBind = networkBind;
+        return this;
     }
 
 }
