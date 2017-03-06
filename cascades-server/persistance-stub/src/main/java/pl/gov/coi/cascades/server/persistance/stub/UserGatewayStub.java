@@ -15,7 +15,7 @@ public final class UserGatewayStub implements UserGateway {
 
     private Map<String, User> users;
 
-    UserGatewayStub() {
+    public UserGatewayStub() {
         this.users = new HashMap<>();
 
         User bpitt = new User("Brad Pitt", "1abc", "brad.pit@example.com");

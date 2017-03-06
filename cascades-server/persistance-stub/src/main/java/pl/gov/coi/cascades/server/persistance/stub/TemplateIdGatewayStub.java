@@ -15,7 +15,7 @@ final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     private Map<String, TemplateId> templates;
 
-    TemplateIdGatewayStub() {
+    public TemplateIdGatewayStub() {
         this.templates = new HashMap<>();
 
         TemplateId templateId1 = new TemplateId("abcd1234");
