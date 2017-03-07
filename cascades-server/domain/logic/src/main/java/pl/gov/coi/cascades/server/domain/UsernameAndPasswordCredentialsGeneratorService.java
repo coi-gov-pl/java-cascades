@@ -7,8 +7,21 @@ import java.util.UUID;
 
 public class UsernameAndPasswordCredentialsGeneratorService {
 
-    private static final int BASE = 36;
-    public static final int PASSWORD_LENGTH = 8;
+    private static final int PASSWORD_LENGTH = 8;
+    private static final int USERNAME_LENGTH = 10;
+    private static final String CHAR_PASSWORD =
+        "0123456789" +
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+        "abcdefghijklmnopqrstuvwxyz" +
+        "!@#$%^&*";
+    private Random rand;
+
+    /**
+     * Default constructor.
+     */
+    public UsernameAndPasswordCredentialsGeneratorService() {
+        rand = new Random();
+    }
 
     /**
      * Method gives id of database for given name of database instance.
@@ -24,13 +37,16 @@ public class UsernameAndPasswordCredentialsGeneratorService {
 	private String generateUsername() {
         UUID uniqueKey = UUID.randomUUID();
         String uuid = uniqueKey.toString().replace("-","");
-	    return uuid.substring(0, PASSWORD_LENGTH);
+	    return uuid.substring(0, USERNAME_LENGTH);
     }
 
     private char[] generatePassword() {
-        Random rand = new Random();
-        Integer pass = rand.nextInt();
-        return Integer.toString(pass, BASE).toCharArray();
+        StringBuilder stringBuilder = new StringBuilder();
+        for(int i = 0; i < PASSWORD_LENGTH; i++) {
+            char c = (char)(rand.nextInt(CHAR_PASSWORD.length()));
+            stringBuilder.append(c);
+        }
+        return stringBuilder.toString().toCharArray();
     }
 
 }

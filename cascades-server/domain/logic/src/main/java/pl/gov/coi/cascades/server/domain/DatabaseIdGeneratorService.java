@@ -14,7 +14,7 @@ public class DatabaseIdGeneratorService {
     private static final String VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
     private SecureRandom secureRandom;
 
-    DatabaseIdGeneratorService() {
+    public DatabaseIdGeneratorService() {
         secureRandom = new SecureRandom();
     }
 
