@@ -4,7 +4,6 @@ import com.github.slugify.Slugify;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 
 import java.security.SecureRandom;
-import java.util.UUID;
 
 /**
  * Class for generating id for databases.
@@ -12,7 +11,12 @@ import java.util.UUID;
 public class DatabaseIdGeneratorService {
 
     public static final int DATABASE_NAME_LENGTH = 8;
-    private static final String VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#$_";
+    private static final String VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+    private SecureRandom secureRandom;
+
+    DatabaseIdGeneratorService() {
+        secureRandom = new SecureRandom();
+    }
 
     /**
      * Method gives id of database for given name of database instance.
@@ -21,10 +25,28 @@ public class DatabaseIdGeneratorService {
      * @return Id of database.
      */
     public DatabaseId generate(String instanceName) {
+        int chars = 0;
         Slugify slg = new Slugify();
-        String uniqueKey = UUID.randomUUID().toString();
         String result = slg.slugify(instanceName);
-        return new DatabaseId(result.concat(uniqueKey));
+        StringBuilder stringBuilder = new StringBuilder(DATABASE_NAME_LENGTH);
+
+        if (result.length() < 3) {
+            for(int i = 0; i < result.length(); i++) {
+                stringBuilder.append(result.charAt(i));
+                chars++;
+            }
+        }
+        else {
+            for(int i = 0; i < 3; i++) {
+                stringBuilder.append(result.charAt(i));
+                chars++;
+            }
+        }
+
+        for(int i = 0; i < DATABASE_NAME_LENGTH - chars; i++) {
+            stringBuilder.append(VALUES.charAt(secureRandom.nextInt(VALUES.length())));
+        }
+        return new DatabaseId(stringBuilder.toString());
     }
 
     /**
@@ -33,12 +55,7 @@ public class DatabaseIdGeneratorService {
      * @return Id of database.
      */
     public DatabaseId generate() {
-        SecureRandom secureRandom = new SecureRandom();
-        StringBuilder stringBuilder = new StringBuilder(DATABASE_NAME_LENGTH);
-        for(int i = 0; i < DATABASE_NAME_LENGTH; i++) {
-            stringBuilder.append(VALUES.charAt(secureRandom.nextInt(VALUES.length())));
-        }
-        return new DatabaseId(stringBuilder.toString());
+        return generate("");
     }
 
 }
