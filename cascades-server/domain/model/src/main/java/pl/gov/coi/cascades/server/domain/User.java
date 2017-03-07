@@ -20,4 +20,8 @@ public class User {
     public void addDatabaseInstance(DatabaseInstance databaseInstance) {
         databases.add(databaseInstance);
     }
+
+    public int getSize() {
+        return databases.size();
+    }
 }

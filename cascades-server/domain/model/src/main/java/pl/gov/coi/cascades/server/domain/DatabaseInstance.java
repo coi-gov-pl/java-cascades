@@ -34,6 +34,24 @@ public class DatabaseInstance {
     @Getter
     private final String status;
     private final Date created;
+    private DatabaseInstance databaseInstance;
+
+    /**
+     * Copy constructor.
+     * @param databaseInstance Given instance of database to copy.
+     */
+    DatabaseInstance(DatabaseInstance databaseInstance) {
+        this.databaseId = databaseInstance.getDatabaseId();
+        this.databaseType = databaseInstance.getDatabaseType();
+        this.instanceName = databaseInstance.getInstanceName();
+        this.templateId = databaseInstance.getTemplateId();
+        this.reuseTimes = databaseInstance.getReuseTimes();
+        this.databaseName = databaseInstance.getDatabaseName();
+        this.credentials = databaseInstance.getCredentials();
+        this.networkBind = databaseInstance.getNetworkBind();
+        this.status = databaseInstance.getStatus();
+        this.created = databaseInstance.getCreated();
+    }
 
     /**
      * Method gives date of database creation.
@@ -51,7 +69,9 @@ public class DatabaseInstance {
      * @return Instance of database.
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
-        throw new UnsupportedOperationException();
+        DatabaseInstance instance = new DatabaseInstance(databaseInstance);
+        instance.setNetworkBind(networkBind);
+        return instance;
     }
 
 }

@@ -13,7 +13,20 @@ import java.util.Optional;
  */
 public final class UserGatewayStub implements UserGateway {
 
-    private Map<String, User> users = new HashMap<>();
+    private Map<String, User> users;
+    public static final User bpitt = new User("Brad Pitt", "bpitt", "brad.pit@example.com");
+    public static final User hgrant = new User("Hugh Grant", "hgrant", "hugh.grant@example.com");
+    public static final User mrozneski = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
+    public static final User mzakoscielny = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
+
+    public UserGatewayStub() {
+        this.users = new HashMap<>();
+
+        users.put("bpitt", bpitt);
+        users.put("hgrant", hgrant);
+        users.put("mrozneski", mrozneski);
+        users.put("mzakoscielny", mzakoscielny);
+    }
 
     @Override
     public Optional<User> find(String user) {
@@ -28,4 +41,21 @@ public final class UserGatewayStub implements UserGateway {
     public void addUser(User user) {
         users.put(user.getUsername(), user);
     }
+
+    public Map<String, User> getAllUsers() {
+        return users;
+    }
+
+    public User getUser(String key) {
+        return users.get(key);
+    }
+
+    public void clearUsers() {
+        users.clear();
+    }
+
+    public void removeUser(String key) {
+        users.remove(key);
+    }
+
 }
