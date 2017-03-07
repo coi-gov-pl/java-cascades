@@ -22,7 +22,7 @@ final class DatabaseLimitGatewayStub implements DatabaseLimitGateway {
 
     @Override
     public boolean isPersonalLimitExceeded(User user) {
-        return user.getDatabases().size() == userLimit;
+        return user.getSize() >= userLimit;
     }
 
     @Override

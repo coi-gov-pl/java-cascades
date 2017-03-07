@@ -14,19 +14,18 @@ import java.util.Optional;
 public final class UserGatewayStub implements UserGateway {
 
     private Map<String, User> users;
+    public static final User bpitt = new User("Brad Pitt", "bpitt", "brad.pit@example.com");
+    public static final User hgrant = new User("Hugh Grant", "hgrant", "hugh.grant@example.com");
+    public static final User mrozneski = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
+    public static final User mzakoscielny = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
 
     public UserGatewayStub() {
         this.users = new HashMap<>();
 
-        User bpitt = new User("Brad Pitt", "1abc", "brad.pit@example.com");
-        User hgrant = new User("Hugh Grant", "2abc", "hugh.grant@example.com");
-        User mrozneski = new User("Mikołaj Roznerski", "3abc", "mikolaj.rozneski@example.com");
-        User mzakoscielny = new User("Maciej Zakościelny", "4abc", "maciej.zakocielny@example.com");
-
-        users.put("12345678", bpitt);
-        users.put("23456789", hgrant);
-        users.put("34567891", mrozneski);
-        users.put("45678912", mzakoscielny);
+        users.put("bpitt", bpitt);
+        users.put("hgrant", hgrant);
+        users.put("mrozneski", mrozneski);
+        users.put("mzakoscielny", mzakoscielny);
     }
 
     @Override
@@ -45,6 +44,18 @@ public final class UserGatewayStub implements UserGateway {
 
     public Map<String, User> getAllUsers() {
         return users;
+    }
+
+    public User getUser(String key) {
+        return users.get(key);
+    }
+
+    public void clearUsers() {
+        users.clear();
+    }
+
+    public void removeUser(String key) {
+        users.remove(key);
     }
 
 }

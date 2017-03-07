@@ -14,19 +14,18 @@ import java.util.Optional;
 final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     private Map<String, TemplateId> templates;
+    public static final TemplateId templateId1 = new TemplateId("templateId1");
+    public static final TemplateId templateId2 = new TemplateId("templateId2");
+    public static final TemplateId templateId3 = new TemplateId("templateId3");
+    public static final TemplateId templateId4 = new TemplateId("templateId4");
 
     public TemplateIdGatewayStub() {
         this.templates = new HashMap<>();
 
-        TemplateId templateId1 = new TemplateId("abcd1234");
-        TemplateId templateId2 = new TemplateId("efgh1234");
-        TemplateId templateId3 = new TemplateId("ijkl1234");
-        TemplateId templateId4 = new TemplateId("mnou1234");
-
-        templates.put("12345678", templateId1);
-        templates.put("23456789", templateId2);
-        templates.put("34567891", templateId3);
-        templates.put("45678912", templateId4);
+        templates.put("templateId1", templateId1);
+        templates.put("templateId2", templateId2);
+        templates.put("templateId3", templateId3);
+        templates.put("templateId4", templateId4);
     }
 
     @Override
@@ -37,4 +36,21 @@ final class TemplateIdGatewayStub implements TemplateIdGateway {
     public Map<String, TemplateId> getAllTemplates() {
         return templates;
     }
+
+    public void setTemplate(String key, TemplateId template) {
+        templates.put(key, template);
+    }
+
+    public TemplateId getTemplate(String key) {
+        return templates.get(key);
+    }
+
+    public void clearTemplates() {
+        templates.clear();
+    }
+
+    public void removeTemplate(String key) {
+        templates.remove(key);
+    }
+
 }
