@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 08.03.17.
  */
-public class DatabaseTypeClassNameServiceTest {
+public class DatabaseTypeClassNameServiceImplTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -28,7 +28,7 @@ public class DatabaseTypeClassNameServiceTest {
         // given
         String notExistingClass = "pl.gov.coi.cascades.server.domain.Database";
         String message = String.format("Given class: %s is not available.", notExistingClass);
-        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameService();
+        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(notExistingClass);
@@ -39,6 +39,8 @@ public class DatabaseTypeClassNameServiceTest {
         assertThat(error.getMessage()).contains(message);
     }
 
+
+
     @Test
     public void testGetDatabaseNotRepresentDatabaseType() throws Exception {
         // given
@@ -48,7 +50,7 @@ public class DatabaseTypeClassNameServiceTest {
             existingClass,
             DatabaseType.class.getName()
         );
-        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameService();
+        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(existingClass);
@@ -63,7 +65,7 @@ public class DatabaseTypeClassNameServiceTest {
     public void testGetDatabaseRepresentDatabaseType() throws Exception {
         // given
         String existingClass = "pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub";
-        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameService();
+        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(existingClass);
@@ -80,7 +82,7 @@ public class DatabaseTypeClassNameServiceTest {
             "Given class: %s can not be instantiated. It must be public with public no arguments constructor.",
             existingClass
         );
-        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameService();
+        DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(existingClass);

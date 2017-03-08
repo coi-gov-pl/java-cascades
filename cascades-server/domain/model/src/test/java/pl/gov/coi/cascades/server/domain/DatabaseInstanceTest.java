@@ -91,7 +91,7 @@ public class DatabaseInstanceTest {
             0,
             databaseName,
             credentials,
-            networkBind,
+            null,
             status,
             created
         );
@@ -104,6 +104,8 @@ public class DatabaseInstanceTest {
         assertThat(actual.getNetworkBind()).isNotNull();
         assertThat(actual.getNetworkBind().getHost()).isEqualTo("localhost");
         assertThat(actual.getNetworkBind().getPort()).isEqualTo(8080);
+        assertThat(databaseInstance.getNetworkBind()).isNull();
+        assertThat(actual.getNetworkBind()).isNotSameAs(databaseInstance);
     }
 
     private class NetworkBindImplTest implements NetworkBind {
