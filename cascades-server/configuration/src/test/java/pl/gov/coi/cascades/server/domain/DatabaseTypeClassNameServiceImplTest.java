@@ -5,7 +5,9 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
 import java.lang.reflect.Field;
 
@@ -26,7 +28,7 @@ public class DatabaseTypeClassNameServiceImplTest {
     @Test
     public void testGetDatabaseTypeNotPresentClassName() throws Exception {
         // given
-        String notExistingClass = "pl.gov.coi.cascades.server.domain.Database";
+        String notExistingClass = "org.example.NonExisting";
         String message = String.format("Given class: %s is not available.", notExistingClass);
         DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
@@ -39,12 +41,10 @@ public class DatabaseTypeClassNameServiceImplTest {
         assertThat(error.getMessage()).contains(message);
     }
 
-
-
     @Test
     public void testGetDatabaseNotRepresentDatabaseType() throws Exception {
         // given
-        String existingClass = "pl.gov.coi.cascades.server.domain.DatabaseIdGeneratorService";
+        String existingClass = DatabaseIdGeneratorService.class.getName();
         String message = String.format(
             "Given class: %s is not subclass of %s",
             existingClass,
@@ -64,7 +64,7 @@ public class DatabaseTypeClassNameServiceImplTest {
     @Test
     public void testGetDatabaseRepresentDatabaseType() throws Exception {
         // given
-        String existingClass = "pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub";
+        String existingClass = DatabaseTypeStub.class.getName();
         DatabaseTypeClassNameService databaseTypeClassNameService = new DatabaseTypeClassNameServiceImpl();
 
         // when
@@ -77,7 +77,7 @@ public class DatabaseTypeClassNameServiceImplTest {
     @Test
     public void testGetDatabaseNotInstantiate() throws Exception {
         // given
-        String existingClass = "pl.gov.coi.cascades.server.domain.DatabaseTypeImplTest";
+        String existingClass = PublicDatabaseTypeButWithOneArgConstructor.class.getName();
         String message = String.format(
             "Given class: %s can not be instantiated. It must be public with public no arguments constructor.",
             existingClass
@@ -101,6 +101,29 @@ public class DatabaseTypeClassNameServiceImplTest {
         Field field = cls.getDeclaredField(fieldName);
         field.setAccessible(true);
         return fieldType.cast(field.get(object));
+    }
+
+    /**
+     * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
+     * @since 08.03.17.
+     */
+    public static class PublicDatabaseTypeButWithOneArgConstructor implements DatabaseType {
+
+        private final String name;
+
+        public PublicDatabaseTypeButWithOneArgConstructor(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public ConnectionStringProducer getConnectionStringProducer() {
+            return null;
+        }
     }
 
 }
