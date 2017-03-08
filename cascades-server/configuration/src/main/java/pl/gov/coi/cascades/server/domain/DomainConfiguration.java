@@ -16,7 +16,8 @@ public class DomainConfiguration {
                                                                      UserGateway userGateway,
                                                                      DatabaseLimitGateway databaseLimitGateway,
                                                                      DatabaseIdGeneratorService databaseIdGeneratorService,
-                                                                     UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService) {
+                                                                     UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
+                                                                     DatabaseTypeClassNameService databaseTypeClassNameService) {
         return LaunchNewDatabaseInstanceUseCaseImpl.builder()
             .credentialsGeneratorService(credentialsGeneratorService)
             .databaseIdGeneratorService(databaseIdGeneratorService)
@@ -24,6 +25,7 @@ public class DomainConfiguration {
             .databaseLimitGateway(databaseLimitGateway)
             .templateIdGateway(templateIdGateway)
             .userGateway(userGateway)
+            .databaseTypeClassNameService(databaseTypeClassNameService)
             .build();
     }
 
