@@ -1,10 +1,12 @@
 package pl.gov.coi.cascades.contract.domain;
 
+import java.io.Serializable;
+
 /**
  * @author <a href="mailto:krzysztof.suszynski@coi.gov.pl">Krzysztof Suszynski</a>
  * @since 22.02.17
  */
-public interface ConnectionStringProducer {
+public interface ConnectionStringProducer extends Serializable {
     /**
      * Will produce a valid connection URL based on given parameters
      * @param databaseNetworkBind a database network bind
