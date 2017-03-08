@@ -5,14 +5,13 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 07.03.17.
+ * @since 08.03.17.
  */
-public class DatabaseTypeImpl implements DatabaseType {
+public class DatabaseTypeImplTest implements DatabaseType {
 
     private final String name;
-    private ConnectionStringProducer connectionStringProducer;
 
-    public DatabaseTypeImpl(String name) {
+    public DatabaseTypeImplTest(String name) {
         this.name = name;
     }
 
@@ -23,6 +22,6 @@ public class DatabaseTypeImpl implements DatabaseType {
 
     @Override
     public ConnectionStringProducer getConnectionStringProducer() {
-        return connectionStringProducer;
+        return null;
     }
 }

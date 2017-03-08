@@ -13,19 +13,19 @@ import java.util.Optional;
  */
 public final class UserGatewayStub implements UserGateway {
 
+    public static final User B_PITT = new User("Brad Pitt", "bpitt", "brad.pit@example.com");
+    public static final User H_GRANT = new User("Hugh Grant", "hgrant", "hugh.grant@example.com");
+    public static final User M_ROZNESKI = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
+    public static final User M_ZAKOSCIELNY = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
     private Map<String, User> users;
-    public static final User bpitt = new User("Brad Pitt", "bpitt", "brad.pit@example.com");
-    public static final User hgrant = new User("Hugh Grant", "hgrant", "hugh.grant@example.com");
-    public static final User mrozneski = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
-    public static final User mzakoscielny = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
 
     public UserGatewayStub() {
         this.users = new HashMap<>();
 
-        users.put("bpitt", bpitt);
-        users.put("hgrant", hgrant);
-        users.put("mrozneski", mrozneski);
-        users.put("mzakoscielny", mzakoscielny);
+        addUser(B_PITT);
+        addUser(H_GRANT);
+        addUser(M_ROZNESKI);
+        addUser(M_ZAKOSCIELNY);
     }
 
     @Override

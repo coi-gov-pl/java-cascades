@@ -40,7 +40,8 @@ public class DatabaseInstance {
      *
      * @param databaseInstance Given instance of database to copy.
      */
-    public DatabaseInstance(DatabaseInstance databaseInstance) {
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             NetworkBind networkBind) {
         this(databaseInstance.getDatabaseId(),
             databaseInstance.getTemplateId(),
             databaseInstance.getDatabaseType(),
@@ -48,7 +49,7 @@ public class DatabaseInstance {
             databaseInstance.getReuseTimes(),
             databaseInstance.getDatabaseName(),
             databaseInstance.getCredentials(),
-            databaseInstance.getNetworkBind(),
+            networkBind,
             databaseInstance.getStatus(),
             databaseInstance.getCreated()
         );
@@ -70,9 +71,7 @@ public class DatabaseInstance {
      * @return Instance of database.
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
-        DatabaseInstance databaseInstance = new DatabaseInstance(this);
-        databaseInstance.setNetworkBind(networkBind);
-        return databaseInstance;
+        return new DatabaseInstance(this, networkBind);
     }
 
 }
