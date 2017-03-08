@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.presentation;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGeneratorService;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.UsernameAndPasswordCredentialsGeneratorService;
 
 /**
@@ -20,6 +21,11 @@ public class PresentationConfiguration {
     @Bean
     UsernameAndPasswordCredentialsGeneratorService produceCredentials() {
         return new UsernameAndPasswordCredentialsGeneratorService();
+    }
+
+    @Bean
+    DatabaseTypeClassNameService produceDatabaseTypeClassName() {
+        return new DatabaseTypeClassNameService();
     }
 
 }
