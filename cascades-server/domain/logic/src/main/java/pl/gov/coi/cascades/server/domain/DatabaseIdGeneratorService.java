@@ -12,6 +12,7 @@ public class DatabaseIdGeneratorService {
 
     public static final int DATABASE_NAME_LENGTH = 8;
     private static final String VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
+    public static final int CHARS_FROM_INSTANCE_NAME = 3;
     private SecureRandom secureRandom;
 
     public DatabaseIdGeneratorService() {
@@ -30,14 +31,14 @@ public class DatabaseIdGeneratorService {
         String result = slg.slugify(instanceName);
         StringBuilder stringBuilder = new StringBuilder(DATABASE_NAME_LENGTH);
 
-        if (result.length() < 3) {
+        if (result.length() < CHARS_FROM_INSTANCE_NAME) {
             for(int i = 0; i < result.length(); i++) {
                 stringBuilder.append(result.charAt(i));
                 chars++;
             }
         }
         else {
-            for(int i = 0; i < 3; i++) {
+            for(int i = 0; i < CHARS_FROM_INSTANCE_NAME; i++) {
                 stringBuilder.append(result.charAt(i));
                 chars++;
             }

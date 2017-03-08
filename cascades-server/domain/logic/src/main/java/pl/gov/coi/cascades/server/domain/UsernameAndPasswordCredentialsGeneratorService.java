@@ -7,8 +7,8 @@ import java.util.UUID;
 
 public class UsernameAndPasswordCredentialsGeneratorService {
 
-    private static final int PASSWORD_LENGTH = 8;
-    private static final int USERNAME_LENGTH = 10;
+    private static final int PASSWORD_LENGTH = 24;
+    private static final int USERNAME_LENGTH = 8;
     private static final String CHAR_PASSWORD =
         "0123456789" +
         "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
@@ -35,8 +35,7 @@ public class UsernameAndPasswordCredentialsGeneratorService {
 	}
 
 	private String generateUsername() {
-        UUID uniqueKey = UUID.randomUUID();
-        String uuid = uniqueKey.toString().replace("-","");
+        String uuid = UUID.randomUUID().toString();
 	    return uuid.substring(0, USERNAME_LENGTH);
     }
 

@@ -21,8 +21,8 @@ public class UsernameAndPasswordCredentialsGeneratorServiceTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getUsername()).hasSize(10);
-        assertThat(actual.getPassword()).hasSize(8);
+        assertThat(actual.getUsername()).hasSize(8);
+        assertThat(actual.getPassword()).hasSize(24);
     }
 
 }
