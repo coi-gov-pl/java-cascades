@@ -20,4 +20,12 @@ public class User {
     public void addDatabaseInstance(DatabaseInstance databaseInstance) {
         databases.add(databaseInstance);
     }
+
+    public Iterable<DatabaseInstance> getDatabases() {
+        return databases;
+    }
+
+    public int getDatabasesSize() {
+        return databases.size();
+    }
 }

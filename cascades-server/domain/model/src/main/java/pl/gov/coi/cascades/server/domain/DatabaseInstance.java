@@ -36,6 +36,26 @@ public class DatabaseInstance {
     private final Date created;
 
     /**
+     * Copy constructor.
+     *
+     * @param databaseInstance Given instance of database to copy.
+     */
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             NetworkBind networkBind) {
+        this(databaseInstance.getDatabaseId(),
+            databaseInstance.getTemplateId(),
+            databaseInstance.getDatabaseType(),
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            databaseInstance.getCredentials(),
+            networkBind,
+            databaseInstance.getStatus(),
+            databaseInstance.getCreated()
+        );
+    }
+
+    /**
      * Method gives date of database creation.
      *
      * @return Date of database creation.
@@ -51,7 +71,7 @@ public class DatabaseInstance {
      * @return Instance of database.
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
-        throw new UnsupportedOperationException();
+        return new DatabaseInstance(this, networkBind);
     }
 
 }
