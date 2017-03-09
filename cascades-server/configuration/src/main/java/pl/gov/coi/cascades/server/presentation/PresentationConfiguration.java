@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGeneratorService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameServiceImpl;
 import pl.gov.coi.cascades.server.domain.UsernameAndPasswordCredentialsGeneratorService;
 
 /**
@@ -25,7 +26,7 @@ public class PresentationConfiguration {
 
     @Bean
     DatabaseTypeClassNameService produceDatabaseTypeClassName() {
-        return new DatabaseTypeClassNameService();
+        return new DatabaseTypeClassNameServiceImpl();
     }
 
 }
