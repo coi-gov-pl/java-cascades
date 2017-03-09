@@ -26,4 +26,17 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
         );
         return databaseInstance;
     }
+
+    @Override
+    public void deleteDatabase(DatabaseInstance databaseInstance) {
+        logger.debug(
+            "Database has been deleted. "
+            + "Database id: " + databaseInstance.getDatabaseId() + ", "
+            + "Database name: " + databaseInstance.getDatabaseName() + ", "
+            + "Database type: " + databaseInstance.getDatabaseType() + ", "
+            + "Instance name: " + databaseInstance.getInstanceName() + ", "
+            + "Template id: " + databaseInstance.getTemplateId() + ", "
+            + "Status: " + databaseInstance.getStatus()
+        );
+    }
 }
