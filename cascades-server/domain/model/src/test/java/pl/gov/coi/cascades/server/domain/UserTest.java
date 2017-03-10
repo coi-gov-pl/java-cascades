@@ -17,7 +17,6 @@ import java.time.Instant;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -83,8 +82,8 @@ public class UserTest {
         String instanceName = "PESEL";
         String databaseName = "orae231r";
         Date created = Date.from(Instant.now());
-        DatabaseInstance instance = new DatabaseInstance(
-            databaseId,
+        DatabaseInstance instance1 = new DatabaseInstance(
+            id,
             templateId,
             databaseType,
             instanceName,
@@ -95,12 +94,11 @@ public class UserTest {
             DatabaseStatus.LAUNCHED,
             created
         );
-        when(databaseId.getId()).thenReturn("ora12e34");
-        when(databaseInstance.getDatabaseId()).thenReturn(id);
-        User newUser = user.addDatabaseInstance(databaseInstance);
+        User newUser = user.addDatabaseInstance(instance1);
+        DatabaseInstance instance2 = instance1.setStatus(DatabaseStatus.DELETED);
 
         // when
-        User actual = newUser.updateDatabaseInstance(instance);
+        User actual = newUser.updateDatabaseInstance(instance2);
 
         // then
         assertThat(actual).isNotNull();
