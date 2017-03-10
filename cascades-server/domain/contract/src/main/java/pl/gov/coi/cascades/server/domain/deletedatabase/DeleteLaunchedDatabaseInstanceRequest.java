@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.domain.User;
 
 /**
@@ -14,7 +15,7 @@ import pl.gov.coi.cascades.server.domain.User;
 public class DeleteLaunchedDatabaseInstanceRequest {
 
     @Getter
-    private final String databaseId;
+    private final DatabaseId databaseId;
     @Getter
     private final User user;
 

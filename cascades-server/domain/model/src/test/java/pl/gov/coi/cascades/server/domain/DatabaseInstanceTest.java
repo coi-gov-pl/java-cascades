@@ -37,7 +37,7 @@ public class DatabaseInstanceTest {
     @Mock
     private UsernameAndPasswordCredentials credentials;
 
-    @Getter
+    @Mock
     private NetworkBind networkBind;
 
     @Rule

@@ -34,7 +34,7 @@ public class DeleteLaunchedDatabaseInstanceController implements CascadesDeleteS
         User user = userSession.getSignedInUser();
 
         DeleteLaunchedDatabaseInstanceRequestBuilder requestBuilder = builder()
-            .databaseId(databaseId.getId())
+            .databaseId(databaseId)
             .user(user);
 
         DeleteLaunchedDatabaseInstanceRequest deleteLaunchedDatabaseInstanceRequest = requestBuilder.build();

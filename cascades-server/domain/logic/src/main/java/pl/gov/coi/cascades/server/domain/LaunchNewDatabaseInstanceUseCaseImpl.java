@@ -5,7 +5,6 @@ import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
-import pl.gov.coi.cascades.server.domain.LaunchNewDatabaseInstanceValidator.LaunchNewDatabaseInstanceValidatorBuilder;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -27,7 +26,7 @@ class LaunchNewDatabaseInstanceUseCaseImpl implements LaunchNewDatabaseInstanceU
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
      *
      * @param request Given request of launching new database instance.
-     * @param response Given response of launching new darabase instance.
+     * @param response Given response of launching new database instance.
      */
     @Override
     public void execute(LaunchNewDatabaseInstanceRequest request, LaunchNewDatabaseInstanceResponse response) {
@@ -35,7 +34,7 @@ class LaunchNewDatabaseInstanceUseCaseImpl implements LaunchNewDatabaseInstanceU
         Optional<User> user = userGateway.find(request.getUser().getUsername());
         DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(request.getTypeClassName());
 
-        LaunchNewDatabaseInstanceValidatorBuilder validatorBuilder = LaunchNewDatabaseInstanceValidator.builder()
+        LaunchNewDatabaseInstanceValidator.LaunchNewDatabaseInstanceValidatorBuilder validatorBuilder = LaunchNewDatabaseInstanceValidator.builder()
             .databaseLimitGateway(databaseLimitGateway)
             .request(request)
             .response(response)
