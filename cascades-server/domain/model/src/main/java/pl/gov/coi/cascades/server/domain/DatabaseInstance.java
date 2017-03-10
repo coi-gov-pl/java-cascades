@@ -36,7 +36,7 @@ public class DatabaseInstance {
     private final Date created;
 
     /**
-     * Copy constructor.
+     * Copy constructor to set network bind.
      *
      * @param databaseInstance Given instance of database to copy.
      */
@@ -51,6 +51,26 @@ public class DatabaseInstance {
             databaseInstance.getCredentials(),
             networkBind,
             databaseInstance.getStatus(),
+            databaseInstance.getCreated()
+        );
+    }
+
+    /**
+     * Copy constructor to set status of database.
+     *
+     * @param databaseInstance Given instance of database to copy.
+     */
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             DatabaseStatus databaseStatus) {
+        this(databaseInstance.getDatabaseId(),
+            databaseInstance.getTemplateId(),
+            databaseInstance.getDatabaseType(),
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            databaseInstance.getCredentials(),
+            databaseInstance.getNetworkBind(),
+            databaseStatus,
             databaseInstance.getCreated()
         );
     }
@@ -72,6 +92,16 @@ public class DatabaseInstance {
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
         return new DatabaseInstance(this, networkBind);
+    }
+
+    /**
+     * Setter for status of database.
+     *
+     * @param databaseStatus Given status of database.
+     * @return Instance of database.
+     */
+    public DatabaseInstance setStatus(DatabaseStatus databaseStatus) {
+        return new DatabaseInstance(this, databaseStatus);
     }
 
 }

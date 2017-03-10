@@ -106,6 +106,36 @@ public class DatabaseInstanceTest {
         assertThat(databaseInstance.getNetworkBind()).isNull();
     }
 
+    @Test
+    public void testSetStatus() throws Exception {
+        // given
+        String instanceName = "PESEL";
+        String databaseName = "orae231r";
+        Date created = Date.from(Instant.now());
+        DatabaseInstance databaseInstance = new DatabaseInstance(
+            databaseId,
+            templateId,
+            databaseType,
+            instanceName,
+            0,
+            databaseName,
+            credentials,
+            null,
+            DatabaseStatus.LAUNCHED,
+            created
+        );
+
+        // when
+        DatabaseInstance actual = databaseInstance.setStatus(DatabaseStatus.DELETED);
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isNotSameAs(databaseInstance);
+        assertThat(actual.getStatus()).isNotNull();
+        assertThat(actual.getStatus()).isEqualTo(DatabaseStatus.DELETED);
+        assertThat(databaseInstance.getStatus()).isEqualTo(DatabaseStatus.LAUNCHED);
+    }
+
     private class NetworkBindImplTest implements NetworkBind {
 
         @Getter
