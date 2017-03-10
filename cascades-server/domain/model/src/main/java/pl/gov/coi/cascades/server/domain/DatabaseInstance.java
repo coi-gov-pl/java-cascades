@@ -32,7 +32,7 @@ public class DatabaseInstance {
     @Getter
     private final NetworkBind networkBind;
     @Getter
-    private final String status;
+    private final DatabaseStatus status;
     private final Date created;
 
     /**

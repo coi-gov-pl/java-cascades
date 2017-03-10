@@ -51,7 +51,6 @@ public class DatabaseInstanceTest {
         // given
         String instanceName = "PESEL";
         String databaseName = "orae231r";
-        String status = "active";
         Date created = Date.from(Instant.now());
         DatabaseInstance databaseInstance = new DatabaseInstance(
             databaseId,
@@ -62,7 +61,7 @@ public class DatabaseInstanceTest {
             databaseName,
             credentials,
             networkBind,
-            status,
+            DatabaseStatus.LAUNCHED,
             created
         );
 
@@ -78,7 +77,6 @@ public class DatabaseInstanceTest {
         // given
         String instanceName = "PESEL";
         String databaseName = "orae231r";
-        String status = "active";
         Date created = Date.from(Instant.now());
         NetworkBindImplTest networkBindImplTest = new NetworkBindImplTest();
         networkBindImplTest.setHost("localhost");
@@ -92,7 +90,7 @@ public class DatabaseInstanceTest {
             databaseName,
             credentials,
             null,
-            status,
+            DatabaseStatus.LAUNCHED,
             created
         );
 
