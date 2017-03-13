@@ -12,7 +12,7 @@ import java.util.Optional;
  * Class for providing request information for launching new database instance.
  */
 @Builder
-public class DatabaseInstanceRequest {
+public class Request {
 
     @Getter
     private final String typeClassName;
@@ -31,10 +31,10 @@ public class DatabaseInstanceRequest {
      * @param templateId    Given id of template (Optional).
      * @param instanceName  Given name of database instance (Optional).
      */
-    public DatabaseInstanceRequest(String typeClassName,
-                                   User user,
-                                   @Nullable String templateId,
-                                   @Nullable String instanceName) {
+    public Request(String typeClassName,
+                   User user,
+                   @Nullable String templateId,
+                   @Nullable String instanceName) {
         this.typeClassName = EidPreconditions.checkNotNull(typeClassName, "20170228:153927");
         this.user = EidPreconditions.checkNotNull(user, "20170228:153954");
         this.templateId = templateId;

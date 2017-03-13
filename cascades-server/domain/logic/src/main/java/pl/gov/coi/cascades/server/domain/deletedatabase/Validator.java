@@ -17,10 +17,10 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 10.03.17.
  */
 @Builder
-class DatabaseInstanceValidator {
+class Validator {
 
-    private final DatabaseInstanceResponse response;
-    private final DatabaseInstanceRequest request;
+    private final Response response;
+    private final Request request;
     @Nullable
     private final DatabaseId databaseId;
     @Nullable

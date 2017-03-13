@@ -1,33 +1,32 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceRequest;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceUseCase;
+import pl.gov.coi.cascades.server.domain.launchdatabase.Request;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
 import javax.inject.Inject;
 import java.util.concurrent.Callable;
 
-@Controller
-public class DatabaseInstanceController {
+@org.springframework.stereotype.Controller
+public class Controller {
 
-    private final DatabaseInstanceUseCase databaseInstanceUseCase;
+    private final UseCase useCase;
     private final UserSession userSession;
     private final OptionalMapper optionalMapper;
 
     @Inject
-    public DatabaseInstanceController(UserSession userSession,
-                                      DatabaseInstanceUseCase databaseInstanceUseCase,
-                                      OptionalMapper optionalMapper) {
+    public Controller(UserSession userSession,
+                      UseCase useCase,
+                      OptionalMapper optionalMapper) {
         this.userSession = userSession;
-        this.databaseInstanceUseCase = databaseInstanceUseCase;
+        this.useCase = useCase;
         this.optionalMapper = optionalMapper;
     }
 
@@ -47,7 +46,7 @@ public class DatabaseInstanceController {
     public Callable<RemoteDatabaseSpec> launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
         User user = userSession.getSignedInUser();
 
-        DatabaseInstanceRequest.DatabaseInstanceRequestBuilder requestBuilder = DatabaseInstanceRequest.builder()
+        Request.RequestBuilder requestBuilder = Request.builder()
             .typeClassName(request.getTypeClassName())
             .user(user);
 
@@ -56,12 +55,12 @@ public class DatabaseInstanceController {
         optionalMapper.toJava8(request.getInstanceName())
             .ifPresent(requestBuilder::instanceName);
 
-        DatabaseInstanceRequest databaseInstanceRequest = requestBuilder.build();
-        DatabaseInstancePresenter databaseInstancePresenter = new DatabaseInstancePresenter();
+        Request databaseInstanceRequest = requestBuilder.build();
+        Presenter databaseInstancePresenter = new Presenter();
 
         return () -> {
 
-            databaseInstanceUseCase.execute(
+            useCase.execute(
                 databaseInstanceRequest,
                 databaseInstancePresenter
             );

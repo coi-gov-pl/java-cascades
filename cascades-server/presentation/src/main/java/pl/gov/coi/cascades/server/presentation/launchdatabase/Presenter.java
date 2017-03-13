@@ -6,10 +6,10 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.Error;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceResponse;
+import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
 
 @RequiredArgsConstructor
-public class DatabaseInstancePresenter implements DatabaseInstanceResponse {
+public class Presenter implements Response {
 
     @Setter
     private String databaseId;
@@ -85,7 +85,7 @@ public class DatabaseInstancePresenter implements DatabaseInstanceResponse {
      *
      * @return View model of new database instance.
      */
-    public DatabaseInstanceViewModel createModel() {
+    public ViewModel createModel() {
         throw new UnsupportedOperationException();
     }
 

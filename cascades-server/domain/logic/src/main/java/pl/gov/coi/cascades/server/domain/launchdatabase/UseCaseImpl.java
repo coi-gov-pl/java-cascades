@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @Builder
 @RequiredArgsConstructor
-public class DatabaseInstanceUseCaseImpl implements DatabaseInstanceUseCase {
+public class UseCaseImpl implements UseCase {
 
     private final TemplateIdGateway templateIdGateway;
     private final DatabaseInstanceGateway databaseInstanceGateway;
@@ -37,14 +37,14 @@ public class DatabaseInstanceUseCaseImpl implements DatabaseInstanceUseCase {
      * @param response Given response of launching new database instance.
      */
     @Override
-    public void execute(DatabaseInstanceRequest request, DatabaseInstanceResponse response) {
+    public void execute(Request request, Response response) {
         Optional<TemplateId> templateId = templateIdGateway.find(request.getTemplateId().orElse(null));
         Optional<User> user = request.getUser() != null
             ? userGateway.find(request.getUser().getUsername())
             : Optional.empty();
         DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(request.getTypeClassName());
 
-        DatabaseInstanceValidator.DatabaseInstanceValidatorBuilder validatorBuilder = DatabaseInstanceValidator.builder()
+        Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .databaseLimitGateway(databaseLimitGateway)
             .request(request)
             .response(response)
@@ -53,15 +53,15 @@ public class DatabaseInstanceUseCaseImpl implements DatabaseInstanceUseCase {
         templateId.ifPresent(validatorBuilder::templateId);
         user.ifPresent(validatorBuilder::user);
 
-        DatabaseInstanceValidator validator = validatorBuilder.build();
+        Validator validator = validatorBuilder.build();
         if (validator.validate()) {
             succeedResponse(request, response, validator);
         }
     }
 
-    private void succeedResponse(DatabaseInstanceRequest request,
-                                 DatabaseInstanceResponse response,
-                                 DatabaseInstanceValidator validator) {
+    private void succeedResponse(Request request,
+                                 Response response,
+                                 Validator validator) {
         DatabaseId databaseId = generateInstanceName(request, databaseIdGeneratorService);
 
         UsernameAndPasswordCredentials credentials = credentialsGeneratorService.generate();
@@ -85,7 +85,7 @@ public class DatabaseInstanceUseCaseImpl implements DatabaseInstanceUseCase {
         response.setDatabaseId(databaseId.getId());
     }
 
-    private DatabaseId generateInstanceName(DatabaseInstanceRequest request,
+    private DatabaseId generateInstanceName(Request request,
                                             DatabaseIdGeneratorService databaseIdGeneratorService) {
         Optional<String> instanceName = request.getInstanceName();
         return instanceName.isPresent()

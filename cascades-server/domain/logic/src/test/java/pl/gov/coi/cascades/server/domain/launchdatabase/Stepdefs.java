@@ -11,9 +11,9 @@ import java.util.Optional;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 28.02.17.
  */
-public class DatabaseInstanceStepdefs {
+public class Stepdefs {
 
-    private DatabaseInstanceRequest.DatabaseInstanceRequestBuilder builder;
+    private Request.RequestBuilder builder;
     private UserGatewayStub userGatewayStub = new UserGatewayStub();
 
     @Before
@@ -31,9 +31,9 @@ public class DatabaseInstanceStepdefs {
 
     }
 
-    private  DatabaseInstanceRequest.DatabaseInstanceRequestBuilder getRequestBuilder() {
+    private  Request.RequestBuilder getRequestBuilder() {
         if (builder == null) {
-            builder = DatabaseInstanceRequest.builder();
+            builder = Request.builder();
         }
         return builder;
     }

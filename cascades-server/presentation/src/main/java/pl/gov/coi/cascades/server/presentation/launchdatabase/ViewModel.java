@@ -9,7 +9,7 @@ import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 /**
  * View model for new database instance.
  */
-public class DatabaseInstanceViewModel extends RemoteDatabaseSpec {
+public class ViewModel extends RemoteDatabaseSpec {
 
     /**
      * Required argument constructor.
@@ -20,11 +20,11 @@ public class DatabaseInstanceViewModel extends RemoteDatabaseSpec {
      * @param networkBind  Given network bind.
      * @param credentials  Given credentials.
      */
-    public DatabaseInstanceViewModel(DatabaseType type,
-                                     DatabaseId id,
-                                     String databaseName,
-                                     NetworkBind networkBind,
-                                     UsernameAndPasswordCredentials credentials) {
+    public ViewModel(DatabaseType type,
+                     DatabaseId id,
+                     String databaseName,
+                     NetworkBind networkBind,
+                     UsernameAndPasswordCredentials credentials) {
         super(type, id, databaseName, networkBind, credentials);
     }
 }

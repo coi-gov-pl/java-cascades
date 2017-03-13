@@ -3,8 +3,8 @@ package pl.gov.coi.cascades.server.domain;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceUseCase;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceUseCaseImpl;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UseCaseImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 
 /**
@@ -15,14 +15,14 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCrede
 public class DomainConfiguration {
 
     @Bean
-    DatabaseInstanceUseCase produceLaunchNewDatabaseUseCase(TemplateIdGateway templateIdGateway,
-                                                            DatabaseInstanceGateway databaseInstanceGateway,
-                                                            UserGateway userGateway,
-                                                            DatabaseLimitGateway databaseLimitGateway,
-                                                            DatabaseIdGeneratorService databaseIdGeneratorService,
-                                                            UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
-                                                            DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return DatabaseInstanceUseCaseImpl.builder()
+    UseCase produceLaunchNewDatabaseUseCase(TemplateIdGateway templateIdGateway,
+                                            DatabaseInstanceGateway databaseInstanceGateway,
+                                            UserGateway userGateway,
+                                            DatabaseLimitGateway databaseLimitGateway,
+                                            DatabaseIdGeneratorService databaseIdGeneratorService,
+                                            UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
+                                            DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return UseCaseImpl.builder()
             .credentialsGeneratorService(credentialsGeneratorService)
             .databaseIdGeneratorService(databaseIdGeneratorService)
             .databaseInstanceGateway(databaseInstanceGateway)
@@ -34,10 +34,10 @@ public class DomainConfiguration {
     }
 
     @Bean
-    pl.gov.coi.cascades.server.domain.deletedatabase.DatabaseInstanceUseCase produceDeleteLaunchedDatabaseUseCase(UserGateway userGateway,
-                                                                                                                  DatabaseIdGateway databaseIdGateway,
-                                                                                                                  DatabaseInstanceGateway databaseInstanceGateway) {
-        return pl.gov.coi.cascades.server.domain.deletedatabase.DatabaseInstanceUseCaseImpl.builder()
+    pl.gov.coi.cascades.server.domain.deletedatabase.UseCase produceDeleteLaunchedDatabaseUseCase(UserGateway userGateway,
+                                                                                                  DatabaseIdGateway databaseIdGateway,
+                                                                                                  DatabaseInstanceGateway databaseInstanceGateway) {
+        return pl.gov.coi.cascades.server.domain.deletedatabase.UseCaseImpl.builder()
             .userGateway(userGateway)
             .databaseIdGateway(databaseIdGateway)
             .databaseInstanceGateway(databaseInstanceGateway)

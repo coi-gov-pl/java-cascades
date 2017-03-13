@@ -19,9 +19,9 @@ import static org.junit.Assert.assertNotNull;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.02.17.
  */
-public class DatabaseInstanceRequestTest {
+public class RequestTest {
 
-    private DatabaseInstanceRequest databaseInstanceRequest;
+    private Request request;
     private String typeClassName;
     private String templateId;
     private String instanceName;
@@ -40,7 +40,7 @@ public class DatabaseInstanceRequestTest {
         typeClassName = "Type";
         templateId = "123456abcd";
         instanceName = "PESEL";
-        databaseInstanceRequest = new DatabaseInstanceRequest(
+        request = new Request(
             typeClassName,
             user,
             templateId,
@@ -51,7 +51,7 @@ public class DatabaseInstanceRequestTest {
     @Test
     public void testDefaultConstructor() throws Exception {
         // when
-        DatabaseInstanceRequest actual = new DatabaseInstanceRequest(
+        Request actual = new Request(
             typeClassName,
             user,
             templateId,
@@ -65,7 +65,7 @@ public class DatabaseInstanceRequestTest {
     @Test
     public void testGetTemplateId() throws Exception {
         // when
-        Optional<String> actual = databaseInstanceRequest.getTemplateId();
+        Optional<String> actual = request.getTemplateId();
 
         // then
         assertEquals(Optional.ofNullable(templateId), actual);
@@ -74,7 +74,7 @@ public class DatabaseInstanceRequestTest {
     @Test
     public void testGetInstanceName() throws Exception {
         // when
-        Optional<String> actual = databaseInstanceRequest.getInstanceName();
+        Optional<String> actual = request.getInstanceName();
 
         // then
         assertEquals(Optional.ofNullable(instanceName), actual);
@@ -83,7 +83,7 @@ public class DatabaseInstanceRequestTest {
     @Test
     public void testBuilder() {
         // when
-        DatabaseInstanceRequest requestBuilder = DatabaseInstanceRequest.builder()
+        Request requestBuilder = Request.builder()
             .instanceName(instanceName)
             .user(user)
             .typeClassName(typeClassName)

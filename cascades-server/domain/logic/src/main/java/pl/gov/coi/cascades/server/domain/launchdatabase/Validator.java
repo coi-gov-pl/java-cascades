@@ -19,10 +19,10 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 27.02.17.
  */
 @Builder
-class DatabaseInstanceValidator {
+class Validator {
 
-    private final DatabaseInstanceResponse response;
-    private final DatabaseInstanceRequest request;
+    private final Response response;
+    private final Request request;
     private final DatabaseLimitGateway databaseLimitGateway;
     private final DatabaseTypeDTO databaseTypeDTO;
     @Nullable
@@ -54,7 +54,7 @@ class DatabaseInstanceValidator {
     private void validateDatabaseType() {
         databaseTypeDTO.onFail(response::addError)
             .onSuccess(databaseType1 -> {
-                DatabaseInstanceValidator.this.setDatabaseType(databaseType1);
+                Validator.this.setDatabaseType(databaseType1);
                 response.setDatabaseType(databaseType1);
             })
             .resolve();

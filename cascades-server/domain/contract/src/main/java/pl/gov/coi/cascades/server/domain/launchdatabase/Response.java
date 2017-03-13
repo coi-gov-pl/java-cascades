@@ -5,7 +5,7 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.Error;
 
-public interface DatabaseInstanceResponse {
+public interface Response {
 
     /**
      * Method gives an information if launching new database instance completed successfully.

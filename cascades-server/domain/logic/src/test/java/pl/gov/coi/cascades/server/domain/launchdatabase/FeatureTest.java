@@ -13,6 +13,6 @@ import org.junit.runner.RunWith;
     features = "classpath:features/LaunchNewDatabaseInstance.feature",
     plugin = "pretty"
 )
-public class DatabaseInstanceFeatureTest {
+public class FeatureTest {
 
 }

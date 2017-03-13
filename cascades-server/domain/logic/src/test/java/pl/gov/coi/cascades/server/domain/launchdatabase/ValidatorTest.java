@@ -23,15 +23,15 @@ import static org.mockito.Mockito.when;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 01.03.17.
  */
-public class DatabaseInstanceValidatorTest {
+public class ValidatorTest {
 
-    private DatabaseInstanceValidator validator;
-
-    @Mock
-    private DatabaseInstanceResponse response;
+    private Validator validator;
 
     @Mock
-    private DatabaseInstanceRequest request;
+    private Response response;
+
+    @Mock
+    private Request request;
 
     @Mock
     private DatabaseLimitGateway databaseLimitGateway;
@@ -59,7 +59,7 @@ public class DatabaseInstanceValidatorTest {
 
     @Before
     public void setUp() {
-        validator = new DatabaseInstanceValidator(
+        validator = new Validator(
             response,
             request,
             databaseLimitGateway,
@@ -92,7 +92,7 @@ public class DatabaseInstanceValidatorTest {
     @Test
     public void getTemplateId() throws Exception {
         // given
-        DatabaseInstanceValidator validator = new DatabaseInstanceValidator(
+        Validator validator = new Validator(
             response,
             request,
             databaseLimitGateway,
@@ -130,7 +130,7 @@ public class DatabaseInstanceValidatorTest {
     @Test
     public void builder() throws Exception {
         // when
-        DatabaseInstanceValidator validatorBuilder = DatabaseInstanceValidator.builder()
+        Validator validatorBuilder = Validator.builder()
             .databaseLimitGateway(databaseLimitGateway)
             .request(request)
             .response(response)

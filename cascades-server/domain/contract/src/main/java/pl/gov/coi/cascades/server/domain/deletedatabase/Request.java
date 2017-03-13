@@ -12,7 +12,7 @@ import pl.gov.coi.cascades.server.domain.User;
  */
 @Builder
 @RequiredArgsConstructor
-public class DatabaseInstanceRequest {
+public class Request {
 
     @Getter
     private final DatabaseId databaseId;
