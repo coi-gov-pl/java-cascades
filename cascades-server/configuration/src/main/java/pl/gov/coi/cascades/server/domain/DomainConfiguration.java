@@ -2,6 +2,8 @@ package pl.gov.coi.cascades.server.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseInstanceUseCase;
+import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseInstanceUseCaseImpl;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -26,6 +28,17 @@ public class DomainConfiguration {
             .templateIdGateway(templateIdGateway)
             .userGateway(userGateway)
             .databaseTypeClassNameService(databaseTypeClassNameService)
+            .build();
+    }
+
+    @Bean
+    DeleteLaunchedDatabaseInstanceUseCase produceDeleteLaunchedDatabaseUseCase(UserGateway userGateway,
+                                                                               DatabaseIdGateway databaseIdGateway,
+                                                                               DatabaseInstanceGateway databaseInstanceGateway) {
+        return DeleteLaunchedDatabaseInstanceUseCaseImpl.builder()
+            .userGateway(userGateway)
+            .databaseIdGateway(databaseIdGateway)
+            .databaseInstanceGateway(databaseInstanceGateway)
             .build();
     }
 
