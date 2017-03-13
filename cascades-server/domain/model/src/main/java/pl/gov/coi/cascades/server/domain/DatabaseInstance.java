@@ -32,15 +32,36 @@ public class DatabaseInstance {
     @Getter
     private final NetworkBind networkBind;
     @Getter
-    private final String status;
+    private final DatabaseStatus status;
     private final Date created;
 
     /**
-     * Copy constructor.
+     * Copy constructor to set network bind.
      *
      * @param databaseInstance Given instance of database to copy.
      */
-    public DatabaseInstance(DatabaseInstance databaseInstance) {
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             NetworkBind networkBind) {
+        this(databaseInstance.getDatabaseId(),
+            databaseInstance.getTemplateId(),
+            databaseInstance.getDatabaseType(),
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            databaseInstance.getCredentials(),
+            networkBind,
+            databaseInstance.getStatus(),
+            databaseInstance.getCreated()
+        );
+    }
+
+    /**
+     * Copy constructor to set status of database.
+     *
+     * @param databaseInstance Given instance of database to copy.
+     */
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             DatabaseStatus databaseStatus) {
         this(databaseInstance.getDatabaseId(),
             databaseInstance.getTemplateId(),
             databaseInstance.getDatabaseType(),
@@ -49,7 +70,7 @@ public class DatabaseInstance {
             databaseInstance.getDatabaseName(),
             databaseInstance.getCredentials(),
             databaseInstance.getNetworkBind(),
-            databaseInstance.getStatus(),
+            databaseStatus,
             databaseInstance.getCreated()
         );
     }
@@ -70,9 +91,17 @@ public class DatabaseInstance {
      * @return Instance of database.
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
-        DatabaseInstance databaseInstance = new DatabaseInstance(this);
-        databaseInstance.setNetworkBind(networkBind);
-        return databaseInstance;
+        return new DatabaseInstance(this, networkBind);
+    }
+
+    /**
+     * Setter for status of database.
+     *
+     * @param databaseStatus Given status of database.
+     * @return Instance of database.
+     */
+    public DatabaseInstance setStatus(DatabaseStatus databaseStatus) {
+        return new DatabaseInstance(this, databaseStatus);
     }
 
 }

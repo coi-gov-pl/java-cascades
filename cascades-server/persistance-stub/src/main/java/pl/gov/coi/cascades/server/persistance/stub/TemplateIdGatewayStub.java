@@ -13,19 +13,19 @@ import java.util.Optional;
  */
 final class TemplateIdGatewayStub implements TemplateIdGateway {
 
+    public static final TemplateId TEMPLATE_ID1 = new TemplateId("templateId1");
+    public static final TemplateId TEMPLATE_ID2 = new TemplateId("templateId2");
+    public static final TemplateId TEMPLATE_ID3 = new TemplateId("templateId3");
+    public static final TemplateId TEMPLATE_ID4 = new TemplateId("templateId4");
     private Map<String, TemplateId> templates;
-    public static final TemplateId templateId1 = new TemplateId("templateId1");
-    public static final TemplateId templateId2 = new TemplateId("templateId2");
-    public static final TemplateId templateId3 = new TemplateId("templateId3");
-    public static final TemplateId templateId4 = new TemplateId("templateId4");
 
     public TemplateIdGatewayStub() {
         this.templates = new HashMap<>();
 
-        templates.put("templateId1", templateId1);
-        templates.put("templateId2", templateId2);
-        templates.put("templateId3", templateId3);
-        templates.put("templateId4", templateId4);
+        setTemplate(TEMPLATE_ID1);
+        setTemplate(TEMPLATE_ID2);
+        setTemplate(TEMPLATE_ID3);
+        setTemplate(TEMPLATE_ID4);
     }
 
     @Override
@@ -37,8 +37,8 @@ final class TemplateIdGatewayStub implements TemplateIdGateway {
         return templates;
     }
 
-    public void setTemplate(String key, TemplateId template) {
-        templates.put(key, template);
+    public void setTemplate(TemplateId template) {
+        templates.put(template.getId(), template);
     }
 
     public TemplateId getTemplate(String key) {
