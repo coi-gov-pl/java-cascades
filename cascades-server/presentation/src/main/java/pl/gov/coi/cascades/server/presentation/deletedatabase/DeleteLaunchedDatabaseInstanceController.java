@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseIn
 import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseInstanceUseCase;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.concurrent.Future;
 
@@ -30,7 +31,7 @@ public class DeleteLaunchedDatabaseInstanceController implements CascadesDeleteS
     }
 
     @Override
-    public Future<Void> deleteDatabase(DatabaseId databaseId) {
+    public Future<Void> deleteDatabase(@Nullable DatabaseId databaseId) {
         User user = userSession.getSignedInUser();
 
         DeleteLaunchedDatabaseInstanceRequestBuilder requestBuilder = builder()
