@@ -10,7 +10,7 @@ import java.util.function.Consumer;
  * Database type data transfer object.
  * Contains information about a type of database.
  */
-class DatabaseTypeDTO {
+public class DatabaseTypeDTO {
 
     @Nullable
     private final DatabaseType databaseType;
@@ -37,7 +37,7 @@ class DatabaseTypeDTO {
      * @param databaseTypeConsumer Given consumer of database type.
      * @return DTO of database type.
      */
-    DatabaseTypeDTO onSuccess(Consumer<DatabaseType> databaseTypeConsumer) {
+    public DatabaseTypeDTO onSuccess(Consumer<DatabaseType> databaseTypeConsumer) {
         this.databaseTypeConsumer = databaseTypeConsumer;
         return this;
     }
@@ -48,7 +48,7 @@ class DatabaseTypeDTO {
      * @param errorConsumer Given consumer of error.
      * @return DTO of database type.
      */
-    DatabaseTypeDTO onFail(Consumer<Error> errorConsumer) {
+    public DatabaseTypeDTO onFail(Consumer<Error> errorConsumer) {
         this.errorConsumer = errorConsumer;
         return this;
     }
@@ -56,7 +56,7 @@ class DatabaseTypeDTO {
     /**
      * Method resolve type of database.
      */
-    void resolve() {
+    public void resolve() {
         Optional.ofNullable(databaseType)
             .ifPresent(databaseTypeConsumer);
         Optional.ofNullable(error)

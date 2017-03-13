@@ -3,4 +3,4 @@
  * @since 13.03.17.
  */
 @javax.annotation.ParametersAreNonnullByDefault
-package pl.gov.coi.cascades.server.presentation;
+package pl.gov.coi.cascades.server.domain.launchdatabase;

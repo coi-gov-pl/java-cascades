@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 

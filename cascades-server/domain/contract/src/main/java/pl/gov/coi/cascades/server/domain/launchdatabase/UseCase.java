@@ -1,9 +1,9 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 /**
  * Use case for launching new database instance.
  */
-public interface LaunchNewDatabaseInstanceUseCase {
+public interface UseCase {
 
     /**
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
@@ -11,6 +11,6 @@ public interface LaunchNewDatabaseInstanceUseCase {
      * @param request Given request of launching new database instance.
      * @param response Given response of launching new darabase instance.
      */
-    void execute(LaunchNewDatabaseInstanceRequest request, LaunchNewDatabaseInstanceResponse response);
+    void execute(Request request, Response response);
 
 }

@@ -1,7 +1,8 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import org.junit.Test;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

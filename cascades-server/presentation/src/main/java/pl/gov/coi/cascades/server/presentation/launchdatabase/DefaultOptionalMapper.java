@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.presentation;
+package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import org.springframework.stereotype.Component;
 

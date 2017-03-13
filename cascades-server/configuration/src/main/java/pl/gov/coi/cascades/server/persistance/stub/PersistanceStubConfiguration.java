@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.stub;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 
@@ -30,6 +31,11 @@ class PersistanceStubConfiguration {
     @Bean
     DatabaseLimitGatewayStub produceDatabaseLimitGateway() {
         return new DatabaseLimitGatewayStub();
+    }
+
+    @Bean
+    DatabaseIdGateway produceDatabaseIdGateway() {
+        return new DatabaseIdGatewayStub();
     }
 
 }
