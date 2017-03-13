@@ -1,7 +1,8 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import lombok.Builder;
 import lombok.Getter;
+import pl.gov.coi.cascades.server.domain.User;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
 import javax.annotation.Nullable;
@@ -11,7 +12,7 @@ import java.util.Optional;
  * Class for providing request information for launching new database instance.
  */
 @Builder
-public class LaunchNewDatabaseInstanceRequest {
+public class Request {
 
     @Getter
     private final String typeClassName;
@@ -30,10 +31,10 @@ public class LaunchNewDatabaseInstanceRequest {
      * @param templateId    Given id of template (Optional).
      * @param instanceName  Given name of database instance (Optional).
      */
-    public LaunchNewDatabaseInstanceRequest(String typeClassName,
-                                            User user,
-                                            @Nullable String templateId,
-                                            @Nullable String instanceName) {
+    public Request(String typeClassName,
+                   User user,
+                   @Nullable String templateId,
+                   @Nullable String instanceName) {
         this.typeClassName = EidPreconditions.checkNotNull(typeClassName, "20170228:153927");
         this.user = EidPreconditions.checkNotNull(user, "20170228:153954");
         this.templateId = templateId;

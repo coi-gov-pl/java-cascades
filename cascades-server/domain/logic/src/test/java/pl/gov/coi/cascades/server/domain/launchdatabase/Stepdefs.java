@@ -1,8 +1,8 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
-import pl.gov.coi.cascades.server.domain.LaunchNewDatabaseInstanceRequest.LaunchNewDatabaseInstanceRequestBuilder;
+import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.persistance.stub.UserGatewayStub;
 
 import java.util.Optional;
@@ -11,8 +11,9 @@ import java.util.Optional;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 28.02.17.
  */
-public class LaunchNewDatabaseInstanceStepdefs {
-    private LaunchNewDatabaseInstanceRequestBuilder builder;
+public class Stepdefs {
+
+    private Request.RequestBuilder builder;
     private UserGatewayStub userGatewayStub = new UserGatewayStub();
 
     @Before
@@ -30,10 +31,11 @@ public class LaunchNewDatabaseInstanceStepdefs {
 
     }
 
-    private LaunchNewDatabaseInstanceRequestBuilder getRequestBuilder() {
+    private  Request.RequestBuilder getRequestBuilder() {
         if (builder == null) {
-            builder = LaunchNewDatabaseInstanceRequest.builder();
+            builder = Request.builder();
         }
         return builder;
     }
+
 }

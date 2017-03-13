@@ -10,4 +10,6 @@ public interface DatabaseInstanceGateway {
      */
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance);
 
+    void deleteDatabase(DatabaseInstance databaseInstance);
+
 }

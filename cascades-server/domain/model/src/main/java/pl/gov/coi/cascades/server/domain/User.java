@@ -17,8 +17,34 @@ public class User {
     private final String email;
 	private final Collection<DatabaseInstance> databases = new HashSet<>();
 
-    public void addDatabaseInstance(DatabaseInstance databaseInstance) {
-        databases.add(databaseInstance);
+    /**
+     * Copy constructor.
+     */
+    private User(User user) {
+        this(user.getUsername(),
+            user.getId(),
+            user.getEmail()
+        );
+    }
+
+    public User addDatabaseInstance(DatabaseInstance databaseInstance) {
+        User user = new User(this);
+        user.databases.addAll(databases);
+        user.databases.add(databaseInstance);
+        return user;
+    }
+
+    public User updateDatabaseInstance(DatabaseInstance databaseInstance) {
+        User user = new User(this);
+        user.databases.addAll(databases);
+        for (DatabaseInstance instance: user.databases) {
+            if (instance.getDatabaseId().equals(databaseInstance.getDatabaseId())) {
+                user.databases.remove(instance);
+                user.databases.add(databaseInstance);
+            }
+        }
+
+        return user;
     }
 
     public Iterable<DatabaseInstance> getDatabases() {
@@ -28,4 +54,5 @@ public class User {
     public int getDatabasesSize() {
         return databases.size();
     }
+
 }

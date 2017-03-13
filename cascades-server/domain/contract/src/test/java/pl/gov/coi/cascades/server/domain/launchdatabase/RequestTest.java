@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -7,6 +7,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.server.domain.User;
 
 import java.util.Optional;
 
@@ -18,9 +19,9 @@ import static org.junit.Assert.assertNotNull;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.02.17.
  */
-public class LaunchNewDatabaseInstanceRequestTest {
+public class RequestTest {
 
-    private LaunchNewDatabaseInstanceRequest launchNewDatabaseInstanceRequest;
+    private Request request;
     private String typeClassName;
     private String templateId;
     private String instanceName;
@@ -39,7 +40,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
         typeClassName = "Type";
         templateId = "123456abcd";
         instanceName = "PESEL";
-        launchNewDatabaseInstanceRequest = new LaunchNewDatabaseInstanceRequest(
+        request = new Request(
             typeClassName,
             user,
             templateId,
@@ -50,7 +51,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
     @Test
     public void testDefaultConstructor() throws Exception {
         // when
-        LaunchNewDatabaseInstanceRequest actual = new LaunchNewDatabaseInstanceRequest(
+        Request actual = new Request(
             typeClassName,
             user,
             templateId,
@@ -64,7 +65,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
     @Test
     public void testGetTemplateId() throws Exception {
         // when
-        Optional<String> actual = launchNewDatabaseInstanceRequest.getTemplateId();
+        Optional<String> actual = request.getTemplateId();
 
         // then
         assertEquals(Optional.ofNullable(templateId), actual);
@@ -73,7 +74,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
     @Test
     public void testGetInstanceName() throws Exception {
         // when
-        Optional<String> actual = launchNewDatabaseInstanceRequest.getInstanceName();
+        Optional<String> actual = request.getInstanceName();
 
         // then
         assertEquals(Optional.ofNullable(instanceName), actual);
@@ -82,7 +83,7 @@ public class LaunchNewDatabaseInstanceRequestTest {
     @Test
     public void testBuilder() {
         // when
-        LaunchNewDatabaseInstanceRequest requestBuilder = LaunchNewDatabaseInstanceRequest.builder()
+        Request requestBuilder = Request.builder()
             .instanceName(instanceName)
             .user(user)
             .typeClassName(typeClassName)

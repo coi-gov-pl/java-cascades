@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.presentation;
+package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.gov.coi.cascades.contract.domain.TemplateId;

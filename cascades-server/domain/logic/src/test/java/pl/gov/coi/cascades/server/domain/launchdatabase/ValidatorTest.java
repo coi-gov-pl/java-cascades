@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -9,6 +9,10 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
+import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.server.domain.User;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -19,15 +23,15 @@ import static org.mockito.Mockito.when;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 01.03.17.
  */
-public class LaunchNewDatabaseInstanceValidatorTest {
+public class ValidatorTest {
 
-    private LaunchNewDatabaseInstanceValidator validator;
-
-    @Mock
-    private LaunchNewDatabaseInstanceResponse response;
+    private Validator validator;
 
     @Mock
-    private LaunchNewDatabaseInstanceRequest request;
+    private Response response;
+
+    @Mock
+    private Request request;
 
     @Mock
     private DatabaseLimitGateway databaseLimitGateway;
@@ -55,7 +59,7 @@ public class LaunchNewDatabaseInstanceValidatorTest {
 
     @Before
     public void setUp() {
-        validator = new LaunchNewDatabaseInstanceValidator(
+        validator = new Validator(
             response,
             request,
             databaseLimitGateway,
@@ -88,7 +92,7 @@ public class LaunchNewDatabaseInstanceValidatorTest {
     @Test
     public void getTemplateId() throws Exception {
         // given
-        LaunchNewDatabaseInstanceValidator validator = new LaunchNewDatabaseInstanceValidator(
+        Validator validator = new Validator(
             response,
             request,
             databaseLimitGateway,
@@ -126,7 +130,7 @@ public class LaunchNewDatabaseInstanceValidatorTest {
     @Test
     public void builder() throws Exception {
         // when
-        LaunchNewDatabaseInstanceValidator validatorBuilder = LaunchNewDatabaseInstanceValidator.builder()
+        Validator validatorBuilder = Validator.builder()
             .databaseLimitGateway(databaseLimitGateway)
             .request(request)
             .response(response)
