@@ -9,7 +9,7 @@ import java.util.HashSet;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 09.03.17.
  */
-public class DeleteLaunchedDatabaseInstanceResponse {
+public class DatabaseInstanceResponse {
 
     private final Collection<Error> errors = new HashSet<>();
 

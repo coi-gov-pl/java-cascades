@@ -2,8 +2,10 @@ package pl.gov.coi.cascades.server.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseInstanceUseCase;
-import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseInstanceUseCaseImpl;
+import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
+import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceUseCase;
+import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceUseCaseImpl;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -13,14 +15,14 @@ import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteLaunchedDatabaseIn
 public class DomainConfiguration {
 
     @Bean
-    LaunchNewDatabaseInstanceUseCase produceLaunchNewDatabaseUseCase(TemplateIdGateway templateIdGateway,
-                                                                     DatabaseInstanceGateway databaseInstanceGateway,
-                                                                     UserGateway userGateway,
-                                                                     DatabaseLimitGateway databaseLimitGateway,
-                                                                     DatabaseIdGeneratorService databaseIdGeneratorService,
-                                                                     UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
-                                                                     DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return LaunchNewDatabaseInstanceUseCaseImpl.builder()
+    DatabaseInstanceUseCase produceLaunchNewDatabaseUseCase(TemplateIdGateway templateIdGateway,
+                                                            DatabaseInstanceGateway databaseInstanceGateway,
+                                                            UserGateway userGateway,
+                                                            DatabaseLimitGateway databaseLimitGateway,
+                                                            DatabaseIdGeneratorService databaseIdGeneratorService,
+                                                            UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
+                                                            DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return DatabaseInstanceUseCaseImpl.builder()
             .credentialsGeneratorService(credentialsGeneratorService)
             .databaseIdGeneratorService(databaseIdGeneratorService)
             .databaseInstanceGateway(databaseInstanceGateway)
@@ -32,10 +34,10 @@ public class DomainConfiguration {
     }
 
     @Bean
-    DeleteLaunchedDatabaseInstanceUseCase produceDeleteLaunchedDatabaseUseCase(UserGateway userGateway,
-                                                                               DatabaseIdGateway databaseIdGateway,
-                                                                               DatabaseInstanceGateway databaseInstanceGateway) {
-        return DeleteLaunchedDatabaseInstanceUseCaseImpl.builder()
+    pl.gov.coi.cascades.server.domain.deletedatabase.DatabaseInstanceUseCase produceDeleteLaunchedDatabaseUseCase(UserGateway userGateway,
+                                                                                                                  DatabaseIdGateway databaseIdGateway,
+                                                                                                                  DatabaseInstanceGateway databaseInstanceGateway) {
+        return pl.gov.coi.cascades.server.domain.deletedatabase.DatabaseInstanceUseCaseImpl.builder()
             .userGateway(userGateway)
             .databaseIdGateway(databaseIdGateway)
             .databaseInstanceGateway(databaseInstanceGateway)

@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.presentation;
+package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -6,10 +6,10 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.Error;
-import pl.gov.coi.cascades.server.domain.LaunchNewDatabaseInstanceResponse;
+import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseInstanceResponse;
 
 @RequiredArgsConstructor
-public class NewDatabaseInstancePresenter implements LaunchNewDatabaseInstanceResponse {
+public class DatabaseInstancePresenter implements DatabaseInstanceResponse {
 
     @Setter
     private String databaseId;
@@ -85,7 +85,7 @@ public class NewDatabaseInstancePresenter implements LaunchNewDatabaseInstanceRe
      *
      * @return View model of new database instance.
      */
-    public NewDatabaseInstanceViewModel createModel() {
+    public DatabaseInstanceViewModel createModel() {
         throw new UnsupportedOperationException();
     }
 

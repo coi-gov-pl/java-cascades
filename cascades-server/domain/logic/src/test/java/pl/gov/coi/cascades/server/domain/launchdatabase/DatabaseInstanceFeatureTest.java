@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
@@ -13,6 +13,6 @@ import org.junit.runner.RunWith;
     features = "classpath:features/LaunchNewDatabaseInstance.feature",
     plugin = "pretty"
 )
-public class LaunchNewDatabaseInstanceFeatureTest {
+public class DatabaseInstanceFeatureTest {
 
 }

@@ -12,7 +12,7 @@ import pl.gov.coi.cascades.server.domain.User;
  */
 @Builder
 @RequiredArgsConstructor
-public class DeleteLaunchedDatabaseInstanceRequest {
+public class DatabaseInstanceRequest {
 
     @Getter
     private final DatabaseId databaseId;

@@ -1,10 +1,11 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.server.domain.Error;
 
-public interface LaunchNewDatabaseInstanceResponse {
+public interface DatabaseInstanceResponse {
 
     /**
      * Method gives an information if launching new database instance completed successfully.

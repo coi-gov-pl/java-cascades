@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @Builder
 @RequiredArgsConstructor
-public class DeleteLaunchedDatabaseInstanceUseCaseImpl implements DeleteLaunchedDatabaseInstanceUseCase {
+public class DatabaseInstanceUseCaseImpl implements DatabaseInstanceUseCase {
 
     private final UserGateway userGateway;
     private final DatabaseIdGateway databaseIdGateway;
@@ -30,25 +30,27 @@ public class DeleteLaunchedDatabaseInstanceUseCaseImpl implements DeleteLaunched
      * @param response Given response of deleting launched database instance.
      */
     @Override
-    public void execute(DeleteLaunchedDatabaseInstanceRequest request, DeleteLaunchedDatabaseInstanceResponse response) {
-        Optional<User> user = userGateway.find(request.getUser().getUsername());
+    public void execute(DatabaseInstanceRequest request, DatabaseInstanceResponse response) {
+        Optional<User> user = request.getUser() != null
+            ? userGateway.find(request.getUser().getUsername())
+            : Optional.empty();
         Optional<DatabaseInstance> databaseInstance = databaseIdGateway.findInstance(request.getDatabaseId());
 
-        DeleteLaunchedDatabaseInstanceValidator.DeleteLaunchedDatabaseInstanceValidatorBuilder validatorBuilder = DeleteLaunchedDatabaseInstanceValidator.builder()
+        DatabaseInstanceValidator.DatabaseInstanceValidatorBuilder validatorBuilder = DatabaseInstanceValidator.builder()
             .request(request)
             .response(response);
 
         databaseInstance.ifPresent(databaseInstance1 -> validatorBuilder.databaseId(databaseInstance1.getDatabaseId()));
         user.ifPresent(validatorBuilder::user);
 
-        DeleteLaunchedDatabaseInstanceValidator validator = validatorBuilder.build();
+        DatabaseInstanceValidator validator = validatorBuilder.build();
 
         if (validator.validate()) {
             succeedResponse(validator, databaseInstance.get());
         }
     }
 
-    private void succeedResponse(DeleteLaunchedDatabaseInstanceValidator validator,
+    private void succeedResponse(DatabaseInstanceValidator validator,
                                  DatabaseInstance databaseInstance) {
         DatabaseInstance actualDatabaseInstance = databaseInstance.setStatus(DatabaseStatus.DELETED);
         User user = validator.getUser();

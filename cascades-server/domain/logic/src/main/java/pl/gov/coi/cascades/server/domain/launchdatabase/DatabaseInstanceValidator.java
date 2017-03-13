@@ -1,8 +1,13 @@
-package pl.gov.coi.cascades.server.domain;
+package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
+import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.server.domain.ErrorImpl;
+import pl.gov.coi.cascades.server.domain.User;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -14,10 +19,10 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 27.02.17.
  */
 @Builder
-class LaunchNewDatabaseInstanceValidator {
+class DatabaseInstanceValidator {
 
-    private final LaunchNewDatabaseInstanceResponse response;
-    private final LaunchNewDatabaseInstanceRequest request;
+    private final DatabaseInstanceResponse response;
+    private final DatabaseInstanceRequest request;
     private final DatabaseLimitGateway databaseLimitGateway;
     private final DatabaseTypeDTO databaseTypeDTO;
     @Nullable
@@ -49,7 +54,7 @@ class LaunchNewDatabaseInstanceValidator {
     private void validateDatabaseType() {
         databaseTypeDTO.onFail(response::addError)
             .onSuccess(databaseType1 -> {
-                LaunchNewDatabaseInstanceValidator.this.setDatabaseType(databaseType1);
+                DatabaseInstanceValidator.this.setDatabaseType(databaseType1);
                 response.setDatabaseType(databaseType1);
             })
             .resolve();
