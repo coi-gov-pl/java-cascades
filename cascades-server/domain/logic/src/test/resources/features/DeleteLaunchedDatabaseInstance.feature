@@ -11,8 +11,9 @@ Background:
 
     Given authenticated user is "michael"
     And user is authorized to delete a database instance
-    And proper database ID are "ora12e34", "ora23r45" and "pos34t56"
-    But only "ora12e34" and "ora23r45" database IDs belongs to user "michael"
+    And proper database ID are "ora12e34", "ora23r45", "pos45y67" and "pos34t56"
+    And database ID "pos45y67" has already been deleted
+    But only "ora12e34", "pos45y67" and "ora23r45" database IDs belongs to user "michael"
 
 Scenario: User fails to delete a launched database instance without passing database ID
 
@@ -46,3 +47,9 @@ Scenario: User deletes launched database instance
     When user pass database ID of "ora12e34"
     Then launched database instance has been deleted
     And status of database instance has been changed to "DELETED"
+
+Scenario: User fails to delete launched database instance, because given database ID is valid, but it has already been deleted.
+
+    When user pass database ID of "pos45y67"
+    Then system should return error "Database ID pos45y67 doesn't exists"
+    And launched database hasn't been deleted
