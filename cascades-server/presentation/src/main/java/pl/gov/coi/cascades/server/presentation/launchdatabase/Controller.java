@@ -12,7 +12,6 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
 import javax.inject.Inject;
-import java.util.concurrent.Callable;
 
 @org.springframework.stereotype.Controller
 public class Controller {
@@ -43,7 +42,7 @@ public class Controller {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public Callable<RemoteDatabaseSpec> launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
+    public RemoteDatabaseSpec launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
         User user = userSession.getSignedInUser();
 
         Request.RequestBuilder requestBuilder = Request.builder()
@@ -58,7 +57,7 @@ public class Controller {
         Request databaseInstanceRequest = requestBuilder.build();
         Presenter databaseInstancePresenter = new Presenter();
 
-        return () -> {
+
 
             useCase.execute(
                 databaseInstanceRequest,
@@ -66,7 +65,7 @@ public class Controller {
             );
 
             return databaseInstancePresenter.createModel();
-        };
+
     }
 
 }

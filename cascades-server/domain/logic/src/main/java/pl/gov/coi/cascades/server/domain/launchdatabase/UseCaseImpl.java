@@ -79,10 +79,10 @@ public class UseCaseImpl implements UseCase {
 
         DatabaseInstance launchedDatabaseInstance = databaseInstanceGateway.launchDatabase(candidate);
         User user = validator.getUser();
-        user.addDatabaseInstance(launchedDatabaseInstance);
+        user = user.addDatabaseInstance(launchedDatabaseInstance);
         userGateway.save(user);
 
-        response.setDatabaseId(databaseId.getId());
+        response.setDatabaseId(databaseId);
     }
 
     private DatabaseId generateInstanceName(Request request,

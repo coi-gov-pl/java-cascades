@@ -1,24 +1,24 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.Error;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
 
+import java.util.Collection;
+import java.util.HashSet;
+
 @RequiredArgsConstructor
 public class Presenter implements Response {
 
-    @Setter
-    private String databaseId;
-    @Setter
+    private DatabaseId databaseId;
     private DatabaseType databaseType;
-    @Setter
     private NetworkBind networkBind;
-    @Setter
     private UsernameAndPasswordCredentials credentials;
+    private final Collection<Error> errors = new HashSet<>();
 
     /**
      * Method gives an information if launching new database instance completed successfully.
@@ -27,7 +27,7 @@ public class Presenter implements Response {
      */
     @Override
     public boolean isSuccessful() {
-        return false;
+        return errors.isEmpty();
     }
 
     /**
@@ -37,7 +37,7 @@ public class Presenter implements Response {
      */
     @Override
     public void addError(Error error) {
-
+        errors.add(error);
     }
 
     /**
@@ -46,7 +46,7 @@ public class Presenter implements Response {
      * @param databaseId Given id of database.
      */
     @Override
-    public void setDatabaseId(String databaseId) {
+    public void setDatabaseId(DatabaseId databaseId) {
         this.databaseId = databaseId;
     }
 
@@ -86,7 +86,12 @@ public class Presenter implements Response {
      * @return View model of new database instance.
      */
     public ViewModel createModel() {
-        throw new UnsupportedOperationException();
+        return new ViewModel(
+            databaseId,
+            databaseId.getId(),
+            networkBind,
+            credentials
+        );
     }
 
 }

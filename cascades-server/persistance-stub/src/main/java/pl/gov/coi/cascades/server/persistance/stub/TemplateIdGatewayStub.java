@@ -11,7 +11,7 @@ import java.util.Optional;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 27.02.17.
  */
-final class TemplateIdGatewayStub implements TemplateIdGateway {
+public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     public static final TemplateId TEMPLATE_ID1 = new TemplateId("templateId1");
     public static final TemplateId TEMPLATE_ID2 = new TemplateId("templateId2");

@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
@@ -26,7 +27,7 @@ public interface Response {
      *
      * @param databaseId Given id of database.
      */
-    void setDatabaseId(String databaseId);
+    void setDatabaseId(DatabaseId databaseId);
 
     /**
      * A setter for database type.
