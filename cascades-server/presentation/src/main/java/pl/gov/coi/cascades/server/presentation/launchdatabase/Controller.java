@@ -57,15 +57,12 @@ public class Controller {
         Request databaseInstanceRequest = requestBuilder.build();
         Presenter databaseInstancePresenter = new Presenter();
 
+        useCase.execute(
+            databaseInstanceRequest,
+            databaseInstancePresenter
+        );
 
-
-            useCase.execute(
-                databaseInstanceRequest,
-                databaseInstancePresenter
-            );
-
-            return databaseInstancePresenter.createModel();
-
+        return databaseInstancePresenter.createModel();
     }
 
 }

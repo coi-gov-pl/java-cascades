@@ -24,4 +24,5 @@ public class ViewModel extends RemoteDatabaseSpec {
                      UsernameAndPasswordCredentials credentials) {
         super(id, databaseName, networkBind, credentials);
     }
+
 }
