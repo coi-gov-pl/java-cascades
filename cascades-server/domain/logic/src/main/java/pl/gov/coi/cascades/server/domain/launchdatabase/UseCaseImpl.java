@@ -40,6 +40,9 @@ public class UseCaseImpl implements UseCase {
     @Override
     public void execute(Request request, Response response) {
         Optional<TemplateId> templateId = templateIdGateway.find(request.getTemplateId().orElse(null));
+        if (!templateId.isPresent()) {
+            templateId = templateIdGateway.getDefaultTemplateId();
+        }
         Optional<User> user = request.getUser() != null
             ? userGateway.find(request.getUser().getUsername())
             : Optional.empty();

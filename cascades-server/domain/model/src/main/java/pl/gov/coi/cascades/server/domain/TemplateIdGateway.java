@@ -14,4 +14,11 @@ public interface TemplateIdGateway {
      */
     Optional<TemplateId> find(String templateId);
 
+    /**
+     * Method gives an optional of template id.
+     *
+     * @return An optional of template of id.
+     */
+    Optional<TemplateId> getDefaultTemplateId();
+
 }
