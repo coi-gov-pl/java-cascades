@@ -57,7 +57,6 @@ public class FunctionalTest {
     private String properRequest() throws JSONException {
         return new JSONObject()
             .put("typeClassName", DatabaseTypeStub.class.getName())
-            .put("templateId", "templateId1")
             .toString();
     }
 

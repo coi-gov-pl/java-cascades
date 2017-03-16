@@ -17,7 +17,7 @@ public class RemoteDatabaseSpec implements Serializable {
     private static final long serialVersionUID = 42L;
 
 	@Getter
-	private final DatabaseId id;
+	private final DatabaseId databaseId;
 	@Getter
 	private final String databaseName;
 	@Getter
@@ -28,16 +28,16 @@ public class RemoteDatabaseSpec implements Serializable {
 	/**
 	 * Required argument constructor.
      *
-	 * @param id Given id of template.
+	 * @param databaseId Given id of template.
 	 * @param databaseName Given name of database.
 	 * @param networkBind Given network bind.
 	 * @param credentials Given credentials.
 	 */
-	public RemoteDatabaseSpec(DatabaseId id,
+	public RemoteDatabaseSpec(DatabaseId databaseId,
 							  String databaseName,
 							  NetworkBind networkBind,
 							  UsernameAndPasswordCredentials credentials) {
-		this.id = id;
+		this.databaseId = databaseId;
 		this.databaseName = databaseName;
 		this.networkBind = networkBind;
 		this.credentials = credentials;
