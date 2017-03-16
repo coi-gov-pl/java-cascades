@@ -10,6 +10,7 @@ import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Request;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.presentation.UserSession;
+import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
 
 import javax.inject.Inject;
 
@@ -42,7 +43,7 @@ public class Controller {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public RemoteDatabaseSpec launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
+    public ResponseWrapper<RemoteDatabaseSpec> launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
         User user = userSession.getSignedInUser();
 
         Request.RequestBuilder requestBuilder = Request.builder()
@@ -62,7 +63,10 @@ public class Controller {
             databaseInstancePresenter
         );
 
-        return databaseInstancePresenter.createModel();
+        return new ResponseWrapper<>(
+            databaseInstancePresenter.getErrors(),
+            databaseInstancePresenter.createModel()
+        );
     }
 
 }

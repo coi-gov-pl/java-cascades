@@ -80,6 +80,10 @@ public class Presenter implements Response {
         this.credentials = credentials;
     }
 
+    public Iterable<Error> getErrors() {
+        return errors;
+    }
+
     /**
      * Method gives view model of new database instance.
      *
