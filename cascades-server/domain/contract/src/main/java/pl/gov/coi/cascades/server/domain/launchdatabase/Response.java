@@ -50,4 +50,11 @@ public interface Response {
      */
     void setCredentials(UsernameAndPasswordCredentials credentials);
 
+    /**
+     * A setter for database name.
+     *
+     * @param databaseName Given database name.
+     */
+    void setDatabaseName(String databaseName);
+
 }

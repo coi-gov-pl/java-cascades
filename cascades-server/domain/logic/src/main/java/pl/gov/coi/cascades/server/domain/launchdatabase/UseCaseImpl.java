@@ -90,6 +90,7 @@ public class UseCaseImpl implements UseCase {
         response.setDatabaseId(databaseId);
         response.setNetworkBind(launchedDatabaseInstance.getNetworkBind());
         response.setCredentials(launchedDatabaseInstance.getCredentials());
+        response.setDatabaseName(launchedDatabaseInstance.getDatabaseName());
     }
 
     private DatabaseId generateInstanceName(Request request,

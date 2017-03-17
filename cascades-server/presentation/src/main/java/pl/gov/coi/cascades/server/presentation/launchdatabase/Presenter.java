@@ -7,6 +7,7 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.Error;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
+import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -17,6 +18,7 @@ public class Presenter implements Response {
     private DatabaseId databaseId;
     private DatabaseType databaseType;
     private NetworkBind networkBind;
+    private String databaseName;
     private UsernameAndPasswordCredentials credentials;
     private final Collection<Error> errors = new HashSet<>();
 
@@ -80,8 +82,13 @@ public class Presenter implements Response {
         this.credentials = credentials;
     }
 
-    public Iterable<Error> getErrors() {
-        return errors;
+    ResponseWrapper<Iterable<Error>> getErrors() {
+        return new ResponseWrapper<>(errors);
+    }
+
+    @Override
+    public void setDatabaseName(String databaseName) {
+        this.databaseName = databaseName;
     }
 
     /**
@@ -89,13 +96,13 @@ public class Presenter implements Response {
      *
      * @return View model of new database instance.
      */
-    public ViewModel createModel() {
-        return new ViewModel(
+    public ResponseWrapper<ViewModel> createModel() {
+        return new ResponseWrapper<>(new ViewModel(
             databaseId,
-            databaseId.getId(),
+            databaseName,
             networkBind,
             credentials
-        );
+        ));
     }
 
 }
