@@ -18,6 +18,7 @@ import java.util.HashSet;
 class Presenter implements Response {
 
     private DatabaseId databaseId;
+    private DatabaseType databaseType;
     private NetworkBind networkBind;
     private String databaseName;
     private UsernameAndPasswordCredentials credentials;
