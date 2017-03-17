@@ -1,15 +1,16 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Request;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
+import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
 import javax.inject.Inject;
@@ -43,7 +44,9 @@ public class Controller {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity launchDatabasePost(@RequestBody RemoteDatabaseRequestDTO request) {
+    public ResponseEntity<ResponseWrapper<RemoteDatabaseSpec>> launchDatabasePost(
+            @RequestBody RemoteDatabaseRequestDTO request) {
+
         User user = userSession.getSignedInUser();
 
         Request.RequestBuilder requestBuilder = Request.builder()
@@ -56,18 +59,14 @@ public class Controller {
             .ifPresent(requestBuilder::instanceName);
 
         Request databaseInstanceRequest = requestBuilder.build();
-        Presenter databaseInstancePresenter = new Presenter();
+        Presenter presenter = new Presenter();
 
         useCase.execute(
             databaseInstanceRequest,
-            databaseInstancePresenter
+            presenter
         );
-
-        if (databaseInstancePresenter.isSuccessful()) {
-            return ResponseEntity.ok(databaseInstancePresenter.createModel());
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(databaseInstancePresenter.getErrors());
-        }
+        
+        return presenter.createModel();
     }
 
 }
