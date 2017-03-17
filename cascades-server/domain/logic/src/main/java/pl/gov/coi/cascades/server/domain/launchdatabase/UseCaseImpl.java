@@ -42,7 +42,8 @@ public class UseCaseImpl implements UseCase {
         Optional<User> user = request.getUser() != null
             ? userGateway.find(request.getUser().getUsername())
             : Optional.empty();
-        DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(request.getTypeClassName());
+        DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService
+            .getDatabaseType(request.getType());
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .databaseLimitGateway(databaseLimitGateway)
@@ -68,7 +69,8 @@ public class UseCaseImpl implements UseCase {
 
         DatabaseInstance candidate = DatabaseInstance.builder()
             .databaseId(databaseId)
-            .databaseName(databaseId.getId())  // TODO: Maybe in future it should be separate to database id?
+            // TODO: Maybe in future it should be separate to database id?
+            .databaseName(databaseId.getId())
             .databaseType(validator.getDatabaseType())
             .instanceName(databaseId.getId())
             .created(Date.from(Instant.now()))

@@ -12,7 +12,7 @@ public class DatabaseTypeStub implements DatabaseType {
 
     @Override
     public String getName() {
-        return "example-stub-database-type";
+        return "stub";
     }
 
     @Override
