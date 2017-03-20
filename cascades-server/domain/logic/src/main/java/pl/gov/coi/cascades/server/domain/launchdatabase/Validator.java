@@ -71,7 +71,8 @@ class Validator {
                 String.format(
                     "Global limit of %d launched database instances has been reached",
                     databaseLimitGateway.getGlobalLimit()
-                )
+                ),
+                this.getClass().toString()
             );
             response.addError(errorMessage);
         }
@@ -80,7 +81,8 @@ class Validator {
                 String.format(
                     "Personal limit of %d launched database instances has been reached",
                     databaseLimitGateway.getPersonalLimitPerUser(gotUser)
-                )
+                ),
+                this.getClass().toString()
             );
             response.addError(errorMessage);
         }
@@ -99,8 +101,11 @@ class Validator {
     }
 
     private void newError(String message, Object... parameters) {
-        response.addError(new ErrorImpl(
-            String.format(message, parameters)
-        ));
+        response.addError(
+            new ErrorImpl(
+                String.format(message, parameters),
+                this.getClass().toString()
+            )
+        );
     }
 }

@@ -13,12 +13,16 @@ public class Response {
 
     private final Collection<Error> errors = new HashSet<>();
 
-    boolean isSuccessful() {
+    public boolean isSuccessful() {
         return errors.isEmpty();
     }
 
     void addError(Error error) {
         errors.add(error);
+    }
+
+    public Iterable<Error> getErrors() {
+        return errors;
     }
 
 }

@@ -56,7 +56,8 @@ public class DatabaseTypeClassNameServiceImpl implements DatabaseTypeClassNameSe
     private DatabaseTypeDTO newErrorDTO(String messageFormat, Object... arguments) {
         return new DatabaseTypeDTO(
             new ErrorImpl(
-                String.format(messageFormat, arguments)
+                String.format(messageFormat, arguments),
+                this.getClass().toString()
             )
         );
     }

@@ -55,19 +55,21 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     );
     private Collection<DatabaseInstance> instances;
 
-    @Override
-    public Optional<DatabaseInstance> findInstance(DatabaseId databaseId) {
-        instances.stream()
-            .filter(instance -> instance.getDatabaseId().equals(databaseId))
-            .forEach(Optional::ofNullable);
-        return Optional.empty();
-    }
-
     public DatabaseIdGatewayStub() {
         this.instances = new HashSet<>();
 
         addDatabaseInstance(INSTANCE1);
         addDatabaseInstance(INSTANCE2);
+    }
+
+    @Override
+    public Optional<DatabaseInstance> findInstance(DatabaseId databaseId) {
+        for (DatabaseInstance databaseInstance: instances) {
+            if (databaseInstance.getDatabaseId().getId().equals(databaseId.getId())) {
+                return Optional.of(databaseInstance);
+            }
+        }
+        return Optional.empty();
     }
 
     public void addDatabaseInstance(DatabaseInstance databaseInstance) {

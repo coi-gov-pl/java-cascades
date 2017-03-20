@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.presentation.deletedatabase;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -41,7 +42,7 @@ public class DeleteDatabaseController {
         value = "/databases/{id}",
         method = RequestMethod.DELETE
     )
-    public ResponseEntity<Void> deleteDatabase(@Nullable @PathVariable("id") String databaseIdAsString) {
+    public ResponseEntity<Response> deleteDatabase(@Nullable @PathVariable("id") String databaseIdAsString) {
         User user = userSession.getSignedInUser();
         DatabaseId databaseId = new DatabaseId(databaseIdAsString);
 
@@ -56,7 +57,13 @@ public class DeleteDatabaseController {
             response
         );
 
-        return ResponseEntity.ok().build();
+        return getResponseMessage(response);
+    }
+
+    private ResponseEntity<Response> getResponseMessage(Response response) {
+        return response.isSuccessful()
+            ? ResponseEntity.status(HttpStatus.OK).body(response)
+            : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
 }

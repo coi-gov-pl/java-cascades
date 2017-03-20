@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 13.03.17.
  */
-public class ResponseWrapper<T> {
+public class WithErrors<T> {
 
     @Getter
     @Nullable
@@ -19,12 +19,12 @@ public class ResponseWrapper<T> {
     @Getter
     private final Iterable<Error> errors;
 
-    public ResponseWrapper(T target) {
+    public WithErrors(T target) {
         this.target = target;
         this.errors = new ArrayList<>();
     }
 
-    public ResponseWrapper(Iterable<Error> errors) {
+    public WithErrors(Iterable<Error> errors) {
         this.errors = errors;
         this.target = null;
     }

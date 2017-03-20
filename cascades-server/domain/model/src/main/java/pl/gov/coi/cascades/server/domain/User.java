@@ -37,12 +37,13 @@ public class User {
     public User updateDatabaseInstance(DatabaseInstance databaseInstance) {
         User user = new User(this);
         user.databases.addAll(databases);
-        for (DatabaseInstance instance: user.databases) {
+        for (DatabaseInstance instance: user.getDatabases()) {
             if (instance.getDatabaseId().equals(databaseInstance.getDatabaseId())) {
                 user.databases.remove(instance);
-                user.databases.add(databaseInstance);
+                return user;
             }
         }
+        user.databases.add(databaseInstance);
 
         return user;
     }

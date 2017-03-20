@@ -26,15 +26,11 @@ class Validator {
     @Nullable
     private final User user;
 
-    public boolean validate() {
+    boolean validate() {
         validateUser();
         validateDatabaseId();
         validateIfDatabaseInstanceBelongsToLoggedUser();
         return response.isSuccessful();
-    }
-
-    DatabaseId getDatabaseId() {
-        return checkNotNull(databaseId, "20170310:135800");
     }
 
     User getUser() {
@@ -43,14 +39,13 @@ class Validator {
 
     private void validateIfDatabaseInstanceBelongsToLoggedUser() {
         User gotUser = getUser();
-        DatabaseId gotDatabaseId = getDatabaseId();
         if (!isDatabaseIdBelongsToLoggedUser(gotUser)) {
             Error errorMessage = new ErrorImpl(
                 String.format(
-                    "Given id of database: %s doesn't belong to logged user: %s",
-                    gotDatabaseId,
-                    gotUser
-                )
+                    "Given id of database doesn't belong to logged user: %s or has been deleted.",
+                    gotUser.getUsername()
+                ),
+                this.getClass().toString()
             );
 
             response.addError(errorMessage);
@@ -80,9 +75,12 @@ class Validator {
     }
 
     private void newError(String message, Object... parameters) {
-        response.addError(new ErrorImpl(
-            String.format(message, parameters)
-        ));
+        response.addError(
+            new ErrorImpl(
+                String.format(message, parameters),
+                this.getClass().toString()
+            )
+        );
     }
 
 }
