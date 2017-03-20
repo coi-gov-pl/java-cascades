@@ -11,12 +11,13 @@ import java.util.Optional;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 27.02.17.
  */
-final class TemplateIdGatewayStub implements TemplateIdGateway {
+public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     public static final TemplateId TEMPLATE_ID1 = new TemplateId("templateId1");
     public static final TemplateId TEMPLATE_ID2 = new TemplateId("templateId2");
     public static final TemplateId TEMPLATE_ID3 = new TemplateId("templateId3");
     public static final TemplateId TEMPLATE_ID4 = new TemplateId("templateId4");
+    public static final TemplateId DEFAULT_TEMPLATE = new TemplateId("DEFAULT_TEMPLATE_ID");
     private Map<String, TemplateId> templates;
 
     public TemplateIdGatewayStub() {
@@ -31,6 +32,11 @@ final class TemplateIdGatewayStub implements TemplateIdGateway {
     @Override
     public Optional<TemplateId> find(String templateId) {
         return Optional.ofNullable(templates.get(templateId));
+    }
+
+    @Override
+    public Optional<TemplateId> getDefaultTemplateId() {
+        return Optional.of(DEFAULT_TEMPLATE);
     }
 
     public Map<String, TemplateId> getAllTemplates() {

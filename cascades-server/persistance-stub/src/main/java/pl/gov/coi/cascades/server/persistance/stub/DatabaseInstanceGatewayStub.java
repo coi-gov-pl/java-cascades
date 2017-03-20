@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.stub;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 
@@ -12,31 +13,26 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
 
     private final Logger logger = LoggerFactory.getLogger(DatabaseInstanceGatewayStub.class);
+    private static final NetworkBind NETWORK_BIND_STUB = NetworkBindStub.builder()
+        .host("db01.lab.internal")
+        .port(5432)
+        .build();
 
     @Override
     public DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
-        logger.debug(
+        DatabaseInstance databaseInstanceCopy = databaseInstance.setNetworkBind(NETWORK_BIND_STUB);
+        logger.info(
             "Database has been launched. "
-            + "Database id: " + databaseInstance.getDatabaseId() + ", "
-            + "Database name: " + databaseInstance.getDatabaseName() + ", "
-            + "Database type: " + databaseInstance.getDatabaseType() + ", "
-            + "Instance name: " + databaseInstance.getInstanceName() + ", "
-            + "Template id: " + databaseInstance.getTemplateId() + ", "
-            + "Status: " + databaseInstance.getStatus()
+            + databaseInstanceCopy.toString()
         );
-        return databaseInstance;
+        return databaseInstanceCopy;
     }
 
     @Override
     public void deleteDatabase(DatabaseInstance databaseInstance) {
-        logger.debug(
+        logger.info(
             "Database has been deleted. "
-            + "Database id: " + databaseInstance.getDatabaseId() + ", "
-            + "Database name: " + databaseInstance.getDatabaseName() + ", "
-            + "Database type: " + databaseInstance.getDatabaseType() + ", "
-            + "Instance name: " + databaseInstance.getInstanceName() + ", "
-            + "Template id: " + databaseInstance.getTemplateId() + ", "
-            + "Status: " + databaseInstance.getStatus()
+            + databaseInstance.toString()
         );
     }
 }

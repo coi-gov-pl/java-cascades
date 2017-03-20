@@ -24,7 +24,8 @@ public class DatabaseTypeClassNameServiceImpl implements DatabaseTypeClassNameSe
      *
      * @param typeClassName Given name of class type.
      */
-    @Override public DatabaseTypeDTO getDatabaseType(String typeClassName) {
+    @Override
+    public DatabaseTypeDTO getDatabaseType(String typeClassName) {
         // TODO: This is simple local implementation that is about to change
         Optional<Class<?>> clsOptional = findClassByFQCN(typeClassName);
         if (!clsOptional.isPresent()) {
