@@ -28,7 +28,7 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     public static final DatabaseType DATABASE_TYPE = new DatabaseTypeStub();
     public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS1 = new UsernameAndPasswordCredentialsStub("Ben Affleck");
     public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS2 = new UsernameAndPasswordCredentialsStub("Will Smith");
-    public static final NetworkBind NETWORK_BIND = new NetworkBindStub();
+    public static final NetworkBind NETWORK_BIND = new NetworkBindStub(5432, "db01.lab.internal");
     public static final DatabaseInstance INSTANCE1 = new DatabaseInstance(
         DATABASE_ID1,
         TEMPLATE_ID1,
