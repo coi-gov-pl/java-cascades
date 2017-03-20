@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Optional;
 
+import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
+
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 10.03.17.
@@ -65,6 +67,9 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     @Override
     public Optional<DatabaseInstance> findInstance(DatabaseId databaseId) {
         for (DatabaseInstance databaseInstance: instances) {
+            checkNotNull(databaseInstance, "20170320:160233");
+            checkNotNull(databaseInstance.getDatabaseId(), "20170320:160259");
+            checkNotNull(databaseInstance.getDatabaseId().getId(), "20170320:160338");
             if (databaseInstance.getDatabaseId().getId().equals(databaseId.getId())) {
                 return Optional.of(databaseInstance);
             }
