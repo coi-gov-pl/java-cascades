@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -39,6 +40,9 @@ public class UseCaseImpl implements UseCase {
     @Override
     public void execute(Request request, Response response) {
         Optional<TemplateId> templateId = templateIdGateway.find(request.getTemplateId().orElse(null));
+        if (!templateId.isPresent()) {
+            templateId = templateIdGateway.getDefaultTemplateId();
+        }
         Optional<User> user = request.getUser() != null
             ? userGateway.find(request.getUser().getUsername())
             : Optional.empty();
@@ -77,14 +81,18 @@ public class UseCaseImpl implements UseCase {
             .credentials(credentials)
             .reuseTimes(0)
             .templateId(validator.getTemplateId())
+            .status(DatabaseStatus.LAUNCHED)
             .build();
 
         DatabaseInstance launchedDatabaseInstance = databaseInstanceGateway.launchDatabase(candidate);
         User user = validator.getUser();
-        user.addDatabaseInstance(launchedDatabaseInstance);
+        user = user.addDatabaseInstance(launchedDatabaseInstance);
         userGateway.save(user);
 
-        response.setDatabaseId(databaseId.getId());
+        response.setDatabaseId(databaseId);
+        response.setNetworkBind(launchedDatabaseInstance.getNetworkBind());
+        response.setCredentials(launchedDatabaseInstance.getCredentials());
+        response.setDatabaseName(launchedDatabaseInstance.getDatabaseName());
     }
 
     private DatabaseId generateInstanceName(Request request,

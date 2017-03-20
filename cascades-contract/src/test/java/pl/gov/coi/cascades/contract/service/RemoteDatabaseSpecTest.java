@@ -57,7 +57,6 @@ public class RemoteDatabaseSpecTest {
     public void testDefaultConstructor() {
         // when
         RemoteDatabaseSpec actual = new RemoteDatabaseSpec(
-            databaseType,
             databaseId,
             databaseName,
             networkBind,
@@ -72,7 +71,6 @@ public class RemoteDatabaseSpecTest {
     public void testGetConnectionString() {
         // given
         RemoteDatabaseSpec spec = new RemoteDatabaseSpec(
-            databaseType,
             databaseId,
             databaseName,
             networkBind,
@@ -84,7 +82,7 @@ public class RemoteDatabaseSpecTest {
             .thenReturn("db-conn");
 
         // when
-        String conn = spec.getConnectionString();
+        String conn = spec.getConnectionString(databaseType);
 
         // then
         assertEquals("db-conn", conn);

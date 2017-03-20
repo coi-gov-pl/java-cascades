@@ -14,4 +14,5 @@ public class DatabaseId implements Serializable {
 
     @Getter
 	private final String id;
+
 }
