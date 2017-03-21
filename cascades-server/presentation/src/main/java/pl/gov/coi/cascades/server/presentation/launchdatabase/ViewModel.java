@@ -1,30 +1,16 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
-import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
+import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
 
 /**
  * View model for new database instance.
  */
-public class ViewModel extends RemoteDatabaseSpec {
+class ViewModel extends ResponseEntity<ResponseWrapper<RemoteDatabaseSpec>> {
 
-    /**
-     * Required argument constructor.
-     *
-     * @param type         Given type of database.
-     * @param id           Given id of template.
-     * @param databaseName Given name of database.
-     * @param networkBind  Given network bind.
-     * @param credentials  Given credentials.
-     */
-    public ViewModel(DatabaseType type,
-                     DatabaseId id,
-                     String databaseName,
-                     NetworkBind networkBind,
-                     UsernameAndPasswordCredentials credentials) {
-        super(type, id, databaseName, networkBind, credentials);
+    ViewModel(ResponseWrapper<RemoteDatabaseSpec> responseWrapper, HttpStatus status) {
+        super(responseWrapper, status);
     }
 }

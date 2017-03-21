@@ -17,9 +17,7 @@ public class RemoteDatabaseSpec implements Serializable {
     private static final long serialVersionUID = 42L;
 
 	@Getter
-	private final DatabaseType type;
-	@Getter
-	private final DatabaseId id;
+	private final DatabaseId databaseId;
 	@Getter
 	private final String databaseName;
 	@Getter
@@ -29,19 +27,17 @@ public class RemoteDatabaseSpec implements Serializable {
 
 	/**
 	 * Required argument constructor.
-	 * @param type Given type of database.
-	 * @param id Given id of template.
+     *
+	 * @param databaseId Given id of template.
 	 * @param databaseName Given name of database.
 	 * @param networkBind Given network bind.
 	 * @param credentials Given credentials.
 	 */
-	public RemoteDatabaseSpec(DatabaseType type,
-							  DatabaseId id,
+	public RemoteDatabaseSpec(DatabaseId databaseId,
 							  String databaseName,
 							  NetworkBind networkBind,
 							  UsernameAndPasswordCredentials credentials) {
-		this.type = type;
-		this.id = id;
+		this.databaseId = databaseId;
 		this.databaseName = databaseName;
 		this.networkBind = networkBind;
 		this.credentials = credentials;
@@ -51,7 +47,7 @@ public class RemoteDatabaseSpec implements Serializable {
      * Returns a valid connection string to be used in JDBC
      * @return a valid connection string
      */
-	public String getConnectionString() {
+	public String getConnectionString(DatabaseType type) {
         ConnectionStringProducer producer = type.getConnectionStringProducer();
         return producer.produce(networkBind, databaseName);
 	}

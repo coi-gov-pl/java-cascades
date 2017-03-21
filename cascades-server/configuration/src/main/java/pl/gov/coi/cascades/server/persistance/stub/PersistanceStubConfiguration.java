@@ -38,4 +38,9 @@ class PersistanceStubConfiguration {
         return new DatabaseIdGatewayStub();
     }
 
+    @Bean
+    DatabaseTypeStub produceDatabaseType() {
+        return new DatabaseTypeStub();
+    }
+
 }
