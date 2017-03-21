@@ -1,5 +1,7 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import org.assertj.core.description.Description;
+import org.assertj.core.description.TextDescription;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
@@ -7,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -14,9 +18,11 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import pl.gov.coi.cascades.server.Enviroment;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
 import javax.inject.Inject;
+import java.io.UnsupportedEncodingException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,6 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles(Enviroment.DEVELOPMENT_NAME)
 public class FunctionalTest {
 
     @Inject
@@ -35,7 +42,9 @@ public class FunctionalTest {
 
     @Before
     public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+        this.mockMvc = MockMvcBuilders
+            .webAppContextSetup(this.wac)
+            .build();
     }
 
     @Test
@@ -49,14 +58,25 @@ public class FunctionalTest {
         // when
         MvcResult result = mockMvc.perform(requestBuilder)
             .andReturn();
+        MockHttpServletResponse response = result.getResponse();
 
         // then
-        assertThat(result.getResponse().getStatus()).isEqualTo(200);
+        assertThat(response.getStatus())
+            .as(buildDescription(response))
+            .isEqualTo(200);
+    }
+
+    private Description buildDescription(MockHttpServletResponse response)
+        throws UnsupportedEncodingException {
+
+        String content = response.getContentAsString();
+        return new TextDescription("Response BODY is:\n\n" + content);
     }
 
     private String properRequest() throws JSONException {
+        DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
-            .put("typeClassName", DatabaseTypeStub.class.getName())
+            .put("type", stub.getName())
             .toString();
     }
 
