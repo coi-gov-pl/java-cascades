@@ -14,7 +14,6 @@ import pl.gov.coi.cascades.server.domain.deletedatabase.Response;
 import pl.gov.coi.cascades.server.domain.deletedatabase.UseCase;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 
 /**
@@ -42,7 +41,7 @@ public class DeleteDatabaseController {
         value = "/databases/{id}",
         method = RequestMethod.DELETE
     )
-    public ResponseEntity<Response> deleteDatabase(@Nullable @PathVariable("id") String databaseIdAsString) {
+    public ResponseEntity<Response> deleteDatabase(@PathVariable("id") String databaseIdAsString) {
         User user = userSession.getSignedInUser();
         DatabaseId databaseId = new DatabaseId(databaseIdAsString);
 
@@ -51,19 +50,19 @@ public class DeleteDatabaseController {
             .user(user);
 
         Request request = requestBuilder.build();
-        Response response = new Response();
+        Presenter presenter = new Presenter();
         useCase.execute(
             request,
-            response
+            presenter
         );
 
-        return getResponseMessage(response);
+        return getResponseMessage(presenter);
     }
 
-    private ResponseEntity<Response> getResponseMessage(Response response) {
-        return response.isSuccessful()
-            ? ResponseEntity.status(HttpStatus.OK).body(response)
-            : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    private ResponseEntity<Response> getResponseMessage(Presenter presenter) {
+        return presenter.isSuccessful()
+            ? ResponseEntity.status(HttpStatus.OK).body(presenter)
+            : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(presenter);
     }
 
 }

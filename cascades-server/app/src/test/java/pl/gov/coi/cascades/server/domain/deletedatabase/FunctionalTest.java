@@ -71,7 +71,6 @@ public class FunctionalTest {
         // then
         assertThat(result.getResponse().getStatus()).isEqualTo(400);
         assertThat(result.getResponse().getContentAsString()).contains("Given database id is not present.");
-        assertThat(result.getResponse().getContentAsString()).contains("Given id of database doesn't belong to logged user: ");
     }
 
     private String properRequest() throws JSONException {

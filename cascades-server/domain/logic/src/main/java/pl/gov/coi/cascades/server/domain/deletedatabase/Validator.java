@@ -30,8 +30,10 @@ class Validator {
 
     boolean validate() {
         validateUser();
-        validateDatabaseId();
-        validateIfDatabaseInstanceBelongsToLoggedUser();
+        boolean isDatabaseIdPresent = validateDatabaseId();
+        if (isDatabaseIdPresent) {
+            validateIfDatabaseInstanceBelongsToLoggedUser();
+        }
         return response.isSuccessful();
     }
 
@@ -64,13 +66,15 @@ class Validator {
         return false;
     }
 
-    private void validateDatabaseId() {
+    private boolean validateDatabaseId() {
         if (!Optional.ofNullable(databaseId).isPresent()) {
             newError(
                 PROPERTY_PATH_DATABASE_ID,
                 "Given database id is not present."
             );
+            return false;
         }
+        return true;
     }
 
     private void validateUser() {

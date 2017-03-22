@@ -23,8 +23,8 @@ class Validator {
 
     private static final String PROPERTY_PATH_USER = "user";
     private static final String PROPERTY_PATH_TEMPLATE_ID = "templateId";
-    private static final String PROPERTY_PATH_GLOBAL_LIMIT = "DatabaseLimitGateway.globalLimit";
-    private static final String PROPERTY_PATH_USER_LIMIT = "DatabaseLimitGateway.userLimit";
+    private static final String PROPERTY_PATH_GLOBAL_LIMIT = "databaseLimit.globalLimit";
+    private static final String PROPERTY_PATH_USER_LIMIT = "databaseLimit.userLimit";
     private final Response response;
     private final Request request;
     private final DatabaseLimitGateway databaseLimitGateway;
