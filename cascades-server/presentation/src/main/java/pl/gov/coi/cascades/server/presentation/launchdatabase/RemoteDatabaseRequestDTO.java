@@ -14,10 +14,10 @@ final class RemoteDatabaseRequestDTO extends RemoteDatabaseRequest {
     /**
      * {@inheritDoc}
      */
-    public RemoteDatabaseRequestDTO(@JsonProperty("typeClassName") String typeClassName,
+    public RemoteDatabaseRequestDTO(@JsonProperty("type") String type,
                                     @JsonProperty("templateId") @Nullable String templateId,
                                     @JsonProperty("instanceName") @Nullable String instanceName) {
-        super(typeClassName, createTemplateId(templateId), instanceName);
+        super(type, createTemplateId(templateId), instanceName);
     }
 
     @Nullable

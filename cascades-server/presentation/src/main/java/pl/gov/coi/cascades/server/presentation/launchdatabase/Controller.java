@@ -50,7 +50,7 @@ public class Controller {
         User user = userSession.getSignedInUser();
 
         Request.RequestBuilder requestBuilder = Request.builder()
-            .typeClassName(request.getTypeClassName())
+            .type(request.getType())
             .user(user);
 
         optionalMapper.toJava8(request.getTemplateId())
