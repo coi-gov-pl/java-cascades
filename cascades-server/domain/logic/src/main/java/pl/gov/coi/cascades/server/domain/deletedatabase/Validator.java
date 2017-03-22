@@ -19,6 +19,8 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 @Builder
 class Validator {
 
+    private static final String PROPERTY_PATH_DATABASE_ID = "databaseId";
+    private static final String PROPERTY_PATH_USER = "user";
     private final Response response;
     private final Request request;
     @Nullable
@@ -45,7 +47,7 @@ class Validator {
                     "Given id of database doesn't belong to logged user: %s or has been deleted.",
                     gotUser.getUsername()
                 ),
-                this.getClass().toString()
+                PROPERTY_PATH_DATABASE_ID
             );
 
             response.addError(errorMessage);
@@ -64,21 +66,27 @@ class Validator {
 
     private void validateDatabaseId() {
         if (!Optional.ofNullable(databaseId).isPresent()) {
-            newError("Given database id is not present.");
+            newError(
+                PROPERTY_PATH_DATABASE_ID,
+                "Given database id is not present."
+            );
         }
     }
 
     private void validateUser() {
         if (!Optional.ofNullable(user).isPresent()) {
-            newError("Given user is invalid.");
+            newError(
+                PROPERTY_PATH_USER,
+                "Given user is invalid."
+            );
         }
     }
 
-    private void newError(String message, Object... parameters) {
+    private void newError(String path, String message, Object... parameters) {
         response.addError(
             new ErrorImpl(
                 String.format(message, parameters),
-                this.getClass().toString()
+                path
             )
         );
     }

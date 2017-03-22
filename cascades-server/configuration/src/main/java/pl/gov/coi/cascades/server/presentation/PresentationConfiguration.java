@@ -2,9 +2,10 @@ package pl.gov.coi.cascades.server.presentation;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.gov.coi.cascades.server.OsgiBeanLocator;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameServiceImpl;
+import pl.gov.coi.cascades.server.domain.OsgiDatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 
 /**
@@ -25,8 +26,8 @@ public class PresentationConfiguration {
     }
 
     @Bean
-    DatabaseTypeClassNameService produceDatabaseTypeClassName() {
-        return new DatabaseTypeClassNameServiceImpl();
+    DatabaseTypeClassNameService produceDatabaseTypeClassName(OsgiBeanLocator locator) {
+        return new OsgiDatabaseTypeClassNameService(locator);
     }
 
 }

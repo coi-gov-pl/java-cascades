@@ -15,7 +15,7 @@ public class RemoteDatabaseRequest implements Serializable {
     private static final long serialVersionUID = 42L;
 
 	@Getter
-	private final String typeClassName;
+	private final String type;
     @Nullable
     private final TemplateId templateId;
 	@Nullable
@@ -23,14 +23,14 @@ public class RemoteDatabaseRequest implements Serializable {
 
 	/**
 	 * Required argument constructor.
-	 * @param typeClassName Given type of database (a class name).
+	 * @param type Given type of database (a name or FQCN).
      * @param templateId Given id of template (Optional).
      * @param instanceName Given name of instance (Optional).
 	 */
-	public RemoteDatabaseRequest(String typeClassName,
+	public RemoteDatabaseRequest(String type,
                                  @Nullable TemplateId templateId,
 								 @Nullable String instanceName) {
-		this.typeClassName = typeClassName;
+		this.type = type;
         this.templateId = templateId;
 		this.instanceName = instanceName;
 	}
