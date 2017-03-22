@@ -9,7 +9,7 @@ import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.server.domain.Error;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
-import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
+import pl.gov.coi.cascades.server.presentation.WithErrors;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -101,8 +101,8 @@ class Presenter implements Response {
     }
 
     private ViewModel createFailedViewModel() {
-        ResponseWrapper<RemoteDatabaseSpec> responseWrapper = new ResponseWrapper<>(errors);
-        return new ViewModel(responseWrapper, HttpStatus.BAD_REQUEST);
+        WithErrors<RemoteDatabaseSpec> withErrors = new WithErrors<>(errors);
+        return new ViewModel(withErrors, HttpStatus.BAD_REQUEST);
     }
 
     private ViewModel createSuccessulViewModel() {
@@ -112,8 +112,8 @@ class Presenter implements Response {
             networkBind,
             credentials
         );
-        ResponseWrapper<RemoteDatabaseSpec> responseWrapper = new ResponseWrapper<>(databaseSpec);
-        return new ViewModel(responseWrapper, HttpStatus.OK);
+        WithErrors<RemoteDatabaseSpec> withErrors = new WithErrors<>(databaseSpec);
+        return new ViewModel(withErrors, HttpStatus.OK);
     }
 
 }

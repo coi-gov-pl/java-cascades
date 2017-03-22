@@ -7,9 +7,12 @@ package pl.gov.coi.cascades.server.domain;
 public final class ErrorImpl implements Error {
 
     private final String message;
+    private final String path;
 
-    public ErrorImpl(String message) {
+    public ErrorImpl(String message,
+                     String path) {
         this.message = message;
+        this.path = path;
     }
 
     @Override
@@ -19,6 +22,6 @@ public final class ErrorImpl implements Error {
 
     @Override
     public String getPropertyPath() {
-        return null;
+        return path;
     }
 }

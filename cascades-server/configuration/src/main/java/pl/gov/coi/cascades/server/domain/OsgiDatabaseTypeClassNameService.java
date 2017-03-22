@@ -16,6 +16,7 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
         "Maybe you should install a plugin with that implementation.";
     static final String FOUND_DATABASE_TYPE_LOG_FORMAT = "Found database type implementation: {} " +
         "for given type name: {}";
+    private static final String PROPERTY_PATH_TYPE = "type";
     private final Logger logger;
     private final OsgiBeanLocator osgiBeanLocator;
 
@@ -67,7 +68,8 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
     private DatabaseTypeDTO newErrorDTO(String messageFormat, Object... arguments) {
         return new DatabaseTypeDTO(
             new ErrorImpl(
-                String.format(messageFormat, arguments)
+                String.format(messageFormat, arguments),
+                PROPERTY_PATH_TYPE
             )
         );
     }

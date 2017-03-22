@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,22 +11,22 @@ import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Request;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
-import pl.gov.coi.cascades.server.presentation.ResponseWrapper;
+import pl.gov.coi.cascades.server.presentation.WithErrors;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
 import javax.inject.Inject;
 
-@org.springframework.stereotype.Controller
-public class Controller {
+@Controller
+public class LaunchDatabaseController {
 
     private final UseCase useCase;
     private final UserSession userSession;
     private final OptionalMapper optionalMapper;
 
     @Inject
-    public Controller(UserSession userSession,
-                      UseCase useCase,
-                      OptionalMapper optionalMapper) {
+    public LaunchDatabaseController(UserSession userSession,
+                                    UseCase useCase,
+                                    OptionalMapper optionalMapper) {
         this.userSession = userSession;
         this.useCase = useCase;
         this.optionalMapper = optionalMapper;
@@ -44,7 +45,7 @@ public class Controller {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<ResponseWrapper<RemoteDatabaseSpec>> launchDatabasePost(
+    public ResponseEntity<WithErrors<RemoteDatabaseSpec>> launchDatabasePost(
             @RequestBody RemoteDatabaseRequestDTO request) {
 
         User user = userSession.getSignedInUser();
