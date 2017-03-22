@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.server.presentation.deletedatabase;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -56,13 +55,7 @@ public class DeleteDatabaseController {
             presenter
         );
 
-        return getResponseMessage(presenter);
-    }
-
-    private ResponseEntity<Response> getResponseMessage(Presenter presenter) {
-        return presenter.isSuccessful()
-            ? ResponseEntity.status(HttpStatus.OK).body(presenter)
-            : ResponseEntity.status(HttpStatus.BAD_REQUEST).body(presenter);
+        return presenter.createModel();
     }
 
 }
