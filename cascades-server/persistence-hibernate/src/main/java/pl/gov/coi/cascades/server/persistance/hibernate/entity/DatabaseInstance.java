@@ -9,7 +9,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -25,11 +24,11 @@ import java.util.Date;
 @NoArgsConstructor
 public class DatabaseInstance {
 
-    @GeneratedValue
     @Id
+    @Column(nullable = false)
     private String databaseId;
 
-    @Column
+    @Column(nullable = false)
     private String templateId;
 
     @Column
