@@ -1,23 +1,27 @@
 package pl.gov.coi.cascades.server.domain;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
-@RequiredArgsConstructor
 public class User {
 
     @Getter
-    private final String username;
+    private String username;
     @Getter
-    private final String id;
+    private String id;
     @Getter
-    private final String email;
-	private final Collection<DatabaseInstance> databases = new HashSet<>();
+    private String email;
+	private Collection<DatabaseInstance> databases = new HashSet<>();
+
+    public User(String username, String id, String email) {
+        this.username = username;
+        this.id = id;
+        this.email = email;
+    }
 
     /**
      * Copy constructor.

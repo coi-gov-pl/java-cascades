@@ -15,7 +15,7 @@ import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
  * @since 16.03.17
  */
 @Component
-@Profile(Enviroment.DEVELOPMENT_NAME)
+@Profile(Environment.DEVELOPMENT_NAME)
 public class DevelopmentStubsActivator implements BundleActivator {
     private ServiceRegistration<DatabaseType> databaseTypeRegistration;
     private final Logger logger = LoggerFactory.getLogger(DevelopmentStubsActivator.class);

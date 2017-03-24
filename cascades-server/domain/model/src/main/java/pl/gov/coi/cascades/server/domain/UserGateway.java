@@ -7,10 +7,10 @@ public interface UserGateway {
     /**
      * Method finds an optional of user for given user.
      *
-     * @param user Given name of user.
+     * @param userName Given name of user.
      * @return An optional of user.
      */
-    Optional<User> find(String user);
+    Optional<User> find(String userName);
 
     /**
      * Method saves given user.
