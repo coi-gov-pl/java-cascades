@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.mappers;
+package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>

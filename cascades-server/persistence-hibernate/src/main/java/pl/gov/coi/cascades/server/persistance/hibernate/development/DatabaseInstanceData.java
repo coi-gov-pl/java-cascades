@@ -1,7 +1,10 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -16,6 +19,14 @@ class DatabaseInstanceData {
 
     DatabaseInstanceData() {
         DatabaseInstance db = new DatabaseInstance();
+        db.setDatabaseId("ora12e34");
+        db.setTemplateId("oracle");
+        db.setDatabaseType("stub");
+        db.setDatabaseName("ora12e34");
+        db.setInstanceName("ora12e34");
+        db.setReuseTimes(1);
+        db.setStatus(DatabaseStatus.LAUNCHED);
+        db.setCreated(Date.from(Instant.now()));
 
         instances.put(Instance.ORA12E34, db);
     }
