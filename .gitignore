@@ -154,3 +154,5 @@ crashlytics-build.properties
 # VisualParadigm
 *.vpp~*
 *.vpp.working
+
+felix-cache

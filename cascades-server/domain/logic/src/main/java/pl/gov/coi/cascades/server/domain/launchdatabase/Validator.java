@@ -21,6 +21,10 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 @Builder
 class Validator {
 
+    private static final String PROPERTY_PATH_USER = "user";
+    private static final String PROPERTY_PATH_TEMPLATE_ID = "templateId";
+    private static final String PROPERTY_PATH_GLOBAL_LIMIT = "databaseLimit.globalLimit";
+    private static final String PROPERTY_PATH_USER_LIMIT = "databaseLimit.userLimit";
     private final Response response;
     private final Request request;
     private final DatabaseLimitGateway databaseLimitGateway;
@@ -71,7 +75,8 @@ class Validator {
                 String.format(
                     "Global limit of %d launched database instances has been reached",
                     databaseLimitGateway.getGlobalLimit()
-                )
+                ),
+                PROPERTY_PATH_GLOBAL_LIMIT
             );
             response.addError(errorMessage);
         }
@@ -80,7 +85,8 @@ class Validator {
                 String.format(
                     "Personal limit of %d launched database instances has been reached",
                     databaseLimitGateway.getPersonalLimitPerUser(gotUser)
-                )
+                ),
+                PROPERTY_PATH_USER_LIMIT
             );
             response.addError(errorMessage);
         }
@@ -88,19 +94,28 @@ class Validator {
 
     private void validateTemplateId() {
         if (!Optional.ofNullable(templateId).isPresent()) {
-            newError("Given template id is not present.");
+            newError(
+                PROPERTY_PATH_TEMPLATE_ID,
+                "Given template id is not present."
+            );
         }
     }
 
     private void validateUser() {
         if (!Optional.ofNullable(user).isPresent()) {
-            newError("Given user is invalid.");
+            newError(
+                PROPERTY_PATH_USER,
+                "Given user is invalid."
+            );
         }
     }
 
-    private void newError(String message, Object... parameters) {
-        response.addError(new ErrorImpl(
-            String.format(message, parameters)
-        ));
+    private void newError(String path, String message, Object... parameters) {
+        response.addError(
+            new ErrorImpl(
+                String.format(message, parameters),
+                path
+            )
+        );
     }
 }

@@ -19,6 +19,8 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 @Builder
 class Validator {
 
+    private static final String PROPERTY_PATH_DATABASE_ID = "databaseId";
+    private static final String PROPERTY_PATH_USER = "user";
     private final Response response;
     private final Request request;
     @Nullable
@@ -26,15 +28,13 @@ class Validator {
     @Nullable
     private final User user;
 
-    public boolean validate() {
+    boolean validate() {
         validateUser();
-        validateDatabaseId();
-        validateIfDatabaseInstanceBelongsToLoggedUser();
+        boolean isDatabaseIdPresent = validateDatabaseId();
+        if (isDatabaseIdPresent) {
+            validateIfDatabaseInstanceBelongsToLoggedUser();
+        }
         return response.isSuccessful();
-    }
-
-    DatabaseId getDatabaseId() {
-        return checkNotNull(databaseId, "20170310:135800");
     }
 
     User getUser() {
@@ -43,14 +43,13 @@ class Validator {
 
     private void validateIfDatabaseInstanceBelongsToLoggedUser() {
         User gotUser = getUser();
-        DatabaseId gotDatabaseId = getDatabaseId();
         if (!isDatabaseIdBelongsToLoggedUser(gotUser)) {
             Error errorMessage = new ErrorImpl(
                 String.format(
-                    "Given id of database: %s doesn't belong to logged user: %s",
-                    gotDatabaseId,
-                    gotUser
-                )
+                    "Given id of database doesn't belong to logged user: %s or has been deleted.",
+                    gotUser.getUsername()
+                ),
+                PROPERTY_PATH_DATABASE_ID
             );
 
             response.addError(errorMessage);
@@ -58,31 +57,44 @@ class Validator {
     }
 
     private boolean isDatabaseIdBelongsToLoggedUser(User gotUser) {
-        for (DatabaseInstance databaseInstance: gotUser.getDatabases()) {
-            if (databaseInstance.getDatabaseId().equals(databaseId)) {
-                return true;
+        if (gotUser.getDatabases() != null) {
+            for (DatabaseInstance databaseInstance : gotUser.getDatabases()) {
+                if (databaseInstance.getDatabaseId().equals(databaseId)) {
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-    private void validateDatabaseId() {
+    private boolean validateDatabaseId() {
         if (!Optional.ofNullable(databaseId).isPresent()) {
-            newError("Given database id is not present.");
+            newError(
+                PROPERTY_PATH_DATABASE_ID,
+                "Given database id is not present."
+            );
+            return false;
         }
+        return true;
     }
 
     private void validateUser() {
         if (!Optional.ofNullable(user).isPresent()) {
-            newError("Given user is invalid.");
+            newError(
+                PROPERTY_PATH_USER,
+                "Given user is invalid."
+            );
         }
     }
 
-    private void newError(String message, Object... parameters) {
-        response.addError(new ErrorImpl(
-            String.format(message, parameters)
-        ));
+    private void newError(String path, String message, Object... parameters) {
+        response.addError(
+            new ErrorImpl(
+                String.format(message, parameters),
+                path
+            )
+        );
     }
 
 }

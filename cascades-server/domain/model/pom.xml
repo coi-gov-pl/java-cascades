@@ -48,6 +48,10 @@
             <artifactId>cascades-contract</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>pl.wavesoftware</groupId>
+            <artifactId>eid-exceptions</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

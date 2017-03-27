@@ -86,7 +86,7 @@ public class RequestTest {
         Request requestBuilder = Request.builder()
             .instanceName(instanceName)
             .user(user)
-            .typeClassName(typeClassName)
+            .type(typeClassName)
             .templateId(templateId)
             .build();
 
