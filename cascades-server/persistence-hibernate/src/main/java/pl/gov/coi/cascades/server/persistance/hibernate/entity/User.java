@@ -44,4 +44,7 @@ public class User {
     @JoinColumn
     private Set<DatabaseInstance> databases = new HashSet<>();
 
+    public void addDatabase(DatabaseInstance instance) {
+        databases.add(instance);
+    }
 }

@@ -1,8 +1,11 @@
 package pl.gov.coi.cascades.server;
 
+import org.assertj.core.api.Condition;
 import org.junit.Test;
 import org.springframework.boot.SpringApplication;
 import org.springframework.context.ApplicationListener;
+
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,16 +21,14 @@ public class SpringApplicationFactoryTest {
 
         // when
         SpringApplication app = factory.create(this.getClass());
+        Set<ApplicationListener<?>> listeners = app.getListeners();
 
         // then
-        assertThat(app)
-            .isNotNull()
-            .extracting(SpringApplication::getListeners)
-            .hasSize(1);
-        ApplicationListener<?> listener = app.getListeners()
-            .iterator()
-            .next();
-        assertThat(listener).isInstanceOf(ApplicationStartListener.class);
+        assertThat(listeners)
+            .areExactly(1, new Condition<>(
+                applicationListener -> applicationListener instanceof ApplicationStartListener,
+                "a subtype of ApplicationStartListener"
+            ));
     }
 
 }

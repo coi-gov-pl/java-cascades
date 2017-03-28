@@ -9,7 +9,7 @@ import org.springframework.core.env.ConfigurableEnvironment;
  * @author <a href="mailto:krzysztof.suszynski@coi.gov.pl">Krzysztof Suszynski</a>
  * @since 17.03.17
  */
-public class ApplicationStartListener implements
+class ApplicationStartListener implements
     ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {
 
     @Override

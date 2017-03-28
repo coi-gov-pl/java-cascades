@@ -1,42 +1,58 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
+import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.EnumMap;
-import java.util.Map;
+import javax.inject.Singleton;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.function.Supplier;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.03.17.
  */
+@Singleton
+@Transactional
+@RequiredArgsConstructor
 class DatabaseInstanceData {
 
-    private final Map<Instance, DatabaseInstance> instances =
-        new EnumMap<>(Instance.class);
+    private final List<DatabaseInstance> instances = new ArrayList<>();
+    private final Iterable<DatabaseInstanceSupplier> suppliers;
+    private EntityManager entityManager;
+    private final UserData userData;
 
-    DatabaseInstanceData() {
-        DatabaseInstance db = new DatabaseInstance();
-        db.setDatabaseId("ora12e34");
-        db.setTemplateId("oracle");
-        db.setDatabaseType("stub");
-        db.setDatabaseName("ora12e34");
-        db.setInstanceName("ora12e34");
-        db.setReuseTimes(1);
-        db.setStatus(DatabaseStatus.LAUNCHED);
-        db.setCreated(Date.from(Instant.now()));
-
-        instances.put(Instance.ORA12E34, db);
+    @PersistenceContext
+    void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    DatabaseInstance get(Instance instance) {
-        return instances.get(instance);
+    void up() {
+        for (DatabaseInstanceSupplier supplier : suppliers) {
+            Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
+            Optional<User> userOptional = userData.getUserForSupplierClass(ownerSupplier);
+            DatabaseInstance instance = supplier.get();
+            userOptional.ifPresent(user -> {
+                    user.addDatabase(instance);
+                    entityManager.persist(user);
+                    instances.add(instance);
+                }
+            );
+        }
     }
 
-    enum Instance {
-        ORA12E34
+    void down() {
+        for (DatabaseInstance instance : instances) {
+            String id = instance.getDatabaseId();
+            DatabaseInstance reference = entityManager.getReference(instance.getClass(), id);
+            entityManager.remove(reference);
+        }
+        instances.clear();
     }
 
 }

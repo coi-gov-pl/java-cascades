@@ -6,8 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
 
 import javax.inject.Singleton;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
 /**
@@ -19,40 +17,28 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 class JpaDevelopmentData implements SmartLifecycle {
 
-    private Logger logger = LoggerFactory.getLogger(JpaDevelopmentData.class);
-    private EntityManager entityManager;
-    private UserData userData;
+    private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentData.class);
+    private final UserData userData;
+    private final DatabaseInstanceData databaseInstanceData;
     private Status status = Status.STOPPED;
 
-    @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
-
-    public void up() {
+    void up() {
         changeStatus(Status.STARTING);
-        getUserData()
-            .addJohnRambo();
+        userData.up();
+        databaseInstanceData.up();
         changeStatus(Status.STARTED);
     }
 
-    public void down() {
+    void down() {
         changeStatus(Status.STOPPING);
-        getUserData()
-            .removeJohnRambo();
+        databaseInstanceData.down();
+        userData.down();
         changeStatus(Status.STOPPED);
     }
 
     private void changeStatus(Status status) {
-        logger.info("Changing status from {} to {}", this.status, status);
+        LOGGER.info("Changing status from {} to {}", this.status, status);
         this.status = status;
-    }
-
-    private UserData getUserData() {
-        if (userData == null) {
-            userData = new UserData(entityManager);
-        }
-        return userData;
     }
 
     @Override
