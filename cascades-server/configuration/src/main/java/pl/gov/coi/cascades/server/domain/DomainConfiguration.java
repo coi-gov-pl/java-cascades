@@ -2,7 +2,7 @@ package pl.gov.coi.cascades.server.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
+import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCaseImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
@@ -19,12 +19,12 @@ public class DomainConfiguration {
                                             DatabaseInstanceGateway databaseInstanceGateway,
                                             UserGateway userGateway,
                                             DatabaseLimitGateway databaseLimitGateway,
-                                            DatabaseIdGeneratorService databaseIdGeneratorService,
+                                            DatabaseNameGeneratorService databaseNameGeneratorService,
                                             UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService,
                                             DatabaseTypeClassNameService databaseTypeClassNameService) {
         return UseCaseImpl.builder()
             .credentialsGeneratorService(credentialsGeneratorService)
-            .databaseIdGeneratorService(databaseIdGeneratorService)
+            .databaseNameGeneratorService(databaseNameGeneratorService)
             .databaseInstanceGateway(databaseInstanceGateway)
             .databaseLimitGateway(databaseLimitGateway)
             .templateIdGateway(templateIdGateway)

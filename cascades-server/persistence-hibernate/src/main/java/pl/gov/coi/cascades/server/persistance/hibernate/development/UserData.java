@@ -2,10 +2,8 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
-import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -15,8 +13,6 @@ import java.util.function.Supplier;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.03.17.
  */
-@Singleton
-@Transactional
 class UserData {
     private EntityManager entityManager;
     private Map<Class<Supplier<User>>, User> instances = new HashMap<>();

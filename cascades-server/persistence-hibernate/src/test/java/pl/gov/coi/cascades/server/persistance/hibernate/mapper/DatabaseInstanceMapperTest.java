@@ -30,15 +30,16 @@ import static org.mockito.Mockito.when;
  */
 public class DatabaseInstanceMapperTest {
 
-    private String password = "12345678";
-    private String username = "Ben Affleck";
-    private String host = "db01.lab.internal";
-    private int port = 5432;
-    private String databaseId = "ora12e34";
-    private String templateId = "oracle";
-    private String databaseType = "stub";
-    private String instanceName = "ora12e34";
-    private String databaseName = "ora12e34";
+    private static final String password = "12345678";
+    private static final String username = "Ben Affleck";
+    private static final String host = "db01.lab.internal";
+    private static final int port = 5432;
+    private static final String databaseId = "19";
+    private static final Long databaseIdAsLong = 45L;
+    private static final String templateId = "oracle";
+    private static final String databaseType = "stub";
+    private static final String instanceName = "ora12e34";
+    private static final String databaseName = "oracle 12c";
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -63,9 +64,9 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getDatabaseId()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseId().getId());
+        assertThat(actual.getId()).isEqualTo(databaseIdAsLong);
         assertThat(actual.getTemplateId()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
-        assertThat(actual.getDatabaseType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
+        assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
         assertThat(actual.getReuseTimes()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getReuseTimes());
         assertThat(actual.getDatabaseName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseName());
@@ -94,9 +95,9 @@ public class DatabaseInstanceMapperTest {
         networkBind.setPort(port);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setDatabaseId(databaseId);
+        hibernateInstance.setId(databaseIdAsLong);
         hibernateInstance.setTemplateId(templateId);
-        hibernateInstance.setDatabaseType(databaseType);
+        hibernateInstance.setType(databaseType);
         hibernateInstance.setInstanceName(instanceName);
         hibernateInstance.setReuseTimes(1);
         hibernateInstance.setDatabaseName(databaseName);

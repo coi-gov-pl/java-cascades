@@ -41,7 +41,7 @@ public class User {
     private String email;
 
     @OneToMany
-    @JoinColumn
+    @JoinColumn(name = "user_id")
     private Set<DatabaseInstance> databases = new HashSet<>();
 
     public void addDatabase(DatabaseInstance instance) {

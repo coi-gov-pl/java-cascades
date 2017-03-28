@@ -27,7 +27,7 @@ public class UseCaseImpl implements UseCase {
     private final DatabaseInstanceGateway databaseInstanceGateway;
     private final UserGateway userGateway;
     private final DatabaseLimitGateway databaseLimitGateway;
-    private final DatabaseIdGeneratorService databaseIdGeneratorService;
+    private final DatabaseNameGeneratorService databaseNameGeneratorService;
     private final UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService;
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
 
@@ -67,7 +67,7 @@ public class UseCaseImpl implements UseCase {
     private void succeedResponse(Request request,
                                  Response response,
                                  Validator validator) {
-        DatabaseId databaseId = generateInstanceName(request, databaseIdGeneratorService);
+        DatabaseId databaseId = generateInstanceName(request, databaseNameGeneratorService);
 
         UsernameAndPasswordCredentials credentials = credentialsGeneratorService.generate();
 
@@ -96,11 +96,11 @@ public class UseCaseImpl implements UseCase {
     }
 
     private DatabaseId generateInstanceName(Request request,
-                                            DatabaseIdGeneratorService databaseIdGeneratorService) {
+                                            DatabaseNameGeneratorService databaseNameGeneratorService) {
         Optional<String> instanceName = request.getInstanceName();
         return instanceName.isPresent()
-            ? databaseIdGeneratorService.generate(instanceName.get())
-            : databaseIdGeneratorService.generate();
+            ? databaseNameGeneratorService.generate(instanceName.get())
+            : databaseNameGeneratorService.generate();
     }
 
 }

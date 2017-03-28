@@ -3,12 +3,14 @@ package pl.gov.coi.cascades.server.persistance.hibernate.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -21,18 +23,19 @@ import java.util.Date;
 @Setter
 @Entity
 @Table
+@ToString
 @NoArgsConstructor
 public class DatabaseInstance {
 
     @Id
-    @Column(nullable = false)
-    private String databaseId;
+    @GeneratedValue
+    private Long id;
 
     @Column(nullable = false)
     private String templateId;
 
     @Column
-    private String databaseType;
+    private String type;
 
     @Column
     private String instanceName;
