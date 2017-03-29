@@ -12,21 +12,21 @@ import java.util.function.Supplier;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 28.03.17.
+ * @since 29.03.17.
  */
 @DevelopmentBean
-class Ora12e34Supplier implements DatabaseInstanceSupplier {
+class Pos45y67Supplier implements DatabaseInstanceSupplier {
 
-    private static final String ORA12E34 = "ora12e34";
+    private static final String POS45Y67 = "pos45y67";
     private static final int HTTPS_PORT = 443;
 
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setTemplateId("oracle");
+        db.setTemplateId("postgres");
         db.setType("stub");
-        db.setDatabaseName(ORA12E34);
-        db.setInstanceName("Oracle is *%! hard");
+        db.setDatabaseName(POS45Y67);
+        db.setInstanceName("Postgres is *%! hard");
         db.setNetworkBind(
             NetworkBind.builder()
                 .host("cascades.example.org")
@@ -35,12 +35,12 @@ class Ora12e34Supplier implements DatabaseInstanceSupplier {
         );
         db.setCredentials(
             Credentials.builder()
-                .username("xi3jwjxwlq")
-                .password("dg344d34d7g3d34")
+                .username("fddfhy56ytj3")
+                .password("hjsw5y4thaw43t5grw")
                 .build()
         );
         db.setReuseTimes(1);
-        db.setStatus(DatabaseStatus.LAUNCHED);
+        db.setStatus(DatabaseStatus.DELETED);
         db.setCreated(Date.from(Instant.parse("2017-03-28T17:56:11.01Z")));
         return db;
     }

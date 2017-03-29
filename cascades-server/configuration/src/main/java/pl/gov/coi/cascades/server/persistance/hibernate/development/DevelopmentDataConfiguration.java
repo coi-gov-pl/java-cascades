@@ -44,6 +44,18 @@ class DevelopmentDataConfiguration {
     }
 
     @Bean
+    @DevelopmentBean
+    Supplier<User> createJackieProvider() {
+        return new JackieSupplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    Supplier<User> createMichaelProvider() {
+        return new MichaelSupplier();
+    }
+
+    @Bean
     @Transactional
     @Singleton
     UserData createUserData(List<Supplier<User>> supplierList) {
@@ -57,6 +69,18 @@ class DevelopmentDataConfiguration {
     @DevelopmentBean
     DatabaseInstanceSupplier createOra12e34Provider() {
         return new Ora12e34Supplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    DatabaseInstanceSupplier createPos45y67Provider() {
+        return new Pos45y67Supplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    DatabaseInstanceSupplier createOra23y45Provider() {
+        return new Ora23r45Supplier();
     }
 
     @Bean

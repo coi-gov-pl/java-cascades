@@ -12,12 +12,12 @@ import java.util.function.Supplier;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 28.03.17.
+ * @since 29.03.17.
  */
 @DevelopmentBean
-class Ora12e34Supplier implements DatabaseInstanceSupplier {
+class Ora23r45Supplier implements DatabaseInstanceSupplier {
 
-    private static final String ORA12E34 = "ora12e34";
+    private static final String ORA23R45 = "ora23r45";
     private static final int HTTPS_PORT = 443;
 
     @Override
@@ -25,7 +25,7 @@ class Ora12e34Supplier implements DatabaseInstanceSupplier {
         DatabaseInstance db = new DatabaseInstance();
         db.setTemplateId("oracle");
         db.setType("stub");
-        db.setDatabaseName(ORA12E34);
+        db.setDatabaseName(ORA23R45);
         db.setInstanceName("Oracle is *%! hard");
         db.setNetworkBind(
             NetworkBind.builder()
@@ -35,8 +35,8 @@ class Ora12e34Supplier implements DatabaseInstanceSupplier {
         );
         db.setCredentials(
             Credentials.builder()
-                .username("xi3jwjxwlq")
-                .password("dg344d34d7g3d34")
+                .username("dje4njknjkrn")
+                .password("vfnui34jnghie")
                 .build()
         );
         db.setReuseTimes(1);
