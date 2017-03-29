@@ -44,7 +44,7 @@ public class FunctionalTest {
     public void testPositivePath() throws Exception {
         // given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .delete("/databases/ora12e34")
+            .delete("/databases/19")
             .contentType(MediaType.APPLICATION_JSON)
             .content(properRequest());
 
