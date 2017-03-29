@@ -78,4 +78,5 @@ class JpaDevelopmentData implements SmartLifecycle {
         STARTED,
         STOPPING
     }
+
 }

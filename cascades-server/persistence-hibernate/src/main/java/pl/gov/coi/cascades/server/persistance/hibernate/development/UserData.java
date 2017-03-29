@@ -14,6 +14,7 @@ import java.util.function.Supplier;
  * @since 24.03.17.
  */
 class UserData {
+
     private EntityManager entityManager;
     private Map<Class<Supplier<User>>, User> instances = new HashMap<>();
     private final Iterable<Supplier<User>> supplierList;

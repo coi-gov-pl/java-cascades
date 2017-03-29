@@ -23,7 +23,6 @@ public class LaunchDatabaseController {
     private final UserSession userSession;
     private final OptionalMapper optionalMapper;
 
-
     @Inject
     public LaunchDatabaseController(UserSession userSession,
                                     UseCase useCase,
@@ -48,7 +47,6 @@ public class LaunchDatabaseController {
     @ResponseBody
     public ResponseEntity<WithErrors<RemoteDatabaseSpec>> launchDatabasePost(
             @RequestBody RemoteDatabaseRequestDTO request) {
-
 
         User user = userSession.getSignedInUser();
 
