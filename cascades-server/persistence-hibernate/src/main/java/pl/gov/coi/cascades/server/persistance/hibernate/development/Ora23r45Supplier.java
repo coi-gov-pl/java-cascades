@@ -49,4 +49,5 @@ class Ora23r45Supplier implements DatabaseInstanceSupplier {
     public Class<? extends Supplier<User>> getOwnerSupplier() {
         return MichaelSupplier.class;
     }
+
 }

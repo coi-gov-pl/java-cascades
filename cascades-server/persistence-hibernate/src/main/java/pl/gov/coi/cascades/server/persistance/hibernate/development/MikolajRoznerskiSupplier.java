@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
+import java.security.SecureRandom;
 import java.util.function.Supplier;
 
 /**
@@ -15,8 +16,9 @@ class MikolajRoznerskiSupplier implements Supplier<User> {
     @Override
     public User get() {
         User user = new User();
-        user.setUsername("Mikołaj Roznerski");
+        user.setUsername("Mikołaj Roznerski" + new SecureRandom().nextInt());
         user.setEmail("mikolaj.rozneski@example.com");
         return user;
     }
+
 }

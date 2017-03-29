@@ -10,6 +10,7 @@ import java.util.function.Supplier;
  */
 @DevelopmentBean
 class JohnRamboSupplier implements Supplier<User> {
+
     @Override
     public User get() {
         User user = new User();
@@ -17,4 +18,5 @@ class JohnRamboSupplier implements Supplier<User> {
         user.setEmail("jrambo@example.org");
         return user;
     }
+
 }

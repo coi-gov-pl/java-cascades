@@ -49,4 +49,5 @@ class Pos45y67Supplier implements DatabaseInstanceSupplier {
     public Class<? extends Supplier<User>> getOwnerSupplier() {
         return MichaelSupplier.class;
     }
+
 }

@@ -20,20 +20,20 @@ class JpaDevelopmentData implements SmartLifecycle {
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentData.class);
     private final UserData userData;
     private final DatabaseInstanceData databaseInstanceData;
-    private Status status = Status.STOPPED;
+    private Status status = Status.REMOVED;
 
     void up() {
-        changeStatus(Status.STARTING);
+        changeStatus(Status.PERSISTING);
         userData.up();
         databaseInstanceData.up();
-        changeStatus(Status.STARTED);
+        changeStatus(Status.PERSISTED);
     }
 
     void down() {
-        changeStatus(Status.STOPPING);
+        changeStatus(Status.REMOVING);
         databaseInstanceData.down();
         userData.down();
-        changeStatus(Status.STOPPED);
+        changeStatus(Status.REMOVED);
     }
 
     private void changeStatus(Status status) {
@@ -64,7 +64,7 @@ class JpaDevelopmentData implements SmartLifecycle {
 
     @Override
     public boolean isRunning() {
-        return status == Status.STARTED;
+        return status == Status.PERSISTED;
     }
 
     @Override
@@ -73,10 +73,10 @@ class JpaDevelopmentData implements SmartLifecycle {
     }
 
     private enum Status {
-        STOPPED,
-        STARTING,
-        STARTED,
-        STOPPING
+        REMOVED,
+        PERSISTING,
+        PERSISTED,
+        REMOVING
     }
 
 }
