@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 import pl.wavesoftware.eid.exceptions.Eid;
@@ -70,7 +71,9 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     public void save(@Nonnull pl.gov.coi.cascades.server.domain.User user) {
         User hibernateUser = userMapper.toHibernateEntity(user);
-        entityManager.persist(hibernateUser);
+        Long id = hibernateUser.getId();
+        User reference = entityManager.getReference(hibernateUser.getClass(), id);
+        entityManager.persist(reference);
     }
 
 }
