@@ -2,8 +2,8 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -36,13 +36,13 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public Optional<TemplateId> find(@Nullable String templateId) {
+    public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> find(@Nullable String templateId) {
         try {
-            TypedQuery<pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId> query =
+            TypedQuery<TemplateId> query =
                 entityManager.createQuery(
-                    "SELECT template FROM pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId template " +
+                    "SELECT template FROM TemplateId template " +
                         "WHERE template.templateOfId = :templateId",
-                    pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId.class
+                    TemplateId.class
                 ).setParameter(TEMPLATE_ID_FIELD, templateId);
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
@@ -59,7 +59,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public Optional<TemplateId> getDefaultTemplateId() {
+    public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> getDefaultTemplateId() {
         return find(DEFAULT_TEMPLATE);
     }
 
