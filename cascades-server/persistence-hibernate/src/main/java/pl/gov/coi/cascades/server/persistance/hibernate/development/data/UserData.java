@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
@@ -13,13 +13,13 @@ import java.util.function.Supplier;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.03.17.
  */
-class UserData {
+public class UserData {
 
     private EntityManager entityManager;
     private Map<Class<Supplier<User>>, User> instances = new HashMap<>();
     private final Iterable<Supplier<User>> supplierList;
 
-    UserData(Iterable<Supplier<User>> supplierList) {
+    public UserData(Iterable<Supplier<User>> supplierList) {
         this.supplierList = supplierList;
     }
 

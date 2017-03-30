@@ -1,6 +1,7 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
 import lombok.RequiredArgsConstructor;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
@@ -17,7 +18,7 @@ import java.util.function.Supplier;
  * @since 24.03.17.
  */
 @RequiredArgsConstructor
-class DatabaseInstanceData {
+public class DatabaseInstanceData {
 
     private final List<DatabaseInstance> instances = new ArrayList<>();
     private final Iterable<DatabaseInstanceSupplier> suppliers;

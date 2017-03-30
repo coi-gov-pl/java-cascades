@@ -1,5 +1,6 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user;
 
+import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.util.function.Supplier;
@@ -9,7 +10,7 @@ import java.util.function.Supplier;
  * @since 27.03.17.
  */
 @DevelopmentBean
-class JohnRamboSupplier implements Supplier<User> {
+public class JohnRamboSupplier implements Supplier<User> {
 
     @Override
     public User get() {

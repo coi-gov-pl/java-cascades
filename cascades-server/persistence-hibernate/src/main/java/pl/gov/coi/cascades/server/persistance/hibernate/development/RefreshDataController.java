@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentData;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -14,13 +15,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class RefreshDataController {
 
-    private final JpaDevelopmentDataImpl jpaDevelopmentDataImpl;
+    private final JpaDevelopmentData jpaDevelopmentData;
 
     @RequestMapping(path = "/development/refresh-data")
     public void refresh() {
-        jpaDevelopmentDataImpl.down();
+        jpaDevelopmentData.down();
 
-        jpaDevelopmentDataImpl.up();
+        jpaDevelopmentData.up();
     }
 
 }
