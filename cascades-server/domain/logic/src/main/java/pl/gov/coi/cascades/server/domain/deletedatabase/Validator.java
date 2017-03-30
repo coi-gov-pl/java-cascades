@@ -2,9 +2,9 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.Error;
-import pl.gov.coi.cascades.server.domain.ErrorImpl;
+import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.gov.coi.cascades.server.domain.User;
 
 import javax.annotation.Nullable;
@@ -44,7 +44,7 @@ class Validator {
     private void validateIfDatabaseInstanceBelongsToLoggedUser() {
         User gotUser = getUser();
         if (!isDatabaseIdBelongsToLoggedUser(gotUser)) {
-            Error errorMessage = new ErrorImpl(
+            Violation violationMessage = new ViolationImpl(
                 String.format(
                     "Given id of database doesn't belong to logged user: %s or has been deleted.",
                     gotUser.getUsername()
@@ -52,7 +52,7 @@ class Validator {
                 PROPERTY_PATH_DATABASE_ID
             );
 
-            response.addError(errorMessage);
+            response.addViolation(violationMessage);
         }
     }
 
@@ -89,8 +89,8 @@ class Validator {
     }
 
     private void newError(String path, String message, Object... parameters) {
-        response.addError(
-            new ErrorImpl(
+        response.addViolation(
+            new ViolationImpl(
                 String.format(message, parameters),
                 path
             )

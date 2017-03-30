@@ -5,9 +5,10 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.server.domain.Error;
-import pl.gov.coi.cascades.server.domain.ErrorImpl;
+import pl.gov.coi.cascades.contract.service.Violation;
+import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.gov.coi.cascades.server.domain.User;
+import pl.gov.coi.cascades.server.domain.ViolationImpl;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -71,24 +72,24 @@ class Validator {
     private void validateLimitOfDatabases() {
         User gotUser = getUser();
         if (databaseLimitGateway.isGlobalLimitExceeded()) {
-            Error errorMessage = new ErrorImpl(
+            Violation violationMessage = new ViolationImpl(
                 String.format(
                     "Global limit of %d launched database instances has been reached",
                     databaseLimitGateway.getGlobalLimit()
                 ),
                 PROPERTY_PATH_GLOBAL_LIMIT
             );
-            response.addError(errorMessage);
+            response.addError(violationMessage);
         }
         if (databaseLimitGateway.isPersonalLimitExceeded(gotUser)) {
-            Error errorMessage = new ErrorImpl(
+            Violation violationMessage = new ViolationImpl(
                 String.format(
                     "Personal limit of %d launched database instances has been reached",
                     databaseLimitGateway.getPersonalLimitPerUser(gotUser)
                 ),
                 PROPERTY_PATH_USER_LIMIT
             );
-            response.addError(errorMessage);
+            response.addError(violationMessage);
         }
     }
 
@@ -112,7 +113,7 @@ class Validator {
 
     private void newError(String path, String message, Object... parameters) {
         response.addError(
-            new ErrorImpl(
+            new ViolationImpl(
                 String.format(message, parameters),
                 path
             )

@@ -9,13 +9,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 22.03.17.
  */
-public class ErrorImplTest {
+public class ViolationImplTest {
 
-    private ErrorImpl error;
+    private ViolationImpl error;
 
     @Before
     public void setUp() {
-        error = new ErrorImpl(
+        error = new ViolationImpl(
             "Error occurred.",
             "testPath"
         );

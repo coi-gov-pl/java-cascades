@@ -11,7 +11,7 @@ import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Request;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
-import pl.gov.coi.cascades.server.presentation.WithErrors;
+import pl.gov.coi.cascades.contract.service.WithViolations;
 import pl.gov.coi.cascades.server.presentation.UserSession;
 
 import javax.inject.Inject;
@@ -45,7 +45,7 @@ public class LaunchDatabaseController {
         produces = MediaType.APPLICATION_JSON_VALUE
     )
     @ResponseBody
-    public ResponseEntity<WithErrors<RemoteDatabaseSpec>> launchDatabasePost(
+    public ResponseEntity<WithViolations<RemoteDatabaseSpec>> launchDatabasePost(
             @RequestBody RemoteDatabaseRequestDTO request) {
 
         User user = userSession.getSignedInUser();
