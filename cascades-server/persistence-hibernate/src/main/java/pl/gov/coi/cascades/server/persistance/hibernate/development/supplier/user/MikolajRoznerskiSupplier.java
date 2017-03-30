@@ -1,6 +1,7 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user;
 
 
+import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.security.SecureRandom;
@@ -11,7 +12,7 @@ import java.util.function.Supplier;
  * @since 27.03.17.
  */
 @DevelopmentBean
-class MikolajRoznerskiSupplier implements Supplier<User> {
+public class MikolajRoznerskiSupplier implements Supplier<User> {
 
     @Override
     public User get() {

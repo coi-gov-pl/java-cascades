@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 @Singleton
 @Transactional
 @RequiredArgsConstructor
-class JpaDevelopmentDataImpl implements JpaDevelopmentData {
+public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
     private final UserData userData;

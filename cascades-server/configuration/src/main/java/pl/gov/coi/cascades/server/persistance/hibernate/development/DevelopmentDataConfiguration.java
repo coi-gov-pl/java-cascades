@@ -4,6 +4,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserData;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JackieSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MikolajRoznerskiSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora23r45Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos45y67Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.inject.Singleton;
