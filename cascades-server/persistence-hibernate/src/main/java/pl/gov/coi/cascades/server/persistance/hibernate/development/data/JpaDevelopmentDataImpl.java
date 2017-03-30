@@ -19,6 +19,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
     private final UserData userData;
     private final DatabaseInstanceData databaseInstanceData;
+    private final TemplateIdData templateIdData;
     private Status status = Status.REMOVED;
 
     @Override
@@ -26,6 +27,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
         changeStatus(Status.PERSISTING);
         userData.up();
         databaseInstanceData.up();
+        templateIdData.up();
         changeStatus(Status.PERSISTED);
     }
 
@@ -34,6 +36,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
         changeStatus(Status.REMOVING);
         databaseInstanceData.down();
         userData.down();
+        templateIdData.down();
         changeStatus(Status.REMOVED);
     }
 

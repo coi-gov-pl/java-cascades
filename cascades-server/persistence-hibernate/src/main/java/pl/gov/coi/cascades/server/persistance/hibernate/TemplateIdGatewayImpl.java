@@ -24,7 +24,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     private static final String TEMPLATE_ID_FIELD = "templateId";
     private EntityManager entityManager;
     private final TemplateIdMapper templateIdMapper;
-    private static final String DEFAULT_TEMPLATE = "DEFAULT_TEMPLATE_ID";
+    private static final String DEFAULT_TEMPLATE = "f4ab6a58";
 
     public TemplateIdGatewayImpl() {
         this.templateIdMapper = new TemplateIdMapper();
@@ -43,7 +43,9 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
                     "SELECT template FROM TemplateId template " +
                         "WHERE template.templateOfId = :templateId",
                     TemplateId.class
-                ).setParameter(TEMPLATE_ID_FIELD, templateId);
+                )
+                .setParameter(TEMPLATE_ID_FIELD, templateId)
+                .setMaxResults(1);
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
