@@ -1,5 +1,7 @@
-package pl.gov.coi.cascades.server.persistance.hibernate.development;
+package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database;
 
+import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
@@ -12,12 +14,12 @@ import java.util.function.Supplier;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 29.03.17.
+ * @since 28.03.17.
  */
 @DevelopmentBean
-class Ora23r45Supplier implements DatabaseInstanceSupplier {
+public class Ora12e34Supplier implements DatabaseInstanceSupplier {
 
-    private static final String ORA23R45 = "ora23r45";
+    private static final String ORA12E34 = "ora12e34";
     private static final int HTTPS_PORT = 443;
 
     @Override
@@ -25,7 +27,7 @@ class Ora23r45Supplier implements DatabaseInstanceSupplier {
         DatabaseInstance db = new DatabaseInstance();
         db.setTemplateId("oracle");
         db.setType("stub");
-        db.setDatabaseName(ORA23R45);
+        db.setDatabaseName(ORA12E34);
         db.setInstanceName("Oracle is *%! hard");
         db.setNetworkBind(
             NetworkBind.builder()
@@ -35,8 +37,8 @@ class Ora23r45Supplier implements DatabaseInstanceSupplier {
         );
         db.setCredentials(
             Credentials.builder()
-                .username("dje4njknjkrn")
-                .password("vfnui34jnghie")
+                .username("xi3jwjxwlq")
+                .password("dg344d34d7g3d34")
                 .build()
         );
         db.setReuseTimes(1);
