@@ -19,6 +19,7 @@
         <module>domain</module>
         <module>presentation</module>
         <module>persistance-stub</module>
+        <module>persistence-hibernate</module>
     </modules>
 
     <properties>

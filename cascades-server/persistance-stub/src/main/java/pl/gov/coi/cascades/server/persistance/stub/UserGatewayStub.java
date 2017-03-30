@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.stub;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -18,10 +17,10 @@ public final class UserGatewayStub implements UserGateway {
     public static final User M_ROZNESKI = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
     public static final User M_ZAKOSCIELNY = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
     public static User J_RAMBO = new User("jrambo", "fcweccf", "jrambo@example.org");
-    private Map<String, User> users;
+    private Map<Object, User> users;
 
-    public UserGatewayStub() {
-        this.users = new HashMap<>();
+    public UserGatewayStub(Map<Object, User> database) {
+        this.users = database;
         J_RAMBO = J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
 
         addUser(B_PITT);
@@ -45,7 +44,7 @@ public final class UserGatewayStub implements UserGateway {
         users.put(user.getUsername(), user);
     }
 
-    public Map<String, User> getAllUsers() {
+    public Map<Object, User> getAllUsers() {
         return users;
     }
 

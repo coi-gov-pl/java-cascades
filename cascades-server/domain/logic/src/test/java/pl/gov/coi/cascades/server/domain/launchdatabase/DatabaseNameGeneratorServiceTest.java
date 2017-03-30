@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import org.junit.Test;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,16 +9,16 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 07.03.17.
  */
-public class DatabaseIdGeneratorServiceTest {
+public class DatabaseNameGeneratorServiceTest {
 
     @Test
     public void testGenerateWithParameter() throws Exception {
         // given
-        DatabaseIdGeneratorService databaseIdGeneratorService = new DatabaseIdGeneratorService();
+        DatabaseNameGeneratorService databaseNameGeneratorService = new DatabaseNameGeneratorService();
 
         // when
-        DatabaseId actual1 = databaseIdGeneratorService.generate("oracle");
-        DatabaseId actual2 = databaseIdGeneratorService.generate("db");
+        DatabaseId actual1 = databaseNameGeneratorService.generate("oracle");
+        DatabaseId actual2 = databaseNameGeneratorService.generate("db");
 
         // then
         assertThat(actual1).isNotNull();
@@ -35,10 +34,10 @@ public class DatabaseIdGeneratorServiceTest {
     @Test
     public void testGenerate() throws Exception {
         // given
-        DatabaseIdGeneratorService databaseIdGeneratorService = new DatabaseIdGeneratorService();
+        DatabaseNameGeneratorService databaseNameGeneratorService = new DatabaseNameGeneratorService();
 
         // when
-        DatabaseId actual = databaseIdGeneratorService.generate();
+        DatabaseId actual = databaseNameGeneratorService.generate();
 
         // then
         assertThat(actual).isNotNull();

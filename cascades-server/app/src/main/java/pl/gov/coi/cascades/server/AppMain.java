@@ -11,6 +11,7 @@ import java.util.function.Supplier;
 
 @SpringBootApplication
 public class AppMain {
+    @VisibleForTesting
     static final Supplier<AppMain> DEFAULT_APP_MAIN_SUPPLIER =
         new AppMainSupplier();
     private static Supplier<AppMain> appMainSupplier = AppMain.DEFAULT_APP_MAIN_SUPPLIER;
@@ -30,7 +31,7 @@ public class AppMain {
         this.applicationFactory = applicationFactory;
     }
 
-    public static void main(String[] args) throws Exception {
+    public static synchronized void main(String[] args) throws Exception {
         instance = appMainSupplier.get();
         instance.start(args);
     }
@@ -41,7 +42,7 @@ public class AppMain {
     }
 
     @VisibleForTesting
-    public static void stop() {
+    public static synchronized void stop() {
         Optional.ofNullable(instance)
             .ifPresent(appMain -> {
                 appMain.close();

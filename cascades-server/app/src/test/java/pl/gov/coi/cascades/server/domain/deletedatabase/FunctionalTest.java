@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import pl.gov.coi.cascades.server.Enviroment;
+import pl.gov.coi.cascades.server.Environment;
 
 import javax.inject.Inject;
 
@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(Enviroment.DEVELOPMENT_NAME)
+@ActiveProfiles(Environment.DEVELOPMENT_NAME)
 public class FunctionalTest {
 
     @Inject
@@ -44,7 +44,7 @@ public class FunctionalTest {
     public void testPositivePath() throws Exception {
         // given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .delete("/databases/ora12e34")
+            .delete("/databases/19")
             .contentType(MediaType.APPLICATION_JSON)
             .content(properRequest());
 
