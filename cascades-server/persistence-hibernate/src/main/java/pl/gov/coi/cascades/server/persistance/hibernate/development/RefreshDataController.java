@@ -14,13 +14,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class RefreshDataController {
 
-    private final JpaDevelopmentData jpaDevelopmentData;
+    private final JpaDevelopmentDataImpl jpaDevelopmentDataImpl;
 
     @RequestMapping(path = "/development/refresh-data")
     public void refresh() {
-        jpaDevelopmentData.down();
+        jpaDevelopmentDataImpl.down();
 
-        jpaDevelopmentData.up();
+        jpaDevelopmentDataImpl.up();
     }
 
 }

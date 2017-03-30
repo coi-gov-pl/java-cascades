@@ -23,9 +23,9 @@ class DevelopmentDataConfiguration {
     @Bean
     @Singleton
     @Transactional
-    JpaDevelopmentData provideDevelopmentData(UserData userData,
-                                              DatabaseInstanceData databaseInstanceData) {
-        return new JpaDevelopmentData(
+    JpaDevelopmentDataImpl provideDevelopmentData(UserData userData,
+                                                  DatabaseInstanceData databaseInstanceData) {
+        return new JpaDevelopmentDataImpl(
             userData,
             databaseInstanceData
         );
