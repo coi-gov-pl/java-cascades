@@ -3,24 +3,28 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
-import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 29.03.17.
  */
+@Transactional
+@Singleton
 public class UserGatewayImpl implements UserGateway {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserGatewayImpl.class);
@@ -34,18 +38,18 @@ public class UserGatewayImpl implements UserGateway {
     }
 
     @PersistenceContext
-    void setEntityManager(EntityManager entityManager) {
+    public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
     @Override
-    public Optional<User> find(@Nullable String userName) {
+    public Optional<pl.gov.coi.cascades.server.domain.User> find(@Nullable String userName) {
         try {
-            TypedQuery<pl.gov.coi.cascades.server.persistance.hibernate.entity.User> query =
+            TypedQuery<User> query =
                 entityManager.createQuery(
-                    "SELECT user FROM pl.gov.coi.cascades.server.persistance.hibernate.entity.User user " +
+                    "SELECT user FROM User user " +
                         "WHERE user.username = :userName",
-                    pl.gov.coi.cascades.server.persistance.hibernate.entity.User.class
+                    User.class
                 )
                 .setParameter(USER_NAME_FIELD, userName)
                 .setMaxResults(1);
@@ -64,8 +68,8 @@ public class UserGatewayImpl implements UserGateway {
     }
 
     @Override
-    public void save(@Nonnull User user) {
-        pl.gov.coi.cascades.server.persistance.hibernate.entity.User hibernateUser = userMapper.toHibernateEntity(user);
+    public void save(@Nonnull pl.gov.coi.cascades.server.domain.User user) {
+        User hibernateUser = userMapper.toHibernateEntity(user);
         entityManager.persist(hibernateUser);
     }
 
