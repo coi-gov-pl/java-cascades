@@ -23,19 +23,21 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class DatabaseIdGatewayStub implements DatabaseIdGateway {
 
-    public static final DatabaseId DATABASE_ID1 = new DatabaseId("ora12e34");
+    public static final DatabaseId DATABASE_ID1 = new DatabaseId("19");
     public static final DatabaseId DATABASE_ID2 = new DatabaseId("pos56e78");
     public static final TemplateId TEMPLATE_ID1 = new TemplateId("oracle");
     public static final TemplateId TEMPLATE_ID2 = new TemplateId("postgres");
     public static final DatabaseType DATABASE_TYPE = new DatabaseTypeStub();
-    public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS1 = new UsernameAndPasswordCredentialsStub("Ben Affleck");
-    public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS2 = new UsernameAndPasswordCredentialsStub("Will Smith");
+    public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS1 =
+        new UsernameAndPasswordCredentialsStub("Ben Affleck");
+    public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS2 =
+        new UsernameAndPasswordCredentialsStub("Will Smith");
     public static final NetworkBind NETWORK_BIND = new NetworkBindStub(5432, "db01.lab.internal");
     public static final DatabaseInstance INSTANCE1 = new DatabaseInstance(
         DATABASE_ID1,
         TEMPLATE_ID1,
         DATABASE_TYPE,
-        "ora12e34",
+        "oracle 12c",
         1,
         "ora12e34",
         USERNAME_AND_PASSWORD_CREDENTIALS1,

@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
  */
 @Getter
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
-public enum Enviroment {
-    DEVELOPMENT(Enviroment.DEVELOPMENT_NAME),
-    PRODUCTION(Enviroment.PRODUCTION_NAME);
+public enum Environment {
+    DEVELOPMENT(Environment.DEVELOPMENT_NAME),
+    PRODUCTION(Environment.PRODUCTION_NAME);
 
     public static final String DEVELOPMENT_NAME = "development";
     public static final String PRODUCTION_NAME = "production";

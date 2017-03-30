@@ -8,14 +8,14 @@ import java.security.SecureRandom;
 /**
  * Class for generating id for databases.
  */
-public class DatabaseIdGeneratorService {
+public class DatabaseNameGeneratorService {
 
-    public static final int DATABASE_NAME_LENGTH = 8;
+    private static final int DATABASE_NAME_LENGTH = 8;
     private static final String VALUES = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
-    public static final int CHARS_FROM_INSTANCE_NAME = 3;
+    private static final int CHARS_FROM_INSTANCE_NAME = 3;
     private SecureRandom secureRandom;
 
-    public DatabaseIdGeneratorService() {
+    public DatabaseNameGeneratorService() {
         secureRandom = new SecureRandom();
     }
 
@@ -25,7 +25,7 @@ public class DatabaseIdGeneratorService {
      * @param instanceName Given name of database instance.
      * @return Id of database.
      */
-    public DatabaseId generate(String instanceName) {
+    DatabaseId generate(String instanceName) {
         int chars = 0;
         Slugify slg = new Slugify();
         String result = slg.slugify(instanceName);
@@ -36,8 +36,7 @@ public class DatabaseIdGeneratorService {
                 stringBuilder.append(result.charAt(i));
                 chars++;
             }
-        }
-        else {
+        } else {
             for(int i = 0; i < CHARS_FROM_INSTANCE_NAME; i++) {
                 stringBuilder.append(result.charAt(i));
                 chars++;
@@ -55,7 +54,7 @@ public class DatabaseIdGeneratorService {
      *
      * @return Id of database.
      */
-    public DatabaseId generate() {
+    DatabaseId generate() {
         return generate("");
     }
 

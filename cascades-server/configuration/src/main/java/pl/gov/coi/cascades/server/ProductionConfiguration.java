@@ -16,14 +16,14 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
  * @since 17.03.17
  */
 @Configuration
-@Profile(Enviroment.PRODUCTION_NAME)
+@Profile(Environment.PRODUCTION_NAME)
 class ProductionConfiguration {
     private final Logger logger = LoggerFactory.getLogger(ProductionConfiguration.class);
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
         String asciiArt = tryToExecute(
-            () -> FigletFont.convertOneLine(Enviroment.PRODUCTION_NAME),
+            () -> FigletFont.convertOneLine(Environment.PRODUCTION_NAME),
             "20170317:135228"
         );
         String banner = "Running in environment\n\n{}\n" +
@@ -35,9 +35,9 @@ class ProductionConfiguration {
             banner,
             asciiArt,
             AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME,
-            Enviroment.DEVELOPMENT_NAME,
+            Environment.DEVELOPMENT_NAME,
             enviromentalize(AbstractEnvironment.ACTIVE_PROFILES_PROPERTY_NAME),
-            Enviroment.DEVELOPMENT_NAME
+            Environment.DEVELOPMENT_NAME
         );
     }
 

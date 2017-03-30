@@ -24,6 +24,10 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
             <groupId>pl.gov.coi.cascades</groupId>
             <artifactId>cascades-server-configuration</artifactId>
             <version>${project.version}</version>
@@ -36,6 +40,11 @@
         <dependency>
             <groupId>pl.gov.coi.cascades</groupId>
             <artifactId>cascades-server-persistence-stub</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>pl.gov.coi.cascades</groupId>
+            <artifactId>cascades-server-persistence-hibernate</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

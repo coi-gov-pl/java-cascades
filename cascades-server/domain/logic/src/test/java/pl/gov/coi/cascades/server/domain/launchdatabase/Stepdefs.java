@@ -5,6 +5,8 @@ import cucumber.api.java.en.Given;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.persistance.stub.UserGatewayStub;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -14,7 +16,8 @@ import java.util.Optional;
 public class Stepdefs {
 
     private Request.RequestBuilder builder;
-    private UserGatewayStub userGatewayStub = new UserGatewayStub();
+    private Map<Object, User> database = new HashMap<>();
+    private UserGatewayStub userGatewayStub = new UserGatewayStub(database);
 
     @Before
     public void before() {
