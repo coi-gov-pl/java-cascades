@@ -26,7 +26,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.coi.cascades.server.domain.DatabaseInstance> {
 
-    public static final int BASE36_RADIX = 36;
+    private static final int BASE36_RADIX = 36;
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
 
     @Inject

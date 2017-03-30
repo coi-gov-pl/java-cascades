@@ -14,7 +14,7 @@ class JohnRamboSupplier implements Supplier<User> {
     @Override
     public User get() {
         User user = new User();
-        user.setUsername("John Rambo");
+        user.setUsername("jrambo");
         user.setEmail("jrambo@example.org");
         return user;
     }

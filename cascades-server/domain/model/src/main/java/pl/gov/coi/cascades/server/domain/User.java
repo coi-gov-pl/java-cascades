@@ -33,6 +33,16 @@ public class User {
         );
     }
 
+    public User(String username,
+                String id,
+                String email,
+                Collection<DatabaseInstance> databases) {
+        this.username = username;
+        this.id = id;
+        this.email = email;
+        this.databases = databases;
+    }
+
     public User addDatabaseInstance(DatabaseInstance databaseInstance) {
         User user = new User(this);
         user.databases.addAll(databases);

@@ -22,7 +22,7 @@ import java.util.Map;
 @Configuration
 class PersistanceStubConfiguration {
 
-    public static final String STUB_DATABASE = "stub-database";
+    private static final String STUB_DATABASE = "stub-database";
 
     @Bean
     @Named(STUB_DATABASE)
