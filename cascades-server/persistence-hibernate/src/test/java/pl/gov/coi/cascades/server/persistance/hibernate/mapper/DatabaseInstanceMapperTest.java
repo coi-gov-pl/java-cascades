@@ -35,7 +35,6 @@ public class DatabaseInstanceMapperTest {
     private static final String host = "db01.lab.internal";
     private static final int port = 5432;
     private static final String databaseId = "19";
-    private static final Long databaseIdAsLong = 45L;
     private static final String templateId = "oracle";
     private static final String databaseType = "stub";
     private static final String instanceName = "ora12e34";
