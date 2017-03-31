@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.presentation.deletedatabase;
 
 import org.springframework.http.HttpStatus;
-import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.deletedatabase.Response;
 
 import java.util.Collection;
@@ -13,21 +13,20 @@ import java.util.HashSet;
  */
 class Presenter implements Response {
 
-    private final Collection<Error> errors = new HashSet<>();
+    private final Collection<Violation> violations = new HashSet<>();
 
     @Override
     public boolean isSuccessful() {
-        return errors.isEmpty();
+        return violations.isEmpty();
     }
 
     @Override
-    public void addError(Error error) {
-        errors.add(error);
+    public void addViolation(Violation violation) {
+        violations.add(violation);
     }
 
-    @Override
-    public Iterable<Error> getErrors() {
-        return errors;
+    public Iterable<Violation> getViolations() {
+        return violations;
     }
 
     ViewModel createModel() {

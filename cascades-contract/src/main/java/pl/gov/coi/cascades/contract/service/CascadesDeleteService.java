@@ -15,6 +15,6 @@ public interface CascadesDeleteService {
      * @param databaseId Given id of database.
      * @return a future of void, just to know if operation succeeded
      */
-    Future<Void> deleteDatabase(DatabaseId databaseId);
+    Future<WithViolations<Void>> deleteDatabase(DatabaseId databaseId);
 
 }

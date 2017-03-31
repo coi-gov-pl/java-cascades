@@ -13,6 +13,6 @@ public interface CascadesLaunchService {
      * @param request Given database creation request.
      * @return a future of remote database specification
      */
-    Future<RemoteDatabaseSpec> launchDatabase(RemoteDatabaseRequest request);
+    Future<WithViolations<RemoteDatabaseSpec>> launchDatabase(RemoteDatabaseRequest request);
 
 }

@@ -4,7 +4,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
-import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.contract.service.Violation;
 
 public interface Response {
 
@@ -18,9 +18,9 @@ public interface Response {
     /**
      * Method adds error if it occurs during launching new database instance.
      *
-     * @param error Given error.
+     * @param violation Given error.
      */
-    void addError(Error error);
+    void addError(Violation violation);
 
     /**
      * A setter for database id.
