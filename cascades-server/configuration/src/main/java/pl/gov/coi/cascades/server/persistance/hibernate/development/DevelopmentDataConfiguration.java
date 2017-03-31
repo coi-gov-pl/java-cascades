@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -38,6 +39,7 @@ import java.util.stream.Collectors;
 class DevelopmentDataConfiguration {
 
     @Bean
+    @Primary
     TemplateIdGateway provideTemplateIdGateway() {
         return new TemplateIdGatewayImpl();
     }
