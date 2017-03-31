@@ -31,6 +31,9 @@ public class DatabaseInstance {
     @GeneratedValue
     private Long id;
 
+    @Column
+    private String databaseId;
+
     @Column(nullable = false)
     private String templateId;
 

@@ -59,7 +59,7 @@ class Validator {
     private boolean isDatabaseIdBelongsToLoggedUser(User gotUser) {
         if (gotUser.getDatabases() != null) {
             for (DatabaseInstance databaseInstance : gotUser.getDatabases()) {
-                if (databaseInstance.getDatabaseId().equals(databaseId)) {
+                if (databaseInstance.getDatabaseId().getId().equals(databaseId.getId())) {
                     return true;
                 }
             }

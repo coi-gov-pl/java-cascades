@@ -26,6 +26,7 @@ public class Pos45y67Supplier implements DatabaseInstanceSupplier {
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
         db.setTemplateId("postgres");
+        db.setDatabaseId(POS45Y67);
         db.setType("stub");
         db.setDatabaseName(POS45Y67);
         db.setInstanceName("Postgres is *%! hard");

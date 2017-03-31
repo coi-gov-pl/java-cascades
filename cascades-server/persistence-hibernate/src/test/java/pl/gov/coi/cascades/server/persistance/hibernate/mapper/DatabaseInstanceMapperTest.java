@@ -64,7 +64,7 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(databaseIdAsLong);
+        assertThat(actual.getDatabaseId()).isEqualTo(databaseId);
         assertThat(actual.getTemplateId()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
         assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
@@ -95,7 +95,7 @@ public class DatabaseInstanceMapperTest {
         networkBind.setPort(port);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setId(databaseIdAsLong);
+        hibernateInstance.setDatabaseId(databaseId);
         hibernateInstance.setTemplateId(templateId);
         hibernateInstance.setType(databaseType);
         hibernateInstance.setInstanceName(instanceName);

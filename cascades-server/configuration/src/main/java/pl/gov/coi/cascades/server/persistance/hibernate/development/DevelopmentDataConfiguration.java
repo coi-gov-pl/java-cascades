@@ -12,13 +12,14 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.data.Databas
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora23r45Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos34t56Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos45y67Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JackieSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MikolajRoznerskiSupplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora23r45Supplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos45y67Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.inject.Singleton;
@@ -104,6 +105,12 @@ class DevelopmentDataConfiguration {
     @DevelopmentBean
     DatabaseInstanceSupplier createOra23y45Provider() {
         return new Ora23r45Supplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    DatabaseInstanceSupplier createPos34t56Provider() {
+        return new Pos34t56Supplier();
     }
 
     @Bean

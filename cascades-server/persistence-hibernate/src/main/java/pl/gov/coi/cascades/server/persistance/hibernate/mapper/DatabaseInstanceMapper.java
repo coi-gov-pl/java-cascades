@@ -50,7 +50,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
             : DatabaseStatus.DELETED;
 
         DatabaseInstance instance = new DatabaseInstance();
-        instance.setId(createId(databaseInstance));
+        instance.setDatabaseId(createId(databaseInstance));
         instance.setTemplateId(databaseInstance.getTemplateId().getId());
         instance.setType(databaseInstance.getDatabaseType().getName());
         instance.setInstanceName(databaseInstance.getInstanceName());
@@ -66,7 +66,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
     @Override
     public pl.gov.coi.cascades.server.domain.DatabaseInstance fromHibernateEntity(DatabaseInstance databaseInstance) {
-        checkNotNull(databaseInstance.getId(), "20170324:155926");
+        checkNotNull(databaseInstance.getDatabaseId(), "20170324:155926");
         checkNotNull(databaseInstance.getTemplateId(), "20170324:155955");
         checkNotNull(databaseInstance.getType(), "20170324:160730");
         checkNotNull(databaseInstance.getInstanceName(), "20170327:100935");
@@ -111,16 +111,13 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
     private DatabaseId create(DatabaseInstance instance) {
         return new DatabaseId(
-            Long.toString(instance.getId(), BASE36_RADIX)
+            instance.getDatabaseId()
         );
     }
 
-    private Long createId(pl.gov.coi.cascades.server.domain.DatabaseInstance databaseInstance) {
+    private String createId(pl.gov.coi.cascades.server.domain.DatabaseInstance databaseInstance) {
         DatabaseId dbId = databaseInstance.getDatabaseId();
-        return Long.parseLong(
-            dbId.getId(),
-            BASE36_RADIX
-        );
+        return dbId.getId();
     }
 
     private static final class NetworkBindImpl implements pl.gov.coi.cascades.contract.domain.NetworkBind {
