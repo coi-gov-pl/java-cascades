@@ -4,6 +4,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
@@ -17,8 +19,7 @@ import javax.transaction.Transactional;
  * @since 02.04.17.
  */
 @Configuration
-@Profile(Environment.DEVELOPMENT_NAME)
-public class DataConfiguration {
+public class HibernateConfiguration {
 
     @Bean
     @Singleton

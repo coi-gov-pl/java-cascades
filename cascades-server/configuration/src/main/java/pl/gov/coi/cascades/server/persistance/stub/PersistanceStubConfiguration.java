@@ -4,11 +4,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
+import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import javax.inject.Named;
 import java.util.HashMap;
@@ -44,13 +47,13 @@ class PersistanceStubConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    UserGatewayStub produceUserGateway(@Named(STUB_DATABASE) Map<Object, User> database) {
+    UserGateway produceUserGateway(@Named(STUB_DATABASE) Map<Object, User> database) {
         return new UserGatewayStub(database);
     }
 
     @ConditionalOnMissingBean
     @Bean
-    DatabaseLimitGatewayStub produceDatabaseLimitGateway() {
+    DatabaseLimitGateway produceDatabaseLimitGateway() {
         return new DatabaseLimitGatewayStub();
     }
 
@@ -62,7 +65,7 @@ class PersistanceStubConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    DatabaseTypeStub produceDatabaseType() {
+    DatabaseType produceDatabaseType() {
         return new DatabaseTypeStub();
     }
 

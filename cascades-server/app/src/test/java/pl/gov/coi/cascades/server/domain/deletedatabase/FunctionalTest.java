@@ -24,7 +24,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.persistance.hibernate.UserGatewayImpl;
+import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -46,12 +46,8 @@ public class FunctionalTest {
     @Inject
     private WebApplicationContext wac;
 
-    private UserGatewayImpl userGateway;
-
     @Inject
-    public void setUserGateway(UserGatewayImpl userGateway) {
-        this.userGateway = userGateway;
-    }
+    private UserGateway userGateway;
 
     @Mock
     private DatabaseInstance databaseInstance;
@@ -62,32 +58,9 @@ public class FunctionalTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
-    @Test
-    public void testUserGatewayPositivePath() throws Exception {
-        // when
-        Optional<User> actual = userGateway.find("jrambo");
-
-        // then
-        assertThat(actual).isNotNull();
-        assertThat(actual.isPresent()).isTrue();
-        assertThat(actual.get().getUsername()).isEqualTo("jrambo");
-        assertThat(actual.get().getEmail()).isEqualTo("jrambo@example.org");
-        assertThat(actual.get().getDatabases()).hasSize(1);
-    }
-
-    @Test
-    public void testUserGatewayNegativePath() throws Exception {
-        // when
-        Optional<User> actual = userGateway.find("nonExistingUser");
-
-        // then
-        assertThat(actual).isEmpty();
     }
 
     @Test
