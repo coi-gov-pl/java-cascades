@@ -2,12 +2,8 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
-import pl.gov.coi.cascades.server.domain.UserGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.UserGatewayImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserData;
@@ -35,14 +31,6 @@ import java.util.stream.Collectors;
 @Configuration
 @Profile(Environment.DEVELOPMENT_NAME)
 class DevelopmentDataConfiguration {
-
-    @Bean
-    @Singleton
-    @Transactional
-    @Primary
-    UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new UserGatewayImpl(databaseTypeClassNameService);
-    }
 
     @Bean
     @Singleton

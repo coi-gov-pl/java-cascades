@@ -25,8 +25,8 @@ public class Pos34t56Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
+        db.setId(938429792L);
         db.setTemplateId("postgres");
-        db.setDatabaseId(POS34T56);
         db.setType("stub");
         db.setDatabaseName(POS34T56);
         db.setInstanceName("Postgres is *%! hard");

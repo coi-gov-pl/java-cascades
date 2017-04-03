@@ -6,6 +6,8 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
+import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
@@ -35,6 +37,7 @@ public class DatabaseInstanceMapperTest {
     private static final String host = "db01.lab.internal";
     private static final int port = 5432;
     private static final String databaseId = "19";
+    private static final Long databaseIdAsLong = 45L;
     private static final String templateId = "oracle";
     private static final String databaseType = "stub";
     private static final String instanceName = "ora12e34";
@@ -63,7 +66,7 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getDatabaseId()).isEqualTo(databaseId);
+        assertThat(actual.getId()).isEqualTo(databaseIdAsLong);
         assertThat(actual.getTemplateId()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
         assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
@@ -94,7 +97,7 @@ public class DatabaseInstanceMapperTest {
         networkBind.setPort(port);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setDatabaseId(databaseId);
+        hibernateInstance.setId(databaseIdAsLong);
         hibernateInstance.setTemplateId(templateId);
         hibernateInstance.setType(databaseType);
         hibernateInstance.setInstanceName(instanceName);
@@ -122,6 +125,61 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getNetworkBind().getPort()).isEqualTo(port);
         assertThat(actual.getStatus()).isEqualTo(DatabaseStatus.LAUNCHED);
         assertThat(actual.getCreated()).isEqualTo(created);
+    }
+
+    @Test
+    public void testDatabaseIdMapping() {
+        // given
+        Long id = -2174612783412L;
+        Credentials credentials = new Credentials();
+        credentials.setPassword(password);
+        credentials.setUsername(username);
+        NetworkBind networkBind = new NetworkBind();
+        networkBind.setHost(host);
+        networkBind.setPort(port);
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
+            = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
+        hibernateInstance.setId(databaseIdAsLong);
+        hibernateInstance.setTemplateId(templateId);
+        hibernateInstance.setType(databaseType);
+        hibernateInstance.setInstanceName(instanceName);
+        hibernateInstance.setReuseTimes(1);
+        hibernateInstance.setDatabaseName(databaseName);
+        hibernateInstance.setCredentials(credentials);
+        hibernateInstance.setNetworkBind(networkBind);
+        hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
+        hibernateInstance.setCreated(created);
+        hibernateInstance.setId(id);
+        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        when(databaseTypeClassNameService.getDatabaseType(anyString()))
+            .thenReturn(new DatabaseTypeDTOStub(databaseType));
+
+        // when
+        pl.gov.coi.cascades.server.domain.DatabaseInstance model =
+            databaseInstanceMapper.fromHibernateEntity(hibernateInstance);
+        DatabaseInstance mapped = databaseInstanceMapper.toHibernateEntity(model);
+
+        // then
+        assertThat(mapped).isNotSameAs(hibernateInstance);
+        assertThat(mapped.getId()).isEqualTo(id);
+        assertThat(model.getDatabaseId().getId()).isEqualTo("-rr04ayic");
+    }
+
+    private static final class DatabaseTypeDTOStub extends DatabaseTypeDTO {
+        private DatabaseTypeDTOStub(String type) {
+            super(new DatabaseType() {
+
+                @Override
+                public String getName() {
+                    return type;
+                }
+
+                @Override
+                public ConnectionStringProducer getConnectionStringProducer() {
+                    return null;
+                }
+            });
+        }
     }
 
 }

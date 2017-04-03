@@ -98,7 +98,7 @@ public class UserMapperTest {
         networkBind.setPort(port);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setDatabaseId(databaseId);
+        hibernateInstance.setId(databaseIdAsLong);
         hibernateInstance.setTemplateId(templateId);
         hibernateInstance.setType(databaseType);
         hibernateInstance.setInstanceName(instanceName);

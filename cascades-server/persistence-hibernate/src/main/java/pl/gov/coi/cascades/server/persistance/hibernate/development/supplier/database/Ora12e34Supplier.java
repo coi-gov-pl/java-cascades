@@ -25,8 +25,8 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
+        db.setId(214342235L);
         db.setTemplateId("oracle");
-        db.setDatabaseId(ORA12E34);
         db.setType("stub");
         db.setDatabaseName(ORA12E34);
         db.setInstanceName("Oracle is *%! hard");

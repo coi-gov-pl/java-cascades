@@ -25,8 +25,8 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
+        db.setId(48279590549L);
         db.setTemplateId("oracle");
-        db.setDatabaseId(ORA23R45);
         db.setType("stub");
         db.setDatabaseName(ORA23R45);
         db.setInstanceName("Oracle is *%! hard");

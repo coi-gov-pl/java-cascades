@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.UserGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 import pl.wavesoftware.eid.exceptions.Eid;
@@ -28,14 +27,21 @@ import java.util.Optional;
 @Singleton
 public class UserGatewayImpl implements UserGateway {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserGatewayImpl.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(UserGatewayImpl.class);
+    private final Logger logger;
     private static final String USER_NAME_FIELD = "userName";
     private EntityManager entityManager;
     private final UserMapper userMapper;
 
     @Inject
     public UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        this(databaseTypeClassNameService, DEFAULT_LOGGER);
+    }
+
+    UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService,
+                    Logger logger) {
         this.userMapper = new UserMapper(databaseTypeClassNameService);
+        this.logger = logger;
     }
 
     @PersistenceContext
@@ -57,7 +63,7 @@ public class UserGatewayImpl implements UserGateway {
 
             return Optional.of(userMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
-            LOGGER.error(new Eid("20170329:171038")
+            logger.error(new Eid("20170329:171038")
                 .makeLogMessage(
                     "Given name of user: %s hasn't been found: %s.",
                     userName,

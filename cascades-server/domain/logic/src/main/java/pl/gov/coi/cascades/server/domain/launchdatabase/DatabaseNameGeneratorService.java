@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import com.github.slugify.Slugify;
-import pl.gov.coi.cascades.contract.domain.DatabaseId;
 
 import java.security.SecureRandom;
 
@@ -25,7 +24,7 @@ public class DatabaseNameGeneratorService {
      * @param instanceName Given name of database instance.
      * @return Id of database.
      */
-    DatabaseId generate(String instanceName) {
+    String generate(String instanceName) {
         int chars = 0;
         Slugify slg = new Slugify();
         String result = slg.slugify(instanceName);
@@ -46,7 +45,7 @@ public class DatabaseNameGeneratorService {
         for(int i = 0; i < DATABASE_NAME_LENGTH - chars; i++) {
             stringBuilder.append(VALUES.charAt(secureRandom.nextInt(VALUES.length())));
         }
-        return new DatabaseId(stringBuilder.toString());
+        return stringBuilder.toString();
     }
 
     /**
@@ -54,7 +53,7 @@ public class DatabaseNameGeneratorService {
      *
      * @return Id of database.
      */
-    DatabaseId generate() {
+    String generate() {
         return generate("");
     }
 

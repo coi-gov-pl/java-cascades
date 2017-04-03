@@ -21,7 +21,7 @@ public class DatabaseTypeDTO {
     @Nullable
     private Consumer<Error> errorConsumer;
 
-    DatabaseTypeDTO(DatabaseType databaseType) {
+    protected DatabaseTypeDTO(DatabaseType databaseType) {
         this.databaseType = databaseType;
         error = null;
     }
