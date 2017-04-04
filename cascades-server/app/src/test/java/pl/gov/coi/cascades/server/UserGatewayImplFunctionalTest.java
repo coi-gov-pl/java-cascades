@@ -1,4 +1,4 @@
-package pl.gov.coi.cascades.server.domain.deletedatabase;
+package pl.gov.coi.cascades.server;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,7 +9,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.UserGatewayImpl;
 

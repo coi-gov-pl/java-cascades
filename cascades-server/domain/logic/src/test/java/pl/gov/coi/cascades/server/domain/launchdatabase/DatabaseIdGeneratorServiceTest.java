@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 
 import java.util.Random;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.when;
 public class DatabaseIdGeneratorServiceTest {
 
     private static final int RADIX_36 = 36;
+
     @Mock
     private Random random;
 
@@ -32,8 +34,13 @@ public class DatabaseIdGeneratorServiceTest {
     @Test
     public void generate() throws Exception {
         // given
-        DatabaseIdGeneratorService databaseIdGeneratorService = new DatabaseIdGeneratorService(random);
+        DatabaseIdMapper databaseIdMapper = new DatabaseIdMapper();
+        DatabaseIdGeneratorService databaseIdGeneratorService = new DatabaseIdGeneratorService(
+            random,
+            databaseIdMapper
+        );
         Long generateId = 2144123525L;
+        Long shiftedId = generateId >>> 1;
         when(random.nextLong()).thenReturn(generateId);
 
         // when
@@ -41,7 +48,7 @@ public class DatabaseIdGeneratorServiceTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(Long.toString(generateId >>> 1, RADIX_36));
+        assertThat(actual.getId()).isEqualTo(Long.toString(shiftedId, RADIX_36));
     }
 
 }

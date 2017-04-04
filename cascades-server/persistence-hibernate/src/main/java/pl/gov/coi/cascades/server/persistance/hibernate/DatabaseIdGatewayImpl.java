@@ -31,7 +31,9 @@ public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
 
     @Inject
     public DatabaseIdGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this.databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        this.databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
     }
 
     @PersistenceContext

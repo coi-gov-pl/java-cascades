@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import com.google.common.annotations.VisibleForTesting;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 
 import java.security.SecureRandom;
 import java.util.Random;
@@ -12,24 +13,29 @@ import java.util.Random;
  */
 public class DatabaseIdGeneratorService {
     private static final Random DEFUALT_RND = new SecureRandom();
+    private static final DatabaseIdMapper DEFAULT_DATABASE_ID_MAPPER = new DatabaseIdMapper();
     private static final int RADIX_36 = 36;
 
     private final Random random;
+    private final DatabaseIdMapper databaseIdMapper;
 
     public DatabaseIdGeneratorService() {
-        this(DEFUALT_RND);
+        this(
+            DEFUALT_RND,
+            DEFAULT_DATABASE_ID_MAPPER
+        );
     }
 
     @VisibleForTesting
-    DatabaseIdGeneratorService(Random random) {
+    DatabaseIdGeneratorService(Random random,
+                               DatabaseIdMapper databaseIdMapper) {
         this.random = random;
+        this.databaseIdMapper = databaseIdMapper;
     }
 
     DatabaseId generate() {
         // unsigned long
         long longId = random.nextLong() >>> 1;
-        return new DatabaseId(
-            Long.toString(longId, RADIX_36)
-        );
+        return databaseIdMapper.fromHibernateEntity(longId);
     }
 }

@@ -40,7 +40,9 @@ public class UserGatewayImpl implements UserGateway {
 
     UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService,
                     Logger logger) {
-        this.userMapper = new UserMapper(databaseTypeClassNameService);
+        this.userMapper = new UserMapper(
+            databaseTypeClassNameService
+        );
         this.logger = logger;
     }
 

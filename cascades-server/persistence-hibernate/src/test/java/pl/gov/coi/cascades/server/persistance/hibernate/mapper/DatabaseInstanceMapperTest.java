@@ -8,6 +8,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
@@ -50,6 +51,9 @@ public class DatabaseInstanceMapperTest {
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
 
+    @Mock
+    private DatabaseIdMapper databaseIdMapper;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -59,7 +63,9 @@ public class DatabaseInstanceMapperTest {
     @Test
     public void testToHibernateEntity() throws Exception {
         // given
-        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
 
         // when
         DatabaseInstance actual = databaseInstanceMapper.toHibernateEntity(DatabaseIdGatewayStub.INSTANCE1);
@@ -88,7 +94,9 @@ public class DatabaseInstanceMapperTest {
         when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
         when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
         doNothing().when(databaseTypeDTO).resolve();
-        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
         Credentials credentials = new Credentials();
         credentials.setPassword(password);
         credentials.setUsername(username);
@@ -150,7 +158,9 @@ public class DatabaseInstanceMapperTest {
         hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
         hibernateInstance.setCreated(created);
         hibernateInstance.setId(id);
-        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
         when(databaseTypeClassNameService.getDatabaseType(anyString()))
             .thenReturn(new DatabaseTypeDTOStub(databaseType));
 

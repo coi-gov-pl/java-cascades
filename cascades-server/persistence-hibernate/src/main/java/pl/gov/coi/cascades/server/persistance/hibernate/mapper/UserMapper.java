@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.domain.Mapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
