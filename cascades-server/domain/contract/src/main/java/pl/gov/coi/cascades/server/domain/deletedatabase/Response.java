@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.domain.deletedatabase;
 
-import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.contract.service.Violation;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -10,8 +10,8 @@ public interface Response {
 
     boolean isSuccessful();
 
-    void addError(Error error);
+    void addViolation(Violation violation);
 
-    Iterable<Error> getErrors();
+    Iterable<Violation> getViolations();
 
 }

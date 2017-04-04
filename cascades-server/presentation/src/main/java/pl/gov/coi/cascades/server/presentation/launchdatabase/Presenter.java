@@ -7,9 +7,9 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
-import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
-import pl.gov.coi.cascades.server.presentation.WithErrors;
+import pl.gov.coi.cascades.contract.service.WithViolations;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -22,7 +22,7 @@ class Presenter implements Response {
     private NetworkBind networkBind;
     private String databaseName;
     private UsernameAndPasswordCredentials credentials;
-    private final Collection<Error> errors = new HashSet<>();
+    private final Collection<Violation> violations = new HashSet<>();
 
     /**
      * Method gives an information if launching new database instance completed successfully.
@@ -31,17 +31,17 @@ class Presenter implements Response {
      */
     @Override
     public boolean isSuccessful() {
-        return errors.isEmpty();
+        return violations.isEmpty();
     }
 
     /**
      * Method adds error if it occurs during launching new database instance.
      *
-     * @param error Given error.
+     * @param violation Given error.
      */
     @Override
-    public void addError(Error error) {
-        errors.add(error);
+    public void addError(Violation violation) {
+        violations.add(violation);
     }
 
     /**
@@ -101,8 +101,8 @@ class Presenter implements Response {
     }
 
     private ViewModel createFailedViewModel() {
-        WithErrors<RemoteDatabaseSpec> withErrors = new WithErrors<>(errors);
-        return new ViewModel(withErrors, HttpStatus.BAD_REQUEST);
+        WithViolations<RemoteDatabaseSpec> withViolations = new WithViolations<>(violations);
+        return new ViewModel(withViolations, HttpStatus.BAD_REQUEST);
     }
 
     private ViewModel createSuccessulViewModel() {
@@ -112,8 +112,8 @@ class Presenter implements Response {
             networkBind,
             credentials
         );
-        WithErrors<RemoteDatabaseSpec> withErrors = new WithErrors<>(databaseSpec);
-        return new ViewModel(withErrors, HttpStatus.OK);
+        WithViolations<RemoteDatabaseSpec> withViolations = new WithViolations<>(databaseSpec);
+        return new ViewModel(withViolations, HttpStatus.OK);
     }
 
 }
