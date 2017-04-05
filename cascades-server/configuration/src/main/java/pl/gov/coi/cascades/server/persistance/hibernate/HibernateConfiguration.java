@@ -31,12 +31,14 @@ public class HibernateConfiguration {
 
     @Bean
     @Transactional
+    @Primary
     UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new UserGatewayImpl(databaseTypeClassNameService);
     }
 
     @Bean
     @Transactional
+    @Primary
     DatabaseIdGateway createDatabaseIdGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseIdGatewayImpl(
             databaseTypeClassNameService

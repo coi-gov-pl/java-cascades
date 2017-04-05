@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,7 +45,7 @@ class PersistanceStubConfiguration {
         return new DatabaseInstanceGatewayStub();
     }
 
-    @ConditionalOnBean
+    @ConditionalOnMissingBean
     @Bean
     UserGateway produceUserGateway(@Named(STUB_DATABASE) Map<Object, User> database) {
         return new UserGatewayStub(database);
@@ -58,7 +57,7 @@ class PersistanceStubConfiguration {
         return new DatabaseLimitGatewayStub();
     }
 
-    @ConditionalOnBean
+    @ConditionalOnMissingBean
     @Bean
     DatabaseIdGateway produceDatabaseIdGateway() {
         return new DatabaseIdGatewayStub();

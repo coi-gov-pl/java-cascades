@@ -10,7 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.persistance.hibernate.UserGatewayImpl;
+import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -31,7 +31,7 @@ public class UserGatewayImplFunctionalTest {
     @Inject
     private WebApplicationContext wac;
 
-    private UserGatewayImpl userGateway;
+    private UserGateway userGateway;
 
     @Before
     public void setup() {
@@ -39,7 +39,7 @@ public class UserGatewayImplFunctionalTest {
     }
 
     @Inject
-    public void setUserGateway(UserGatewayImpl userGateway) {
+    public void setUserGateway(UserGateway userGateway) {
         this.userGateway = userGateway;
     }
 
