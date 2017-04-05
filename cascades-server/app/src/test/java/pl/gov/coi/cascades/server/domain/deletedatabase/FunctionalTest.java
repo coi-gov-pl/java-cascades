@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,6 +26,7 @@ import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentData;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -49,6 +51,9 @@ public class FunctionalTest {
     @Inject
     private UserGateway userGateway;
 
+    @Inject
+    private JpaDevelopmentData developmentData;
+
     @Mock
     private DatabaseInstance databaseInstance;
 
@@ -61,6 +66,12 @@ public class FunctionalTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
+    }
+
+    @After
+    public void after() {
+        developmentData.down();
+        developmentData.up();
     }
 
     @Test
