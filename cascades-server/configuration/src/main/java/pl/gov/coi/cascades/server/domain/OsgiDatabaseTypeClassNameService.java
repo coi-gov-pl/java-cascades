@@ -67,7 +67,7 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
 
     private DatabaseTypeDTO newErrorDTO(String messageFormat, Object... arguments) {
         return new DatabaseTypeDTO(
-            new ErrorImpl(
+            new ViolationImpl(
                 String.format(messageFormat, arguments),
                 PROPERTY_PATH_TYPE
             )

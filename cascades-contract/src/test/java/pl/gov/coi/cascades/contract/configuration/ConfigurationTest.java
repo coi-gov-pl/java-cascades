@@ -8,10 +8,14 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
+import pl.wavesoftware.eid.utils.EidPreconditions;
+
+import javax.annotation.Nonnull;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -31,8 +35,13 @@ public class ConfigurationTest {
     @Mock
     private Driver driver;
 
-    @Mock
-    private NetworkBind networkBind;
+    private URI serverAddressUri = tryToExecute(new EidPreconditions.UnsafeSupplier<URI>() {
+        @Override
+        @Nonnull
+        public URI get() throws URISyntaxException {
+            return new URI("http://cascades.example.org");
+        }
+    }, "20170330:151356");
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -44,28 +53,14 @@ public class ConfigurationTest {
     public void setUp() {
         instanceName = "PESEL";
         configuration = new Configuration(
-                server,
-                migration,
-                driver,
-                instanceName,
-                networkBind
+            driver,
+            true,
+            160L,
+            server,
+            migration,
+            instanceName,
+            serverAddressUri
         );
-    }
-
-    @Test
-    public void testDefaultConstructor() throws Exception {
-        // when
-        Configuration actual = new Configuration(
-                server,
-                migration,
-                driver,
-                false,
-                instanceName,
-                networkBind
-        );
-
-        // then
-        assertNotNull(actual);
     }
 
     @Test
@@ -80,10 +75,10 @@ public class ConfigurationTest {
     @Test
     public void testGetCascadesServerNetworkBind() throws Exception {
         // when
-        NetworkBind actual = configuration.getNetworkBind();
+        URI actual = configuration.getCascadesServerUri();
 
         // then
-        assertEquals(networkBind, actual);
+        assertEquals(serverAddressUri, actual);
     }
 
 }

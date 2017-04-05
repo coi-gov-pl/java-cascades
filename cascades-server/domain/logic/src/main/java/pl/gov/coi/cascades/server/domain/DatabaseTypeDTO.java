@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain;
 
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.contract.service.Violation;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -15,19 +16,19 @@ public class DatabaseTypeDTO {
     @Nullable
     private final DatabaseType databaseType;
     @Nullable
-    private final Error error;
+    private final Violation violation;
     @Nullable
     private Consumer<DatabaseType> databaseTypeConsumer;
     @Nullable
-    private Consumer<Error> errorConsumer;
+    private Consumer<Violation> errorConsumer;
 
     DatabaseTypeDTO(DatabaseType databaseType) {
         this.databaseType = databaseType;
-        error = null;
+        violation = null;
     }
 
-    DatabaseTypeDTO(Error error) {
-        this.error = error;
+    DatabaseTypeDTO(Violation violation) {
+        this.violation = violation;
         databaseType = null;
     }
 
@@ -48,7 +49,7 @@ public class DatabaseTypeDTO {
      * @param errorConsumer Given consumer of error.
      * @return DTO of database type.
      */
-    public DatabaseTypeDTO onFail(Consumer<Error> errorConsumer) {
+    public DatabaseTypeDTO onFail(Consumer<Violation> errorConsumer) {
         this.errorConsumer = errorConsumer;
         return this;
     }
@@ -59,7 +60,7 @@ public class DatabaseTypeDTO {
     public void resolve() {
         Optional.ofNullable(databaseType)
             .ifPresent(databaseTypeConsumer);
-        Optional.ofNullable(error)
+        Optional.ofNullable(violation)
             .ifPresent(errorConsumer);
     }
 

@@ -12,6 +12,7 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.OsgiBeanLocator;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
@@ -70,13 +71,13 @@ public class OsgiDatabaseTypeClassNameServiceTest {
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(search);
         DatabaseType databaseType = getDatabaseType(actual);
-        Error error = getError(actual);
+        Violation violation = getError(actual);
 
         // then
         assertThat(actual).isNotNull();
         assertThat(databaseType).isNull();
-        assertThat(error).isNotNull();
-        assertThat(error.getMessage()).contains(message);
+        assertThat(violation).isNotNull();
+        assertThat(violation.getMessage()).contains(message);
     }
 
     @Test
@@ -89,11 +90,11 @@ public class OsgiDatabaseTypeClassNameServiceTest {
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(search);
         DatabaseType databaseType = getDatabaseType(actual);
-        Error error = getError(actual);
+        Violation violation = getError(actual);
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(error).isNull();
+        assertThat(violation).isNull();
         assertThat(databaseType).isNotNull()
             .isSameAs(STUB_DATABASE_TYPE);
     }
@@ -108,11 +109,11 @@ public class OsgiDatabaseTypeClassNameServiceTest {
         // when
         DatabaseTypeDTO actual = databaseTypeClassNameService.getDatabaseType(search);
         DatabaseType databaseType = getDatabaseType(actual);
-        Error error = getError(actual);
+        Violation violation = getError(actual);
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(error).isNull();
+        assertThat(violation).isNull();
         assertThat(databaseType).isNotNull()
             .isSameAs(STUB_DATABASE_TYPE);
         verify(logger, times(1))
@@ -131,25 +132,25 @@ public class OsgiDatabaseTypeClassNameServiceTest {
     }
 
     @Nullable
-    private Error getError(DatabaseTypeDTO actual) {
-        return new DtoFetcher(actual).getError();
+    private Violation getError(DatabaseTypeDTO actual) {
+        return new DtoFetcher(actual).getViolation();
     }
 
     private static final class DtoFetcher {
         @Setter
-        private Error error;
+        private Violation violation;
         @Setter
         private DatabaseType databaseType;
 
         private DtoFetcher(DatabaseTypeDTO dto) {
-            dto.onFail(this::setError)
+            dto.onFail(this::setViolation)
                 .onSuccess(this::setDatabaseType)
                 .resolve();
         }
 
         @Nullable
-        Error getError() {
-            return error;
+        Violation getViolation() {
+            return violation;
         }
 
         @Nullable

@@ -11,6 +11,7 @@ import javax.annotation.Nullable;
  * @since 03.03.17.
  */
 final class RemoteDatabaseRequestDTO extends RemoteDatabaseRequest {
+    private static final long serialVersionUID = 321782881132L;
     /**
      * {@inheritDoc}
      */

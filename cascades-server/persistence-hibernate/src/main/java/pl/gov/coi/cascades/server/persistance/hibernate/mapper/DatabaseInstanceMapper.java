@@ -5,9 +5,9 @@ import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.server.domain.Error;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
@@ -146,19 +146,19 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
     private static final class DtoFetcher {
         @Setter
-        private Error error;
+        private Violation violation;
         @Setter
         private DatabaseType databaseType;
 
         private DtoFetcher(DatabaseTypeDTO dto) {
-            dto.onFail(this::setError)
+            dto.onFail(this::setViolation)
                 .onSuccess(this::setDatabaseType)
                 .resolve();
         }
 
         @Nullable
-        Error getError() {
-            return error;
+        Violation getViolation() {
+            return violation;
         }
 
         @Nullable

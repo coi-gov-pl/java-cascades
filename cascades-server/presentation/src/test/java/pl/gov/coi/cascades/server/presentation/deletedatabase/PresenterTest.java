@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
-import pl.gov.coi.cascades.server.domain.Error;
+import pl.gov.coi.cascades.contract.service.Violation;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +21,7 @@ public class PresenterTest {
     private Presenter presenter;
 
     @Mock
-    private Error error;
+    private Violation violation;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -46,24 +46,24 @@ public class PresenterTest {
     @Test
     public void testAddError() throws Exception {
         // when
-        presenter.addError(error);
+        presenter.addViolation(violation);
 
         // then
-        assertThat(presenter.getErrors()).isNotNull();
-        assertThat(presenter.getErrors()).hasSize(1);
+        assertThat(presenter.getViolations()).isNotNull();
+        assertThat(presenter.getViolations()).hasSize(1);
     }
 
     @Test
     public void testGetErrors() throws Exception {
         // given
-        presenter.addError(error);
+        presenter.addViolation(violation);
 
         // when
-        Iterable<Error> errors = presenter.getErrors();
+        Iterable<Violation> errors = presenter.getViolations();
 
         // then
         assertThat(errors).isNotNull();
-        assertThat(errors).contains(error);
+        assertThat(errors).contains(violation);
     }
 
     @Test
@@ -79,7 +79,7 @@ public class PresenterTest {
     @Test
     public void testCreateModelWhenIsBadRequest() throws Exception {
         // given
-        presenter.addError(error);
+        presenter.addViolation(violation);
 
         // when
         ViewModel actual = presenter.createModel();
