@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 
 /**
  * @author <a href="mailto:krzysztof.suszynski@coi.gov.pl">Krzysztof Suszynski</a>
@@ -55,7 +56,9 @@ public class CascadesRuleTest {
     public void testBefore() {
         // given
         CascadesRule rule = CascadesRule.builder()
-            .driver(new Driver(DATABASE_TYPE_STUB, new TemplateId("gw45223")))
+            .driver(new Driver(DATABASE_TYPE_STUB, new TemplateId(
+                "gw45223", TemplateIdStatus.CREATED, false, "898693"))
+            )
             .instanceName("pesel-test")
             .build();
 

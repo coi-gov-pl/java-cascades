@@ -43,7 +43,7 @@ public class TemplateIdData {
 
     void down() {
         instances.values()
-            .forEach(this::removeUser);
+            .forEach(this::removeTemplateId);
         instances.clear();
     }
 
@@ -52,7 +52,7 @@ public class TemplateIdData {
         return (Class<Supplier<TemplateId>>) supplier.getClass();
     }
 
-    private void removeUser(TemplateId templateId) {
+    private void removeTemplateId(TemplateId templateId) {
         Long id = templateId.getId();
         TemplateId fetched = entityManager.getReference(TemplateId.class, id);
         entityManager.remove(fetched);

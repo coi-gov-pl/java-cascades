@@ -6,6 +6,8 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -25,7 +27,11 @@ public class Pos45y67Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setTemplateId("postgres");
+        TemplateId templateId = new TemplateId();
+        templateId.setServerId("yhsrj7ub7v");
+        templateId.setDefault(true);
+        templateId.setStatus(TemplateIdStatus.CREATED);
+        db.setTemplateId(templateId);
         db.setType("stub");
         db.setDatabaseName(POS45Y67);
         db.setInstanceName("Postgres is *%! hard");

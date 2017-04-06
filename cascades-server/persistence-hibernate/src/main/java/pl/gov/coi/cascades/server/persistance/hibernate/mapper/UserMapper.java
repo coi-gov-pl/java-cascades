@@ -21,7 +21,10 @@ public class UserMapper implements Mapper<User, pl.gov.coi.cascades.server.domai
     @Inject
     public UserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
         this.databaseTypeClassNameService = databaseTypeClassNameService;
-        databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        TemplateIdMapper templateIdMapper = new TemplateIdMapper();
+        databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
     }
 
     @Override

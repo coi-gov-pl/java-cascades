@@ -28,10 +28,12 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
     private static final int BASE36_RADIX = 36;
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
+    private final TemplateIdMapper templateIdMapper;
 
     @Inject
     public DatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
         this.databaseTypeClassNameService = databaseTypeClassNameService;
+        this.templateIdMapper = new TemplateIdMapper();
     }
 
     @Override
@@ -51,7 +53,8 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
         DatabaseInstance instance = new DatabaseInstance();
         instance.setId(createId(databaseInstance));
-        instance.setTemplateId(databaseInstance.getTemplateId().getId());
+        TemplateIdMapper templateIdMapper1 = new TemplateIdMapper();
+        instance.setTemplateId(templateIdMapper1.toHibernateEntity(databaseInstance.getTemplateId()));
         instance.setType(databaseInstance.getDatabaseType().getName());
         instance.setInstanceName(databaseInstance.getInstanceName());
         instance.setReuseTimes(databaseInstance.getReuseTimes());
@@ -79,7 +82,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         checkNotNull(databaseInstance.getNetworkBind().getPort(), "20170327:084555");
 
         DatabaseId databaseId = create(databaseInstance);
-        TemplateId templateId = new TemplateId(databaseInstance.getTemplateId());
+        TemplateId templateId = templateIdMapper.fromHibernateEntity(databaseInstance.getTemplateId());
         DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(databaseInstance.getType());
         DatabaseType databaseType = new DtoFetcher(databaseTypeDTO).getDatabaseType();
         UsernameAndPasswordCredentials credentials = new UsernameAndPasswordCredentialsImpl(

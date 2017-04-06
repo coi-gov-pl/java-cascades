@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.stub;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
@@ -25,8 +24,6 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
 
     public static final DatabaseId DATABASE_ID1 = new DatabaseId("19");
     public static final DatabaseId DATABASE_ID2 = new DatabaseId("pos56e78");
-    public static final TemplateId TEMPLATE_ID1 = new TemplateId("oracle");
-    public static final TemplateId TEMPLATE_ID2 = new TemplateId("postgres");
     public static final DatabaseType DATABASE_TYPE = new DatabaseTypeStub();
     public static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS1 =
         new UsernameAndPasswordCredentialsStub("Ben Affleck");
@@ -35,7 +32,7 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     public static final NetworkBind NETWORK_BIND = new NetworkBindStub(5432, "db01.lab.internal");
     public static final DatabaseInstance INSTANCE1 = new DatabaseInstance(
         DATABASE_ID1,
-        TEMPLATE_ID1,
+        TemplateIdGatewayStub.TEMPLATE_ID1,
         DATABASE_TYPE,
         "oracle 12c",
         1,
@@ -47,7 +44,7 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     );
     public static final DatabaseInstance INSTANCE2 = new DatabaseInstance(
         DATABASE_ID2,
-        TEMPLATE_ID2,
+        TemplateIdGatewayStub.TEMPLATE_ID2,
         DATABASE_TYPE,
         "pos56e78",
         3,

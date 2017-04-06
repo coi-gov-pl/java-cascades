@@ -6,6 +6,8 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -25,7 +27,12 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setTemplateId("oracle");
+        TemplateId templateId = new TemplateId();
+//        templateId.setId(67765737L);
+        templateId.setServerId("ukdtksu6w66j");
+        templateId.setDefault(true);
+        templateId.setStatus(TemplateIdStatus.CREATED);
+        db.setTemplateId(templateId);
         db.setType("stub");
         db.setDatabaseName(ORA23R45);
         db.setInstanceName("Oracle is *%! hard");

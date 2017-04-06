@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.te
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import java.util.function.Supplier;
 
@@ -15,7 +16,9 @@ public class Eaba275Supplier implements Supplier<TemplateId> {
     @Override
     public TemplateId get() {
         TemplateId templateId = new TemplateId();
-        templateId.setTemplateOfId("eaba275");
+        templateId.setStatus(TemplateIdStatus.CREATED);
+        templateId.setServerId("rgey65getg");
+        templateId.setDefault(true);
         return templateId;
     }
 

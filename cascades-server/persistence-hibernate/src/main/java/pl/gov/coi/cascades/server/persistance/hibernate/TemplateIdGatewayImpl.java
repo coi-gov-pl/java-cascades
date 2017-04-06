@@ -24,7 +24,6 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     private static final String TEMPLATE_ID_FIELD = "templateId";
     private EntityManager entityManager;
     private final TemplateIdMapper templateIdMapper;
-    private static final String DEFAULT_TEMPLATE = "f4ab6a58";
 
     public TemplateIdGatewayImpl() {
         this.templateIdMapper = new TemplateIdMapper();
@@ -41,7 +40,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
             TypedQuery<TemplateId> query =
                 entityManager.createQuery(
                     "SELECT template FROM TemplateId template " +
-                        "WHERE template.templateOfId = :templateId",
+                        "WHERE template.id = :templateId",
                     TemplateId.class
                 )
                 .setParameter(TEMPLATE_ID_FIELD, templateId)
@@ -62,7 +61,25 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     @Override
     public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> getDefaultTemplateId() {
-        return find(DEFAULT_TEMPLATE);
+        try {
+            TypedQuery<TemplateId> query =
+                entityManager.createQuery(
+                    "SELECT template FROM TemplateId template " +
+                        "WHERE template.isDefault = true",
+                    TemplateId.class
+                )
+                .setMaxResults(1);
+
+            return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
+        } catch (NoResultException e) {
+            LOGGER.error(new Eid("20170406:092655")
+                .makeLogMessage(
+                    "No default template id has been found",
+                    e
+                )
+            );
+            return Optional.empty();
+        }
     }
 
 }
