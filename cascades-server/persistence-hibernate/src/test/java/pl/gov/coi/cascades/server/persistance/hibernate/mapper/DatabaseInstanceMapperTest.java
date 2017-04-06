@@ -72,19 +72,34 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(databaseIdAsLong);
-        assertThat(actual.getTemplateId().getId()).isEqualTo(Long.parseLong(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId(), BASE_36));
-        assertThat(actual.getTemplateId().getStatus().name()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getStatus().name());
-        assertThat(actual.getTemplateId().getServerId()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getServerId());
-        assertThat(actual.getTemplateId().isDefault()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().isDefault());
+        assertThat(actual.getTemplateId()
+            .getId())
+            .isEqualTo(Long.parseLong(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId(), BASE_36));
+        assertThat(actual.getTemplateId()
+            .getStatus().name())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getStatus().name());
+        assertThat(actual.getTemplateId()
+            .getServerId())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getServerId());
+        assertThat(actual.getTemplateId()
+            .isDefault())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().isDefault());
         assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
         assertThat(actual.getReuseTimes()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getReuseTimes());
         assertThat(actual.getDatabaseName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseName());
-        assertThat(actual.getCredentials().getPassword())
+        assertThat(actual.getCredentials()
+            .getPassword())
             .isEqualTo(Arrays.toString(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getPassword()));
-        assertThat(actual.getCredentials().getUsername()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getUsername());
-        assertThat(actual.getNetworkBind().getHost()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getNetworkBind().getHost());
-        assertThat(actual.getNetworkBind().getPort()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getNetworkBind().getPort());
+        assertThat(actual.getCredentials()
+            .getUsername())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getUsername());
+        assertThat(actual.getNetworkBind()
+            .getHost())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getNetworkBind().getHost());
+        assertThat(actual.getNetworkBind()
+            .getPort())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getNetworkBind().getPort());
         assertThat(actual.getStatus().name()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getStatus().name());
         assertThat(actual.getCreated()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getCreated());
     }

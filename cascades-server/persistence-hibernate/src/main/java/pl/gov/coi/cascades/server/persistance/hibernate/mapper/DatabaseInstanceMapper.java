@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
@@ -27,13 +28,24 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.coi.cascades.server.domain.DatabaseInstance> {
 
     private static final int BASE36_RADIX = 36;
+    private static final TemplateIdMapper DEFAULT_TEMPLATE_ID_MAPPER = new TemplateIdMapper();
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
     private final TemplateIdMapper templateIdMapper;
 
-    @Inject
+
     public DatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        this(
+            databaseTypeClassNameService,
+            DEFAULT_TEMPLATE_ID_MAPPER
+        );
+    }
+
+    @Inject
+    @VisibleForTesting
+    DatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService,
+                           TemplateIdMapper templateIdMapper) {
         this.databaseTypeClassNameService = databaseTypeClassNameService;
-        this.templateIdMapper = new TemplateIdMapper();
+        this.templateIdMapper = templateIdMapper;
     }
 
     @Override
