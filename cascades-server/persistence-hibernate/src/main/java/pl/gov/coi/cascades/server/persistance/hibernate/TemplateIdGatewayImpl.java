@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -21,12 +22,19 @@ import java.util.Optional;
 public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TemplateIdGatewayImpl.class);
-    private static final String TEMPLATE_ID_FIELD = "templateId";
+    private static final TemplateIdMapper DEFAULT_TEMPLATE_ID_MAPPER = new TemplateIdMapper();
+    private static final String TEMPLATE_ID_FIELD = "templateIdAsLong";
+    private static final int RADIX_36 = 36;
     private EntityManager entityManager;
     private final TemplateIdMapper templateIdMapper;
 
     public TemplateIdGatewayImpl() {
-        this.templateIdMapper = new TemplateIdMapper();
+        this(DEFAULT_TEMPLATE_ID_MAPPER);
+    }
+
+    @VisibleForTesting
+    TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper) {
+        this.templateIdMapper = templateIdMapper;
     }
 
     @PersistenceContext
@@ -37,13 +45,16 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     @Override
     public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> find(@Nullable String templateId) {
         try {
+            Long templateIdAsLong = templateId != null
+                ? Long.parseLong(templateId, RADIX_36)
+                : null;
             TypedQuery<TemplateId> query =
                 entityManager.createQuery(
                     "SELECT template FROM TemplateId template " +
-                        "WHERE template.id = :templateId",
+                        "WHERE template.id = :templateIdAsLong",
                     TemplateId.class
                 )
-                .setParameter(TEMPLATE_ID_FIELD, templateId)
+                .setParameter(TEMPLATE_ID_FIELD, templateIdAsLong)
                 .setMaxResults(1);
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
