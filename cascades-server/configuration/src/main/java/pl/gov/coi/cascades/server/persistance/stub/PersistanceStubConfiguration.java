@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnSingleCandidate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -30,7 +31,7 @@ class PersistanceStubConfiguration {
         return new HashMap<>();
     }
 
-    @ConditionalOnMissingBean
+    @ConditionalOnSingleCandidate
     @Bean
     TemplateIdGateway produceTemplateIdGateway() {
         return new TemplateIdGatewayStub();

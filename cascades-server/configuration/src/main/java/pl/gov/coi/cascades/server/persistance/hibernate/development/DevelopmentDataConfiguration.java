@@ -2,11 +2,8 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.TemplateIdGatewayImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.TemplateIdData;
@@ -37,12 +34,6 @@ import java.util.stream.Collectors;
 @Configuration
 @Profile(Environment.DEVELOPMENT_NAME)
 class DevelopmentDataConfiguration {
-
-    @Bean
-    @Primary
-    TemplateIdGateway provideTemplateIdGateway() {
-        return new TemplateIdGatewayImpl();
-    }
 
     @Bean
     @Singleton
