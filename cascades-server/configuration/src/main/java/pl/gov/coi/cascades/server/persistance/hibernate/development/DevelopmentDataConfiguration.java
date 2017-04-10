@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * @since 24.03.17.
  */
 @Configuration
-@Profile(Environment.DEVELOPMENT_NAME)
+@Profile({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
 class DevelopmentDataConfiguration {
 
     @Bean

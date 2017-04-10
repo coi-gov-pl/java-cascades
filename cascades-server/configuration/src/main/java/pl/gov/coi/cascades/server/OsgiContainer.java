@@ -8,6 +8,7 @@ import org.osgi.util.tracker.ServiceTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.DisposableBean;
+import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
@@ -30,15 +31,46 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 @Component
 @Configuration
 @RequiredArgsConstructor
-class OsgiContainer implements DisposableBean {
+class OsgiContainer implements SmartLifecycle {
 
     private static final long STOP_TIMEOUT = 1000L * 30; // 30sec
     private final Framework framework;
     private final Logger logger = LoggerFactory.getLogger(OsgiContainer.class);
+    private Status status = Status.STOPPED;
 
     @Override
-    public void destroy() throws Exception {
+    public boolean isAutoStartup() {
+        return true;
+    }
+
+    @Override
+    public void stop(Runnable callback) {
+        changeStatus(Status.STOPPING);
         handleStop();
+        changeStatus(Status.STOPPED);
+        callback.run();
+    }
+
+    @Override
+    public void start() {
+        changeStatus(Status.RUNNING);
+        startContainer();
+        changeStatus(Status.RUN);
+    }
+
+    @Override
+    public void stop() {
+        // do nothing
+    }
+
+    @Override
+    public boolean isRunning() {
+        return status == Status.RUN;
+    }
+
+    @Override
+    public int getPhase() {
+        return status.ordinal();
     }
 
     @EventListener(ContextRefreshedEvent.class)
@@ -120,4 +152,17 @@ class OsgiContainer implements DisposableBean {
             }
         }
     }
+
+    private void changeStatus(Status status) {
+        logger.info("Changing status from {} to {}", this.status, status);
+        this.status = status;
+    }
+
+    private enum Status {
+        RUNNING,
+        RUN,
+        STOPPING,
+        STOPPED
+    }
+
 }

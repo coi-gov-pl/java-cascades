@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.gov.coi.cascades.server.domain.User;
@@ -21,7 +20,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @ActiveProfiles({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserGatewayImplFunctionalTest {
 
     private UserGateway userGateway;
