@@ -1,14 +1,11 @@
 package pl.gov.coi.cascades.server;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
@@ -23,20 +20,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(Environment.DEVELOPMENT_NAME)
+@ActiveProfiles({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserGatewayImplFunctionalTest {
 
-    private MockMvc mockMvc;
-
-    @Inject
-    private WebApplicationContext wac;
-
     private UserGateway userGateway;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
 
     @Inject
     public void setUserGateway(UserGateway userGateway) {

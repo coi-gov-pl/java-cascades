@@ -1,20 +1,16 @@
 package pl.gov.coi.cascades.server;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.DatabaseIdGatewayImpl;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -27,27 +23,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles(Environment.DEVELOPMENT_NAME)
+@ActiveProfiles({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
 public class DatabaseIdGatewayImplFunctionalTest {
 
     private static final String NON_EXISTING_DATABASE_ID = "875785887";
-    private MockMvc mockMvc;
-
-    @Inject
-    private WebApplicationContext wac;
 
     @Inject
     private UserGateway userGateway;
 
-    private DatabaseIdGatewayImpl databaseIdGateway;
-
-    @Before
-    public void setup() {
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
+    private DatabaseIdGateway databaseIdGateway;
 
     @Inject
-    public void setDatabaseIdGateway(DatabaseIdGatewayImpl databaseIdGateway) {
+    public void setDatabaseIdGateway(DatabaseIdGateway databaseIdGateway) {
         this.databaseIdGateway = databaseIdGateway;
     }
 

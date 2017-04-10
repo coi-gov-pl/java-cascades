@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Profile(Environment.DEVELOPMENT_NAME)
 @Configuration
-class PersistanceStubByDefaultOnDevelopmentConfiguration {
+class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
 
     private static final String STUB_DATABASE = "stub-database";
 
