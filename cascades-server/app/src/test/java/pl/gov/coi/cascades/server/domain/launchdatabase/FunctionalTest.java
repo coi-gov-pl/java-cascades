@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.Environment;
+import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
 import javax.inject.Inject;
@@ -32,7 +33,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({Environment.DEVELOPMENT_NAME, Environment.STUB_NAME})
+@ActiveProfiles({Environment.DEVELOPMENT_NAME, ProfileType.STUB_NAME})
 public class FunctionalTest {
 
     @Inject

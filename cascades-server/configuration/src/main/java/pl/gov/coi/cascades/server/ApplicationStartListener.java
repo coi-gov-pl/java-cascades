@@ -17,7 +17,7 @@ class ApplicationStartListener implements
         ConfigurableEnvironment env = event.getEnvironment();
         env.setDefaultProfiles(
             Environment.PRODUCTION_NAME,
-            Environment.HIBERNATE_NAME
+            ProfileType.HIBERNATE_NAME
         );
     }
 

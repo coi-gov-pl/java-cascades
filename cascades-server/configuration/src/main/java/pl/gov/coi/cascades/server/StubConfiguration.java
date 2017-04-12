@@ -15,7 +15,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
  * @since 04.04.17.
  */
 @Configuration
-@Profile(Environment.STUB_NAME)
+@Profile(ProfileType.STUB_NAME)
 class StubConfiguration {
 
     private final Logger logger = LoggerFactory.getLogger(StubConfiguration.class);
@@ -23,7 +23,7 @@ class StubConfiguration {
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
         String asciiArt = tryToExecute(
-            () -> FigletFont.convertOneLine(Environment.STUB_NAME),
+            () -> FigletFont.convertOneLine(ProfileType.STUB_NAME),
             "20170404:150225"
         );
         String banner = "Running in environment\n\n{}\n";

@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
+import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserData;
@@ -29,7 +30,7 @@ import java.util.stream.Collectors;
  * @since 24.03.17.
  */
 @Configuration
-@Profile({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
+@Profile({Environment.DEVELOPMENT_NAME, ProfileType.HIBERNATE_NAME})
 class DevelopmentDataConfiguration {
 
     @Bean

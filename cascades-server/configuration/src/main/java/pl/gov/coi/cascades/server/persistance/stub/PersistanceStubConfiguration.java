@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.server.Environment;
+import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 05.04.17.
  */
-@Profile(Environment.STUB_NAME)
+@Profile(ProfileType.STUB_NAME)
 @Configuration
 class PersistanceStubConfiguration {
 

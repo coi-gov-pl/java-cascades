@@ -15,7 +15,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
  * @since 04.04.17.
  */
 @Configuration
-@Profile(Environment.HIBERNATE_NAME)
+@Profile(ProfileType.HIBERNATE_NAME)
 class HibernateProfileConfiguration {
 
     private final Logger logger = LoggerFactory.getLogger(HibernateProfileConfiguration.class);
@@ -23,7 +23,7 @@ class HibernateProfileConfiguration {
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
         String asciiArt = tryToExecute(
-            () -> FigletFont.convertOneLine(Environment.HIBERNATE_NAME),
+            () -> FigletFont.convertOneLine(ProfileType.HIBERNATE_NAME),
             "20170404:150225"
         );
         String banner = "Running in environment\n\n{}\n";

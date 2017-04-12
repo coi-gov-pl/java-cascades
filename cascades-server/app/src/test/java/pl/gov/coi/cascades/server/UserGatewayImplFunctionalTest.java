@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({Environment.DEVELOPMENT_NAME, Environment.HIBERNATE_NAME})
+@ActiveProfiles({Environment.DEVELOPMENT_NAME, ProfileType.HIBERNATE_NAME})
 public class UserGatewayImplFunctionalTest {
 
     private UserGateway userGateway;
