@@ -1,13 +1,11 @@
 package pl.gov.coi.cascades.server;
 
 import com.google.common.collect.Sets;
-import lombok.RequiredArgsConstructor;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.launch.Framework;
 import org.osgi.util.tracker.ServiceTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +15,14 @@ import org.springframework.stereotype.Component;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
 import javax.annotation.Nullable;
+import javax.annotation.PreDestroy;
+import javax.inject.Inject;
 import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import static pl.wavesoftware.eid.utils.EidPreconditions.checkState;
 import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
 /**
@@ -30,13 +31,17 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
  */
 @Component
 @Configuration
-@RequiredArgsConstructor
 class OsgiContainer implements SmartLifecycle {
 
     private static final long STOP_TIMEOUT = 1000L * 30; // 30sec
     private final Framework framework;
     private final Logger logger = LoggerFactory.getLogger(OsgiContainer.class);
     private Status status = Status.STOPPED;
+
+    @Inject
+    OsgiContainer(Framework framework) {
+        this.framework = framework;
+    }
 
     @Override
     public boolean isAutoStartup() {
@@ -45,17 +50,13 @@ class OsgiContainer implements SmartLifecycle {
 
     @Override
     public void stop(Runnable callback) {
-        changeStatus(Status.STOPPING);
         handleStop();
-        changeStatus(Status.STOPPED);
         callback.run();
     }
 
     @Override
     public void start() {
-        changeStatus(Status.RUNNING);
-        startContainer();
-        changeStatus(Status.RUN);
+        // do nothing
     }
 
     @Override
@@ -81,15 +82,18 @@ class OsgiContainer implements SmartLifecycle {
     }
 
     private void startContainer() {
+        changeStatus(Status.RUNNING);
         logger.info("Starting OSGi Container - {}", getFrameworkName());
         tryToExecute((EidPreconditions.UnsafeProcedure) framework::start, "20170315:134841");
-
+        changeStatus(Status.RUN);
     }
 
     private void handleStop() {
+        changeStatus(Status.STOPPING);
         logger.info("Stopping OSGi Container - {}", getFrameworkName());
         tryToExecute((EidPreconditions.UnsafeProcedure) framework::stop, "20170315:135147");
         tryToExecute(() -> framework.waitForStop(STOP_TIMEOUT), "20170315:160521");
+        changeStatus(Status.STOPPED);
     }
 
     private String getFrameworkName() {
@@ -98,11 +102,10 @@ class OsgiContainer implements SmartLifecycle {
 
     @Bean
     OsgiBeanLocator provideOsgiBeanLocator() {
-        ensureContainerIsStated();
         return new OsgiBeanLocatorImpl(framework);
     }
 
-    private static final class OsgiBeanLocatorImpl implements OsgiBeanLocator, DisposableBean {
+    private static final class OsgiBeanLocatorImpl implements OsgiBeanLocator {
         private final Map<Class, ServiceTracker> serviceTrackerMap = new HashMap<>();
         private final Framework framework;
 
@@ -138,6 +141,7 @@ class OsgiContainer implements SmartLifecycle {
         }
 
         private <T> ServiceTracker<T, T> createServiceTracker(Class<T> cls) {
+            checkState(framework.getState() == Bundle.ACTIVE, "20170411:174945");
             return new ServiceTracker<>(
                 framework.getBundleContext(),
                 cls,
@@ -145,11 +149,10 @@ class OsgiContainer implements SmartLifecycle {
             );
         }
 
-        @Override
-        public void destroy() throws Exception {
-            for (ServiceTracker serviceTracker : serviceTrackerMap.values()) {
-                serviceTracker.close();
-            }
+        @PreDestroy
+        public void destroy() {
+            serviceTrackerMap.values()
+                .forEach(ServiceTracker::close);
         }
     }
 
