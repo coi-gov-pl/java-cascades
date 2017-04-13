@@ -24,7 +24,6 @@ import pl.gov.coi.cascades.server.StubDevelopmentTest;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentData;
 
 import javax.inject.Inject;
 import java.util.Optional;
@@ -38,7 +37,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @StubDevelopmentTest
-public class FunctionalTest {
+public class FunctionalIT {
 
     private static final String NOT_EXISTING_ID = "3253v4v4363";
     private MockMvc mockMvc;
@@ -48,9 +47,6 @@ public class FunctionalTest {
 
     @Inject
     private UserGateway userGateway;
-
-    @Inject
-    private JpaDevelopmentData developmentData;
 
     @Mock
     private DatabaseInstance databaseInstance;

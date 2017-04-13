@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @HibernateDevelopmentTest
-public class UserGatewayImplFunctionalTest {
+public class UserGatewayImplFunctionalIT {
 
     private UserGateway userGateway;
 

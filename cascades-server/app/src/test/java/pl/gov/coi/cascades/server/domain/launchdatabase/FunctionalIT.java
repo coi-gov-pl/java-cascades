@@ -32,7 +32,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @StubDevelopmentTest
-public class FunctionalTest {
+public class FunctionalIT {
 
     @Inject
     private WebApplicationContext wac;

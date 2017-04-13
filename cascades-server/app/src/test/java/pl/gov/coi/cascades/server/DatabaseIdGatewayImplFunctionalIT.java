@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @HibernateDevelopmentTest
-public class DatabaseIdGatewayImplFunctionalTest {
+public class DatabaseIdGatewayImplFunctionalIT {
 
     private static final String NON_EXISTING_DATABASE_ID = "875785887";
 
