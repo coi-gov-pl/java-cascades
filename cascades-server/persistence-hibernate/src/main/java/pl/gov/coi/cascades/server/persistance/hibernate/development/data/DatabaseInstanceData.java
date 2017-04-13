@@ -1,12 +1,15 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -20,6 +23,7 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class DatabaseInstanceData {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInstanceData.class);
     private final List<DatabaseInstance> instances = new ArrayList<>();
     private final Iterable<DatabaseInstanceSupplier> suppliers;
     private EntityManager entityManager;
@@ -31,12 +35,19 @@ public class DatabaseInstanceData {
     }
 
     void up() {
+        TypedQuery<Long> query =
+            entityManager.createQuery(
+                "SELECT COUNT(instance.id) FROM DatabaseInstance instance",
+                Long.class
+            );
+        LOGGER.info("Number of Database Instances before adding: {}", query.getSingleResult());
         for (DatabaseInstanceSupplier supplier : suppliers) {
             Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
             Optional<User> userOptional = userData.getUserForSupplierClass(ownerSupplier);
             DatabaseInstance instance = supplier.get();
             userOptional.ifPresent(getUserConsumer(instance));
         }
+        LOGGER.info("Number of Database Instances after adding: {}", query.getSingleResult());
     }
 
     private Consumer<User> getUserConsumer(DatabaseInstance instance) {
