@@ -54,8 +54,9 @@ public class UserData {
 
     private void removeUser(User user) {
         Long id = user.getId();
-        User fetched = entityManager.getReference(User.class, id);
-        entityManager.remove(fetched);
+        User fetched = entityManager.find(User.class, id);
+        Optional.ofNullable(fetched)
+            .ifPresent(entityManager::remove);
     }
 
 }

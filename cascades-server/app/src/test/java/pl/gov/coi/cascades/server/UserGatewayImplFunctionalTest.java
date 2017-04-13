@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -19,7 +18,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({Environment.DEVELOPMENT_NAME, ProfileType.HIBERNATE_NAME})
+@HibernateDevelopmentTest
 public class UserGatewayImplFunctionalTest {
 
     private UserGateway userGateway;

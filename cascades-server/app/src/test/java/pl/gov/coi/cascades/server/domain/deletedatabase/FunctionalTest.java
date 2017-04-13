@@ -13,7 +13,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -22,8 +21,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.server.Environment;
-import pl.gov.coi.cascades.server.ProfileType;
+import pl.gov.coi.cascades.server.StubDevelopmentTest;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -40,7 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@ActiveProfiles({Environment.DEVELOPMENT_NAME, ProfileType.STUB_NAME})
+@StubDevelopmentTest
 public class FunctionalTest {
 
     private static final String NOT_EXISTING_ID = "3253v4v4363";

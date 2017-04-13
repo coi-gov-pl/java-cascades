@@ -66,7 +66,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
 
     @Override
     public boolean isRunning() {
-        return status == Status.REMOVING;
+        return status == Status.PERSISTED;
     }
 
     @Override

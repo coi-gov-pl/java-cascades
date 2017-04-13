@@ -50,8 +50,9 @@ public class DatabaseInstanceData {
     void down() {
         for (DatabaseInstance instance : instances) {
             Long id = instance.getId();
-            DatabaseInstance reference = entityManager.getReference(instance.getClass(), id);
-            entityManager.remove(reference);
+            DatabaseInstance reference = entityManager.find(instance.getClass(), id);
+            Optional.ofNullable(reference)
+                .ifPresent(entityManager::remove);
         }
         instances.clear();
     }
