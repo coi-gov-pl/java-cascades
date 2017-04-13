@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -65,12 +64,6 @@ public class FunctionalTest {
     @Before
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
-    }
-
-    @After
-    public void after() {
-        developmentData.down();
-        developmentData.up();
     }
 
     @Test
