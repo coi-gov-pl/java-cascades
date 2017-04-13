@@ -66,12 +66,12 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
 
     @Override
     public boolean isRunning() {
-        return status == Status.PERSISTED;
+        return status == Status.REMOVING;
     }
 
     @Override
     public int getPhase() {
-        return status.ordinal();
+        return Integer.MAX_VALUE;
     }
 
     private enum Status {

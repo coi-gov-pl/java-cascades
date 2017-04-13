@@ -6,6 +6,7 @@ import org.osgi.framework.launch.Framework;
 import org.osgi.util.tracker.ServiceTracker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.context.SmartLifecycle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -105,7 +106,7 @@ class OsgiContainer implements SmartLifecycle {
         return new OsgiBeanLocatorImpl(framework);
     }
 
-    private static final class OsgiBeanLocatorImpl implements OsgiBeanLocator {
+    private static final class OsgiBeanLocatorImpl implements OsgiBeanLocator, DisposableBean {
         private final Map<Class, ServiceTracker> serviceTrackerMap = new HashMap<>();
         private final Framework framework;
 
@@ -149,8 +150,8 @@ class OsgiContainer implements SmartLifecycle {
             );
         }
 
-        @PreDestroy
-        public void destroy() {
+        @Override
+        public void destroy() throws Exception {
             serviceTrackerMap.values()
                 .forEach(ServiceTracker::close);
         }
