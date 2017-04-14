@@ -14,10 +14,10 @@ import javax.transaction.Transactional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 06.04.17.
+ * @since 02.04.17.
  */
 @Configuration
-@Profile(Environment.HIBERNATE_NAME)
+@Profile(ProfileType.HIBERNATE_NAME)
 public class HibernateConfiguration {
 
     @Bean

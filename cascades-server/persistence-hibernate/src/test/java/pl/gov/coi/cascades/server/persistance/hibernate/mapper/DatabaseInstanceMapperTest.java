@@ -8,7 +8,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
@@ -35,16 +34,19 @@ import static org.mockito.Mockito.when;
  */
 public class DatabaseInstanceMapperTest {
 
-    private static final String password = "12345678";
-    private static final String username = "Ben Affleck";
-    private static final String host = "db01.lab.internal";
-    private static final int port = 5432;
-    private static final String databaseId = "19";
-    private static final Long databaseIdAsLong = 45L;
-    private static final String databaseType = "stub";
-    private static final String instanceName = "ora12e34";
-    private static final String databaseName = "oracle 12c";
+    private static final String PASSWORD = "12345678";
+    private static final String USERNAME = "Ben Affleck";
+    private static final String HOST = "db01.lab.internal";
+    private static final int PORT = 5432;
+    private static final String DATABASE_ID = "19";
+    private static final Long DATABASE_ID_AS_LONG = 45L;
+    private static final String DATABASE_TYPE = "stub";
+    private static final String INSTANCE_NAME = "ora12e34";
+    private static final String DATABASE_NAME = "oracle 12c";
     private static final int BASE_36 = 36;
+    private static final String SERVER_ID = "5v36y5646";
+    private static final long TEMPLATE_ID = 8958395489L;
+    private static final long ID = -2174612783412L;
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -74,7 +76,7 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(databaseIdAsLong);
+        assertThat(actual.getId()).isEqualTo(DATABASE_ID_AS_LONG);
         assertThat(actual.getTemplateId()
             .getId())
             .isEqualTo(Long.parseLong(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId(), BASE_36));
@@ -118,24 +120,24 @@ public class DatabaseInstanceMapperTest {
             databaseTypeClassNameService
         );
         Credentials credentials = new Credentials();
-        credentials.setPassword(password);
-        credentials.setUsername(username);
+        credentials.setPassword(PASSWORD);
+        credentials.setUsername(USERNAME);
         NetworkBind networkBind = new NetworkBind();
-        networkBind.setHost(host);
-        networkBind.setPort(port);
+        networkBind.setHost(HOST);
+        networkBind.setPort(PORT);
         TemplateId templateId = new TemplateId();
         templateId.setDefault(false);
-        templateId.setServerId("5v36y5646");
-        templateId.setId(8958395489L);
+        templateId.setServerId(SERVER_ID);
+        templateId.setId(TEMPLATE_ID);
         templateId.setStatus(TemplateIdStatus.CREATED);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setId(databaseIdAsLong);
+        hibernateInstance.setId(DATABASE_ID_AS_LONG);
         hibernateInstance.setTemplateId(templateId);
-        hibernateInstance.setType(databaseType);
-        hibernateInstance.setInstanceName(instanceName);
+        hibernateInstance.setType(DATABASE_TYPE);
+        hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);
-        hibernateInstance.setDatabaseName(databaseName);
+        hibernateInstance.setDatabaseName(DATABASE_NAME);
         hibernateInstance.setCredentials(credentials);
         hibernateInstance.setNetworkBind(networkBind);
         hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
@@ -146,19 +148,19 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getDatabaseId().getId()).isEqualTo(databaseId);
+        assertThat(actual.getDatabaseId().getId()).isEqualTo(DATABASE_ID);
         assertThat(actual.getTemplateId().getId()).isEqualTo(Long.toString(templateId.getId(), BASE_36));
         assertThat(actual.getTemplateId().isDefault()).isEqualTo(templateId.isDefault());
         assertThat(actual.getTemplateId().getServerId()).isEqualTo(templateId.getServerId());
         assertThat(actual.getTemplateId().getStatus().name()).isEqualTo(templateId.getStatus().name());
         assertThat(actual.getDatabaseType()).isEqualTo(null);
-        assertThat(actual.getInstanceName()).isEqualTo(instanceName);
+        assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
-        assertThat(actual.getDatabaseName()).isEqualTo(databaseName);
-        assertThat(actual.getCredentials().getPassword()).isEqualTo(password.toCharArray());
-        assertThat(actual.getCredentials().getUsername()).isEqualTo(username);
-        assertThat(actual.getNetworkBind().getHost()).isEqualTo(host);
-        assertThat(actual.getNetworkBind().getPort()).isEqualTo(port);
+        assertThat(actual.getDatabaseName()).isEqualTo(DATABASE_NAME);
+        assertThat(actual.getCredentials().getPassword()).isEqualTo(PASSWORD.toCharArray());
+        assertThat(actual.getCredentials().getUsername()).isEqualTo(USERNAME);
+        assertThat(actual.getNetworkBind().getHost()).isEqualTo(HOST);
+        assertThat(actual.getNetworkBind().getPort()).isEqualTo(PORT);
         assertThat(actual.getStatus()).isEqualTo(DatabaseStatus.LAUNCHED);
         assertThat(actual.getCreated()).isEqualTo(created);
     }
@@ -166,36 +168,35 @@ public class DatabaseInstanceMapperTest {
     @Test
     public void testDatabaseIdMapping() {
         // given
-        Long id = -2174612783412L;
         Credentials credentials = new Credentials();
-        credentials.setPassword(password);
-        credentials.setUsername(username);
+        credentials.setPassword(PASSWORD);
+        credentials.setUsername(USERNAME);
         NetworkBind networkBind = new NetworkBind();
-        networkBind.setHost(host);
-        networkBind.setPort(port);
+        networkBind.setHost(HOST);
+        networkBind.setPort(PORT);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setId(databaseIdAsLong);
+        hibernateInstance.setId(DATABASE_ID_AS_LONG);
         TemplateId templateId = new TemplateId();
         templateId.setDefault(false);
-        templateId.setServerId("5v36y5646");
-        templateId.setId(8958395489L);
+        templateId.setServerId(SERVER_ID);
+        templateId.setId(TEMPLATE_ID);
         templateId.setStatus(TemplateIdStatus.CREATED);
         hibernateInstance.setTemplateId(templateId);
-        hibernateInstance.setType(databaseType);
-        hibernateInstance.setInstanceName(instanceName);
+        hibernateInstance.setType(DATABASE_TYPE);
+        hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);
-        hibernateInstance.setDatabaseName(databaseName);
+        hibernateInstance.setDatabaseName(DATABASE_NAME);
         hibernateInstance.setCredentials(credentials);
         hibernateInstance.setNetworkBind(networkBind);
         hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
         hibernateInstance.setCreated(created);
-        hibernateInstance.setId(id);
+        hibernateInstance.setId(ID);
         DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
             databaseTypeClassNameService
         );
         when(databaseTypeClassNameService.getDatabaseType(anyString()))
-            .thenReturn(new DatabaseTypeDTOStub(databaseType));
+            .thenReturn(new DatabaseTypeDTOStub(DATABASE_TYPE));
 
         // when
         pl.gov.coi.cascades.server.domain.DatabaseInstance model =
@@ -204,7 +205,7 @@ public class DatabaseInstanceMapperTest {
 
         // then
         assertThat(mapped).isNotSameAs(hibernateInstance);
-        assertThat(mapped.getId()).isEqualTo(id);
+        assertThat(mapped.getId()).isEqualTo(ID);
         assertThat(model.getDatabaseId().getId()).isEqualTo("-rr04ayic");
     }
 
