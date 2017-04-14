@@ -4,6 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.Environment;
+import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.TemplateIdData;
@@ -11,6 +12,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserDat
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora23r45Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos34t56Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos45y67Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.Eaba275Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.F4ab6a58Supplier;
@@ -32,7 +34,7 @@ import java.util.stream.Collectors;
  * @since 24.03.17.
  */
 @Configuration
-@Profile(Environment.DEVELOPMENT_NAME)
+@Profile({Environment.DEVELOPMENT_NAME, ProfileType.HIBERNATE_NAME})
 class DevelopmentDataConfiguration {
 
     @Bean
@@ -120,6 +122,12 @@ class DevelopmentDataConfiguration {
     @DevelopmentBean
     DatabaseInstanceSupplier createOra23y45Provider() {
         return new Ora23r45Supplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    DatabaseInstanceSupplier createPos34t56Provider() {
+        return new Pos34t56Supplier();
     }
 
     @Bean

@@ -6,14 +6,11 @@ import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstance.DatabaseInstanceBuilder;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import java.sql.Date;
 import java.time.Instant;
@@ -23,13 +20,11 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UseCaseImpl implements UseCase {
 
-    private final TemplateIdGateway templateIdGateway;
-    private final DatabaseInstanceGateway databaseInstanceGateway;
-    private final UserGateway userGateway;
-    private final DatabaseLimitGateway databaseLimitGateway;
+    private final LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;
     private final DatabaseNameGeneratorService databaseNameGeneratorService;
     private final UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService;
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
+    private final DatabaseIdGeneratorService databaseIdGeneratorService;
 
     /**
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
@@ -39,18 +34,18 @@ public class UseCaseImpl implements UseCase {
      */
     @Override
     public void execute(Request request, Response response) {
-        Optional<TemplateId> templateId = templateIdGateway.find(request.getTemplateId().orElse(null));
+        Optional<TemplateId> templateId = launchNewDatabaseGatewayFacade.findTemplateId(request.getTemplateId().orElse(null));
         if (!templateId.isPresent()) {
-            templateId = templateIdGateway.getDefaultTemplateId();
+            templateId = launchNewDatabaseGatewayFacade.getDefaultTemplateId();
         }
         Optional<User> user = request.getUser() != null
-            ? userGateway.find(request.getUser().getUsername())
+            ? launchNewDatabaseGatewayFacade.findUser(request.getUser().getUsername())
             : Optional.empty();
         DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService
             .getDatabaseType(request.getType());
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
-            .databaseLimitGateway(databaseLimitGateway)
+            .databaseLimitGateway(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway())
             .request(request)
             .response(response)
             .databaseTypeDTO(databaseTypeDTO);
@@ -67,36 +62,37 @@ public class UseCaseImpl implements UseCase {
     private void succeedResponse(Request request,
                                  Response response,
                                  Validator validator) {
-        DatabaseId databaseId = generateInstanceName(request, databaseNameGeneratorService);
+        String databaseName = generateDatabaseName(request, databaseNameGeneratorService);
 
         UsernameAndPasswordCredentials credentials = credentialsGeneratorService.generate();
+        DatabaseId newId = databaseIdGeneratorService.generate();
 
-        DatabaseInstance candidate = DatabaseInstance.builder()
-            .databaseId(databaseId)
-            // TODO: Maybe in future it should be separate to database id?
-            .databaseName(databaseId.getId())
+        DatabaseInstanceBuilder candidateBuilder = DatabaseInstance.builder()
+            .databaseId(newId)
+            .databaseName(databaseName)
             .databaseType(validator.getDatabaseType())
-            .instanceName(databaseId.getId())
             .created(Date.from(Instant.now()))
             .credentials(credentials)
             .reuseTimes(0)
             .templateId(validator.getTemplateId())
-            .status(DatabaseStatus.LAUNCHED)
-            .build();
+            .status(DatabaseStatus.LAUNCHED);
+        request.getInstanceName()
+            .ifPresent(candidateBuilder::instanceName);
+        DatabaseInstance candidate = candidateBuilder.build();
 
-        DatabaseInstance launchedDatabaseInstance = databaseInstanceGateway.launchDatabase(candidate);
+        DatabaseInstance launchedDatabaseInstance = launchNewDatabaseGatewayFacade.launchDatabase(candidate);
         User user = validator.getUser();
         user = user.addDatabaseInstance(launchedDatabaseInstance);
-        userGateway.save(user);
+        launchNewDatabaseGatewayFacade.save(user);
 
-        response.setDatabaseId(databaseId);
+        response.setDatabaseId(launchedDatabaseInstance.getDatabaseId());
         response.setNetworkBind(launchedDatabaseInstance.getNetworkBind());
         response.setCredentials(launchedDatabaseInstance.getCredentials());
         response.setDatabaseName(launchedDatabaseInstance.getDatabaseName());
     }
 
-    private DatabaseId generateInstanceName(Request request,
-                                            DatabaseNameGeneratorService databaseNameGeneratorService) {
+    private static String generateDatabaseName(Request request,
+                                        DatabaseNameGeneratorService databaseNameGeneratorService) {
         Optional<String> instanceName = request.getInstanceName();
         return instanceName.isPresent()
             ? databaseNameGeneratorService.generate(instanceName.get())

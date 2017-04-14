@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.launch.Framework;
 import org.osgi.framework.launch.FrameworkFactory;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -21,12 +22,20 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkElementIndex;
  */
 @Configuration
 @RequiredArgsConstructor
-class OsgiConfiguration {
+public class OsgiAutoConfiguration {
 
     private static final String FELIX_SYSTEMBUNDLE_ACTIVATORS_PROP = "felix.systembundle.activators";
     private static final String FELIX_PACKAGE_SUBSTRING = "felix";
     private static final int FIRST_ELEMENT_INDEX = 0;
     private final List<BundleActivator> bundleActivators;
+
+    @Bean
+    @ConditionalOnMissingBean
+    OsgiFrameworkConfigurator produceAutoConfiguredOsgiFrameworkConfigurator() {
+        return config -> {
+            // do nothing
+        };
+    }
 
     @Bean
     FrameworkFactory produceFrameworkFactory() {
@@ -37,8 +46,10 @@ class OsgiConfiguration {
     }
 
     @Bean
-    Framework produceFramework(FrameworkFactory factory) {
+    public Framework produceFramework(FrameworkFactory factory,
+                               OsgiFrameworkConfigurator configurator) {
         Map<String, String> config = createConfigurationMap(factory);
+        configurator.configure(config);
         return factory.newFramework(config);
     }
 

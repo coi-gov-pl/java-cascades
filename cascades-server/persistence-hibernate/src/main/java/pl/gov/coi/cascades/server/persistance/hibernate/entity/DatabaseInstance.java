@@ -11,7 +11,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -31,7 +30,6 @@ import java.util.Date;
 public class DatabaseInstance {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @JoinColumn(name = "TEMPLATE_ID")

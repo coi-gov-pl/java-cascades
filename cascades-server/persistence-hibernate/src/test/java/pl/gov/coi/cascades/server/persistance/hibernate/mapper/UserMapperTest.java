@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
@@ -50,6 +51,9 @@ public class UserMapperTest {
 
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
+
+    @Mock
+    private DatabaseIdMapper databaseIdMapper;
 
     @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;

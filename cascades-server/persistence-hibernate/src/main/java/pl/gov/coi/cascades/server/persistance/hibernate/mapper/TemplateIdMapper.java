@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
+import pl.gov.coi.cascades.server.domain.Mapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 

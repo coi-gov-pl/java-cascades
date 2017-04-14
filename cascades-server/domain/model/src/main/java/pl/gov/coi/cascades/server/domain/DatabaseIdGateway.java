@@ -8,6 +8,7 @@ import java.util.Optional;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 10.03.17.
  */
+@FunctionalInterface
 public interface DatabaseIdGateway {
 
     Optional<DatabaseInstance> findInstance(DatabaseId databaseId);

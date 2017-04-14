@@ -28,11 +28,11 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
         TemplateId templateId = new TemplateId();
-//        templateId.setId(67765737L);
         templateId.setServerId("ukdtksu6w66j");
         templateId.setDefault(true);
         templateId.setStatus(TemplateIdStatus.CREATED);
         db.setTemplateId(templateId);
+        db.setId(48279590549L);
         db.setType("stub");
         db.setDatabaseName(ORA23R45);
         db.setInstanceName("Oracle is *%! hard");

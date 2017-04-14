@@ -67,6 +67,10 @@
             <groupId>com.github.slugify</groupId>
             <artifactId>slugify</artifactId>
         </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

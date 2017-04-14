@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
-import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
@@ -16,26 +16,26 @@ import java.util.function.Supplier;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 28.03.17.
+ * @since 31.03.17.
  */
 @DevelopmentBean
-public class Ora12e34Supplier implements DatabaseInstanceSupplier {
+public class Pos34t56Supplier implements DatabaseInstanceSupplier {
 
-    private static final String ORA12E34 = "ora12e34";
+    private static final String POS34T56 = "pos34t56";
     private static final int HTTPS_PORT = 443;
 
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
         TemplateId templateId = new TemplateId();
-        templateId.setServerId("reg45h45h45h");
+        templateId.setServerId("ukdtksu6w66j");
         templateId.setDefault(true);
         templateId.setStatus(TemplateIdStatus.CREATED);
         db.setTemplateId(templateId);
-        db.setId(214342235L);
+        db.setId(6854362462L);
         db.setType("stub");
-        db.setDatabaseName(ORA12E34);
-        db.setInstanceName("Oracle is *%! hard");
+        db.setDatabaseName(POS34T56);
+        db.setInstanceName("Postgres is *%! hard");
         db.setNetworkBind(
             NetworkBind.builder()
                 .host("cascades.example.org")
@@ -44,8 +44,8 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
         );
         db.setCredentials(
             Credentials.builder()
-                .username("xi3jwjxwlq")
-                .password("dg344d34d7g3d34")
+                .username("fdrg5yh545y")
+                .password("5h5h54jyuyr7za")
                 .build()
         );
         db.setReuseTimes(1);
@@ -56,7 +56,7 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
 
     @Override
     public Class<? extends Supplier<User>> getOwnerSupplier() {
-        return MichaelSupplier.class;
+        return JohnRamboSupplier.class;
     }
 
 }

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration =\
+pl.gov.coi.cascades.server.persistance.stub.PersistanceStubByDefaultOnDevelopmentAutoConfiguration,\
+pl.gov.coi.cascades.server.OsgiAutoConfiguration
