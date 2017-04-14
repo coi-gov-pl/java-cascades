@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
@@ -50,6 +51,9 @@ public class UserMapperTest {
     private DatabaseTypeDTO databaseTypeDTO;
 
     @Mock
+    private DatabaseIdMapper databaseIdMapper;
+
+    @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;
 
     @Rule
@@ -62,7 +66,9 @@ public class UserMapperTest {
     public void testToHibernateEntity() throws Exception {
         // given
         Collection<pl.gov.coi.cascades.server.domain.DatabaseInstance> databases = new HashSet<>();
-        UserMapper userMapper = new UserMapper(databaseTypeClassNameService);
+        UserMapper userMapper = new UserMapper(
+            databaseTypeClassNameService
+        );
         databases.add(DatabaseIdGatewayStub.INSTANCE1);
         pl.gov.coi.cascades.server.domain.User user = new pl.gov.coi.cascades.server.domain.User(
             username,
@@ -109,7 +115,9 @@ public class UserMapperTest {
         hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
         hibernateInstance.setCreated(created);
         databases.add(hibernateInstance);
-        UserMapper userMapper = new UserMapper(databaseTypeClassNameService);
+        UserMapper userMapper = new UserMapper(
+            databaseTypeClassNameService
+        );
         User user = new User();
         user.setEmail(email);
         user.setUsername(username);

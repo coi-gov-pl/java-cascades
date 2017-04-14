@@ -74,8 +74,10 @@ public class ValidatorTest {
         );
         Collection<DatabaseInstance> databases = new ArrayList<>();
         when(databaseInstance1.getDatabaseId()).thenReturn(databaseId1);
+        when(databaseInstance1.getDatabaseId().getId()).thenReturn("pos34t56");
         databases.add(databaseInstance1);
         when(databaseInstance2.getDatabaseId()).thenReturn(databaseId2);
+        when(databaseInstance2.getDatabaseId().getId()).thenReturn("pos34t56");
         databases.add(databaseInstance2);
         when(response.isSuccessful()).thenReturn(true);
         when(user.getDatabases()).thenReturn(databases);

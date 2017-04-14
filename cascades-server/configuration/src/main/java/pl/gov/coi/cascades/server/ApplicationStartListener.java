@@ -15,7 +15,10 @@ class ApplicationStartListener implements
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment env = event.getEnvironment();
-        env.setDefaultProfiles(Environment.PRODUCTION_NAME);
+        env.setDefaultProfiles(
+            Environment.PRODUCTION_NAME,
+            ProfileType.HIBERNATE_NAME
+        );
     }
 
     @Override

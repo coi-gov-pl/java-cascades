@@ -10,7 +10,6 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -28,7 +27,6 @@ import java.util.Date;
 public class DatabaseInstance {
 
     @Id
-    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)

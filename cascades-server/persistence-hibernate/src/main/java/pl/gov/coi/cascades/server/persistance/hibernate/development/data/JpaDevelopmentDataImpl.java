@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.SmartLifecycle;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -14,7 +15,7 @@ import javax.transaction.Transactional;
 @Singleton
 @Transactional
 @RequiredArgsConstructor
-public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
+public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycle {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
     private final UserData userData;
@@ -70,7 +71,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData {
 
     @Override
     public int getPhase() {
-        return status.ordinal();
+        return Integer.MAX_VALUE;
     }
 
     private enum Status {
