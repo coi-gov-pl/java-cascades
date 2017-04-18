@@ -35,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class FunctionalIT {
 
     private static final String ORACLE_TEMPLATE = "oracle_template";
+
     @Inject
     private WebApplicationContext wac;
 
