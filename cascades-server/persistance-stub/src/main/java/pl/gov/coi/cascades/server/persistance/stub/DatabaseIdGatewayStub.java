@@ -23,8 +23,9 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class DatabaseIdGatewayStub implements DatabaseIdGateway {
 
+    private static final String POS_34_T_56 = "pos34t56";
     public static final DatabaseId DATABASE_ID1 = new DatabaseId("19");
-    public static final DatabaseId DATABASE_ID2 = new DatabaseId("pos34t56");
+    public static final DatabaseId DATABASE_ID2 = new DatabaseId(POS_34_T_56);
     public static final TemplateId TEMPLATE_ID1 = new TemplateId("oracle");
     public static final TemplateId TEMPLATE_ID2 = new TemplateId("postgres");
     public static final DatabaseType DATABASE_TYPE = new DatabaseTypeStub();
@@ -49,9 +50,9 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
         DATABASE_ID2,
         TEMPLATE_ID2,
         DATABASE_TYPE,
-        "pos34t56",
+        POS_34_T_56,
         3,
-        "pos34t56",
+        POS_34_T_56,
         USERNAME_AND_PASSWORD_CREDENTIALS2,
         NETWORK_BIND,
         DatabaseStatus.LAUNCHED,
@@ -61,9 +62,8 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
 
     public DatabaseIdGatewayStub() {
         this.instances = new HashSet<>();
-
-        addDatabaseInstance(INSTANCE1);
-        addDatabaseInstance(INSTANCE2);
+        instances.add(INSTANCE1);
+        instances.add(INSTANCE2);
     }
 
     @Override

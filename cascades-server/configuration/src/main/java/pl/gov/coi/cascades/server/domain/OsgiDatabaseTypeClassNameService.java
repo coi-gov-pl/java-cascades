@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
@@ -12,9 +13,11 @@ import javax.inject.Inject;
  */
 public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameService {
 
-    static final String ERROR_MESSAGE_FORMAT = "Given database type name: %s is not available. " +
+    @VisibleForTesting
+    protected static final String ERROR_MESSAGE_FORMAT = "Given database type name: %s is not available. " +
         "Maybe you should install a plugin with that implementation.";
-    static final String FOUND_DATABASE_TYPE_LOG_FORMAT = "Found database type implementation: {} " +
+    @VisibleForTesting
+    protected static final String FOUND_DATABASE_TYPE_LOG_FORMAT = "Found database type implementation: {} " +
         "for given type name: {}";
     private static final String PROPERTY_PATH_TYPE = "type";
     private final Logger logger;
@@ -51,21 +54,21 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
         return newErrorDTO(ERROR_MESSAGE_FORMAT, type);
     }
 
-    private boolean matches(String typeName, DatabaseType databaseType) {
+    private static boolean matches(String typeName, DatabaseType databaseType) {
         return matchesByName(typeName, databaseType)
             || matchesByFQCN(typeName, databaseType);
     }
 
-    private boolean matchesByName(String typeName, DatabaseType databaseType) {
+    private static boolean matchesByName(String typeName, DatabaseType databaseType) {
         return databaseType.getName().equalsIgnoreCase(typeName);
     }
 
-    private boolean matchesByFQCN(String typeFQCN, DatabaseType databaseType) {
+    private static boolean matchesByFQCN(String typeFQCN, DatabaseType databaseType) {
         String databaseTypeFQCN = databaseType.getClass().getName();
         return databaseTypeFQCN.equals(typeFQCN);
     }
 
-    private DatabaseTypeDTO newErrorDTO(String messageFormat, Object... arguments) {
+    private static DatabaseTypeDTO newErrorDTO(String messageFormat, Object... arguments) {
         return new DatabaseTypeDTO(
             new ViolationImpl(
                 String.format(messageFormat, arguments),

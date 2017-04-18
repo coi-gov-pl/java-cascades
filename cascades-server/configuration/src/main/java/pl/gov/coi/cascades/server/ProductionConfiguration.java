@@ -18,7 +18,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 @Configuration
 @Profile(Environment.PRODUCTION_NAME)
 class ProductionConfiguration {
-    private final Logger logger = LoggerFactory.getLogger(ProductionConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(ProductionConfiguration.class);
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
@@ -41,7 +41,7 @@ class ProductionConfiguration {
         );
     }
 
-    private String enviromentalize(String propertyName) {
+    private static String enviromentalize(String propertyName) {
         return propertyName.replace(".", "_");
     }
 }

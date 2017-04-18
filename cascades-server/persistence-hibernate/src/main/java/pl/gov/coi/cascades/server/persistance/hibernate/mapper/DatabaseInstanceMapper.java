@@ -28,7 +28,6 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.coi.cascades.server.domain.DatabaseInstance> {
 
-    private static final int RADIX_36 = 36;
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
     private final DatabaseIdMapper databaseIdMapper;
 
@@ -116,6 +115,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
     private static final class NetworkBindImpl implements pl.gov.coi.cascades.contract.domain.NetworkBind {
         private String host;
         private int port;
+        private static final long serialVersionUID = 42L;
 
         NetworkBindImpl(String host, int port) {
             this.host = host;

@@ -21,11 +21,12 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
 
     private static final String ORA23R45 = "ora23r45";
     private static final int HTTPS_PORT = 443;
+    private static final long ID = 48_279_590_549L;
 
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setId(48279590549L);
+        db.setId(ID);
         db.setTemplateId("oracle");
         db.setType("stub");
         db.setDatabaseName(ORA23R45);

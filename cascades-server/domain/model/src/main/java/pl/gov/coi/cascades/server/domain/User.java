@@ -15,7 +15,7 @@ public class User {
     private String id;
     @Getter
     private String email;
-	private Collection<DatabaseInstance> databases = new HashSet<>();
+    private Collection<DatabaseInstance> databases = new HashSet<>();
 
     public User(String username, String id, String email) {
         this.username = username;
@@ -53,7 +53,7 @@ public class User {
     public User updateDatabaseInstance(DatabaseInstance databaseInstance) {
         User user = new User(this);
         user.databases.addAll(databases);
-        for (DatabaseInstance instance: user.getDatabases()) {
+        for (DatabaseInstance instance : user.getDatabases()) {
             checkNotNull(instance, "20170320:160547");
             checkNotNull(instance.getDatabaseId(), "20170320:160607");
             if (instance.getDatabaseId().equals(databaseInstance.getDatabaseId())) {

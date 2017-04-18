@@ -7,6 +7,6 @@ import java.util.Map;
  * @since 11.04.17.
  */
 @FunctionalInterface
-public interface OsgiFrameworkConfigurator {
+interface OsgiFrameworkConfigurator {
     void configure(Map<String, String> config);
 }

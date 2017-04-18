@@ -12,6 +12,7 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
 @AllArgsConstructor
 public class NetworkBindStub implements NetworkBind {
 
+    private static final long serialVersionUID = 42L;
     private int port;
     private String host;
 
