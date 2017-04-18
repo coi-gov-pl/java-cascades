@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
@@ -17,7 +18,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 @Configuration
 @Profile(Environment.DEVELOPMENT_NAME)
 class DevelopmentConfiguration {
-    private final Logger logger = LoggerFactory.getLogger(DevelopmentConfiguration.class);
+    private static final Logger logger = LoggerFactory.getLogger(DevelopmentConfiguration.class);
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {
@@ -25,10 +26,12 @@ class DevelopmentConfiguration {
             () -> FigletFont.convertOneLine(Environment.DEVELOPMENT_NAME),
             "20170317:144333"
         );
-        String banner = "Running in environment\n\n{}\n";
-        logger.info(
-            banner,
-            asciiArt
-        );
+        String banner = "Running in environment\n\n%s\n";
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170418:134033").makeLogMessage(
+                banner,
+                asciiArt
+            ));
+        }
     }
 }
