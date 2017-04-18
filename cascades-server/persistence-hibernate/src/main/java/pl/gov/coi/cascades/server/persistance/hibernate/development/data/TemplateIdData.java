@@ -28,7 +28,7 @@ public class TemplateIdData {
         this.entityManager = entityManager;
     }
 
-    Optional<TemplateId> getUserForSupplierClass(Class<? extends Supplier<TemplateId>> key) {
+    Optional<TemplateId> getTemplateIdForSupplierClass(Class<? extends Supplier<TemplateId>> key) {
         return Optional
             .ofNullable(instances.get(key));
     }
@@ -54,8 +54,9 @@ public class TemplateIdData {
 
     private void removeTemplateId(TemplateId templateId) {
         Long id = templateId.getId();
-        TemplateId fetched = entityManager.getReference(TemplateId.class, id);
-        entityManager.remove(fetched);
+        TemplateId fetched = entityManager.find(TemplateId.class, id);
+        Optional.ofNullable(fetched)
+            .ifPresent(entityManager::remove);
     }
 
 }

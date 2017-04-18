@@ -27,6 +27,9 @@ public class TemplateId {
     @Id
     private Long id;
 
+    @Column
+    private String name;
+
     @Enumerated(EnumType.STRING)
     private TemplateIdStatus status;
 

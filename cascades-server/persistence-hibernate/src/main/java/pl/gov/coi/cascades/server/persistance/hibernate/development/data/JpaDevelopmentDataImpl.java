@@ -26,9 +26,9 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
     @Override
     public void up() {
         changeStatus(Status.PERSISTING);
+        templateIdData.up();
         userData.up();
         databaseInstanceData.up();
-        templateIdData.up();
         changeStatus(Status.PERSISTED);
     }
 

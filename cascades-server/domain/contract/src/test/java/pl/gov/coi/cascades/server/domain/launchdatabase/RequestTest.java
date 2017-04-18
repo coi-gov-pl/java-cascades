@@ -7,12 +7,13 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.User;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -21,10 +22,14 @@ import static org.junit.Assert.assertNotNull;
  */
 public class RequestTest {
 
+    private final static String typeClassName = "Type";
+    private final static String instanceName = "PESEL";
+    private final static String ID = "453v4c4c";
+    private final static TemplateIdStatus TEMPLATE_ID_STATUS = TemplateIdStatus.CREATED;
+    private final static boolean IS_DEFAULT = true;
+    private final static String SERVER_ID = "5345c3";
     private Request request;
-    private String typeClassName;
-    private String templateId;
-    private String instanceName;
+    private TemplateId templateId;
 
     @Mock
     private User user;
@@ -37,9 +42,12 @@ public class RequestTest {
 
     @Before
     public void setUp() {
-        typeClassName = "Type";
-        templateId = "123456abcd";
-        instanceName = "PESEL";
+        templateId = new TemplateId(
+            ID,
+            TEMPLATE_ID_STATUS,
+            IS_DEFAULT,
+            SERVER_ID
+        );
         request = new Request(
             typeClassName,
             user,
@@ -68,7 +76,7 @@ public class RequestTest {
         Optional<String> actual = request.getTemplateId();
 
         // then
-        assertEquals(Optional.ofNullable(templateId), actual);
+        assertThat(actual).isEqualTo(Optional.ofNullable(ID));
     }
 
     @Test
@@ -77,7 +85,7 @@ public class RequestTest {
         Optional<String> actual = request.getInstanceName();
 
         // then
-        assertEquals(Optional.ofNullable(instanceName), actual);
+        assertThat(actual).isEqualTo(Optional.of(instanceName));
     }
 
     @Test

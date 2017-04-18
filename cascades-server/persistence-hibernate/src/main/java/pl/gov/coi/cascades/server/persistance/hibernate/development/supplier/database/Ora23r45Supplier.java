@@ -1,13 +1,13 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.F4ab6a58Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -27,11 +27,6 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        TemplateId templateId = new TemplateId();
-        templateId.setServerId("ukdtksu6w66j");
-        templateId.setDefault(true);
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        db.setTemplateId(templateId);
         db.setId(48279590549L);
         db.setType("stub");
         db.setDatabaseName(ORA23R45);
@@ -57,6 +52,11 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     @Override
     public Class<? extends Supplier<User>> getOwnerSupplier() {
         return MichaelSupplier.class;
+    }
+
+    @Override
+    public Class<? extends Supplier<TemplateId>> getTemplateSupplier() {
+        return F4ab6a58Supplier.class;
     }
 
 }

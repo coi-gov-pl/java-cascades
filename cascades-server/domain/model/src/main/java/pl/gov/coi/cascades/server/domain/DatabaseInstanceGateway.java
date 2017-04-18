@@ -12,4 +12,6 @@ public interface DatabaseInstanceGateway {
 
     void deleteDatabase(DatabaseInstance databaseInstance);
 
+    String getRemoteServerId();
+
 }

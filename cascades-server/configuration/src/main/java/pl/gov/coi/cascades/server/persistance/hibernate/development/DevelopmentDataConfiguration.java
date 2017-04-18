@@ -134,13 +134,15 @@ class DevelopmentDataConfiguration {
     @Transactional
     @Singleton
     DatabaseInstanceData createDatabaseInstanceData(UserData userData,
-                                                    List<DatabaseInstanceSupplier> supplierList) {
+                                                    List<DatabaseInstanceSupplier> supplierList,
+                                                    TemplateIdData templateIdData) {
         Iterable<DatabaseInstanceSupplier> devBeans = supplierList.stream()
             .filter(DevelopmentDataConfiguration::isDevelopmentBean)
             .collect(Collectors.toList());
         return new DatabaseInstanceData(
             devBeans,
-            userData
+            userData,
+            templateIdData
         );
     }
 

@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseRequest;
 
 import javax.annotation.Nullable;
@@ -26,6 +25,6 @@ final class RemoteDatabaseRequestDTO extends RemoteDatabaseRequest {
     private static TemplateId createTemplateId(@Nullable String templateId) {
         return templateId == null
             ? null
-            : new TemplateId(templateId, TemplateIdStatus.CREATED, false, null);
+            : new InputTemplateId(templateId);
     }
 }
