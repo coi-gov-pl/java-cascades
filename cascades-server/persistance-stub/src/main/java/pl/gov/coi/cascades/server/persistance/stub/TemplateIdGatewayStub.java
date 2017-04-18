@@ -15,7 +15,7 @@ import java.util.Optional;
 public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     public static final TemplateId TEMPLATE_ID1 = new TemplateId(
-        "templateId1",
+        "oracle_template",
         TemplateIdStatus.CREATED,
         false,
         "nv485587vmv89"

@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance.DatabaseInstanceBuilder;
@@ -34,10 +33,6 @@ public class UseCaseImpl implements UseCase {
      */
     @Override
     public void execute(Request request, Response response) {
-        Optional<TemplateId> templateId = launchNewDatabaseGatewayFacade.findTemplateId(request.getTemplateId().orElse(null));
-        if (!templateId.isPresent()) {
-            templateId = launchNewDatabaseGatewayFacade.getDefaultTemplateId();
-        }
         Optional<User> user = request.getUser() != null
             ? launchNewDatabaseGatewayFacade.findUser(request.getUser().getUsername())
             : Optional.empty();
@@ -46,11 +41,11 @@ public class UseCaseImpl implements UseCase {
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .databaseLimitGateway(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway())
+            .templateIdGateway(launchNewDatabaseGatewayFacade.getTemplateIdGateway())
             .request(request)
             .response(response)
             .databaseTypeDTO(databaseTypeDTO);
 
-        templateId.ifPresent(validatorBuilder::templateId);
         user.ifPresent(validatorBuilder::user);
 
         Validator validator = validatorBuilder.build();

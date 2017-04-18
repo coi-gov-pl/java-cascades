@@ -65,8 +65,8 @@ public class LaunchNewDatabaseGatewayFacade {
         return databaseLimitGateway;
     }
 
-    String getRemoteServerId() {
-        return databaseInstanceGateway.getRemoteServerId();
+    TemplateIdGateway getTemplateIdGateway() {
+        return templateIdGateway;
     }
 
 }
