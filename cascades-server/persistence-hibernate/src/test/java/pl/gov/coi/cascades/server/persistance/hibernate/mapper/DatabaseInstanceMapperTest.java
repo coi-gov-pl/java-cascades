@@ -43,10 +43,10 @@ public class DatabaseInstanceMapperTest {
     private static final String DATABASE_TYPE = "stub";
     private static final String INSTANCE_NAME = "ora12e34";
     private static final String DATABASE_NAME = "oracle 12c";
-    private static final int BASE_36 = 36;
     private static final String SERVER_ID = "5v36y5646";
     private static final long TEMPLATE_ID = 8958395489L;
     private static final long ID = -2174612783412L;
+    private static final String TEMPLATE_ID_NAME = "oracle_template";
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -78,8 +78,8 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(DATABASE_ID_AS_LONG);
         assertThat(actual.getTemplateId()
-            .getId())
-            .isEqualTo(Long.parseLong(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId(), BASE_36));
+            .getName())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
         assertThat(actual.getTemplateId()
             .getStatus().name())
             .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getStatus().name());
@@ -127,6 +127,7 @@ public class DatabaseInstanceMapperTest {
         networkBind.setPort(PORT);
         TemplateId templateId = new TemplateId();
         templateId.setDefault(false);
+        templateId.setName(TEMPLATE_ID_NAME);
         templateId.setServerId(SERVER_ID);
         templateId.setId(TEMPLATE_ID);
         templateId.setStatus(TemplateIdStatus.CREATED);
@@ -149,10 +150,11 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getDatabaseId().getId()).isEqualTo(DATABASE_ID);
-        assertThat(actual.getTemplateId().getId()).isEqualTo(Long.toString(templateId.getId(), BASE_36));
+        assertThat(actual.getTemplateId().getId()).isEqualTo(TEMPLATE_ID_NAME);
         assertThat(actual.getTemplateId().isDefault()).isEqualTo(templateId.isDefault());
         assertThat(actual.getTemplateId().getServerId()).isEqualTo(templateId.getServerId());
         assertThat(actual.getTemplateId().getStatus().name()).isEqualTo(templateId.getStatus().name());
+        assertThat(actual.getTemplateId().getId()).isEqualTo(templateId.getName());
         assertThat(actual.getDatabaseType()).isEqualTo(null);
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
@@ -179,6 +181,7 @@ public class DatabaseInstanceMapperTest {
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
         TemplateId templateId = new TemplateId();
         templateId.setDefault(false);
+        templateId.setName(TEMPLATE_ID_NAME);
         templateId.setServerId(SERVER_ID);
         templateId.setId(TEMPLATE_ID);
         templateId.setStatus(TemplateIdStatus.CREATED);

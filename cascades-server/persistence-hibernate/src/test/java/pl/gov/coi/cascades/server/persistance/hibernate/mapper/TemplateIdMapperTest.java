@@ -32,7 +32,8 @@ public class TemplateIdMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(Long.parseLong(id, BASE_36));
+        //assertThat(actual.getId()).isEqualTo(Long.parseLong(id, BASE_36));
+        assertThat(actual.getName()).isEqualTo(id);
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.CREATED.name());
@@ -45,7 +46,8 @@ public class TemplateIdMapperTest {
         TemplateId templateId = new TemplateId();
         String id = "54363463456";
         String serverId = "fre5345";
-        templateId.setId(Long.parseLong(id, BASE_36));
+        //templateId.setId(Long.parseLong(id, BASE_36));
+        templateId.setName(id);
         templateId.setDefault(false);
         templateId.setServerId(serverId);
         templateId.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus.DELETED);

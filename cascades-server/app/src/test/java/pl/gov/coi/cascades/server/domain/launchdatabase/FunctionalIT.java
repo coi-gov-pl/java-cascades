@@ -34,6 +34,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @StubDevelopmentTest
 public class FunctionalIT {
 
+    private static final String ORACLE_TEMPLATE = "oracle_template";
     @Inject
     private WebApplicationContext wac;
 
@@ -65,6 +66,25 @@ public class FunctionalIT {
             .isEqualTo(200);
     }
 
+    @Test
+    public void testPositivePathWithTemplateId() throws Exception {
+        // given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post("/databases")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(properRequestWithTemplateId());
+
+        // when
+        MvcResult result = mockMvc.perform(requestBuilder)
+            .andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        // then
+        assertThat(response.getStatus())
+            .as(buildDescription(response))
+            .isEqualTo(200);
+    }
+
     private Description buildDescription(MockHttpServletResponse response)
         throws UnsupportedEncodingException {
 
@@ -76,6 +96,14 @@ public class FunctionalIT {
         DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
             .put("type", stub.getName())
+            .toString();
+    }
+
+    private String properRequestWithTemplateId() throws JSONException {
+        DatabaseTypeStub stub = new DatabaseTypeStub();
+        return new JSONObject()
+            .put("type", stub.getName())
+            .put("templateId", ORACLE_TEMPLATE)
             .toString();
     }
 
