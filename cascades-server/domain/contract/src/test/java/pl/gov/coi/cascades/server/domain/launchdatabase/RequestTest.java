@@ -14,7 +14,6 @@ import pl.gov.coi.cascades.server.domain.User;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -67,7 +66,7 @@ public class RequestTest {
         );
 
         // then
-        assertNotNull(actual);
+        assertThat(actual).isNotNull();
     }
 
     @Test
