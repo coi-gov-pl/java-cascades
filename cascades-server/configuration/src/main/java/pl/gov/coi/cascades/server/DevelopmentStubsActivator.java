@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server;
 
+import lombok.RequiredArgsConstructor;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
@@ -17,6 +18,7 @@ import pl.wavesoftware.eid.exceptions.Eid;
  */
 @Component
 @Profile(Environment.DEVELOPMENT_NAME)
+@RequiredArgsConstructor
 public class DevelopmentStubsActivator implements BundleActivator {
     private ServiceRegistration<DatabaseType> databaseTypeRegistration;
     private static final Logger logger = LoggerFactory.getLogger(DevelopmentStubsActivator.class);

@@ -20,7 +20,7 @@ import java.util.function.Supplier;
 public class Ora12e34Supplier implements DatabaseInstanceSupplier {
 
     private static final String ORA12E34 = "ora12e34";
-    private static final int HTTPS_PORT = 443;
+    private static final int HTTPS_PORT = 444;
     private static final long ID = 2_143_654_635L;
 
     @Override
@@ -30,7 +30,7 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
         db.setTemplateId("oracle");
         db.setType("stub");
         db.setDatabaseName(ORA12E34);
-        db.setInstanceName("Oracle is *%! hard");
+        db.setInstanceName("Oracle is extremely hard");
         db.setNetworkBind(
             NetworkBind.builder()
                 .host("cascades.example.org")
@@ -39,12 +39,12 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
         );
         db.setCredentials(
             Credentials.builder()
-                .username("xi3jwjxwlq")
-                .password("dg344d34d7g3d34")
+                .username("yjdr6uyjrjt")
+                .password("tgjsrt64w6ujstrjrst")
                 .build()
         );
-        db.setReuseTimes(1);
         db.setStatus(DatabaseStatus.LAUNCHED);
+        db.setReuseTimes(1);
         db.setCreated(Date.from(Instant.parse("2017-03-28T17:56:11.01Z")));
         return db;
     }

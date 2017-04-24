@@ -16,12 +16,10 @@ import java.util.HashSet;
  */
 public class UserMapper implements Mapper<User, pl.gov.coi.cascades.server.domain.User> {
 
-    private final DatabaseTypeClassNameService databaseTypeClassNameService;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
     @Inject
     public UserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this.databaseTypeClassNameService = databaseTypeClassNameService;
         databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
     }
 

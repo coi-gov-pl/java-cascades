@@ -8,7 +8,6 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.domain.ViolationImpl;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
