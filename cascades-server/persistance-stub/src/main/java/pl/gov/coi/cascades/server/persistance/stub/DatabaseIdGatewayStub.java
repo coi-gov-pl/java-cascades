@@ -10,9 +10,11 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
@@ -68,7 +70,7 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
 
     @Override
     public Optional<DatabaseInstance> findInstance(DatabaseId databaseId) {
-        for (DatabaseInstance databaseInstance: instances) {
+        for (DatabaseInstance databaseInstance : instances) {
             checkNotNull(databaseInstance, "20170320:160233");
             checkNotNull(databaseInstance.getDatabaseId(), "20170320:160259");
             checkNotNull(databaseInstance.getDatabaseId().getId(), "20170320:160338");
@@ -84,7 +86,15 @@ public class DatabaseIdGatewayStub implements DatabaseIdGateway {
     }
 
     public Collection<DatabaseInstance> getAllInstances() {
-        return instances;
+        return cloneList(instances);
+    }
+
+    private List<DatabaseInstance> cloneList(Collection<DatabaseInstance> instanceList) {
+        List<DatabaseInstance> clonedList = new ArrayList<>(instanceList.size());
+        for (DatabaseInstance instance : instanceList) {
+            clonedList.add(new DatabaseInstance(instance));
+        }
+        return clonedList;
     }
 
     public void clearInstances() {

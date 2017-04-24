@@ -38,6 +38,25 @@ public class DatabaseInstance {
     private final Date created;
 
     /**
+     * Copy constructor.
+     *
+     * @param databaseInstance Given instance of database to copy.
+     */
+    public DatabaseInstance(DatabaseInstance databaseInstance) {
+        this(databaseInstance.getDatabaseId(),
+            databaseInstance.getTemplateId(),
+            databaseInstance.getDatabaseType(),
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            databaseInstance.getCredentials(),
+            databaseInstance.getNetworkBind(),
+            databaseInstance.getStatus(),
+            databaseInstance.getCreated()
+        );
+    }
+
+    /**
      * Copy constructor to set network bind.
      *
      * @param databaseInstance Given instance of database to copy.

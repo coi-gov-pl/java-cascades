@@ -2,8 +2,10 @@ package pl.gov.coi.cascades.server.domain;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
@@ -40,7 +42,15 @@ public class User {
         this.username = username;
         this.id = id;
         this.email = email;
-        this.databases = databases;
+        this.databases = cloneList(databases);
+    }
+
+    private List<DatabaseInstance> cloneList(Collection<DatabaseInstance> instanceList) {
+        List<DatabaseInstance> clonedList = new ArrayList<>(instanceList.size());
+        for (DatabaseInstance instance : instanceList) {
+            clonedList.add(new DatabaseInstance(instance));
+        }
+        return clonedList;
     }
 
     public User addDatabaseInstance(DatabaseInstance databaseInstance) {
@@ -67,7 +77,7 @@ public class User {
     }
 
     public Iterable<DatabaseInstance> getDatabases() {
-        return databases;
+        return cloneList(databases);
     }
 
     public int getDatabasesSize() {

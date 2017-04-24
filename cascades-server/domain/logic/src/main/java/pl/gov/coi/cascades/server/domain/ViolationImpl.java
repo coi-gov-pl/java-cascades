@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
 import pl.gov.coi.cascades.contract.service.Violation;
-import pl.gov.coi.cascades.contract.service.Violation;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>

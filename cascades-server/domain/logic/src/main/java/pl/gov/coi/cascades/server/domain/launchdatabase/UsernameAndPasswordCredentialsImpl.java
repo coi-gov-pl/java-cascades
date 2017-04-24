@@ -21,6 +21,6 @@ public class UsernameAndPasswordCredentialsImpl implements UsernameAndPasswordCr
 
     @Override
     public char[] getPassword() {
-        return password;
+        return password.clone();
     }
 }
