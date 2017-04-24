@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 
 import java.util.HashMap;
@@ -13,11 +14,30 @@ import java.util.Optional;
  */
 public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
-    public static final TemplateId TEMPLATE_ID1 = new TemplateId("templateId1");
-    public static final TemplateId TEMPLATE_ID2 = new TemplateId("templateId2");
-    public static final TemplateId TEMPLATE_ID3 = new TemplateId("templateId3");
-    public static final TemplateId TEMPLATE_ID4 = new TemplateId("templateId4");
-    public static final TemplateId DEFAULT_TEMPLATE = new TemplateId("DEFAULT_TEMPLATE_ID");
+    public static final TemplateId TEMPLATE_ID1 = new TemplateId(
+        "oracle_template",
+        TemplateIdStatus.CREATED,
+        false,
+        "nv485587vmv89"
+    );
+    public static final TemplateId TEMPLATE_ID2 = new TemplateId(
+        "templateId2",
+        TemplateIdStatus.CREATED,
+        false,
+        "v589m69b968"
+    );
+    public static final TemplateId TEMPLATE_ID3 = new TemplateId(
+        "templateId3",
+        TemplateIdStatus.CREATED,
+        true,
+        "mjtjbyu968y96"
+    );
+    public static final TemplateId TEMPLATE_ID4 = new TemplateId(
+        "templateId4",
+        TemplateIdStatus.CREATED,
+        false,
+        "y6v96u8869m3tg"
+    );
     private Map<String, TemplateId> templates;
 
     public TemplateIdGatewayStub() {
@@ -36,7 +56,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     @Override
     public Optional<TemplateId> getDefaultTemplateId() {
-        return Optional.of(DEFAULT_TEMPLATE);
+        return Optional.of(TEMPLATE_ID3);
     }
 
     public Map<String, TemplateId> getAllTemplates() {

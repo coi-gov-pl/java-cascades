@@ -14,4 +14,14 @@ public class TemplateId implements Serializable {
 
     @Getter
 	private final String id;
+
+    @Getter
+    private final TemplateIdStatus status;
+
+    @Getter
+    private final boolean isDefault;
+
+    @Getter
+    private final String serverId;
+
 }

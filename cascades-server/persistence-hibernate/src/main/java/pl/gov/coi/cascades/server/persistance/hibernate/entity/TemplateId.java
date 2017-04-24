@@ -4,9 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.annotation.Nullable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,19 +16,27 @@ import javax.persistence.Table;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 30.03.17.
  */
-@Entity
-@Table
-@Getter
 @Setter
+@Getter
 @ToString
+@Table
+@Entity
 public class TemplateId {
 
-    @Nullable
     @GeneratedValue
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private String templateOfId;
+    @Column
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private TemplateIdStatus status;
+
+    @Column
+    private boolean isDefault;
+
+    @Column
+    private String serverId;
 
 }

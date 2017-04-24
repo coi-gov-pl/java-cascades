@@ -7,16 +7,20 @@ import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.DatabaseInstanceData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.JpaDevelopmentDataImpl;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.data.TemplateIdData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.data.UserData;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora23r45Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos34t56Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Pos45y67Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.Eaba275Supplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.F4ab6a58Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JackieSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MikolajRoznerskiSupplier;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.inject.Singleton;
@@ -37,11 +41,35 @@ class DevelopmentDataConfiguration {
     @Singleton
     @Transactional
     JpaDevelopmentDataImpl provideDevelopmentData(UserData userData,
-                                                  DatabaseInstanceData databaseInstanceData) {
+                                                  DatabaseInstanceData databaseInstanceData,
+                                                  TemplateIdData templateIdData) {
         return new JpaDevelopmentDataImpl(
             userData,
-            databaseInstanceData
+            databaseInstanceData,
+            templateIdData
         );
+    }
+
+    @Bean
+    @DevelopmentBean
+    Supplier<TemplateId> createEaba275Provider() {
+        return new Eaba275Supplier();
+    }
+
+    @Bean
+    @DevelopmentBean
+    Supplier<TemplateId> createF4ab6a58Provider() {
+        return new F4ab6a58Supplier();
+    }
+
+    @Bean
+    @Transactional
+    @Singleton
+    TemplateIdData createTemplateIdData(List<Supplier<TemplateId>> supplierList) {
+        Iterable<Supplier<TemplateId>> devBeans = supplierList.stream()
+            .filter(DevelopmentDataConfiguration::isDevelopmentBean)
+            .collect(Collectors.toList());
+        return new TemplateIdData(devBeans);
     }
 
     @Bean
@@ -106,13 +134,15 @@ class DevelopmentDataConfiguration {
     @Transactional
     @Singleton
     DatabaseInstanceData createDatabaseInstanceData(UserData userData,
-                                                    List<DatabaseInstanceSupplier> supplierList) {
+                                                    List<DatabaseInstanceSupplier> supplierList,
+                                                    TemplateIdData templateIdData) {
         Iterable<DatabaseInstanceSupplier> devBeans = supplierList.stream()
             .filter(DevelopmentDataConfiguration::isDevelopmentBean)
             .collect(Collectors.toList());
         return new DatabaseInstanceData(
             devBeans,
-            userData
+            userData,
+            templateIdData
         );
     }
 

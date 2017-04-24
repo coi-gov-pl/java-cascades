@@ -13,6 +13,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
 
     private final Logger logger = LoggerFactory.getLogger(DatabaseInstanceGatewayStub.class);
+    private static final String DEFAULT_SERVER_ID = "868bb6ti";
     private static final NetworkBind NETWORK_BIND_STUB = NetworkBindStub.builder()
         .host("db01.lab.internal")
         .port(5432)
@@ -35,4 +36,10 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
             + databaseInstance.toString()
         );
     }
+
+    @Override
+    public String getRemoteServerId() {
+        return DEFAULT_SERVER_ID;
+    }
+
 }

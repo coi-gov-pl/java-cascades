@@ -29,7 +29,7 @@ public class UserGatewayImplFunctionalIT {
     }
 
     @Test
-    public void testUserGatewayPositivePath() throws Exception {
+    public void testPositivePath() throws Exception {
         // when
         Optional<User> actual = userGateway.find("jrambo");
 
@@ -42,7 +42,7 @@ public class UserGatewayImplFunctionalIT {
     }
 
     @Test
-    public void testUserGatewayNegativePath() throws Exception {
+    public void testNegativePath() throws Exception {
         // when
         Optional<User> actual = userGateway.find("nonExistingUser");
 

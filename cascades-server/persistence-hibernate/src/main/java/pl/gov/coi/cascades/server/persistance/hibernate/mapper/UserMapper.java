@@ -6,6 +6,7 @@ import pl.gov.coi.cascades.server.domain.Mapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
+import javax.annotation.Nonnull;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.HashSet;
@@ -16,17 +17,22 @@ import java.util.HashSet;
  */
 public class UserMapper implements Mapper<User, pl.gov.coi.cascades.server.domain.User> {
 
-    private final DatabaseTypeClassNameService databaseTypeClassNameService;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
+    /**
+     * Default constructor.
+     *
+     * @param databaseTypeClassNameService Service for database type class name.
+     */
     @Inject
     public UserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this.databaseTypeClassNameService = databaseTypeClassNameService;
-        databaseInstanceMapper = new DatabaseInstanceMapper(databaseTypeClassNameService);
+        databaseInstanceMapper = new DatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
     }
 
     @Override
-    public User toHibernateEntity(pl.gov.coi.cascades.server.domain.User user) {
+    public User toHibernateEntity(@Nonnull pl.gov.coi.cascades.server.domain.User user) {
         EidPreconditions.checkNotNull(user.getUsername(), "20170327:102134");
         EidPreconditions.checkNotNull(user.getId(), "20170327:102136");
         EidPreconditions.checkNotNull(user.getEmail(), "20170327:102140");
@@ -43,7 +49,7 @@ public class UserMapper implements Mapper<User, pl.gov.coi.cascades.server.domai
     }
 
     @Override
-    public pl.gov.coi.cascades.server.domain.User fromHibernateEntity(User user) {
+    public pl.gov.coi.cascades.server.domain.User fromHibernateEntity(@Nonnull User user) {
         EidPreconditions.checkNotNull(user.getUsername(), "20170327:085540");
         EidPreconditions.checkNotNull(user.getId(), "20170327:085557");
         EidPreconditions.checkNotNull(user.getEmail(), "20170327:085606");
