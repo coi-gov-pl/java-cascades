@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.hibernate.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -24,7 +23,6 @@ import java.util.Set;
 @Table
 @Getter
 @Setter
-@ToString
 public class User {
 
     @Column

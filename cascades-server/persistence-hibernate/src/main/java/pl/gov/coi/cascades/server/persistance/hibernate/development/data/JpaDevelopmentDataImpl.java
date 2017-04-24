@@ -21,11 +21,13 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
     private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
     private final UserData userData;
     private final DatabaseInstanceData databaseInstanceData;
+    private final TemplateIdData templateIdData;
     private Status status = Status.REMOVED;
 
     @Override
     public void up() {
         changeStatus(Status.PERSISTING);
+        templateIdData.up();
         userData.up();
         databaseInstanceData.up();
         changeStatus(Status.PERSISTED);
@@ -36,6 +38,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
         changeStatus(Status.REMOVING);
         databaseInstanceData.down();
         userData.down();
+        templateIdData.down();
         changeStatus(Status.REMOVED);
     }
 

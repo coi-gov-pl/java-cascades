@@ -3,11 +3,12 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.contract.service.Violation;
-import pl.gov.coi.cascades.server.domain.ViolationImpl;
+import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
+import pl.gov.coi.cascades.server.domain.ViolationImpl;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -28,9 +29,10 @@ class Validator {
     private final Response response;
     private final Request request;
     private final DatabaseLimitGateway databaseLimitGateway;
+    private final TemplateIdGateway templateIdGateway;
     private final DatabaseTypeDTO databaseTypeDTO;
     @Nullable
-    private final TemplateId templateId;
+    private TemplateId templateId;
     @Nullable
     private final User user;
     private DatabaseType databaseType;
@@ -93,11 +95,26 @@ class Validator {
     }
 
     private void validateTemplateId() {
-        if (!Optional.ofNullable(templateId).isPresent()) {
-            newError(
-                PROPERTY_PATH_TEMPLATE_ID,
-                "Given template id is not present."
-            );
+        Optional<String> input = request.getTemplateId();
+        if (!input.isPresent()) {
+            if (!templateIdGateway.getDefaultTemplateId().isPresent()) {
+                newError(
+                    PROPERTY_PATH_TEMPLATE_ID,
+                    "Default template id is not present."
+                );
+            } else {
+                templateId = templateIdGateway.getDefaultTemplateId().get();
+            }
+        } else {
+            Optional<TemplateId> found = templateIdGateway.find(input.get());
+            if (!found.isPresent()) {
+                newError(
+                    PROPERTY_PATH_TEMPLATE_ID,
+                    "Given template id hasn't been found."
+                );
+            } else {
+                templateId = found.get();
+            }
         }
     }
 

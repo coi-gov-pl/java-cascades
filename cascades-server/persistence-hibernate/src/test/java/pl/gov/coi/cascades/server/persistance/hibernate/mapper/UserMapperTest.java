@@ -12,6 +12,8 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
 
@@ -33,18 +35,19 @@ import static org.mockito.Mockito.when;
  */
 public class UserMapperTest {
 
-    private String email = "jrambo@example.org";
-    private String username = "jrambo";
-    private String id = "12345678";
-    private static final String password = "12345678";
-    private static final String host = "db01.lab.internal";
-    private static final int port = 5432;
-    private static final String databaseId = "19";
-    private static final Long databaseIdAsLong = 45L;
-    private static final String templateId = "oracle";
-    private static final String databaseType = "stub";
-    private static final String instanceName = "ora12e34";
-    private static final String databaseName = "oracle 12c";
+    private static final String EMAIL = "jrambo@example.org";
+    private static final String USERNAME = "jrambo";
+    private static final String ID = "12345678";
+    private static final String PASSWORD = "12345678";
+    private static final String HOST = "db01.lab.internal";
+    private static final int PORT = 5432;
+    private static final Long DATABASE_ID_AS_LONG = 45L;
+    private static final String DATABASE_TYPE = "stub";
+    private static final String INSTANCE_NAME = "ora12e34";
+    private static final String DATABASE_NAME = "oracle 12c";
+    private static final String SERVER_ID = "5v36y5646";
+    private static final long TEMPLATE_ID = 8958395489L;
+    private static final String TEMPLATE_ID_NAME = "oracle_template";
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -71,9 +74,9 @@ public class UserMapperTest {
         );
         databases.add(DatabaseIdGatewayStub.INSTANCE1);
         pl.gov.coi.cascades.server.domain.User user = new pl.gov.coi.cascades.server.domain.User(
-            username,
-            id,
-            email,
+            USERNAME,
+            ID,
+            EMAIL,
             databases
         );
 
@@ -82,9 +85,9 @@ public class UserMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getUsername()).isEqualTo(username);
-        assertThat(actual.getEmail()).isEqualTo(email);
-        assertThat(actual.getId()).isEqualTo(Long.parseLong(id));
+        assertThat(actual.getUsername()).isEqualTo(USERNAME);
+        assertThat(actual.getEmail()).isEqualTo(EMAIL);
+        assertThat(actual.getId()).isEqualTo(Long.parseLong(ID));
         assertThat(actual.getDatabases()).hasSize(1);
     }
 
@@ -97,19 +100,24 @@ public class UserMapperTest {
         when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
         doNothing().when(databaseTypeDTO).resolve();
         Credentials credentials = new Credentials();
-        credentials.setPassword(password);
-        credentials.setUsername(username);
+        credentials.setPassword(PASSWORD);
+        credentials.setUsername(USERNAME);
         NetworkBind networkBind = new NetworkBind();
-        networkBind.setHost(host);
-        networkBind.setPort(port);
+        networkBind.setHost(HOST);
+        networkBind.setPort(PORT);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
-        hibernateInstance.setId(databaseIdAsLong);
+        hibernateInstance.setId(DATABASE_ID_AS_LONG);
+        TemplateId templateId = new TemplateId();
+        templateId.setDefault(false);
+        templateId.setServerId(SERVER_ID);
+        templateId.setName(TEMPLATE_ID_NAME);
+        templateId.setStatus(TemplateIdStatus.CREATED);
         hibernateInstance.setTemplateId(templateId);
-        hibernateInstance.setType(databaseType);
-        hibernateInstance.setInstanceName(instanceName);
+        hibernateInstance.setType(DATABASE_TYPE);
+        hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);
-        hibernateInstance.setDatabaseName(databaseName);
+        hibernateInstance.setDatabaseName(DATABASE_NAME);
         hibernateInstance.setCredentials(credentials);
         hibernateInstance.setNetworkBind(networkBind);
         hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
@@ -119,9 +127,9 @@ public class UserMapperTest {
             databaseTypeClassNameService
         );
         User user = new User();
-        user.setEmail(email);
-        user.setUsername(username);
-        user.setId(Long.parseLong(id));
+        user.setEmail(EMAIL);
+        user.setUsername(USERNAME);
+        user.setId(Long.parseLong(ID));
         user.setDatabases(databases);
 
         // when
@@ -129,9 +137,9 @@ public class UserMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getEmail()).isEqualTo(email);
-        assertThat(actual.getId()).isEqualTo(id);
-        assertThat(actual.getUsername()).isEqualTo(username);
+        assertThat(actual.getEmail()).isEqualTo(EMAIL);
+        assertThat(actual.getId()).isEqualTo(ID);
+        assertThat(actual.getUsername()).isEqualTo(USERNAME);
         assertThat(actual.getDatabases()).hasSize(1);
     }
 

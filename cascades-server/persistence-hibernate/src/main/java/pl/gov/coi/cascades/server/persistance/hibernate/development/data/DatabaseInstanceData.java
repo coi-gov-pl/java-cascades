@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -29,6 +30,7 @@ public class DatabaseInstanceData {
     private final Iterable<DatabaseInstanceSupplier> suppliers;
     private EntityManager entityManager;
     private final UserData userData;
+    private final TemplateIdData templateIdData;
 
     @PersistenceContext
     void setEntityManager(EntityManager entityManager) {
@@ -49,9 +51,12 @@ public class DatabaseInstanceData {
         }
         for (DatabaseInstanceSupplier supplier : suppliers) {
             Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
+            Class<? extends Supplier<TemplateId>> templateSupplier = supplier.getTemplateSupplier();
             Optional<User> userOptional = userData.getUserForSupplierClass(ownerSupplier);
+            Optional<TemplateId> templateIdOptional = templateIdData.getTemplateIdForSupplierClass(templateSupplier);
             DatabaseInstance instance = supplier.get();
             userOptional.ifPresent(getUserConsumer(instance));
+            templateIdOptional.ifPresent(getTemplateIdConsumer(instance));
         }
         if (LOGGER.isInfoEnabled()) {
             LOGGER.info(new Eid("20170419:000641").makeLogMessage(
@@ -59,6 +64,14 @@ public class DatabaseInstanceData {
                 query.getSingleResult()
             ));
         }
+    }
+
+    private Consumer<TemplateId> getTemplateIdConsumer(DatabaseInstance instance) {
+        return templateId -> {
+            instance.setTemplateId(templateId);
+            entityManager.persist(instance);
+            instances.add(instance);
+        };
     }
 
     private Consumer<User> getUserConsumer(DatabaseInstance instance) {

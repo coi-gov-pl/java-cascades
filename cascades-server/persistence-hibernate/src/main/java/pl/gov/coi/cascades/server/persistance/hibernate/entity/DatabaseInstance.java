@@ -5,12 +5,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -29,8 +32,9 @@ public class DatabaseInstance {
     @Id
     private Long id;
 
-    @Column(nullable = false)
-    private String templateId;
+    @JoinColumn
+    @OneToOne(cascade = CascadeType.ALL)
+    private TemplateId templateId;
 
     @Column
     private String type;

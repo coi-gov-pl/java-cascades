@@ -12,8 +12,10 @@ import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.contract.service.Violation;
+import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
+
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Matchers.any;
@@ -36,6 +38,9 @@ public class ValidatorTest {
 
     @Mock
     private DatabaseLimitGateway databaseLimitGateway;
+
+    @Mock
+    private TemplateIdGateway templateIdGateway;
 
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
@@ -64,6 +69,7 @@ public class ValidatorTest {
             response,
             request,
             databaseLimitGateway,
+            templateIdGateway,
             databaseTypeDTO,
             null,
             user,
@@ -75,11 +81,14 @@ public class ValidatorTest {
     public void testValidate() throws Exception {
         // given
         when(response.isSuccessful()).thenReturn(true);
+        String templateAsString = "oracle_template";
+        when(request.getTemplateId()).thenReturn(Optional.empty());
         when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
         when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
         doNothing().when(databaseTypeDTO).resolve();
         when(databaseLimitGateway.isGlobalLimitExceeded()).thenReturn(true);
         when(databaseLimitGateway.isPersonalLimitExceeded(user)).thenReturn(true);
+        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(templateId));
 
         // when
         boolean actual = validator.validate();
@@ -97,6 +106,7 @@ public class ValidatorTest {
             response,
             request,
             databaseLimitGateway,
+            templateIdGateway,
             databaseTypeDTO,
             templateId,
             user,

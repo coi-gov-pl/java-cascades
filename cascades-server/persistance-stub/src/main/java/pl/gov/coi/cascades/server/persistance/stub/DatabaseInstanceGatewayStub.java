@@ -13,7 +13,8 @@ import pl.wavesoftware.eid.exceptions.Eid;
  */
 final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
 
-    private static final Logger logger = LoggerFactory.getLogger(DatabaseInstanceGatewayStub.class);
+    private final Logger logger = LoggerFactory.getLogger(DatabaseInstanceGatewayStub.class);
+    private static final String DEFAULT_SERVER_ID = "868bb6ti";
     private static final NetworkBind NETWORK_BIND_STUB = NetworkBindStub.builder()
         .host("db01.lab.internal")
         .port(5432)
@@ -41,4 +42,10 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
             ));
         }
     }
+
+    @Override
+    public String getRemoteServerId() {
+        return DEFAULT_SERVER_ID;
+    }
+
 }

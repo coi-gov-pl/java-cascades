@@ -5,8 +5,13 @@ import org.assertj.core.description.TextDescription;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -18,6 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
+import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
 import javax.inject.Inject;
@@ -34,6 +40,18 @@ import static org.assertj.core.api.Assertions.assertThat;
 @StubDevelopmentTest
 public class FunctionalIT {
 
+    private static final String ORACLE_TEMPLATE = "oracle_template";
+    private static final String NON_EXISTING_TEMPLATE_ID = "non_existing_template_id";
+
+    @Mock
+    private TemplateIdGateway templateIdGateway;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Inject
     private WebApplicationContext wac;
 
@@ -47,12 +65,12 @@ public class FunctionalIT {
     }
 
     @Test
-    public void testPositivePath() throws Exception {
+    public void testPathWithPresentDefaultTemplate() throws Exception {
         // given
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
             .post("/databases")
             .contentType(MediaType.APPLICATION_JSON)
-            .content(properRequest());
+            .content(requestWithNoTemplateId());
 
         // when
         MvcResult result = mockMvc.perform(requestBuilder)
@@ -65,6 +83,44 @@ public class FunctionalIT {
             .isEqualTo(200);
     }
 
+    @Test
+    public void testPathWithPresentGivenTemplateId() throws Exception {
+        // given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post("/databases")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestWithTemplateId(ORACLE_TEMPLATE));
+
+        // when
+        MvcResult result = mockMvc.perform(requestBuilder)
+            .andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        // then
+        assertThat(response.getStatus())
+            .as(buildDescription(response))
+            .isEqualTo(200);
+    }
+
+    @Test
+    public void testPathWithNotPresentGivenTemplateId() throws Exception {
+        // given
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .post("/databases")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(requestWithTemplateId(NON_EXISTING_TEMPLATE_ID));
+
+        // when
+        MvcResult result = mockMvc.perform(requestBuilder)
+            .andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        // then
+        assertThat(response.getStatus())
+            .as(buildDescription(response))
+            .isEqualTo(400);
+    }
+
     private Description buildDescription(MockHttpServletResponse response)
         throws UnsupportedEncodingException {
 
@@ -72,10 +128,18 @@ public class FunctionalIT {
         return new TextDescription("Response BODY is:\n\n" + content);
     }
 
-    private String properRequest() throws JSONException {
+    private String requestWithNoTemplateId() throws JSONException {
         DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
             .put("type", stub.getName())
+            .toString();
+    }
+
+    private String requestWithTemplateId(String templateId) throws JSONException {
+        DatabaseTypeStub stub = new DatabaseTypeStub();
+        return new JSONObject()
+            .put("type", stub.getName())
+            .put("templateId", templateId)
             .toString();
     }
 

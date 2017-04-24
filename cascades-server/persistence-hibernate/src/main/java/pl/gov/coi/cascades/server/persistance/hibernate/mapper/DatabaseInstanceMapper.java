@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
@@ -16,6 +17,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Arrays;
@@ -28,17 +30,49 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.coi.cascades.server.domain.DatabaseInstance> {
 
+    private static final TemplateIdMapper DEFAULT_TEMPLATE_ID_MAPPER = new TemplateIdMapper();
+    private static final DatabaseIdMapper DEFAULT_DATABASE_ID_MAPPER = new DatabaseIdMapper();
     private final DatabaseTypeClassNameService databaseTypeClassNameService;
+    private final TemplateIdMapper templateIdMapper;
     private final DatabaseIdMapper databaseIdMapper;
 
-    @Inject
+    /**
+     * Default constructor.
+     *
+     * @param databaseTypeClassNameService Service for database type class name.
+     */
     public DatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        this(
+            databaseTypeClassNameService,
+            DEFAULT_TEMPLATE_ID_MAPPER,
+            DEFAULT_DATABASE_ID_MAPPER
+        );
+    }
+
+    @Inject
+    @VisibleForTesting
+    DatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService,
+                           TemplateIdMapper templateIdMapper,
+                           DatabaseIdMapper databaseIdMapper) {
         this.databaseTypeClassNameService = databaseTypeClassNameService;
-        this.databaseIdMapper = new DatabaseIdMapper();
+        this.templateIdMapper = templateIdMapper;
+        this.databaseIdMapper = databaseIdMapper;
     }
 
     @Override
-    public DatabaseInstance toHibernateEntity(pl.gov.coi.cascades.server.domain.DatabaseInstance databaseInstance) {
+    public DatabaseInstance toHibernateEntity(@Nonnull pl.gov.coi.cascades.server.domain.DatabaseInstance databaseInstance) {
+        checkNotNull(databaseInstance.getTemplateId(), "20170414:111003");
+        checkNotNull(databaseInstance.getInstanceName(), "20170414:111006");
+        checkNotNull(databaseInstance.getReuseTimes(), "20170414:111009");
+        checkNotNull(databaseInstance.getDatabaseName(), "20170414:111012");
+        checkNotNull(databaseInstance.getCredentials(), "20170414:111015");
+        checkNotNull(databaseInstance.getNetworkBind(), "20170414:111025");
+        checkNotNull(databaseInstance.getStatus(), "20170414:111029");
+        checkNotNull(databaseInstance.getCreated(), "20170414:111035");
+        checkNotNull(databaseInstance.getDatabaseId(), "20170414:111216");
+        checkNotNull(databaseInstance.getTemplateId(), "20170414:111233");
+        checkNotNull(databaseInstance.getDatabaseType(), "20170414:111248");
+
         Credentials credentials = new Credentials();
         credentials.setPassword(Arrays.toString(databaseInstance.getCredentials().getPassword()));
         credentials.setUsername(databaseInstance.getCredentials().getUsername());
@@ -54,7 +88,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
         DatabaseInstance instance = new DatabaseInstance();
         instance.setId(databaseIdMapper.toHibernateEntity(databaseInstance.getDatabaseId()));
-        instance.setTemplateId(databaseInstance.getTemplateId().getId());
+        instance.setTemplateId(templateIdMapper.toHibernateEntity(databaseInstance.getTemplateId()));
         instance.setType(databaseInstance.getDatabaseType().getName());
         instance.setInstanceName(databaseInstance.getInstanceName());
         instance.setReuseTimes(databaseInstance.getReuseTimes());
@@ -68,7 +102,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
     }
 
     @Override
-    public pl.gov.coi.cascades.server.domain.DatabaseInstance fromHibernateEntity(DatabaseInstance databaseInstance) {
+    public pl.gov.coi.cascades.server.domain.DatabaseInstance fromHibernateEntity(@Nonnull DatabaseInstance databaseInstance) {
         checkNotNull(databaseInstance.getId(), "20170324:155926");
         checkNotNull(databaseInstance.getTemplateId(), "20170324:155955");
         checkNotNull(databaseInstance.getType(), "20170324:160730");
@@ -82,7 +116,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         checkNotNull(databaseInstance.getNetworkBind().getPort(), "20170327:084555");
 
         DatabaseId databaseId = databaseIdMapper.fromHibernateEntity(databaseInstance.getId());
-        TemplateId templateId = new TemplateId(databaseInstance.getTemplateId());
+        TemplateId templateId = templateIdMapper.fromHibernateEntity(databaseInstance.getTemplateId());
         DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(databaseInstance.getType());
         DatabaseType databaseType = new DtoFetcher(databaseTypeDTO).getDatabaseType();
         UsernameAndPasswordCredentials credentials = new UsernameAndPasswordCredentialsImpl(

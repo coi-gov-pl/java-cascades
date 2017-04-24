@@ -65,4 +65,8 @@ public class LaunchNewDatabaseGatewayFacade {
         return databaseLimitGateway;
     }
 
+    TemplateIdGateway getTemplateIdGateway() {
+        return templateIdGateway;
+    }
+
 }

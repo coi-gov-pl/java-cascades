@@ -1,11 +1,13 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
+import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.Eaba275Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -26,8 +28,7 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setId(ID);
-        db.setTemplateId("oracle");
+        db.setId(214342235L);
         db.setType("stub");
         db.setDatabaseName(ORA12E34);
         db.setInstanceName("Oracle is extremely hard");
@@ -52,6 +53,11 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
     @Override
     public Class<? extends Supplier<User>> getOwnerSupplier() {
         return MichaelSupplier.class;
+    }
+
+    @Override
+    public Class<? extends Supplier<TemplateId>> getTemplateSupplier() {
+        return Eaba275Supplier.class;
     }
 
 }

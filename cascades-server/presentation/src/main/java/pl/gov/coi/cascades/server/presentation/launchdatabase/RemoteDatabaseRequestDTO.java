@@ -25,6 +25,6 @@ final class RemoteDatabaseRequestDTO extends RemoteDatabaseRequest {
     private static TemplateId createTemplateId(@Nullable String templateId) {
         return templateId == null
             ? null
-            : new TemplateId(templateId);
+            : new InputTemplateId(templateId);
     }
 }
