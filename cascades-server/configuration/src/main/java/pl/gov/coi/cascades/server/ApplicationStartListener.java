@@ -12,6 +12,8 @@ import org.springframework.core.env.ConfigurableEnvironment;
 class ApplicationStartListener implements
     ApplicationListener<ApplicationEnvironmentPreparedEvent>, Ordered {
 
+    private static final int PRIORITY = 5;
+
     @Override
     public void onApplicationEvent(ApplicationEnvironmentPreparedEvent event) {
         ConfigurableEnvironment env = event.getEnvironment();
@@ -23,6 +25,6 @@ class ApplicationStartListener implements
 
     @Override
     public int getOrder() {
-        return Ordered.HIGHEST_PRECEDENCE + 5;
+        return Ordered.HIGHEST_PRECEDENCE + PRIORITY;
     }
 }
