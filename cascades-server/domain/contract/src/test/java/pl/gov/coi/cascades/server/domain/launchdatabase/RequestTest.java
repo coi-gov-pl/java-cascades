@@ -76,7 +76,7 @@ public class RequestTest {
         Optional<String> actual = request.getTemplateId();
 
         // then
-        assertThat(actual).isEqualTo(Optional.ofNullable(ID));
+        assertThat(actual).isEqualTo(Optional.of(ID));
     }
 
     @Test
@@ -100,6 +100,24 @@ public class RequestTest {
 
         // then
         assertThat(requestBuilder).isNotNull();
+    }
+
+    @Test
+    public void testGetUser() throws Exception {
+        // when
+        User actual = request.getUser();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testGetType() {
+        // when
+        String actual = request.getType();
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }
