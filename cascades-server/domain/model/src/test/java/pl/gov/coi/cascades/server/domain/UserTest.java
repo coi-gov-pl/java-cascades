@@ -14,6 +14,7 @@ import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,8 +26,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class UserTest {
 
     private User user;
-
-    @Mock
     private DatabaseInstance databaseInstance;
 
     @Mock
@@ -60,30 +59,12 @@ public class UserTest {
             id,
             email
         );
-    }
-
-    @Test
-    public void addDatabaseInstance() throws Exception {
-        // when
-        User actual = user.addDatabaseInstance(databaseInstance);
-
-        // then
-        assertThat(actual).isNotNull();
-        assertThat(actual).isNotSameAs(user);
-        assertThat(actual.getDatabases()).contains(databaseInstance);
-        assertThat(user.getDatabases()).doesNotContain(databaseInstance);
-        assertThat(actual.getDatabases()).isNotSameAs(user.getDatabases());
-    }
-
-    @Test
-    public void updateDatabaseInstance() throws Exception {
-        // given
-        DatabaseId id = new DatabaseId("ora12e34");
+        DatabaseId databaseId = new DatabaseId("ora12e34");
         String instanceName = "PESEL";
         String databaseName = "orae231r";
         Date created = Date.from(Instant.now());
-        DatabaseInstance instance1 = new DatabaseInstance(
-            id,
+        databaseInstance = new DatabaseInstance(
+            databaseId,
             templateId,
             databaseType,
             instanceName,
@@ -94,11 +75,32 @@ public class UserTest {
             DatabaseStatus.LAUNCHED,
             created
         );
-        User newUser = user.addDatabaseInstance(instance1);
-        DatabaseInstance instance2 = instance1.setStatus(DatabaseStatus.DELETED);
+    }
+
+    @Test
+    public void addDatabaseInstance() throws Exception {
+        // when
+        User actual = user.addDatabaseInstance(databaseInstance);
+        ArrayList<DatabaseInstance> instanceList = new ArrayList<>();
+        instanceList.add(databaseInstance);
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isNotSameAs(user);
+        assertThat(actual.getDatabases()).hasSize(1);
+        assertThat(actual.getDatabases().iterator().next()).isEqualToComparingFieldByField(databaseInstance);
+        assertThat(user.getDatabases()).doesNotContain(databaseInstance);
+        assertThat(actual.getDatabases()).isNotSameAs(user.getDatabases());
+    }
+
+    @Test
+    public void updateDatabaseInstance() throws Exception {
+        // given
+        User newUser = user.addDatabaseInstance(databaseInstance);
+        DatabaseInstance instance = databaseInstance.setStatus(DatabaseStatus.DELETED);
 
         // when
-        User actual = newUser.updateDatabaseInstance(instance2);
+        User actual = newUser.updateDatabaseInstance(instance);
 
         // then
         assertThat(actual).isNotNull();
