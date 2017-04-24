@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.entity;
 
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 import javax.annotation.Nullable;
@@ -23,6 +24,7 @@ import java.util.Set;
 @Table
 @Getter
 @Setter
+@RequiredArgsConstructor
 public class User {
 
     @Column

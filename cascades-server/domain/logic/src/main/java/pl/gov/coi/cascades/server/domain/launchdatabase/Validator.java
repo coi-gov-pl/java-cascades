@@ -103,7 +103,7 @@ class Validator {
                     "Default template id is not present."
                 );
             } else {
-                templateId = templateIdGateway.getDefaultTemplateId().get();
+                templateIdGateway.getDefaultTemplateId().ifPresent(id -> templateId = id);
             }
         } else {
             Optional<TemplateId> found = templateIdGateway.find(input.get());

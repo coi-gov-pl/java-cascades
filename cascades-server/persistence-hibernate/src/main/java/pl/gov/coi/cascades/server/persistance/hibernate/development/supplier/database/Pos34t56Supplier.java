@@ -23,11 +23,12 @@ public class Pos34t56Supplier implements DatabaseInstanceSupplier {
 
     private static final String POS34T56 = "pos34t56";
     private static final int HTTPS_PORT = 443;
+    private static final long ID = 6_854_362_462L;
 
     @Override
     public DatabaseInstance get() {
         DatabaseInstance db = new DatabaseInstance();
-        db.setId(6854362462L);
+        db.setId(ID);
         db.setType("stub");
         db.setDatabaseName(POS34T56);
         db.setInstanceName("Postgres is *%! hard");
