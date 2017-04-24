@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
@@ -17,6 +18,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 10.03.17.
  */
 @Builder
+@RequiredArgsConstructor
 class Validator {
 
     private static final String PROPERTY_PATH_DATABASE_ID = "databaseId";
