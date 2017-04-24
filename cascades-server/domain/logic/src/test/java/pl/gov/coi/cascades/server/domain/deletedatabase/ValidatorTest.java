@@ -92,6 +92,28 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testValidateWhenDatabaseIdNotEquals() throws Exception {
+        // given
+        Validator validator = new Validator(
+            response,
+            request,
+            databaseId1,
+            user
+        );
+        Collection<DatabaseInstance> databases = new ArrayList<>();
+        when(databaseInstance1.getDatabaseId()).thenReturn(databaseId2);
+        when(databaseInstance1.getDatabaseId().getId()).thenReturn("pos12t34");
+        databases.add(databaseInstance1);
+        when(user.getDatabases()).thenReturn(databases);
+
+        // when
+        boolean actual = validator.validate();
+
+        // then
+        assertThat(actual).isFalse();
+    }
+
+    @Test
     public void testValidateWhenNotPresentDatabaseId() throws Exception {
         // given
         Validator validator = new Validator(
@@ -112,7 +134,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void getUser() throws Exception {
+    public void testGetUser() throws Exception {
         // when
         Validator validator = new Validator(
             response,
@@ -127,7 +149,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void builder() throws Exception {
+    public void testBuilder() throws Exception {
         // when
         Validator validatorBuilder = Validator.builder()
             .request(request)
