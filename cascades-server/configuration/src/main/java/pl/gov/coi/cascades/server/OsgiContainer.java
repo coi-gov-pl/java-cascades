@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
+import pl.wavesoftware.eid.exceptions.Eid;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
 import javax.inject.Inject;
 
-import static pl.wavesoftware.eid.utils.EidPreconditions.checkState;
 import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
 /**
@@ -75,14 +75,24 @@ class OsgiContainer implements SmartLifecycle {
 
     private void startContainer() {
         changeStatus(Status.RUNNING);
-        logger.info("Starting OSGi Container - {}", getFrameworkName());
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170418:235235").makeLogMessage(
+                "Starting OSGi Container - %s",
+                getFrameworkName()
+            ));
+        }
         tryToExecute((EidPreconditions.UnsafeProcedure) framework::start, "20170315:134841");
         changeStatus(Status.RUN);
     }
 
     private void handleStop() {
         changeStatus(Status.STOPPING);
-        logger.info("Stopping OSGi Container - {}", getFrameworkName());
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170418:235353").makeLogMessage(
+                "Stopping OSGi Container - %s",
+                getFrameworkName()
+            ));
+        }
         tryToExecute((EidPreconditions.UnsafeProcedure) framework::stop, "20170315:135147");
         tryToExecute(() -> framework.waitForStop(STOP_TIMEOUT), "20170315:160521");
         changeStatus(Status.STOPPED);
@@ -98,7 +108,13 @@ class OsgiContainer implements SmartLifecycle {
     }
 
     private void changeStatus(Status status) {
-        logger.info("Changing status from {} to {}", this.status, status);
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170418:235450").makeLogMessage(
+                "Changing status from %s to %s",
+                this.status,
+                status
+            ));
+        }
         this.status = status;
     }
 

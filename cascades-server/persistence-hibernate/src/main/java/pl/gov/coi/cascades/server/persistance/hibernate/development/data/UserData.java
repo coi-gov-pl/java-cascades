@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -43,13 +44,23 @@ public class UserData {
                 "SELECT COUNT(user.id) FROM User user",
                 Long.class
             );
-        LOGGER.info("Number of Users before adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000947").makeLogMessage(
+                "Number of Users before adding: %s",
+                query.getSingleResult()
+            ));
+        }
         for (Supplier<User> supplier : supplierList) {
             User user = supplier.get();
             entityManager.persist(user);
             instances.put(instancesKey(supplier), user);
         }
-        LOGGER.info("Number of Users after adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:001028").makeLogMessage(
+                "Number of Users after adding: %s",
+                query.getSingleResult()
+            ));
+        }
     }
 
     void down() {

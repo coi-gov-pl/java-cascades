@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -22,10 +23,10 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
     public DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
         DatabaseInstance databaseInstanceCopy = databaseInstance.setNetworkBind(NETWORK_BIND_STUB);
         if (logger.isInfoEnabled()) {
-            logger.info(
-                "Database has been launched. "
-                    + databaseInstanceCopy.toString()
-            );
+            logger.info(new Eid("20170419:001122").makeLogMessage(
+                "Database has been launched. %s",
+                databaseInstanceCopy.toString()
+            ));
         }
 
         return databaseInstanceCopy;
@@ -34,10 +35,10 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
     @Override
     public void deleteDatabase(DatabaseInstance databaseInstance) {
         if (logger.isInfoEnabled()) {
-            logger.info(
-                "Database has been deleted. "
-                    + databaseInstance.toString()
-            );
+            logger.info(new Eid("20170419:001226").makeLogMessage(
+                "Database has been deleted. %s",
+                databaseInstance.toString()
+            ));
         }
     }
 }

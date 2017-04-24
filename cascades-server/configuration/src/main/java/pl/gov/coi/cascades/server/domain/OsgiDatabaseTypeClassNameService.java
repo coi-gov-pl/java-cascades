@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.OsgiBeanLocator;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.inject.Inject;
 
@@ -17,8 +18,8 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
     protected static final String ERROR_MESSAGE_FORMAT = "Given database type name: %s is not available. " +
         "Maybe you should install a plugin with that implementation.";
     @VisibleForTesting
-    protected static final String FOUND_DATABASE_TYPE_LOG_FORMAT = "Found database type implementation: {} " +
-        "for given type name: {}";
+    protected static final String FOUND_DATABASE_TYPE_LOG_FORMAT = "Found database type implementation: %s " +
+        "for given type name: %s";
     private static final String PROPERTY_PATH_TYPE = "type";
     private final Logger logger;
     private final OsgiBeanLocator osgiBeanLocator;
@@ -42,11 +43,11 @@ public class OsgiDatabaseTypeClassNameService implements DatabaseTypeClassNameSe
         for (DatabaseType databaseType : databaseTypes) {
             if (matches(type, databaseType)) {
                 if (logger.isDebugEnabled()) {
-                    logger.debug(
+                    logger.debug(new Eid("20170419:000325").makeLogMessage(
                         FOUND_DATABASE_TYPE_LOG_FORMAT,
                         databaseType.getClass().getName(),
                         type
-                    );
+                    ));
                 }
                 return new DatabaseTypeDTO(databaseType);
             }

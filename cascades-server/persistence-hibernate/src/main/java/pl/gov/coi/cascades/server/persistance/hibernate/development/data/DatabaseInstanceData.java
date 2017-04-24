@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -40,14 +41,24 @@ public class DatabaseInstanceData {
                 "SELECT COUNT(instance.id) FROM DatabaseInstance instance",
                 Long.class
             );
-        LOGGER.info("Number of Database Instances before adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000515").makeLogMessage(
+                "Number of Database Instances before adding: %s",
+                query.getSingleResult()
+            ));
+        }
         for (DatabaseInstanceSupplier supplier : suppliers) {
             Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
             Optional<User> userOptional = userData.getUserForSupplierClass(ownerSupplier);
             DatabaseInstance instance = supplier.get();
             userOptional.ifPresent(getUserConsumer(instance));
         }
-        LOGGER.info("Number of Database Instances after adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000641").makeLogMessage(
+                "Number of Database Instances after adding: %s",
+                query.getSingleResult()
+            ));
+        }
     }
 
     private Consumer<User> getUserConsumer(DatabaseInstance instance) {
