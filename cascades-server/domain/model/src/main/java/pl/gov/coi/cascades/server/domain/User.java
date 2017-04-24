@@ -45,7 +45,7 @@ public class User {
         this.databases = cloneList(databases);
     }
 
-    private List<DatabaseInstance> cloneList(Collection<DatabaseInstance> instanceList) {
+    private static List<DatabaseInstance> cloneList(Collection<DatabaseInstance> instanceList) {
         List<DatabaseInstance> clonedList = new ArrayList<>(instanceList.size());
         for (DatabaseInstance instance : instanceList) {
             clonedList.add(new DatabaseInstance(instance));
