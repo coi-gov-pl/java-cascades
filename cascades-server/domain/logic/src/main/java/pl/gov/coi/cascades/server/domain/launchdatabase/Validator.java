@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.service.Violation;
@@ -21,7 +21,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 27.02.17.
  */
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 class Validator {
 
     private static final String PROPERTY_PATH_USER = "user";

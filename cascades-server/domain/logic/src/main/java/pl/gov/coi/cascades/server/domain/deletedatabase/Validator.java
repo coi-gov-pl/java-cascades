@@ -1,12 +1,12 @@
 package pl.gov.coi.cascades.server.domain.deletedatabase;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.gov.coi.cascades.server.domain.User;
+import pl.gov.coi.cascades.server.domain.ViolationImpl;
 
 import javax.annotation.Nullable;
 import java.util.Optional;
@@ -18,7 +18,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 10.03.17.
  */
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 class Validator {
 
     private static final String PROPERTY_PATH_DATABASE_ID = "databaseId";
