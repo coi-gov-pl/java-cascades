@@ -108,7 +108,7 @@ public class DevelopmentDataConfigurationTest {
         DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
         // when
-        Supplier<User> actual = developmentDataConfiguration.createMichaelProvider();
+        Supplier<User> actual = developmentDataConfiguration.createMikolajRoznerskiProvider();
 
         // then
         assertThat(actual).isInstanceOf(MikolajRoznerskiSupplier.class);
