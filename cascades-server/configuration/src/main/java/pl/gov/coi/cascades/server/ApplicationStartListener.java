@@ -27,4 +27,5 @@ class ApplicationStartListener implements
     public int getOrder() {
         return Ordered.HIGHEST_PRECEDENCE + PRIORITY;
     }
+
 }
