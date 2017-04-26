@@ -47,6 +47,77 @@ public class DatabaseInstanceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void testBuilder() {
+        // when
+        String databaseName = "oracle";
+        String instanceName = "my_database";
+        Date date = Date.from(Instant.now());
+        DatabaseInstance requestBuilder = DatabaseInstance.builder()
+            .databaseId(databaseId)
+            .status(DatabaseStatus.LAUNCHED)
+            .created(date)
+            .credentials(credentials)
+            .databaseName(databaseName)
+            .databaseType(databaseType)
+            .instanceName(instanceName)
+            .networkBind(networkBind)
+            .reuseTimes(1)
+            .templateId(templateId)
+            .build();
+
+        // then
+        assertThat(requestBuilder).isNotNull();
+        assertThat(requestBuilder.getDatabaseId()).isEqualTo(databaseId);
+        assertThat(requestBuilder.getStatus()).isEqualTo(DatabaseStatus.LAUNCHED);
+        assertThat(requestBuilder.getCreated()).isEqualTo(date);
+        assertThat(requestBuilder.getCredentials()).isEqualTo(credentials);
+        assertThat(requestBuilder.getDatabaseName()).isEqualTo(databaseName);
+        assertThat(requestBuilder.getDatabaseType()).isEqualTo(databaseType);
+        assertThat(requestBuilder.getInstanceName()).isEqualTo(instanceName);
+        assertThat(requestBuilder.getNetworkBind()).isEqualTo(networkBind);
+        assertThat(requestBuilder.getReuseTimes()).isEqualTo(1);
+        assertThat(requestBuilder.getTemplateId()).isEqualTo(templateId);
+    }
+
+    @Test
+    public void testToString() {
+        // given
+        String databaseName = "oracle";
+        String instanceName = "my_database";
+        Date date = Date.from(Instant.now());
+        DatabaseInstance requestBuilder = DatabaseInstance.builder()
+            .databaseId(databaseId)
+            .status(DatabaseStatus.LAUNCHED)
+            .created(date)
+            .credentials(credentials)
+            .databaseName(databaseName)
+            .databaseType(databaseType)
+            .instanceName(instanceName)
+            .networkBind(networkBind)
+            .reuseTimes(1)
+            .templateId(templateId)
+            .build();
+
+        // when
+        String actual = requestBuilder.toString();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).contains(
+            databaseId.toString(),
+            DatabaseStatus.LAUNCHED.name(),
+            date.toString(),
+            credentials.toString(),
+            databaseName,
+            databaseType.toString(),
+            instanceName,
+            networkBind.toString(),
+            String.valueOf(1),
+            templateId.toString()
+        );
+    }
+
+    @Test
     public void testGetCreated() throws Exception {
         // given
         String instanceName = "PESEL";
