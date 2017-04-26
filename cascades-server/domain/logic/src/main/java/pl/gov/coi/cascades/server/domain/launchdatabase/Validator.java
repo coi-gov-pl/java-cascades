@@ -61,10 +61,7 @@ class Validator {
 
     private void validateDatabaseType() {
         databaseTypeDTO.onFail(response::addError)
-            .onSuccess(databaseType1 -> {
-                Validator.this.setDatabaseType(databaseType1);
-                response.setDatabaseType(databaseType1);
-            })
+            .onSuccess(Validator.this::setDatabaseType)
             .resolve();
     }
 

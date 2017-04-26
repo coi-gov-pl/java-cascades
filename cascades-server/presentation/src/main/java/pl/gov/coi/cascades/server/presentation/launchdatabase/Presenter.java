@@ -3,13 +3,12 @@ package pl.gov.coi.cascades.server.presentation.launchdatabase;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.contract.service.Violation;
-import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
 import pl.gov.coi.cascades.contract.service.WithViolations;
+import pl.gov.coi.cascades.server.domain.launchdatabase.Response;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -18,7 +17,6 @@ import java.util.HashSet;
 class Presenter implements Response {
 
     private DatabaseId databaseId;
-    private DatabaseType databaseType;
     private NetworkBind networkBind;
     private String databaseName;
     private UsernameAndPasswordCredentials credentials;
@@ -52,16 +50,6 @@ class Presenter implements Response {
     @Override
     public void setDatabaseId(DatabaseId databaseId) {
         this.databaseId = databaseId;
-    }
-
-    /**
-     * A setter for database type.
-     *
-     * @param databaseType Given type of database.
-     */
-    @Override
-    public void setDatabaseType(DatabaseType databaseType) {
-        this.databaseType = databaseType;
     }
 
     /**
