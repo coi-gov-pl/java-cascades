@@ -84,7 +84,7 @@ class Presenter implements Response {
      */
     ViewModel createModel() {
         return  isSuccessful()
-            ? createSuccessulViewModel()
+            ? createSuccessfulViewModel()
             : createFailedViewModel();
     }
 
@@ -93,7 +93,7 @@ class Presenter implements Response {
         return new ViewModel(withViolations, HttpStatus.BAD_REQUEST);
     }
 
-    private ViewModel createSuccessulViewModel() {
+    private ViewModel createSuccessfulViewModel() {
         RemoteDatabaseSpec databaseSpec = new RemoteDatabaseSpec(
             databaseId,
             databaseName,
