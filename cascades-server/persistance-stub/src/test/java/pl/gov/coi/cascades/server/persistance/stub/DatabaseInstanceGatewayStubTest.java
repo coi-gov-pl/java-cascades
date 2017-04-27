@@ -9,7 +9,9 @@ import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -46,6 +48,25 @@ public class DatabaseInstanceGatewayStubTest {
     }
 
     @Test
+    public void testLaunchDatabaseWhenLoggerIsNotInfoEnabled() throws Exception {
+        // given
+        DatabaseInstanceGatewayStub databaseInstanceGatewayStub = new DatabaseInstanceGatewayStub(
+            logger
+        );
+        when(logger.isInfoEnabled()).thenReturn(false);
+
+        // when
+        DatabaseInstance actual = databaseInstanceGatewayStub.launchDatabase(
+            DatabaseIdGatewayStub.INSTANCE1
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isNotEqualTo(DatabaseIdGatewayStub.INSTANCE1);
+        verify(logger, times(0)).info(anyString());
+    }
+
+    @Test
     public void testDeleteDatabase() throws Exception {
         // given
         DatabaseInstanceGatewayStub databaseInstanceGatewayStub = new DatabaseInstanceGatewayStub(
@@ -61,6 +82,23 @@ public class DatabaseInstanceGatewayStubTest {
         // then
         verify(logger).info(contains("20170419:001226"));
         verify(logger).info(contains("Database has been deleted."));
+    }
+
+    @Test
+    public void testDeleteDatabaseWhenLoggerIsNotInfoEnabled() throws Exception {
+        // given
+        DatabaseInstanceGatewayStub databaseInstanceGatewayStub = new DatabaseInstanceGatewayStub(
+            logger
+        );
+        when(logger.isInfoEnabled()).thenReturn(false);
+
+        // when
+        databaseInstanceGatewayStub.deleteDatabase(
+            DatabaseIdGatewayStub.INSTANCE1
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
     }
 
     @Test
