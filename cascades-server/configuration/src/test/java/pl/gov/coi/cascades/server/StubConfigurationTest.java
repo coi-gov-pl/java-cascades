@@ -17,9 +17,9 @@ import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 24.04.17.
+ * @since 27.04.17.
  */
-public class DevelopmentConfigurationTest {
+public class StubConfigurationTest {
 
     @Mock
     private Logger logger;
@@ -31,38 +31,38 @@ public class DevelopmentConfigurationTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void testDefaultConstructor() {
+        // when
+        StubConfiguration actual = new StubConfiguration();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
     public void testHandle() throws Exception {
         // given
-        DevelopmentConfiguration developmentConfiguration = new DevelopmentConfiguration(logger);
+        StubConfiguration stubConfiguration = new StubConfiguration(logger);
         when(logger.isInfoEnabled()).thenReturn(true);
 
         // when
-        developmentConfiguration.handle();
+        stubConfiguration.handle();
 
         // then
-        verify(logger).info(contains("20170418:134033"));
+        verify(logger).info(contains("20170419:000235"));
     }
 
     @Test
     public void testHandleWhenLoggerIsNotEnabled() throws Exception {
         // given
-        DevelopmentConfiguration developmentConfiguration = new DevelopmentConfiguration(logger);
+        StubConfiguration stubConfiguration = new StubConfiguration(logger);
         when(logger.isInfoEnabled()).thenReturn(false);
 
         // when
-        developmentConfiguration.handle();
+        stubConfiguration.handle();
 
         // then
         verify(logger, times(0)).info(anyString());
-    }
-
-    @Test
-    public void testDefaultConstructor() throws Exception {
-        // when
-        DevelopmentConfiguration actual = new DevelopmentConfiguration();
-
-        // then
-        assertThat(actual).isNotNull();
     }
 
 }
