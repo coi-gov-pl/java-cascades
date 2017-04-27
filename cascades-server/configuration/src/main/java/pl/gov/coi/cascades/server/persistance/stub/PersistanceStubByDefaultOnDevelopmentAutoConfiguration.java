@@ -54,7 +54,7 @@ class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
     @ConditionalOnMissingBean
     @Bean
     DatabaseLimitGateway produceDatabaseLimitGateway() {
-        return new DatabaseLimitGatewayStub();
+        return new DatabaseLimitGatewayStub(userGatewayStub);
     }
 
     @ConditionalOnMissingBean

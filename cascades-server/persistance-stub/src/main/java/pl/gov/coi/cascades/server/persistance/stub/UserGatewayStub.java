@@ -17,7 +17,7 @@ public final class UserGatewayStub implements UserGateway {
     public static final User M_ROZNESKI = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
     public static final User M_ZAKOSCIELNY = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
     public static final User J_RAMBO = new User("jrambo", "fcweccf", "jrambo@example.org");
-    private Map<Object, User> users;
+    public Map<Object, User> users;
 
     /**
      * Default constructor.
