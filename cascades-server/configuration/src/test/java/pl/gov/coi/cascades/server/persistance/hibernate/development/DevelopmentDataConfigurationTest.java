@@ -23,6 +23,8 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.use
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -87,7 +89,18 @@ public class DevelopmentDataConfigurationTest {
 
     @Test
     public void testCreateTemplateIdData() throws Exception {
+        // given
+        List<Supplier<TemplateId>> suppliers = new ArrayList<>();
+        suppliers.add(new F4ab6a58Supplier());
+        DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
+        // when
+        TemplateIdData actual = developmentDataConfiguration.createTemplateIdData(
+            suppliers
+        );
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
     @Test
@@ -140,7 +153,18 @@ public class DevelopmentDataConfigurationTest {
 
     @Test
     public void testCreateUserData() throws Exception {
+        // given
+        List<Supplier<User>> suppliers = new ArrayList<>();
+        suppliers.add(new MichaelSupplier());
+        DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
+        // when
+        UserData actual = developmentDataConfiguration.createUserData(
+            suppliers
+        );
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
     @Test
@@ -193,7 +217,20 @@ public class DevelopmentDataConfigurationTest {
 
     @Test
     public void testCreateDatabaseInstanceData() throws Exception {
+        // given
+        List<DatabaseInstanceSupplier> suppliers = new ArrayList<>();
+        suppliers.add(new Pos34t56Supplier());
+        DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
+        // when
+        DatabaseInstanceData actual = developmentDataConfiguration.createDatabaseInstanceData(
+            userData,
+            suppliers,
+            templateIdData
+        );
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }
