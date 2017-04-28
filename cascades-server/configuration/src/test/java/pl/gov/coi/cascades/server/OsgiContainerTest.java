@@ -6,10 +6,13 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.osgi.framework.launch.Framework;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -23,6 +26,9 @@ public class OsgiContainerTest {
 
     @Mock
     private Runnable callback;
+
+    @Mock
+    private Logger logger;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -40,9 +46,30 @@ public class OsgiContainerTest {
     }
 
     @Test
-    public void testStopWithCallback() throws Exception {
+    public void testStopWithCallbackWhenLoggerIsInfoEnabled() throws Exception {
         // given
-        OsgiContainer osgiContainer = new OsgiContainer(framework);
+        when(logger.isInfoEnabled()).thenReturn(true);
+        OsgiContainer osgiContainer = new OsgiContainer(
+            logger,
+            framework
+        );
+
+        // when
+        osgiContainer.stop(callback);
+
+        // then
+        verify(callback, times(1)).run();
+        verify(logger).info(contains("20170418:235353"));
+    }
+
+    @Test
+    public void testStopWithCallbackWhenLoggerIsNotInfoEnabled() throws Exception {
+        // given
+        when(logger.isInfoEnabled()).thenReturn(false);
+        OsgiContainer osgiContainer = new OsgiContainer(
+            logger,
+            framework
+        );
 
         // when
         osgiContainer.stop(callback);
@@ -70,7 +97,7 @@ public class OsgiContainerTest {
     }
 
     @Test
-    public void testIsRunning() throws Exception {
+    public void testWhenIsNotRunning() throws Exception {
         // given
         OsgiContainer osgiContainer = new OsgiContainer(framework);
 
