@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server;
 
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -39,6 +41,9 @@ public class OsgiBeanLocatorImplTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
+
     @Test
     public void testGetBeans() throws Exception {
         // given
@@ -52,6 +57,20 @@ public class OsgiBeanLocatorImplTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual).isInstanceOf(HashSet.class);
+    }
+
+    @Test
+    public void testGetBeansWhenExceptionOccurred() throws Exception {
+        // given
+        when(framework.getState()).thenReturn(Bundle.ACTIVE);
+        when(framework.getBundleContext()).thenReturn(bundleContext);
+        OsgiBeanLocatorImpl osgiBeanLocator = new OsgiBeanLocatorImpl(framework);
+
+        // then
+        expectedException.expectMessage(contains("20170411:174945"));
+
+        // when
+        osgiBeanLocator.getBeans(DatabaseType.class);
     }
 
     @Test
