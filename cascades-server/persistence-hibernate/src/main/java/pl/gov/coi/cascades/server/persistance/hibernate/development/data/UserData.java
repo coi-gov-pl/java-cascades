@@ -22,7 +22,7 @@ public class UserData {
 
     private EntityManager entityManager;
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(UserData.class);
-    private Logger logger;
+    private final Logger logger;
     private Map<Class<Supplier<User>>, User> instances = new HashMap<>();
     private final Iterable<Supplier<User>> supplierList;
 
