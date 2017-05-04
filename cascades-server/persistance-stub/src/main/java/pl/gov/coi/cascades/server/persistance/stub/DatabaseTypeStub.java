@@ -10,6 +10,8 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
  */
 public class DatabaseTypeStub implements DatabaseType {
 
+    private static final long serialVersionUID = 42L;
+
     @Override
     public String getName() {
         return "stub";

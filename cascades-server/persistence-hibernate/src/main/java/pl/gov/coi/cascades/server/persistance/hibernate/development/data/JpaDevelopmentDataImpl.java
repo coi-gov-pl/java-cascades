@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.SmartLifecycle;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -42,7 +43,13 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
     }
 
     private void changeStatus(Status status) {
-        LOGGER.info("Changing status from {} to {}", this.status, status);
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000835").makeLogMessage(
+                "Changing status from %s to %s",
+                this.status,
+                status
+            ));
+        }
         this.status = status;
     }
 

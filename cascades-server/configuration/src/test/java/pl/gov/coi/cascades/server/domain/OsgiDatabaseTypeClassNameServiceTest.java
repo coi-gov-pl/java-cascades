@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -24,7 +25,6 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static pl.gov.coi.cascades.server.domain.OsgiDatabaseTypeClassNameService.ERROR_MESSAGE_FORMAT;
-import static pl.gov.coi.cascades.server.domain.OsgiDatabaseTypeClassNameService.FOUND_DATABASE_TYPE_LOG_FORMAT;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -119,11 +119,13 @@ public class OsgiDatabaseTypeClassNameServiceTest {
         verify(logger, times(1))
             .isDebugEnabled();
         verify(logger, times(1))
-            .debug(
-                FOUND_DATABASE_TYPE_LOG_FORMAT,
-                DatabaseTypeStub.class.getName(),
+            .debug(Matchers.contains(
+                DatabaseTypeStub.class.getName()
+            ));
+        verify(logger, times(1))
+            .debug(Matchers.contains(
                 search
-            );
+            ));
     }
 
     @Nullable

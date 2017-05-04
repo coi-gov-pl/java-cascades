@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
  */
 public class UsernameAndPasswordCredentialsStub implements UsernameAndPasswordCredentials {
 
+    private static final long serialVersionUID = 42L;
     private final String name;
 
     public UsernameAndPasswordCredentialsStub(String name) {

@@ -4,7 +4,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
@@ -19,8 +18,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class PresenterTest {
 
     private Presenter presenter;
-
-    @Mock
     private Violation violation;
 
     @Rule
@@ -32,6 +29,22 @@ public class PresenterTest {
     @Before
     public void setUp() {
         presenter = new Presenter();
+        violation = new Violation() {
+
+            private String message = "errorMessage";
+            private String propertyPath = "PresenterTest";
+
+            @Override
+            public String getMessage() {
+                return message;
+            }
+
+            @Override
+            public String getPropertyPath() {
+                return propertyPath;
+            }
+
+        };
     }
 
     @Test
@@ -63,7 +76,8 @@ public class PresenterTest {
 
         // then
         assertThat(errors).isNotNull();
-        assertThat(errors).contains(violation);
+        assertThat(errors).hasSize(1);
+        assertThat(errors.iterator().next()).isEqualToComparingFieldByField(violation);
     }
 
     @Test

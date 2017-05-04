@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
@@ -26,11 +27,13 @@ class HibernateProfileConfiguration {
             () -> FigletFont.convertOneLine(ProfileType.HIBERNATE_NAME),
             "20170404:150225"
         );
-        String banner = "Running in environment\n\n{}\n";
-        logger.info(
-            banner,
-            asciiArt
-        );
+        String banner = "Running in environment\n\n%s\n";
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170418:234425").makeLogMessage(
+                banner,
+                asciiArt
+            ));
+        }
     }
 
 }

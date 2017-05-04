@@ -46,7 +46,7 @@ public class UseCaseImpl implements UseCase {
         Validator validator = validatorBuilder.build();
 
         if (validator.validate()) {
-            succeedResponse(validator, databaseInstance.get());
+            databaseInstance.ifPresent(databaseInstance12 -> succeedResponse(validator, databaseInstance12));
         }
     }
 

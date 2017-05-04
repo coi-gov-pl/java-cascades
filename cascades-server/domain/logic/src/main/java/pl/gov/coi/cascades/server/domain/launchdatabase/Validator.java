@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
@@ -20,6 +21,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 27.02.17.
  */
 @Builder
+@AllArgsConstructor
 class Validator {
 
     private static final String PROPERTY_PATH_USER = "user";
@@ -103,7 +105,7 @@ class Validator {
                     "Default template id is not present."
                 );
             } else {
-                templateId = templateIdGateway.getDefaultTemplateId().get();
+                templateIdGateway.getDefaultTemplateId().ifPresent(id -> templateId = id);
             }
         } else {
             Optional<TemplateId> found = templateIdGateway.find(input.get());

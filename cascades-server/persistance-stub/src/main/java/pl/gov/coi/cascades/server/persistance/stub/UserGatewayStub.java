@@ -16,18 +16,23 @@ public final class UserGatewayStub implements UserGateway {
     public static final User H_GRANT = new User("Hugh Grant", "hgrant", "hugh.grant@example.com");
     public static final User M_ROZNESKI = new User("Mikołaj Roznerski", "mrozneski", "mikolaj.rozneski@example.com");
     public static final User M_ZAKOSCIELNY = new User("Maciej Zakościelny", "mzakoscielny", "maciej.zakocielny@example.com");
-    public static User J_RAMBO = new User("jrambo", "fcweccf", "jrambo@example.org");
+    public static final User J_RAMBO = new User("jrambo", "fcweccf", "jrambo@example.org");
     private Map<Object, User> users;
 
+    /**
+     * Default constructor.
+     *
+     * @param database Given map of databases.
+     */
     public UserGatewayStub(Map<Object, User> database) {
         this.users = database;
-        J_RAMBO = J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
+        User user = J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
 
         addUser(B_PITT);
         addUser(H_GRANT);
         addUser(M_ROZNESKI);
         addUser(M_ZAKOSCIELNY);
-        addUser(J_RAMBO);
+        addUser(user);
     }
 
     @Override

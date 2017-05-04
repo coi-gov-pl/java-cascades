@@ -14,8 +14,6 @@ import java.util.Random;
 public class DatabaseIdGeneratorService {
     private static final Random DEFUALT_RND = new SecureRandom();
     private static final DatabaseIdMapper DEFAULT_DATABASE_ID_MAPPER = new DatabaseIdMapper();
-    private static final int RADIX_36 = 36;
-
     private final Random random;
     private final DatabaseIdMapper databaseIdMapper;
 

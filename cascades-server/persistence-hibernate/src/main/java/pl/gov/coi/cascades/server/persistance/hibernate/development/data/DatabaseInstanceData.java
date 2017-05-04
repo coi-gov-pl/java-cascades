@@ -7,6 +7,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.dat
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
+import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -42,7 +43,12 @@ public class DatabaseInstanceData {
                 "SELECT COUNT(instance.id) FROM DatabaseInstance instance",
                 Long.class
             );
-        LOGGER.info("Number of Database Instances before adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000515").makeLogMessage(
+                "Number of Database Instances before adding: %s",
+                query.getSingleResult()
+            ));
+        }
         for (DatabaseInstanceSupplier supplier : suppliers) {
             Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
             Class<? extends Supplier<TemplateId>> templateSupplier = supplier.getTemplateSupplier();
@@ -52,7 +58,12 @@ public class DatabaseInstanceData {
             userOptional.ifPresent(getUserConsumer(instance));
             templateIdOptional.ifPresent(getTemplateIdConsumer(instance));
         }
-        LOGGER.info("Number of Database Instances after adding: {}", query.getSingleResult());
+        if (LOGGER.isInfoEnabled()) {
+            LOGGER.info(new Eid("20170419:000641").makeLogMessage(
+                "Number of Database Instances after adding: %s",
+                query.getSingleResult()
+            ));
+        }
     }
 
     private Consumer<TemplateId> getTemplateIdConsumer(DatabaseInstance instance) {

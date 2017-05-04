@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 /**
  * Use case for launching new database instance.
  */
+@FunctionalInterface
 public interface UseCase {
 
     /**

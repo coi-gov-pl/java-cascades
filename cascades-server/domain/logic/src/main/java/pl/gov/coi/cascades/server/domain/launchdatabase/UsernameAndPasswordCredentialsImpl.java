@@ -10,6 +10,7 @@ import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 @RequiredArgsConstructor
 public class UsernameAndPasswordCredentialsImpl implements UsernameAndPasswordCredentials {
 
+    private static final long serialVersionUID = 42L;
     private final String username;
     private final char[] password;
 
@@ -20,6 +21,6 @@ public class UsernameAndPasswordCredentialsImpl implements UsernameAndPasswordCr
 
     @Override
     public char[] getPassword() {
-        return password;
+        return password.clone();
     }
 }

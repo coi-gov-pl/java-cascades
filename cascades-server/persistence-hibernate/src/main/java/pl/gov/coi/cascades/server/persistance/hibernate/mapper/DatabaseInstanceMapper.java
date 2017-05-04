@@ -149,6 +149,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
     private static final class NetworkBindImpl implements pl.gov.coi.cascades.contract.domain.NetworkBind {
         private String host;
         private int port;
+        private static final long serialVersionUID = 42L;
 
         NetworkBindImpl(String host, int port) {
             this.host = host;

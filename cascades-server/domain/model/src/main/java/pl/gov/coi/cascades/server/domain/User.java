@@ -2,8 +2,10 @@ package pl.gov.coi.cascades.server.domain;
 
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
@@ -15,7 +17,7 @@ public class User {
     private String id;
     @Getter
     private String email;
-	private Collection<DatabaseInstance> databases = new HashSet<>();
+    private Collection<DatabaseInstance> databases = new HashSet<>();
 
     public User(String username, String id, String email) {
         this.username = username;
@@ -40,7 +42,15 @@ public class User {
         this.username = username;
         this.id = id;
         this.email = email;
-        this.databases = databases;
+        this.databases = cloneList(databases);
+    }
+
+    private static List<DatabaseInstance> cloneList(Collection<DatabaseInstance> instanceList) {
+        List<DatabaseInstance> clonedList = new ArrayList<>(instanceList.size());
+        for (DatabaseInstance instance : instanceList) {
+            clonedList.add(new DatabaseInstance(instance));
+        }
+        return clonedList;
     }
 
     public User addDatabaseInstance(DatabaseInstance databaseInstance) {
@@ -53,7 +63,7 @@ public class User {
     public User updateDatabaseInstance(DatabaseInstance databaseInstance) {
         User user = new User(this);
         user.databases.addAll(databases);
-        for (DatabaseInstance instance: user.getDatabases()) {
+        for (DatabaseInstance instance : user.getDatabases()) {
             checkNotNull(instance, "20170320:160547");
             checkNotNull(instance.getDatabaseId(), "20170320:160607");
             if (instance.getDatabaseId().equals(databaseInstance.getDatabaseId())) {
@@ -67,7 +77,7 @@ public class User {
     }
 
     public Iterable<DatabaseInstance> getDatabases() {
-        return databases;
+        return cloneList(databases);
     }
 
     public int getDatabasesSize() {
