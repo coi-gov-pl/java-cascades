@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.hibernate.entity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -25,7 +24,6 @@ import java.util.Date;
 @Setter
 @Entity
 @Table
-@ToString
 @NoArgsConstructor
 public class DatabaseInstance {
 

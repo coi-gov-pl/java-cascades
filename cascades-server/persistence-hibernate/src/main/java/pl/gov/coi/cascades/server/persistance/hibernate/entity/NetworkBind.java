@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -20,7 +19,6 @@ import javax.persistence.Embeddable;
 @Getter
 @Embeddable
 @Builder
-@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class NetworkBind {

@@ -143,4 +143,17 @@ public class UserMapperTest {
         assertThat(actual.getDatabases()).hasSize(1);
     }
 
+    @Test
+    public void testAddDatabase() {
+        // given
+        DatabaseInstance databaseInstance = new DatabaseInstance();
+        User user = new User();
+
+        // when
+        user.addDatabase(databaseInstance);
+
+        // then
+        assertThat(user.getDatabases()).hasSize(1);
+    }
+
 }
