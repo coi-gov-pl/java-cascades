@@ -5,6 +5,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
@@ -37,6 +38,9 @@ public class UserDataTest {
     @Mock
     private TypedQuery<Object> typedQuery;
 
+    @Mock
+    private Logger logger;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -54,8 +58,6 @@ public class UserDataTest {
         when(entityManager.createQuery(anyString(), any())).thenReturn(typedQuery);
         userData.setEntityManager(entityManager);
         userData.up();
-
-        // when
         DatabaseInstanceSupplier databaseSupplier = new Ora12e34Supplier();
         suppliers.add(databaseSupplier);
         Class<? extends Supplier<User>> ownerSupplier = suppliers.iterator().next().getOwnerSupplier();
@@ -69,6 +71,25 @@ public class UserDataTest {
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.get().getUsername()).isEqualTo(username);
         assertThat(actual.get().getEmail()).isEqualTo(email);
+    }
+
+    @Test
+    public void testUp() {
+        // given
+        Collection<Supplier<User>> supplierList = new ArrayList<>();
+        supplierList.add(new MichaelSupplier());
+        UserData userData = new UserData(
+            supplierList,
+            logger
+        );
+        userData.setEntityManager(entityManager);
+        when(logger.isInfoEnabled()).thenReturn(false);
+
+        // when
+        userData.up();
+
+        // then
+        verify(logger, times(0)).info(anyString(), anyLong());
     }
 
     @Test

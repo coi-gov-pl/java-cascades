@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
@@ -20,12 +21,20 @@ import java.util.function.Supplier;
 public class UserData {
 
     private EntityManager entityManager;
-    private static final Logger LOGGER = LoggerFactory.getLogger(UserData.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(UserData.class);
+    private Logger logger;
     private Map<Class<Supplier<User>>, User> instances = new HashMap<>();
     private final Iterable<Supplier<User>> supplierList;
 
     public UserData(Iterable<Supplier<User>> supplierList) {
+        this(supplierList, DEFAULT_LOGGER);
+    }
+
+    @VisibleForTesting
+    UserData(Iterable<Supplier<User>> supplierList,
+             Logger logger) {
         this.supplierList = supplierList;
+        this.logger = logger;
     }
 
     @PersistenceContext
@@ -44,8 +53,8 @@ public class UserData {
                 "SELECT COUNT(user.id) FROM User user",
                 Long.class
             );
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info(new Eid("20170419:000947").makeLogMessage(
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170419:000947").makeLogMessage(
                 "Number of Users before adding: %s",
                 query.getSingleResult()
             ));
@@ -55,8 +64,8 @@ public class UserData {
             entityManager.persist(user);
             instances.put(instancesKey(supplier), user);
         }
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info(new Eid("20170419:001028").makeLogMessage(
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170419:001028").makeLogMessage(
                 "Number of Users after adding: %s",
                 query.getSingleResult()
             ));
