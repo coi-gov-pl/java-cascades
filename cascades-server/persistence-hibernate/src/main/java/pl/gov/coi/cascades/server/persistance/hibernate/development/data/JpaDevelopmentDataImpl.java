@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
-import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,8 +25,7 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
     private Status status = Status.REMOVED;
     private final Logger logger;
 
-    @VisibleForTesting
-    JpaDevelopmentDataImpl(UserData userData,
+    public JpaDevelopmentDataImpl(UserData userData,
                                   DatabaseInstanceData databaseInstanceData,
                                   TemplateIdData templateIdData) {
         this(
