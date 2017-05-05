@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,11 +19,24 @@ import javax.transaction.Transactional;
 @RequiredArgsConstructor
 public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycle {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(JpaDevelopmentDataImpl.class);
     private final UserData userData;
     private final DatabaseInstanceData databaseInstanceData;
     private final TemplateIdData templateIdData;
     private Status status = Status.REMOVED;
+    private final Logger logger;
+
+    @VisibleForTesting
+    JpaDevelopmentDataImpl(UserData userData,
+                                  DatabaseInstanceData databaseInstanceData,
+                                  TemplateIdData templateIdData) {
+        this(
+            userData,
+            databaseInstanceData,
+            templateIdData,
+            DEFAULT_LOGGER
+        );
+    }
 
     @Override
     public void up() {
@@ -43,8 +57,8 @@ public class JpaDevelopmentDataImpl implements JpaDevelopmentData, SmartLifecycl
     }
 
     private void changeStatus(Status status) {
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info(new Eid("20170419:000835").makeLogMessage(
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170419:000835").makeLogMessage(
                 "Changing status from %s to %s",
                 this.status,
                 status

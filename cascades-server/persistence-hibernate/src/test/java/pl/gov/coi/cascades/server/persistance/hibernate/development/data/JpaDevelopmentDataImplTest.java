@@ -5,10 +5,12 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -26,6 +28,9 @@ public class JpaDevelopmentDataImplTest {
     private Runnable callback;
 
     @Mock
+    private Logger logger;
+
+    @Mock
     private TemplateIdData templateIdData;
 
     @Rule
@@ -34,10 +39,12 @@ public class JpaDevelopmentDataImplTest {
     @Test
     public void testUp() throws Exception {
         // given
+        when(logger.isInfoEnabled()).thenReturn(false);
         JpaDevelopmentDataImpl jpaDevelopmentData = new JpaDevelopmentDataImpl(
             userData,
             databaseInstanceData,
-            templateIdData
+            templateIdData,
+            logger
         );
 
         // when
