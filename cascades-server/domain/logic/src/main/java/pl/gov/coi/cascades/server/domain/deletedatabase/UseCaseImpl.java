@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.domain.deletedatabase;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
@@ -16,7 +16,7 @@ import java.util.Optional;
  * @since 09.03.17.
  */
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
     private final UserGateway userGateway;
@@ -47,8 +47,7 @@ public class UseCaseImpl implements UseCase {
 
         if (validator.validate()) {
             databaseInstance.ifPresent(databaseInstance12 -> succeedResponse(validator, databaseInstance12));
-        }
-    }
+        }}
 
     private void succeedResponse(Validator validator,
                                  DatabaseInstance databaseInstance) {
