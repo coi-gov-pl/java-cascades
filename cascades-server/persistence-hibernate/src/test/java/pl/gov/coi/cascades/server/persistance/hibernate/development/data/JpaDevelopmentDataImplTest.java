@@ -149,6 +149,23 @@ public class JpaDevelopmentDataImplTest {
     }
 
     @Test
+    public void testWhenIsRunning() throws Exception {
+        // given
+        JpaDevelopmentDataImpl jpaDevelopmentData = new JpaDevelopmentDataImpl(
+            userData,
+            databaseInstanceData,
+            templateIdData
+        );
+        jpaDevelopmentData.up();
+
+        // when
+        boolean actual = jpaDevelopmentData.isRunning();
+
+        // then
+        assertThat(actual).isTrue();
+    }
+
+    @Test
     public void testGetPhase() throws Exception {
         // given
         int STOPPED_PHASE = Integer.MAX_VALUE;
