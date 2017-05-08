@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.slf4j.Logger;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
@@ -20,6 +21,8 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -38,6 +41,9 @@ public class TemplateIdGatewayImplTest {
     private TypedQuery<Object> query;
 
     @Mock
+    private Logger logger;
+
+    @Mock
     private pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId hibernateTemplate;
 
     @Rule
@@ -45,6 +51,28 @@ public class TemplateIdGatewayImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @Test
+    public void testGetDefaultTemplateIdWhenExceptionOccurred() throws Exception {
+        // given
+        NoResultException exception = new NoResultException("There is no result.");
+        TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
+            templateIdMapper,
+            logger
+        );
+        templateIdGatewayImpl.setEntityManager(entityManager);
+        when(entityManager.createQuery(anyString(), any())).thenThrow(exception);
+        when(query.setParameter(anyString(), anyString())).thenReturn(query);
+        when(query.setMaxResults(anyInt())).thenReturn(query);
+        when(query.getSingleResult()).thenReturn(hibernateTemplate);
+
+        // when
+        Optional<TemplateId> actual = templateIdGatewayImpl.getDefaultTemplateId();
+
+        // then
+        assertThat(actual.isPresent()).isFalse();
+        verify(logger, times(1)).error(contains("20170406:092655"));
+    }
 
     @Test
     public void testGetDefaultTemplateId() throws Exception {
@@ -61,7 +89,8 @@ public class TemplateIdGatewayImplTest {
         );
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
-            templateIdMapper
+            templateIdMapper,
+            logger
         );
         templateIdGatewayImpl.setEntityManager(entityManager);
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
@@ -96,7 +125,8 @@ public class TemplateIdGatewayImplTest {
         );
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
-            templateIdMapper
+            templateIdMapper,
+            logger
         );
         templateIdGatewayImpl.setEntityManager(entityManager);
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
@@ -119,24 +149,24 @@ public class TemplateIdGatewayImplTest {
     @Test
     public void testFindWhenExceptionOccurred() throws Exception {
         // given
-        String username = "12345678";
+        String templateId = "12345678";
         NoResultException exception = new NoResultException("There is no result.");
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
-            templateIdMapper
+            templateIdMapper,
+            logger
         );
         templateIdGatewayImpl.setEntityManager(entityManager);
-        when(entityManager.createQuery(anyString(), any())).thenReturn(query);
+        when(entityManager.createQuery(anyString(), any())).thenThrow(exception);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
-        when(query.getSingleResult()).thenReturn(hibernateTemplate);
-        when(query.getSingleResult()).thenThrow(exception);
-
-        // then
-        expectedException.expectMessage(contains("20170330:092228"));
 
         // when
-        templateIdGatewayImpl.find(username);
+        Optional<TemplateId> actual = templateIdGatewayImpl.find(templateId);
+
+        // then
+        assertThat(actual.isPresent()).isFalse();
+        verify(logger, times(1)).error(contains("20170330:092228"));
     }
 
 }
