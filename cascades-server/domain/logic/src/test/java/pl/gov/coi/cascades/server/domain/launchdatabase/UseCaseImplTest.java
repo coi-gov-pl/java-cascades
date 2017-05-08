@@ -220,6 +220,55 @@ public class UseCaseImplTest {
     }
 
     @Test
+    public void testExecuteWithInstanceNameNotPresent() throws Exception {
+        // given
+        String templateId = "oracle_template";
+        String type = "oracle";
+        String instanceName = "ora2424j";
+        User jrambo = UserGatewayStub.J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
+        Response response = new UseCaseImplTest.ResponseImpl();
+        UseCaseImpl useCase = new UseCaseImpl(
+            launchNewDatabaseGatewayFacade,
+            databaseNameGeneratorService,
+            credentialsGeneratorService,
+            databaseTypeClassNameService,
+            databaseIdGeneratorService
+        );
+        DatabaseTypeDTOExtension databaseTypeDTOStub = new DatabaseTypeDTOExtension(type);
+        when(launchNewDatabaseGatewayFacade.findUser(anyString())).thenReturn(Optional.of(jrambo));
+        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTOStub);
+        when(launchNewDatabaseGatewayFacade.getTemplateIdGateway()).thenReturn(templateIdGateway);
+        when(templateIdGateway.find(anyString())).thenReturn(Optional.of(id));
+        when(request.getTemplateId()).thenReturn(Optional.of(templateId));
+        when(request.getUser()).thenReturn(jrambo);
+        when(request.getType()).thenReturn(type);
+        when(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway()).thenReturn(databaseLimitGateway);
+        when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTOStub);
+        when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTOStub);
+        when(request.getInstanceName()).thenReturn(Optional.empty());
+        when(databaseNameGeneratorService.generate(anyString())).thenReturn(instanceName);
+        when(credentialsGeneratorService.generate()).thenReturn(usernameAndPasswordCredentials);
+        when(databaseIdGeneratorService.generate()).thenReturn(databaseId);
+        when(launchNewDatabaseGatewayFacade.launchDatabase(any(DatabaseInstance.class))).thenReturn(databaseInstance);
+
+        // when
+        useCase.execute(
+            request,
+            response
+        );
+
+        // then
+        verify(launchNewDatabaseGatewayFacade, times(1)).findUser(anyString());
+        verify(launchNewDatabaseGatewayFacade, times(1)).getDatabaseLimitGateway();
+        verify(launchNewDatabaseGatewayFacade, times(1)).getTemplateIdGateway();
+        verify(credentialsGeneratorService, times(1)).generate();
+        verify(databaseIdGeneratorService, times(1)).generate();
+        verify(launchNewDatabaseGatewayFacade, times(1)).launchDatabase(any(DatabaseInstance.class));
+        verify(launchNewDatabaseGatewayFacade, times(1)).save(any(User.class));
+        assertThat(response.isSuccessful()).isTrue();
+    }
+
+    @Test
     public void testBuilder() throws Exception {
         // when
         UseCaseImpl useCase = UseCaseImpl.builder()
