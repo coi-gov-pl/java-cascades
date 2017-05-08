@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.slf4j.Logger;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
@@ -14,6 +15,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -28,6 +30,8 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -40,10 +44,16 @@ public class DatabaseIdGatewayImplTest {
     private DatabaseTypeClassNameService databaseTypeClassNameService;
 
     @Mock
+    private DatabaseInstanceMapper databaseInstanceMapper;
+
+    @Mock
     private EntityManager entityManager;
 
     @Mock
     private TypedQuery<Object> query;
+
+    @Mock
+    private Logger logger;
 
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
@@ -132,19 +142,20 @@ public class DatabaseIdGatewayImplTest {
         NoResultException exception = new NoResultException("There is no result.");
 
         DatabaseIdGatewayImpl databaseIdGatewayImpl = new DatabaseIdGatewayImpl(
-            databaseTypeClassNameService
+            databaseInstanceMapper,
+            logger
         );
         databaseIdGatewayImpl.setEntityManager(entityManager);
-        when(entityManager.createQuery(anyString(), any())).thenReturn(query);
+        when(entityManager.createQuery(anyString(), any())).thenThrow(exception);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
-        when(query.getSingleResult()).thenThrow(exception);
-
-        // then
-        expectedException.expectMessage(contains("20170402:222713"));
 
         // when
-        databaseIdGatewayImpl.findInstance(databaseId);
+        Optional<DatabaseInstance> actual = databaseIdGatewayImpl.findInstance(databaseId);
+
+        // then
+        assertThat(actual.isPresent()).isFalse();
+        verify(logger, times(1)).error(contains("20170402:222713"));
     }
 
 }
