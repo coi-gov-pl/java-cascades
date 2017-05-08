@@ -105,6 +105,7 @@ public class UserGatewayImplTest {
         String username = "Kendrick Lamar";
         String id = "123456789";
         String email = "klamar@example.org";
+        NoResultException exception = new NoResultException("There is no result.");
         pl.gov.coi.cascades.server.persistance.hibernate.entity.User user = new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
         user.setUsername(username);
         user.setId(Long.parseLong(id));
@@ -117,7 +118,6 @@ public class UserGatewayImplTest {
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
-        NoResultException exception = new NoResultException();
         when(query.getSingleResult()).thenThrow(exception);
 
         // then
