@@ -139,5 +139,4 @@ public class TemplateIdGatewayImplTest {
         templateIdGatewayImpl.find(username);
     }
 
-
 }
