@@ -46,7 +46,7 @@ public class UserMapperTest {
     private static final String INSTANCE_NAME = "ora12e34";
     private static final String DATABASE_NAME = "oracle 12c";
     private static final String SERVER_ID = "5v36y5646";
-    private static final long TEMPLATE_ID = 8958395489L;
+    private static final String VERSION = "0.0.1";
     private static final String TEMPLATE_ID_NAME = "oracle_template";
     private Date created = Date.from(Instant.now());
 
@@ -113,6 +113,7 @@ public class UserMapperTest {
         templateId.setServerId(SERVER_ID);
         templateId.setName(TEMPLATE_ID_NAME);
         templateId.setStatus(TemplateIdStatus.CREATED);
+        templateId.setVersion(VERSION);
         hibernateInstance.setTemplateId(templateId);
         hibernateInstance.setType(DATABASE_TYPE);
         hibernateInstance.setInstanceName(INSTANCE_NAME);

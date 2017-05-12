@@ -20,11 +20,13 @@ public class TemplateIdMapperTest {
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
         String id = "673735756";
         String serverId = "fre5345";
+        String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.TemplateId templateId = new pl.gov.coi.cascades.contract.domain.TemplateId(
             id,
             TemplateIdStatus.CREATED,
             true,
-            serverId
+            serverId,
+            version
         );
 
         // when
@@ -36,6 +38,7 @@ public class TemplateIdMapperTest {
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.CREATED.name());
+        assertThat(actual.getVersion()).isEqualTo(version);
     }
 
     @Test
@@ -45,9 +48,11 @@ public class TemplateIdMapperTest {
         TemplateId templateId = new TemplateId();
         String id = "54363463456";
         String serverId = "fre5345";
+        String version = "0.0.1";
         templateId.setName(id);
         templateId.setDefault(false);
         templateId.setServerId(serverId);
+        templateId.setVersion(version);
         templateId.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus.DELETED);
 
         // when
@@ -60,6 +65,7 @@ public class TemplateIdMapperTest {
         assertThat(actual.getId()).isEqualTo(id);
         assertThat(actual.isDefault()).isFalse();
         assertThat(actual.getServerId()).isEqualTo(serverId);
+        assertThat(actual.getVersion()).isEqualTo(version);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.DELETED.name());
     }
 

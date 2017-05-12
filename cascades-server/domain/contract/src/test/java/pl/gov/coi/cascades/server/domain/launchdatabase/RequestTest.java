@@ -28,6 +28,7 @@ public class RequestTest {
     private final static TemplateIdStatus TEMPLATE_ID_STATUS = TemplateIdStatus.CREATED;
     private final static boolean IS_DEFAULT = true;
     private final static String SERVER_ID = "5345c3";
+    private final static String VERSION = "0.0.1";
     private Request request;
     private TemplateId templateId;
 
@@ -46,7 +47,8 @@ public class RequestTest {
             ID,
             TEMPLATE_ID_STATUS,
             IS_DEFAULT,
-            SERVER_ID
+            SERVER_ID,
+            VERSION
         );
         request = new Request(
             typeClassName,

@@ -41,4 +41,7 @@ public class TemplateId {
     @Column
     private String serverId;
 
+    @Column
+    private String version;
+
 }
