@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.collect.Sets;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.launch.Framework;
@@ -19,11 +20,22 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkState;
  * @since 18.04.17.
  */
 final class OsgiBeanLocatorImpl implements OsgiBeanLocator, DisposableBean {
-    private final Map<Class, ServiceTracker> serviceTrackerMap = new HashMap<>();
+    private static final Map<Class, ServiceTracker> DEFAULT_SERVICE_TRACKER_MAP = new HashMap<>();
+    private Map<Class, ServiceTracker> serviceTrackerMap;
     private final Framework framework;
 
     OsgiBeanLocatorImpl(Framework framework) {
+        this(
+            framework,
+            DEFAULT_SERVICE_TRACKER_MAP
+        );
+    }
+
+    @VisibleForTesting
+    OsgiBeanLocatorImpl(Framework framework,
+                        Map<Class, ServiceTracker> serviceTrackerMap) {
         this.framework = framework;
+        this.serviceTrackerMap = serviceTrackerMap;
     }
 
     @Override

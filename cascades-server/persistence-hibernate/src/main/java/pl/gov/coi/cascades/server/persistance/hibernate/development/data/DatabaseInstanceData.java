@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
-import lombok.RequiredArgsConstructor;
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
@@ -22,15 +22,37 @@ import java.util.function.Supplier;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.03.17.
  */
-@RequiredArgsConstructor
 public class DatabaseInstanceData {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseInstanceData.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseInstanceData.class);
     private final List<DatabaseInstance> instances = new ArrayList<>();
     private final Iterable<DatabaseInstanceSupplier> suppliers;
     private EntityManager entityManager;
     private final UserData userData;
     private final TemplateIdData templateIdData;
+    private final Logger logger;
+
+    public DatabaseInstanceData(Iterable<DatabaseInstanceSupplier> suppliers,
+                                UserData userData,
+                                TemplateIdData templateIdData) {
+        this(
+            DEFAULT_LOGGER,
+            suppliers,
+            userData,
+            templateIdData
+        );
+    }
+
+    @VisibleForTesting
+    DatabaseInstanceData(Logger logger,
+                         Iterable<DatabaseInstanceSupplier> suppliers,
+                         UserData userData,
+                         TemplateIdData templateIdData) {
+        this.suppliers = suppliers;
+        this.userData = userData;
+        this.templateIdData = templateIdData;
+        this.logger = logger;
+    }
 
     @PersistenceContext
     void setEntityManager(EntityManager entityManager) {
@@ -43,8 +65,8 @@ public class DatabaseInstanceData {
                 "SELECT COUNT(instance.id) FROM DatabaseInstance instance",
                 Long.class
             );
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info(new Eid("20170419:000515").makeLogMessage(
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170419:000515").makeLogMessage(
                 "Number of Database Instances before adding: %s",
                 query.getSingleResult()
             ));
@@ -58,8 +80,8 @@ public class DatabaseInstanceData {
             userOptional.ifPresent(getUserConsumer(instance));
             templateIdOptional.ifPresent(getTemplateIdConsumer(instance));
         }
-        if (LOGGER.isInfoEnabled()) {
-            LOGGER.info(new Eid("20170419:000641").makeLogMessage(
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170419:000641").makeLogMessage(
                 "Number of Database Instances after adding: %s",
                 query.getSingleResult()
             ));

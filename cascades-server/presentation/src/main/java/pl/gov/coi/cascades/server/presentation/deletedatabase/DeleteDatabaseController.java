@@ -20,8 +20,8 @@ import javax.inject.Inject;
  * @since 09.03.17.
  */
 @RequestMapping(
-    produces = MediaType.APPLICATION_JSON_VALUE,
-    consumes = MediaType.APPLICATION_JSON_VALUE
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    produces = MediaType.APPLICATION_JSON_VALUE
 )
 @Controller
 public class DeleteDatabaseController {

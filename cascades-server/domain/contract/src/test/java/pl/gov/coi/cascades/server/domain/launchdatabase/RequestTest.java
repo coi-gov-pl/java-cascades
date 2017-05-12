@@ -14,7 +14,6 @@ import pl.gov.coi.cascades.server.domain.User;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -67,7 +66,7 @@ public class RequestTest {
         );
 
         // then
-        assertNotNull(actual);
+        assertThat(actual).isNotNull();
     }
 
     @Test
@@ -76,7 +75,7 @@ public class RequestTest {
         Optional<String> actual = request.getTemplateId();
 
         // then
-        assertThat(actual).isEqualTo(Optional.ofNullable(ID));
+        assertThat(actual).isEqualTo(Optional.of(ID));
     }
 
     @Test
@@ -100,6 +99,24 @@ public class RequestTest {
 
         // then
         assertThat(requestBuilder).isNotNull();
+    }
+
+    @Test
+    public void testGetUser() throws Exception {
+        // when
+        User actual = request.getUser();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testGetType() {
+        // when
+        String actual = request.getType();
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }

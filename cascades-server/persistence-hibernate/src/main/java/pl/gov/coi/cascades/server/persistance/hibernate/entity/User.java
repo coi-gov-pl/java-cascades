@@ -47,4 +47,5 @@ public class User {
     public void addDatabase(DatabaseInstance instance) {
         databases.add(instance);
     }
+
 }

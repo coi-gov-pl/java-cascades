@@ -181,11 +181,6 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         }
 
         @Nullable
-        Violation getViolation() {
-            return violation;
-        }
-
-        @Nullable
         DatabaseType getDatabaseType() {
             return databaseType;
         }

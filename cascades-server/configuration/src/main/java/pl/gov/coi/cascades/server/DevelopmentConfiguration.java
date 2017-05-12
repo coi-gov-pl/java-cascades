@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server;
 
 import com.github.lalyos.jfiglet.FigletFont;
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +19,18 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 @Configuration
 @Profile(Environment.DEVELOPMENT_NAME)
 class DevelopmentConfiguration {
-    private static final Logger logger = LoggerFactory.getLogger(DevelopmentConfiguration.class);
+
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DevelopmentConfiguration.class);
+    private final Logger logger;
+
+    DevelopmentConfiguration() {
+        this(DEFAULT_LOGGER);
+    }
+
+    @VisibleForTesting
+    DevelopmentConfiguration(Logger logger) {
+        this.logger = logger;
+    }
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {

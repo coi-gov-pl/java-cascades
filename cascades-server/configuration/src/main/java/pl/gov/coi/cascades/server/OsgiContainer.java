@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.launch.Framework;
 import org.slf4j.Logger;
@@ -27,11 +28,22 @@ class OsgiContainer implements SmartLifecycle {
 
     private static final long STOP_TIMEOUT = 1000L * 30; // 30sec
     private final Framework framework;
-    private static final Logger logger = LoggerFactory.getLogger(OsgiContainer.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(OsgiContainer.class);
+    private Logger logger;
     private Status status = Status.STOPPED;
 
     @Inject
     OsgiContainer(Framework framework) {
+        this(
+            DEFAULT_LOGGER,
+            framework
+        );
+    }
+
+    @VisibleForTesting
+    OsgiContainer(Logger logger,
+                  Framework framework) {
+        this.logger = logger;
         this.framework = framework;
     }
 

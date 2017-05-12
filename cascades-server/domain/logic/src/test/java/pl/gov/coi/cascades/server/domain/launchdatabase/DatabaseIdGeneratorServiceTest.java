@@ -32,7 +32,7 @@ public class DatabaseIdGeneratorServiceTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void generate() throws Exception {
+    public void testGenerate() throws Exception {
         // given
         DatabaseIdMapper databaseIdMapper = new DatabaseIdMapper();
         DatabaseIdGeneratorService databaseIdGeneratorService = new DatabaseIdGeneratorService(
@@ -49,6 +49,15 @@ public class DatabaseIdGeneratorServiceTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(Long.toString(shiftedId, RADIX_36));
+    }
+
+    @Test
+    public void testDefaultConstructor() {
+        // when
+        DatabaseIdGeneratorService actual = new DatabaseIdGeneratorService();
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }

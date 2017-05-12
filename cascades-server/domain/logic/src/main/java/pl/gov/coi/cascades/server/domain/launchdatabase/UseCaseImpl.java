@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
@@ -16,7 +16,7 @@ import java.time.Instant;
 import java.util.Optional;
 
 @Builder
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
     private final LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;

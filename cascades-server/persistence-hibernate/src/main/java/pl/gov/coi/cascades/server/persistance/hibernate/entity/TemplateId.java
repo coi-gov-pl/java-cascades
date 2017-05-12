@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.hibernate.entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,7 +18,6 @@ import javax.persistence.Table;
  */
 @Setter
 @Getter
-@ToString
 @Table
 @Entity
 @RequiredArgsConstructor

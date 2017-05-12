@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.domain.User;
 
@@ -11,7 +10,6 @@ import pl.gov.coi.cascades.server.domain.User;
  * @since 09.03.17.
  */
 @Builder
-@RequiredArgsConstructor
 public class Request {
 
     @Getter
@@ -19,4 +17,8 @@ public class Request {
     @Getter
     private final User user;
 
+    public Request(DatabaseId databaseId, User user) {
+        this.databaseId = databaseId;
+        this.user = user;
+    }
 }
