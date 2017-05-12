@@ -80,6 +80,7 @@ public class DatabaseIdGatewayImplTest {
         String INSTANCE_NAME = "ora12e34";
         String DATABASE_NAME = "oracle 12c";
         String SERVER_ID = "5v36y5646";
+        String VERSION = "0.0.1";
         long TEMPLATE_ID = 8958395489L;
         long ID = -2174612783412L;
         String TEMPLATE_ID_NAME = "oracle_template";
@@ -108,6 +109,7 @@ public class DatabaseIdGatewayImplTest {
         templateId.setName(TEMPLATE_ID_NAME);
         templateId.setServerId(SERVER_ID);
         templateId.setId(TEMPLATE_ID);
+        templateId.setVersion(VERSION);
         templateId.setStatus(TemplateIdStatus.CREATED);
         hibernateInstance.setTemplateId(templateId);
         hibernateInstance.setType(DATABASE_TYPE);

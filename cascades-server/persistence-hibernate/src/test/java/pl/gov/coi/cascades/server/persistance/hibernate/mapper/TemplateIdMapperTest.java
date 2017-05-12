@@ -18,11 +18,13 @@ public class TemplateIdMapperTest {
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
         String id = "58893453";
         String serverId = "gta73284";
+        String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.TemplateId templateId = new pl.gov.coi.cascades.contract.domain.TemplateId(
             id,
             TemplateIdStatus.DELETED,
             true,
-            serverId
+            serverId,
+            version
         );
 
         // when

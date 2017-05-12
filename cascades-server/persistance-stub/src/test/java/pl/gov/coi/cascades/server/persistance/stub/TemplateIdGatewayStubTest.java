@@ -77,7 +77,8 @@ public class TemplateIdGatewayStubTest {
             "postgres_template",
             TemplateIdStatus.CREATED,
             false,
-            "aaa123456789"
+            "aaa123456789",
+            "0.0.1"
         );
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
