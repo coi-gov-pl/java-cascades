@@ -21,20 +21,26 @@ import java.util.Optional;
  */
 public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateIdGatewayImpl.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TemplateIdGatewayImpl.class);
     private static final TemplateIdMapper DEFAULT_TEMPLATE_ID_MAPPER = new TemplateIdMapper();
     private static final String TEMPLATE_ID_FIELD = "templateIdAsLong";
     private static final int RADIX_36 = 36;
     private EntityManager entityManager;
+    private Logger logger;
     private final TemplateIdMapper templateIdMapper;
 
     public TemplateIdGatewayImpl() {
-        this(DEFAULT_TEMPLATE_ID_MAPPER);
+        this(
+            DEFAULT_TEMPLATE_ID_MAPPER,
+            DEFAULT_LOGGER
+        );
     }
 
     @VisibleForTesting
-    TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper) {
+    TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper,
+                          Logger logger) {
         this.templateIdMapper = templateIdMapper;
+        this.logger = logger;
     }
 
     @PersistenceContext
@@ -59,7 +65,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
-            LOGGER.error(new Eid("20170330:092228")
+            logger.error(new Eid("20170330:092228")
                 .makeLogMessage(
                     "Given id of template: %s hasn't been found: %s.",
                     templateId,
@@ -83,7 +89,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
-            LOGGER.error(new Eid("20170406:092655")
+            logger.error(new Eid("20170406:092655")
                 .makeLogMessage(
                     "No default template id has been found",
                     e

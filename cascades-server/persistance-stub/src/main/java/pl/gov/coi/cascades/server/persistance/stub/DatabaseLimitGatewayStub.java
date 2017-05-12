@@ -9,8 +9,10 @@ import pl.gov.coi.cascades.server.domain.User;
  */
 final class DatabaseLimitGatewayStub implements DatabaseLimitGateway {
 
-    private int globalLimit = 100;
-    private int userLimit = 5;
+    private static final int DEFAULT_GLOBAL_LIMIT = 100;
+    private static final int DEFAULT_USER_LIMIT = 5;
+    private int globalLimit = DEFAULT_GLOBAL_LIMIT;
+    private int userLimit = DEFAULT_USER_LIMIT;
 
     public void setGlobalLimit(int globalLimit) {
         this.globalLimit = globalLimit;

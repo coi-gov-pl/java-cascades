@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
@@ -23,17 +24,28 @@ import java.util.Optional;
  */
 public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseIdGatewayImpl.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseIdGatewayImpl.class);
     private static final String DATABASE_ID_FIELD = "databaseIdAsLong";
     private static final int RADIX_36 = 36;
     private EntityManager entityManager;
+    private Logger logger;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
     @Inject
     public DatabaseIdGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this.databaseInstanceMapper = new DatabaseInstanceMapper(
-            databaseTypeClassNameService
+        this(
+            new DatabaseInstanceMapper(
+                databaseTypeClassNameService
+            ),
+            DEFAULT_LOGGER
         );
+    }
+
+    @VisibleForTesting
+    DatabaseIdGatewayImpl(DatabaseInstanceMapper databaseInstanceMapper,
+                          Logger logger) {
+        this.databaseInstanceMapper = databaseInstanceMapper;
+        this.logger = logger;
     }
 
     @PersistenceContext
@@ -58,7 +70,7 @@ public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
 
             return Optional.of(databaseInstanceMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
-            LOGGER.error(new Eid("20170402:222713")
+            logger.error(new Eid("20170402:222713")
                 .makeLogMessage(
                     "Given id of database: %s hasn't been found: %s.",
                     databaseId,

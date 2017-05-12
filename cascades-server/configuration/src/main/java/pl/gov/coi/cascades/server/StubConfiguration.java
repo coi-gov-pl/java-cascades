@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server;
 
 import com.github.lalyos.jfiglet.FigletFont;
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
@@ -19,7 +20,17 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 @Profile(ProfileType.STUB_NAME)
 class StubConfiguration {
 
-    private final Logger logger = LoggerFactory.getLogger(StubConfiguration.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(StubConfiguration.class);
+    private final Logger logger;
+
+    StubConfiguration() {
+        this(DEFAULT_LOGGER);
+    }
+
+    @VisibleForTesting
+    StubConfiguration(Logger logger) {
+        this.logger = logger;
+    }
 
     @EventListener(ContextRefreshedEvent.class)
     public void handle() {

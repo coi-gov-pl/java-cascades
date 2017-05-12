@@ -12,7 +12,29 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TemplateIdMapperTest {
 
-    private static final int BASE_36 = 36;
+    @Test
+    public void testToHibernateEntityWhenTemplateIdIsDeleted() throws Exception {
+        // given
+        TemplateIdMapper templateIdMapper = new TemplateIdMapper();
+        String id = "58893453";
+        String serverId = "gta73284";
+        pl.gov.coi.cascades.contract.domain.TemplateId templateId = new pl.gov.coi.cascades.contract.domain.TemplateId(
+            id,
+            TemplateIdStatus.DELETED,
+            true,
+            serverId
+        );
+
+        // when
+        TemplateId actual = templateIdMapper.toHibernateEntity(templateId);
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual.getName()).isEqualTo(id);
+        assertThat(actual.isDefault()).isTrue();
+        assertThat(actual.getServerId()).isEqualTo(serverId);
+        assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.DELETED.name());
+    }
 
     @Test
     public void testToHibernateEntity() throws Exception {

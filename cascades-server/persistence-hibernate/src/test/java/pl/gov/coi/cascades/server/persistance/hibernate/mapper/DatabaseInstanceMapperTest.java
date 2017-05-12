@@ -199,7 +199,7 @@ public class DatabaseInstanceMapperTest {
         hibernateInstance.setDatabaseName(DATABASE_NAME);
         hibernateInstance.setCredentials(credentials);
         hibernateInstance.setNetworkBind(networkBind);
-        hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.LAUNCHED);
+        hibernateInstance.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus.DELETED);
         hibernateInstance.setCreated(created);
         hibernateInstance.setId(ID);
         DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
