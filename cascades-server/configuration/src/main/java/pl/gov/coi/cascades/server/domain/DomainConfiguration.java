@@ -56,4 +56,10 @@ public class DomainConfiguration {
             .build();
     }
 
+    @Bean
+    pl.gov.coi.cascades.server.domain.loadtemplate.UseCase produceLoadTemplateUseCase() {
+        return pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.builder()
+            .build();
+    }
+
 }
