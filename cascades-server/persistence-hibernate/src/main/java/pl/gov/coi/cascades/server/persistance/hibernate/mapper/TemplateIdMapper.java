@@ -20,6 +20,7 @@ public class TemplateIdMapper implements Mapper<TemplateId, pl.gov.coi.cascades.
         checkNotNull(templateId.getServerId(), "20170403:231918");
         checkNotNull(templateId.getStatus(), "20170403:231935");
         checkNotNull(templateId.isDefault(), "20170403:231953");
+        checkNotNull(templateId.getVersion(), "20170512:101356");
 
         TemplateId hibernateTemplateId = new TemplateId();
         TemplateIdStatus templateIdStatus = templateId.getStatus()
@@ -31,6 +32,7 @@ public class TemplateIdMapper implements Mapper<TemplateId, pl.gov.coi.cascades.
         hibernateTemplateId.setDefault(templateId.isDefault());
         hibernateTemplateId.setServerId(templateId.getServerId());
         hibernateTemplateId.setStatus(templateIdStatus);
+        hibernateTemplateId.setVersion(templateId.getVersion());
         return hibernateTemplateId;
     }
 
@@ -40,6 +42,7 @@ public class TemplateIdMapper implements Mapper<TemplateId, pl.gov.coi.cascades.
         checkNotNull(templateId.getServerId(), "20170403:232202");
         checkNotNull(templateId.getStatus(), "20170403:232205");
         checkNotNull(templateId.isDefault(), "20170403:232209");
+        checkNotNull(templateId.getVersion(), "20170512:101501");
 
         pl.gov.coi.cascades.contract.domain.TemplateIdStatus templateIdStatus = templateId.getStatus()
             .equals(TemplateIdStatus.CREATED)
@@ -50,7 +53,8 @@ public class TemplateIdMapper implements Mapper<TemplateId, pl.gov.coi.cascades.
             templateId.getName(),
             templateIdStatus,
             templateId.isDefault(),
-            templateId.getServerId()
+            templateId.getServerId(),
+            templateId.getVersion()
         );
     }
 

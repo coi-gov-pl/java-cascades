@@ -20,6 +20,7 @@ public class F4ab6a58Supplier implements Supplier<TemplateId> {
         templateId.setName("postgres_template");
         templateId.setServerId("dgrt45gtyt");
         templateId.setDefault(false);
+        templateId.setVersion("0.0.1");
         return templateId;
     }
 

@@ -20,11 +20,13 @@ public class CascadesRuleTest {
 
     private String id;
     private String serverId;
+    private String version;
 
     @Before
     public void setUp() {
         id = "gw45223";
         serverId = "898693";
+        version = "0.0.1";
     }
 
     private static final ConnectionStringProducer CONNECTION_STRING_PRODUCER =
@@ -67,7 +69,7 @@ public class CascadesRuleTest {
         // given
         CascadesRule rule = CascadesRule.builder()
             .driver(new Driver(DATABASE_TYPE_STUB, new TemplateId(
-                id, TemplateIdStatus.CREATED, false, serverId))
+                id, TemplateIdStatus.CREATED, false, serverId, version))
             )
             .instanceName("pesel-test")
             .build();

@@ -14,29 +14,35 @@ import java.util.Optional;
  */
 public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
+    private static final String VERSION = "0.0.1";
+
     public static final TemplateId TEMPLATE_ID1 = new TemplateId(
         "oracle_template",
         TemplateIdStatus.CREATED,
         false,
-        "nv485587vmv89"
+        "nv485587vmv89",
+        VERSION
     );
     public static final TemplateId TEMPLATE_ID2 = new TemplateId(
         "templateId2",
         TemplateIdStatus.CREATED,
         false,
-        "v589m69b968"
+        "v589m69b968",
+        VERSION
     );
     public static final TemplateId TEMPLATE_ID3 = new TemplateId(
         "templateId3",
         TemplateIdStatus.CREATED,
         true,
-        "mjtjbyu968y96"
+        "mjtjbyu968y96",
+        VERSION
     );
     public static final TemplateId TEMPLATE_ID4 = new TemplateId(
         "templateId4",
         TemplateIdStatus.CREATED,
         false,
-        "y6v96u8869m3tg"
+        "y6v96u8869m3tg",
+        VERSION
     );
     private Map<String, TemplateId> templates;
 

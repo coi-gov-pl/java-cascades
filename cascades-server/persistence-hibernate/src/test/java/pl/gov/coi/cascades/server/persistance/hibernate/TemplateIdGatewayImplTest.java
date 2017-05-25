@@ -81,12 +81,14 @@ public class TemplateIdGatewayImplTest {
         Long id = 123456789L;
         TemplateIdStatus status = TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
+        String version = "0.0.1";
         pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId templateId =
             new pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId();
         templateId.setId(id);
         templateId.setServerId(serverId);
         templateId.setStatus(status);
         templateId.setName(name);
+        templateId.setVersion(version);
         templateId.setDefault(false);
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl();
@@ -112,13 +114,15 @@ public class TemplateIdGatewayImplTest {
         // given
         String name = "123456789";
         String id = "123456789";
+        String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.TemplateIdStatus status = pl.gov.coi.cascades.contract.domain.TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
         TemplateId templateId = new TemplateId(
             id,
             status,
             false,
-            serverId
+            serverId,
+            version
         );
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(

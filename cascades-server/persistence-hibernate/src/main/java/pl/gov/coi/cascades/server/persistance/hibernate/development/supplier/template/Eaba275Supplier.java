@@ -20,6 +20,7 @@ public class Eaba275Supplier implements Supplier<TemplateId> {
         templateId.setName("oracle_template");
         templateId.setServerId("rgey65getg");
         templateId.setDefault(true);
+        templateId.setVersion("0.0.1");
         return templateId;
     }
 
