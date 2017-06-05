@@ -195,6 +195,11 @@
                 <artifactId>jfiglet</artifactId>
                 <version>0.0.8</version>
             </dependency>
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20170516</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 

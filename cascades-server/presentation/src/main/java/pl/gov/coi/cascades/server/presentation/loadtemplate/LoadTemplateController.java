@@ -49,16 +49,12 @@ public class LoadTemplateController {
     public ResponseEntity<WithViolations<RemoteTemplateSpec>> checkTemplate(
         @RequestParam("file") MultipartFile request) throws IOException {
 
-//        Iterator<String> iterator = request.getFileNames();
-        MultipartFile multipartFile = null;
-
-//        while (iterator.hasNext()) {
-//            String key = iterator.next();
-//            multipartFile = request.getFile(key);
-//        }
-
         Request.RequestBuilder requestBuilder = Request.builder()
-            .zipFile(multipartFile.getInputStream());
+            .zipFile(request.getInputStream())
+            .name(request.getOriginalFilename())
+            .size(request.getSize())
+            .isEmpty(request.isEmpty())
+            .contentType(request.getContentType());
 
         Request templateRequest = requestBuilder.build();
         Presenter presenter = new Presenter();
@@ -70,7 +66,7 @@ public class LoadTemplateController {
 
         return presenter.createModel();
     }
-//
+
     @GetMapping("/")
     public String loadTemplate() {
         return "upload";

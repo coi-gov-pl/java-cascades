@@ -23,6 +23,8 @@ public class Request {
     private final Long size;
     @Getter
     private final boolean isEmpty;
+    @Getter
+    private final String contentType;
 
     /**
      * Default argument constructor.
@@ -31,15 +33,18 @@ public class Request {
      * @param name    Given name of template.
      * @param size    Given size of template.
      * @param isEmpty Given information if template is empty.
+     * @param contentType Type of file content.
      */
     public Request(InputStream zipFile,
                    String name,
                    Long size,
-                   boolean isEmpty) {
+                   boolean isEmpty,
+                   String contentType) {
         this.zipFile = EidPreconditions.checkNotNull(zipFile, "20170524:094331");
         this.name = EidPreconditions.checkNotNull(name, "20170524:094344");
         this.size = EidPreconditions.checkNotNull(size, "20170524:094422");
         this.isEmpty = EidPreconditions.checkNotNull(isEmpty, "20170524:094441");
+        this.contentType = EidPreconditions.checkNotNull(contentType, "20170529:090352");
     }
 
 }
