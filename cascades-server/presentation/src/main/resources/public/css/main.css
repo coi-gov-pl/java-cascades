@@ -1,5 +1,3 @@
-/*! HTML5 Boilerplate v5.0 | MIT License | http://h5bp.com/ */
-
 @import url('https://fonts.googleapis.com/css?family=Roboto');
 html {
     color: #222;
@@ -52,11 +50,6 @@ textarea {
     padding: 0.2em 0;
 }
 
-
-/* ===== Initializr Styles ==================================================
-   Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
-   ========================================================================== */
-
 body {
     font: 16px/26px Roboto, Helvetica, Helvetica Neue, Arial;
 }
@@ -66,10 +59,6 @@ body {
     margin: 0 5%;
 }
 
-/* ===================
-    ALL: Orange Theme
-   =================== */
-
 .header-container {
     border-bottom: 20px solid #2196F3;
 }
@@ -78,12 +67,12 @@ html, body {
 }
 .main-container {
 	min-height: 100%;
-	height: auto !important; /* This line and the next line are not necessary unless you need IE6 support */
+	height: auto !important;
 	height: 100%;
-	margin: 0 auto; /* the bottom margin is the negative value of the footer's height */
+	margin: 0 auto;
 }
 .footer-container {
-  height: 40px; /* .push must be the same height as .footer */
+  height: 40px;
 }
 .footer-container,
 .main aside {
@@ -99,10 +88,6 @@ html, body {
 .title {
     color: white;
 }
-
-/* ==============
-    MOBILE: Menu
-   ============== */
 
 nav ul {
     margin: 0;
@@ -134,10 +119,6 @@ nav a:hover {
     text-decoration: underline;
 }
 
-/* ==============
-    MOBILE: Main
-   ============== */
-
 .main {
     padding: 30px 0;
 }
@@ -156,28 +137,11 @@ nav a:hover {
     padding: 20px 0;
 }
 
-/* ===============
-    ALL: IE Fixes
-   =============== */
-
 .ie7 .title {
     padding-top: 20px;
 }
 
-/* ==========================================================================
-   Author's custom styles
-   ========================================================================== */
-
-
-/* ==========================================================================
-   Media Queries
-   ========================================================================== */
-
 @media only screen and (min-width: 480px) {
-
-/* ====================
-    INTERMEDIATE: Menu
-   ==================== */
 
     nav a {
         float: left;
@@ -195,10 +159,6 @@ nav a:hover {
         margin-right: 0;
     }
 
-/* ========================
-    INTERMEDIATE: IE Fixes
-   ======================== */
-
     nav ul li {
         display: inline;
     }
@@ -210,20 +170,12 @@ nav a:hover {
 
 @media only screen and (min-width: 768px) {
 
-/* ====================
-    WIDE: CSS3 Effects
-   ==================== */
-
     .header-container,
     .main aside {
         -webkit-box-shadow: 0 5px 10px #aaa;
            -moz-box-shadow: 0 5px 10px #aaa;
                 box-shadow: 0 5px 10px #aaa;
     }
-
-/* ============
-    WIDE: Menu
-   ============ */
 
     .title {
         float: left;
@@ -233,10 +185,6 @@ nav a:hover {
         float: right;
         width: 38%;
     }
-
-/* ============
-    WIDE: Main
-   ============ */
 
     .main article {
         float: left;
@@ -251,19 +199,11 @@ nav a:hover {
 
 @media only screen and (min-width: 1140px) {
 
-/* ===============
-    Maximal Width
-   =============== */
-
     .wrapper {
         width: 1026px; /* 1140px - 10% for margins */
         margin: 0 auto;
     }
 }
-
-/* ==========================================================================
-   Helper classes
-   ========================================================================== */
 
 .hidden {
     display: none !important;
@@ -308,10 +248,6 @@ nav a:hover {
 .clearfix {
     *zoom: 1;
 }
-
-/* ==========================================================================
-   Print styles
-   ========================================================================== */
 
 @media print {
     *,
