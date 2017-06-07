@@ -35,7 +35,7 @@ public interface Response {
      *
      * @param status Given template status.
      */
-    void setStatus(TemplateIdStatus status);
+    void setStatus(String status);
 
     /**
      * A setter for default template.

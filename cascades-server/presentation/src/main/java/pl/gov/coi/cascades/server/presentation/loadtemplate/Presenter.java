@@ -18,7 +18,7 @@ import java.util.HashSet;
 class Presenter implements Response {
 
     private String id;
-    private TemplateIdStatus status;
+    private String status;
     private boolean isDefault;
     private String versionId;
     private String version;
@@ -40,7 +40,7 @@ class Presenter implements Response {
     }
 
     @Override
-    public void setStatus(TemplateIdStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

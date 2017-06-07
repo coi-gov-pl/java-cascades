@@ -43,7 +43,7 @@ class Validator {
     private String id;
     private boolean isDefault;
     private String serverId;
-    private TemplateIdStatus status;
+    private String status;
     private String version;
     private String jsonFilename;
 
@@ -64,7 +64,7 @@ class Validator {
         return checkNotNull(isDefault, "20170524:122601");
     }
 
-    TemplateIdStatus getStatus() {
+    String getStatus() {
         return checkNotNull(status, "20170524:122707");
     }
 
@@ -154,9 +154,17 @@ class Validator {
             JSONObject jsonObject = new JSONObject(jsonString);
             if (jsonObject.has("name") &&
                 jsonObject.has("isDefault") &&
+                jsonObject.has("serverId") &&
+                jsonObject.has("status") &&
                 jsonObject.has("version") &&
                 hasScripts(jsonObject)) {
                 hasFields = true;
+
+                id = jsonObject.getString("name");
+                isDefault = jsonObject.getBoolean("isDefault");
+                serverId = jsonObject.getString("serverId");
+                status = jsonObject.getString("status");
+                version = jsonObject.getString("version");
             }
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:130934", e);
