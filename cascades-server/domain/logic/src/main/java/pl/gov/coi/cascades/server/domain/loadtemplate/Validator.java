@@ -31,6 +31,7 @@ class Validator {
     private static final String PROPERTY_PATH_ZIP_FORMAT = "template.format";
     private static final String PROPERTY_PATH_JSON_CONTAINING = "template.json";
     private static final String PROPERTY_PATH_JSON_STRUCTURE = "template.json.structure";
+    private static final String PROPERTY_PATH_NO_SQL_FORMAT = "template.format.sql";
     private final Response response;
     private final Request request;
     private String id;
@@ -45,6 +46,7 @@ class Validator {
         validateIfZipContainsJsonFile();
         validateJsonFileStructure();
         validateScriptsFormat();
+        validateIfScriptsExist();
         return response.isSuccessful();
     }
 
@@ -94,7 +96,7 @@ class Validator {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
                 while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    containsJson = isJsonExtension(entry, containsJson);
+                    containsJson = isJsonExtension(entry);
                     bos.write(buffer, 0, size);
                 }
 
@@ -114,12 +116,13 @@ class Validator {
         }
     }
 
-    private boolean isJsonExtension(ZipEntry entry, boolean containsJson) {
+    private boolean isJsonExtension(ZipEntry entry) {
+        boolean isJson = false;
         if (entry.getName().endsWith(".json")) {
-            containsJson = true;
+            isJson = true;
             jsonFilename = entry.getName();
         }
-        return containsJson;
+        return isJson;
     }
 
     private String readFileAsString(String filePath) throws IOException {
@@ -166,6 +169,26 @@ class Validator {
     }
 
     private void validateScriptsFormat() {
+        String userHome = System.getProperty("user.home");
+
+        try {
+            String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            String deployStript = jsonObject.getString("deployScript");
+            String undeployScript = jsonObject.getString("undeployScript");
+            if (!(deployStript.endsWith(".sql") && undeployScript.endsWith(".sql"))) {
+                newError(
+                    PROPERTY_PATH_NO_SQL_FORMAT,
+                    "Deploy and undeploy script must be in .sql format"
+                );
+            }
+
+        } catch (IOException e) {
+            throw new EidIllegalStateException("20170607:151540", e);
+        }
+    }
+
+    private void validateIfScriptsExist() {
 
     }
 
