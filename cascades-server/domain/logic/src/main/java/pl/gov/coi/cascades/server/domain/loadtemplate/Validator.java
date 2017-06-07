@@ -14,6 +14,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -32,6 +34,10 @@ class Validator {
     private static final String PROPERTY_PATH_JSON_CONTAINING = "template.json";
     private static final String PROPERTY_PATH_JSON_STRUCTURE = "template.json.structure";
     private static final String PROPERTY_PATH_NO_SQL_FORMAT = "template.format.sql";
+    private static final String PROPERTY_PATH_LACK_OF_SQL = "template.scripts";
+    public static final String DEPLOY_SCRIPT = "deployScript";
+    public static final String UNDEPLOY_SCRIPT = "undeployScript";
+    public static final String USER_HOME = "user.home";
     private final Response response;
     private final Request request;
     private String id;
@@ -86,13 +92,14 @@ class Validator {
 
         try {
             while ((entry = zis.getNextEntry()) != null) {
-                String userHome = System.getProperty("user.home");
+                String userHome = System.getProperty(USER_HOME);
                 File file = new File(userHome + File.separator + entry.getName());
+                FileOutputStream fos = null;
 
                 int size;
                 byte[] buffer = new byte[2048];
 
-                FileOutputStream fos = new FileOutputStream(file);
+                fos = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
                 while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
@@ -139,7 +146,7 @@ class Validator {
     }
 
     private void validateJsonFileStructure() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty(USER_HOME);
         boolean hasFields = false;
 
         try {
@@ -164,18 +171,18 @@ class Validator {
     }
 
     private boolean hasScripts(JSONObject jsonObject) {
-        return jsonObject.has("deployScript") &&
-            jsonObject.has("undeployScript");
+        return jsonObject.has(DEPLOY_SCRIPT) &&
+            jsonObject.has(UNDEPLOY_SCRIPT);
     }
 
     private void validateScriptsFormat() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty(USER_HOME);
 
         try {
             String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
             JSONObject jsonObject = new JSONObject(jsonString);
-            String deployStript = jsonObject.getString("deployScript");
-            String undeployScript = jsonObject.getString("undeployScript");
+            String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
+            String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
             if (!(deployStript.endsWith(".sql") && undeployScript.endsWith(".sql"))) {
                 newError(
                     PROPERTY_PATH_NO_SQL_FORMAT,
@@ -189,7 +196,26 @@ class Validator {
     }
 
     private void validateIfScriptsExist() {
+        String userHome = System.getProperty(USER_HOME);
 
+        try {
+            String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
+            JSONObject jsonObject = new JSONObject(jsonString);
+            String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
+            String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
+            Path pathToDeployScript = Paths.get(userHome + File.separator + deployStript);
+            Path pathToUndeployScript = Paths.get(userHome + File.separator + undeployScript);
+
+            if (!(pathToDeployScript.toFile().exists() &&
+                pathToUndeployScript.toFile().exists())) {
+                newError(
+                    PROPERTY_PATH_LACK_OF_SQL,
+                    "Missing sql file/files in zip."
+                );
+            }
+        } catch (IOException e) {
+            throw new EidIllegalStateException("20170607:170042", e);
+        }
     }
 
     private void newError(String path, String message, Object... parameters) {
