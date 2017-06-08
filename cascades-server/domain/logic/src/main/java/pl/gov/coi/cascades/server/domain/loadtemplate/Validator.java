@@ -87,14 +87,15 @@ class Validator {
     }
 
     private void validateIfZipContainsJsonFile() {
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
         ZipEntry entry;
         boolean containsJson = false;
 
         try {
             while ((entry = zis.getNextEntry()) != null) {
-                String userHome = System.getProperty(USER_HOME);
-                File file = new File(userHome + File.separator + entry.getName());
+                File file = new File(path + entry.getName());
 
                 int size;
                 byte[] buffer = new byte[BUFFER_SIZE];
@@ -136,7 +137,7 @@ class Validator {
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         char[] buf = new char[FILE_BUFFER_SIZE];
         int numRead = 0;
-        while((numRead=reader.read(buf)) != -1){
+        while ((numRead = reader.read(buf)) != -1) {
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);
         }
@@ -145,11 +146,12 @@ class Validator {
     }
 
     private void validateJsonFileStructure() {
-        String userHome = System.getProperty(USER_HOME);
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
         boolean hasFields = false;
 
         try {
-            String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
+            String jsonString = readFileAsString(path + jsonFilename);
             JSONObject jsonObject = new JSONObject(jsonString);
             if (jsonObject.has("name") &&
                 jsonObject.has("isDefault") &&
@@ -183,10 +185,11 @@ class Validator {
     }
 
     private void validateScriptsFormat() {
-        String userHome = System.getProperty(USER_HOME);
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
 
         try {
-            String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
+            String jsonString = readFileAsString(path + jsonFilename);
             JSONObject jsonObject = new JSONObject(jsonString);
             String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
             String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
@@ -203,15 +206,16 @@ class Validator {
     }
 
     private void validateIfScriptsExist() {
-        String userHome = System.getProperty(USER_HOME);
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
 
         try {
-            String jsonString = readFileAsString(userHome + File.separator + jsonFilename);
+            String jsonString = readFileAsString(path + jsonFilename);
             JSONObject jsonObject = new JSONObject(jsonString);
             String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
             String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
-            Path pathToDeployScript = Paths.get(userHome + File.separator + deployStript);
-            Path pathToUndeployScript = Paths.get(userHome + File.separator + undeployScript);
+            Path pathToDeployScript = Paths.get(path + deployStript);
+            Path pathToUndeployScript = Paths.get(path + undeployScript);
 
             if (!(pathToDeployScript.toFile().exists() &&
                 pathToUndeployScript.toFile().exists())) {
