@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.json.JSONObject;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
@@ -38,6 +37,8 @@ class Validator {
     public static final String DEPLOY_SCRIPT = "deployScript";
     public static final String UNDEPLOY_SCRIPT = "undeployScript";
     public static final String USER_HOME = "user.home";
+    public static final int BUFFER_SIZE = 2048;
+    public static final int FILE_BUFFER_SIZE = 1024;
     private final Response response;
     private final Request request;
     private String id;
@@ -94,12 +95,11 @@ class Validator {
             while ((entry = zis.getNextEntry()) != null) {
                 String userHome = System.getProperty(USER_HOME);
                 File file = new File(userHome + File.separator + entry.getName());
-                FileOutputStream fos = null;
 
                 int size;
-                byte[] buffer = new byte[2048];
+                byte[] buffer = new byte[BUFFER_SIZE];
 
-                fos = new FileOutputStream(file);
+                FileOutputStream fos = new FileOutputStream(file);
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
                 while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
@@ -109,7 +109,6 @@ class Validator {
 
                 bos.flush();
                 bos.close();
-
             }
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:113002", e);
@@ -132,10 +131,10 @@ class Validator {
         return isJson;
     }
 
-    private String readFileAsString(String filePath) throws IOException {
+    private static String readFileAsString(String filePath) throws IOException {
         StringBuilder fileData = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        char[] buf = new char[1024];
+        char[] buf = new char[FILE_BUFFER_SIZE];
         int numRead=0;
         while((numRead=reader.read(buf)) != -1){
             String readData = String.valueOf(buf, 0, numRead);
@@ -155,8 +154,6 @@ class Validator {
             if (jsonObject.has("name") &&
                 jsonObject.has("isDefault") &&
                 jsonObject.has("serverId") &&
-                jsonObject.has("status") &&
-                jsonObject.has("version") &&
                 hasScripts(jsonObject)) {
                 hasFields = true;
 
@@ -178,9 +175,11 @@ class Validator {
         }
     }
 
-    private boolean hasScripts(JSONObject jsonObject) {
+    private static boolean hasScripts(JSONObject jsonObject) {
         return jsonObject.has(DEPLOY_SCRIPT) &&
-            jsonObject.has(UNDEPLOY_SCRIPT);
+            jsonObject.has(UNDEPLOY_SCRIPT) &&
+            jsonObject.has("status") &&
+            jsonObject.has("version");
     }
 
     private void validateScriptsFormat() {
