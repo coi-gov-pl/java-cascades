@@ -4,18 +4,14 @@ import lombok.Getter;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
-import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
