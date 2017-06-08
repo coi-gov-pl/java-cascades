@@ -135,7 +135,7 @@ class Validator {
         StringBuilder fileData = new StringBuilder();
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         char[] buf = new char[FILE_BUFFER_SIZE];
-        int numRead=0;
+        int numRead = 0;
         while((numRead=reader.read(buf)) != -1){
             String readData = String.valueOf(buf, 0, numRead);
             fileData.append(readData);

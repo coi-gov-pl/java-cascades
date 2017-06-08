@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.presentation.loadtemplate;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 
 import java.io.Serializable;
 

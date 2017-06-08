@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.presentation.loadtemplate;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.contract.service.WithViolations;
 import pl.gov.coi.cascades.server.domain.loadtemplate.Response;

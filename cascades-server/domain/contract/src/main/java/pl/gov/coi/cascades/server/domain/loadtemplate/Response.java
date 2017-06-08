@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.contract.service.Violation;
 
 /**
