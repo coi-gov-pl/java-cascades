@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
+import com.google.common.annotations.VisibleForTesting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.json.JSONObject;
@@ -78,7 +79,8 @@ class Validator {
         return checkNotNull(version, "20170524:122752");
     }
 
-    private void validateZip() {
+    @VisibleForTesting
+    protected void validateZip() {
         if (!request.getContentType().equals(CONTENT_TYPE)) {
             newError(
                 PROPERTY_PATH_ZIP_FORMAT,
@@ -87,7 +89,8 @@ class Validator {
         }
     }
 
-    private void validateIfZipContainsJsonFile() {
+    @VisibleForTesting
+    protected void validateIfZipContainsJsonFile() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
         ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
@@ -146,7 +149,8 @@ class Validator {
         return fileData.toString();
     }
 
-    private void validateJsonFileStructure() {
+    @VisibleForTesting
+    protected void validateJsonFileStructure() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
         boolean hasFields = false;
@@ -185,7 +189,8 @@ class Validator {
             jsonObject.has("version");
     }
 
-    private void validateScriptsFormat() {
+    @VisibleForTesting
+    protected void validateScriptsFormat() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
 
@@ -206,7 +211,8 @@ class Validator {
         }
     }
 
-    private void validateIfScriptsExist() {
+    @VisibleForTesting
+    protected void validateIfScriptsExist() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
 
