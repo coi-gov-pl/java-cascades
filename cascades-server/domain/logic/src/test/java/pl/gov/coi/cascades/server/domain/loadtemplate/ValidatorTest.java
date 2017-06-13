@@ -42,6 +42,11 @@ public class ValidatorTest {
     @Before
     public void setUp() {
         response = new ResponseImpl();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasFields() {
+        // given
         validator = new Validator(
             response,
             request,
@@ -52,11 +57,35 @@ public class ValidatorTest {
             version,
             jsonName
         );
+        String id = "template";
+        String serverId = "2020";
+        String status = "created";
+        String version = "1.0.3";
+
+        // when
+        validator.validateJsonFileStructure();
+
+        // then
+        assertThat(validator.getId()).isEqualTo(id);
+        assertThat(validator.getServerId()).isEqualTo(serverId);
+        assertThat(validator.getStatus()).isEqualTo(status);
+        assertThat(validator.getVersion()).isEqualTo(version);
+        assertThat(validator.isDefault()).isTrue();
     }
 
     @Test
     public void testValidateZipWhenContentIsNotZip() {
         // given
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
 
@@ -70,6 +99,16 @@ public class ValidatorTest {
     @Test
     public void testValidateZipWhenContentIsZip() {
         // given
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String content = "application/zip";
         when(request.getContentType()).thenReturn(content);
 
@@ -83,6 +122,16 @@ public class ValidatorTest {
     @Test
     public void testGetId() throws Exception {
         // when
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String actual = validator.getId();
 
         // then
@@ -93,6 +142,16 @@ public class ValidatorTest {
     @Test
     public void testIsDefault() throws Exception {
         // when
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         boolean actual = validator.isDefault();
 
         // then
@@ -102,6 +161,16 @@ public class ValidatorTest {
     @Test
     public void testGetStatus() throws Exception {
         // when
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String actual = validator.getStatus();
 
         // then
@@ -112,6 +181,16 @@ public class ValidatorTest {
     @Test
     public void testGetServerId() throws Exception {
         // when
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String actual = validator.getServerId();
 
         // then
@@ -122,6 +201,16 @@ public class ValidatorTest {
     @Test
     public void testGetVersion() throws Exception {
         // when
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
         String actual = validator.getVersion();
 
         // then
