@@ -8,7 +8,14 @@ import pl.gov.coi.cascades.server.domain.ViolationImpl;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
