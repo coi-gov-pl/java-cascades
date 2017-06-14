@@ -45,35 +45,6 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testValidateJsonFileStructureIfHasFields() {
-        // given
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName
-        );
-        String id = "template";
-        String serverId = "2020";
-        String status = "created";
-        String version = "1.0.3";
-
-        // when
-        validator.validateJsonFileStructure();
-
-        // then
-        assertThat(validator.getId()).isEqualTo(id);
-        assertThat(validator.getServerId()).isEqualTo(serverId);
-        assertThat(validator.getStatus()).isEqualTo(status);
-        assertThat(validator.getVersion()).isEqualTo(version);
-        assertThat(validator.isDefault()).isTrue();
-    }
-
-    @Test
     public void testValidateZipWhenContentIsNotZip() {
         // given
         validator = new Validator(
