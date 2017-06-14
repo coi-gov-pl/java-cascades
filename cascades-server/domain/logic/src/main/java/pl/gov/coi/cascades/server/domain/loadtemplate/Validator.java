@@ -152,7 +152,7 @@ class Validator {
     @VisibleForTesting
     protected void validateJsonFileStructure() {
         Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
         boolean hasFields = false;
 
         try {
@@ -192,7 +192,7 @@ class Validator {
     @VisibleForTesting
     protected void validateScriptsFormat() {
         Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
 
         try {
             String jsonString = readFileAsString(path + jsonFilename);
@@ -214,7 +214,7 @@ class Validator {
     @VisibleForTesting
     protected void validateIfScriptsExist() {
         Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "target" + File.separator;
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
 
         try {
             String jsonString = readFileAsString(path + jsonFilename);
