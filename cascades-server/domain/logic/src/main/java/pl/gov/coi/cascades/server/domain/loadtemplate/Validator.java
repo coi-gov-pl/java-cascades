@@ -5,14 +5,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.json.JSONObject;
 import pl.gov.coi.cascades.server.domain.ViolationImpl;
+import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -136,16 +135,21 @@ class Validator {
         return isJson;
     }
 
-    private static String readFileAsString(String filePath) throws IOException {
+    private static String readFileAsString(String filePath) {
         StringBuilder fileData = new StringBuilder();
-        BufferedReader reader = new BufferedReader(new FileReader(filePath));
-        char[] buf = new char[FILE_BUFFER_SIZE];
-        int numRead = 0;
-        while ((numRead = reader.read(buf)) != -1) {
-            String readData = String.valueOf(buf, 0, numRead);
-            fileData.append(readData);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            char[] buf = new char[FILE_BUFFER_SIZE];
+            int numRead = 0;
+            while ((numRead = reader.read(buf)) != -1) {
+                String readData = String.valueOf(buf, 0, numRead);
+                fileData.append(readData);
+            }
+        } catch (FileNotFoundException e) {
+            throw new EidIllegalStateException("20170614:114408", e);
+        } catch (IOException e) {
+            throw new EidIllegalArgumentException("20170614:114429", e);
         }
-        reader.close();
         return fileData.toString();
     }
 
@@ -155,23 +159,19 @@ class Validator {
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
         boolean hasFields = false;
 
-        try {
-            String jsonString = readFileAsString(path + jsonFilename);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            if (jsonObject.has("name") &&
-                jsonObject.has("isDefault") &&
-                jsonObject.has("serverId") &&
-                hasScripts(jsonObject)) {
-                hasFields = true;
+        String jsonString = readFileAsString(path + jsonFilename);
+        JSONObject jsonObject = new JSONObject(jsonString);
+        if (jsonObject.has("name") &&
+            jsonObject.has("isDefault") &&
+            jsonObject.has("serverId") &&
+            hasScripts(jsonObject)) {
+            hasFields = true;
 
-                id = jsonObject.getString("name");
-                isDefault = jsonObject.getBoolean("isDefault");
-                serverId = jsonObject.getString("serverId");
-                status = jsonObject.getString("status");
-                version = jsonObject.getString("version");
-            }
-        } catch (IOException e) {
-            throw new EidIllegalStateException("20170605:130934", e);
+            id = jsonObject.getString("name");
+            isDefault = jsonObject.getBoolean("isDefault");
+            serverId = jsonObject.getString("serverId");
+            status = jsonObject.getString("status");
+            version = jsonObject.getString("version");
         }
 
         if (!hasFields) {
@@ -194,20 +194,15 @@ class Validator {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
 
-        try {
-            String jsonString = readFileAsString(path + jsonFilename);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
-            String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
-            if (!(deployStript.endsWith(".sql") && undeployScript.endsWith(".sql"))) {
-                newError(
-                    PROPERTY_PATH_NO_SQL_FORMAT,
-                    "Deploy and undeploy script must be in .sql format"
-                );
-            }
-
-        } catch (IOException e) {
-            throw new EidIllegalStateException("20170607:151540", e);
+        String jsonString = readFileAsString(path + jsonFilename);
+        JSONObject jsonObject = new JSONObject(jsonString);
+        String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
+        String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
+        if (!(deployStript.endsWith(".sql") && undeployScript.endsWith(".sql"))) {
+            newError(
+                PROPERTY_PATH_NO_SQL_FORMAT,
+                "Deploy and undeploy script must be in .sql format"
+            );
         }
     }
 
@@ -216,23 +211,19 @@ class Validator {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
 
-        try {
-            String jsonString = readFileAsString(path + jsonFilename);
-            JSONObject jsonObject = new JSONObject(jsonString);
-            String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
-            String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
-            Path pathToDeployScript = Paths.get(path + deployStript);
-            Path pathToUndeployScript = Paths.get(path + undeployScript);
+        String jsonString = readFileAsString(path + jsonFilename);
+        JSONObject jsonObject = new JSONObject(jsonString);
+        String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
+        String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
+        Path pathToDeployScript = Paths.get(path + deployStript);
+        Path pathToUndeployScript = Paths.get(path + undeployScript);
 
-            if (!(pathToDeployScript.toFile().exists() &&
-                pathToUndeployScript.toFile().exists())) {
-                newError(
-                    PROPERTY_PATH_LACK_OF_SQL,
-                    "Missing sql file/files in zip."
-                );
-            }
-        } catch (IOException e) {
-            throw new EidIllegalStateException("20170607:170042", e);
+        if (!(pathToDeployScript.toFile().exists() &&
+            pathToUndeployScript.toFile().exists())) {
+            newError(
+                PROPERTY_PATH_LACK_OF_SQL,
+                "Missing sql file/files in zip."
+            );
         }
     }
 
