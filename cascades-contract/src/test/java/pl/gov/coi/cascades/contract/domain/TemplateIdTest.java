@@ -14,12 +14,64 @@ public class TemplateIdTest {
     private String id;
     private String serverId;
     private String version;
+    private TemplateIdStatus status;
+    private boolean isDefault;
 
     @Before
     public void setUp() {
-        id = "1234567abcd";
-        serverId = "3v3454v4";
+        id = "oracle_template";
+        serverId = "1234";
         version = "0.0.1";
+        status = TemplateIdStatus.CREATED;
+        isDefault = true;
+    }
+
+    @Test
+    public void testToString() {
+        // given
+        TemplateId templateIdBuilder = TemplateId.builder()
+            .id(id)
+            .isDefault(isDefault)
+            .serverId(serverId)
+            .status(status)
+            .version(version)
+            .build();
+
+        // when
+        String actual = templateIdBuilder.toString();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).contains(
+            String.valueOf(isDefault),
+            serverId,
+            status.toString(),
+            version,
+            id
+        );
+    }
+
+    @Test
+    public void testBuilder() {
+        // when
+        TemplateId templateIdBuilder = TemplateId.builder()
+            .id(id)
+            .isDefault(true)
+            .serverId(serverId)
+            .status(status)
+            .version(version)
+            .build();
+
+        // then
+        assertThat(templateIdBuilder).isNotNull();
+        assertThat(templateIdBuilder.getId()).isNotNull();
+        assertThat(templateIdBuilder.getId()).isEqualTo(id);
+        assertThat(templateIdBuilder.getServerId()).isNotNull();
+        assertThat(templateIdBuilder.getServerId()).isEqualTo(serverId);
+        assertThat(templateIdBuilder.getStatus()).isNotNull();
+        assertThat(templateIdBuilder.getStatus()).isEqualTo(status);
+        assertThat(templateIdBuilder.getVersion()).isNotNull();
+        assertThat(templateIdBuilder.getVersion()).isEqualTo(version);
     }
 
     @Test

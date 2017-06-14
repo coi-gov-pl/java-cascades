@@ -14,7 +14,7 @@ import javax.annotation.Nonnull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import static org.junit.Assert.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static pl.wavesoftware.eid.utils.EidPreconditions.tryToExecute;
 
 /**
@@ -25,6 +25,7 @@ public class ConfigurationTest {
 
     private Configuration configuration;
     private String instanceName;
+    private Long timeoutInSeconds;
 
     @Mock
     private Server server;
@@ -52,10 +53,11 @@ public class ConfigurationTest {
     @Before
     public void setUp() {
         instanceName = "PESEL";
+        timeoutInSeconds = 160L;
         configuration = new Configuration(
             driver,
             true,
-            160L,
+            timeoutInSeconds,
             server,
             migration,
             instanceName,
@@ -64,12 +66,60 @@ public class ConfigurationTest {
     }
 
     @Test
+    public void testGetTimeOutInSeconds() {
+        // when
+        Long actual = configuration.getTimeoutInSeconds();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isEqualTo(timeoutInSeconds);
+    }
+
+    @Test
+    public void testGetter() {
+        // when
+        Driver actual = configuration.getDriver();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isEqualTo(driver);
+    }
+
+    @Test
+    public void testIsTryToReuse() {
+        // when
+        boolean actual = configuration.isTryToReuse();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isTrue();
+    }
+
+    @Test
+    public void testGetServer() {
+        // when
+        Optional<Server> actual = configuration.getServer();
+
+        // then
+        assertThat(actual).isEqualTo(Optional.of(server));
+    }
+
+    @Test
+    public void testGetMigration() {
+        // when
+        Optional<Migration> actual = configuration.getMigration();
+
+        // then
+        assertThat(actual).isEqualTo(Optional.of(migration));
+    }
+
+    @Test
     public void testGetInstanceName() throws Exception {
         // when
         Optional<String> actual = configuration.getInstanceName();
 
         // then
-        assertEquals(Optional.fromNullable(instanceName), actual);
+        assertThat(actual).isEqualTo(Optional.of(instanceName));
     }
 
     @Test
@@ -78,7 +128,7 @@ public class ConfigurationTest {
         URI actual = configuration.getCascadesServerUri();
 
         // then
-        assertEquals(serverAddressUri, actual);
+        assertThat(actual).isEqualTo(serverAddressUri);
     }
 
 }

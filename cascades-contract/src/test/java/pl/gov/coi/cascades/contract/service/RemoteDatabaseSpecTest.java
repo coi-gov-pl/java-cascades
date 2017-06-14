@@ -13,6 +13,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
@@ -24,7 +25,7 @@ import static org.mockito.Mockito.when;
  * @since 21.02.17.
  */
 public class RemoteDatabaseSpecTest {
-    private RemoteDatabaseSpec remoteDatabaseSpec;
+
     private String databaseName;
 
     @Mock
@@ -51,6 +52,57 @@ public class RemoteDatabaseSpecTest {
     @Before
     public void setUp() {
         databaseName = "Oracle";
+    }
+
+    @Test
+    public void testGetCredentials() {
+        // given
+        RemoteDatabaseSpec spec = new RemoteDatabaseSpec(
+            databaseId,
+            databaseName,
+            networkBind,
+            credentials
+        );
+
+        // when
+        UsernameAndPasswordCredentials actual = spec.getCredentials();
+
+        // then
+        assertThat(actual).isEqualTo(credentials);
+    }
+
+    @Test
+    public void testGetNetworkBind() {
+        // given
+        RemoteDatabaseSpec spec = new RemoteDatabaseSpec(
+            databaseId,
+            databaseName,
+            networkBind,
+            credentials
+        );
+
+        // when
+        NetworkBind actual = spec.getNetworkBind();
+
+        // then
+        assertThat(actual).isEqualTo(networkBind);
+    }
+
+    @Test
+    public void testGetDatabaseName() {
+        // given
+        RemoteDatabaseSpec spec = new RemoteDatabaseSpec(
+            databaseId,
+            databaseName,
+            networkBind,
+            credentials
+        );
+
+        // when
+        String actual = spec.getDatabaseName();
+
+        // then
+        assertThat(actual).isEqualTo(databaseName);
     }
 
     @Test
