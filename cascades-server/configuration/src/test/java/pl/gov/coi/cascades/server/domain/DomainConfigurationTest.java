@@ -54,6 +54,18 @@ public class DomainConfigurationTest {
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Test
+    public void testProduceLoadTemplateUseCase() throws Exception {
+        // given
+        DomainConfiguration domainConfiguration = new DomainConfiguration();
+
+        // when
+        pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase();
+
+        // then
+        assertThat(actual).isInstanceOf(pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.class);
+    }
+
+    @Test
     public void testProduceLaunchNewDatabaseUseCase() throws Exception {
         // given
         DomainConfiguration domainConfiguration = new DomainConfiguration();
