@@ -29,9 +29,6 @@ public class LaunchDatabaseControllerTest {
     @Mock
     private UserSession userSession;
 
-    @Mock
-    private TemplateId templateId;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
