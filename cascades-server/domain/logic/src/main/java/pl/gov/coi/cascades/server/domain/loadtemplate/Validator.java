@@ -95,11 +95,11 @@ class Validator {
     protected void validateIfZipContainsJsonFile() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
-        ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
-        ZipEntry entry;
         boolean containsJson = false;
 
         try {
+            ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
+            ZipEntry entry = null;
             while ((entry = zis.getNextEntry()) != null) {
                 File file = new File(path + entry.getName());
 
@@ -110,7 +110,9 @@ class Validator {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
                 while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    containsJson = isJsonExtension(entry);
+                    if (isJsonExtension(entry)) {
+                        containsJson = true;
+                    }
                     bos.write(buffer, 0, size);
                 }
 
