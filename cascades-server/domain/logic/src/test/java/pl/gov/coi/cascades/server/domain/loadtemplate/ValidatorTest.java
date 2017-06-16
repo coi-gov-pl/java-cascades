@@ -11,6 +11,8 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -57,7 +59,7 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testValidateIfZipContainsJsonFileWhenErrorOccurred() {
+    public void testValidateIfZipContainsJsonFileWhenErrorOccurred() throws IOException {
         // given
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);

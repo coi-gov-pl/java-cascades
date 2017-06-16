@@ -9,6 +9,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,12 +24,6 @@ import static org.mockito.Mockito.when;
  * @since 07.06.17.
  */
 public class UseCaseImplTest {
-
-    @Mock
-    private Request request;
-
-    @Mock
-    private InputStream inputStream;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
