@@ -66,27 +66,6 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testValidateScriptsFormat() {
-        // given
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName
-        );
-
-        // when
-        validator.validateScriptsFormat();
-
-        // then
-        assertThat(response.getViolations()).hasSize(0);
-    }
-
-    @Test
     public void testValidateZipWhenContentIsNotZip() {
         // given
         validator = new Validator(
