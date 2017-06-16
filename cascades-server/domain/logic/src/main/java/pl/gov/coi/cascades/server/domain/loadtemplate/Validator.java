@@ -112,28 +112,35 @@ class Validator {
         }
     }
 
-    private boolean isContainsJson(String path, ZipInputStream zis) throws IOException {
+    private boolean isContainsJson(String path,
+                                   ZipInputStream zis) throws IOException {
         ZipEntry entry;
-        boolean isJson = false;
+        boolean containsJsonFile = false;
         while ((entry = zis.getNextEntry()) != null) {
             File file = new File(path + entry.getName());
-            int size;
             byte[] buffer = new byte[BUFFER_SIZE];
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
-
-                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    if (entry.getName().endsWith(".json")) {
-                        isJson = true;
-                        jsonFilename = entry.getName();
-                    }
-                    bos.write(buffer, 0, size);
-                }
-
+                containsJsonFile = isJson(zis, entry, buffer, bos);
                 bos.flush();
                 bos.close();
             }
+        }
+        return containsJsonFile;
+    }
 
+    private boolean isJson(ZipInputStream zis,
+                           ZipEntry entry,
+                           byte[] buffer,
+                           BufferedOutputStream bos) throws IOException {
+        int size;
+        boolean isJson = false;
+        while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+            if (entry.getName().endsWith(".json")) {
+                isJson = true;
+                jsonFilename = entry.getName();
+            }
+            bos.write(buffer, 0, size);
         }
         return isJson;
     }
