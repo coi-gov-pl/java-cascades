@@ -95,31 +95,11 @@ class Validator {
     protected void validateIfZipContainsJsonFile() {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
-        boolean containsJson = false;
+        boolean containsJson;
 
         try {
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
-            ZipEntry entry = null;
-            while ((entry = zis.getNextEntry()) != null) {
-                File file = new File(path + entry.getName());
-
-                int size;
-                byte[] buffer = new byte[BUFFER_SIZE];
-
-                FileOutputStream fos = new FileOutputStream(file);
-                BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
-
-                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    if (entry.getName().endsWith(".json")) {
-                        containsJson = true;
-                        jsonFilename = entry.getName();
-                    }
-                    bos.write(buffer, 0, size);
-                }
-
-                bos.flush();
-                bos.close();
-            }
+            containsJson = isContainsJson(path, zis);
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:113002", e);
         }
@@ -130,6 +110,30 @@ class Validator {
                 "Loaded zip does not contains required JSON file."
             );
         }
+    }
+
+    private boolean isContainsJson(String path, ZipInputStream zis) throws IOException {
+        ZipEntry entry;
+        boolean isJson = false;
+        while ((entry = zis.getNextEntry()) != null) {
+            File file = new File(path + entry.getName());
+            int size;
+            byte[] buffer = new byte[BUFFER_SIZE];
+            FileOutputStream fos = new FileOutputStream(file);
+            BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
+
+            while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+                if (entry.getName().endsWith(".json")) {
+                    isJson = true;
+                    jsonFilename = entry.getName();
+                }
+                bos.write(buffer, 0, size);
+            }
+
+            bos.flush();
+            bos.close();
+        }
+        return isJson;
     }
 
     private static String readFileAsString(String filePath) {
