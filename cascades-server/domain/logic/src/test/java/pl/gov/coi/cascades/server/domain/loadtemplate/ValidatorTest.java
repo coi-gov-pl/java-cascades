@@ -10,6 +10,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -22,6 +25,7 @@ import static org.mockito.Mockito.when;
  */
 public class ValidatorTest {
 
+    private static final String TEST = "src/test/resources";
     private Validator validator;
     private String id = "template_id";
     private String jsonName = "test.json";
@@ -59,7 +63,9 @@ public class ValidatorTest {
         );
 
         // when
-        validator.validateIfScriptsExist();
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        validator.validateIfScriptsExist(path);
 
         // then
         assertThat(response.getViolations()).hasSize(0);

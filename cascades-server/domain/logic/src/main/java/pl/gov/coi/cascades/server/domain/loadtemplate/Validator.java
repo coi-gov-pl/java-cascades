@@ -53,11 +53,13 @@ class Validator {
     private String jsonFilename;
 
     public boolean validate() {
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
         validateZip();
-        validateIfZipContainsJsonFile();
-        validateJsonFileStructure();
-        validateScriptsFormat();
-        validateIfScriptsExist();
+        validateIfZipContainsJsonFile(path);
+        validateJsonFileStructure(path);
+        validateScriptsFormat(path);
+        validateIfScriptsExist(path);
         return response.isSuccessful();
     }
 
@@ -92,9 +94,7 @@ class Validator {
     }
 
     @VisibleForTesting
-    protected void validateIfZipContainsJsonFile() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
+    protected void validateIfZipContainsJsonFile(String path) {
         boolean containsJson;
 
         try {
@@ -121,28 +121,19 @@ class Validator {
             byte[] buffer = new byte[BUFFER_SIZE];
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
-                containsJsonFile = isJson(zis, entry, buffer, bos);
+                int size;
+                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+                    if (entry.getName().endsWith(".json")) {
+                        containsJsonFile = true;
+                        jsonFilename = entry.getName();
+                    }
+                    bos.write(buffer, 0, size);
+                }
                 bos.flush();
                 bos.close();
             }
         }
         return containsJsonFile;
-    }
-
-    private boolean isJson(ZipInputStream zis,
-                           ZipEntry entry,
-                           byte[] buffer,
-                           BufferedOutputStream bos) throws IOException {
-        int size;
-        boolean isJson = false;
-        while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-            if (entry.getName().endsWith(".json")) {
-                isJson = true;
-                jsonFilename = entry.getName();
-            }
-            bos.write(buffer, 0, size);
-        }
-        return isJson;
     }
 
     private static String readFileAsString(String filePath) {
@@ -164,9 +155,7 @@ class Validator {
     }
 
     @VisibleForTesting
-    protected void validateJsonFileStructure() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
+    protected void validateJsonFileStructure(String path) {
         boolean hasFields = false;
 
         String jsonString = readFileAsString(path + jsonFilename);
@@ -200,10 +189,7 @@ class Validator {
     }
 
     @VisibleForTesting
-    protected void validateScriptsFormat() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
-
+    protected void validateScriptsFormat(String path) {
         String jsonString = readFileAsString(path + jsonFilename);
         JSONObject jsonObject = new JSONObject(jsonString);
         String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
@@ -217,10 +203,7 @@ class Validator {
     }
 
     @VisibleForTesting
-    protected void validateIfScriptsExist() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
-
+    protected void validateIfScriptsExist(String path) {
         String jsonString = readFileAsString(path + jsonFilename);
         JSONObject jsonObject = new JSONObject(jsonString);
         String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
