@@ -110,8 +110,9 @@ class Validator {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
                 while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    if (isJsonExtension(entry)) {
+                    if (entry.getName().endsWith(".json")) {
                         containsJson = true;
+                        jsonFilename = entry.getName();
                     }
                     bos.write(buffer, 0, size);
                 }
@@ -129,15 +130,6 @@ class Validator {
                 "Loaded zip does not contains required JSON file."
             );
         }
-    }
-
-    private boolean isJsonExtension(ZipEntry entry) {
-        boolean isJson = false;
-        if (entry.getName().endsWith(".json")) {
-            isJson = true;
-            jsonFilename = entry.getName();
-        }
-        return isJson;
     }
 
     private static String readFileAsString(String filePath) {
