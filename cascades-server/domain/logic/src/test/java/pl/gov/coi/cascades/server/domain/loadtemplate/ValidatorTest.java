@@ -49,6 +49,29 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testValidateScriptsFormat() {
+        // given
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName
+        );
+
+        // when
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        validator.validateScriptsFormat(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(0);
+    }
+
+    @Test
     public void testValidateIfScriptsExist() {
         // given
         validator = new Validator(
