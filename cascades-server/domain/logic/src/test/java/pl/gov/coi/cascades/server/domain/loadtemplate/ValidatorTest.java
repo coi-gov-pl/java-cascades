@@ -32,6 +32,7 @@ public class ValidatorTest {
     private String serverId = "1234";
     private String status = "created";
     private String version = "0.0.1";
+    private boolean containsJson = false;
     private ResponseImpl response;
 
     @Mock
@@ -59,7 +60,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
 
         // when
@@ -82,7 +84,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
 
         // when
@@ -105,7 +108,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
@@ -128,7 +132,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String content = "application/zip";
         when(request.getContentType()).thenReturn(content);
@@ -151,7 +156,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String actual = validator.getId();
 
@@ -171,7 +177,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         boolean actual = validator.isDefault();
 
@@ -190,7 +197,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String actual = validator.getStatus();
 
@@ -210,7 +218,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String actual = validator.getServerId();
 
@@ -230,7 +239,8 @@ public class ValidatorTest {
             serverId,
             status,
             version,
-            jsonName
+            jsonName,
+            containsJson
         );
         String actual = validator.getVersion();
 

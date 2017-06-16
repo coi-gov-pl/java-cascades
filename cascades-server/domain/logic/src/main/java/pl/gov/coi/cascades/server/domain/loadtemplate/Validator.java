@@ -51,6 +51,7 @@ class Validator {
     private String status;
     private String version;
     private String jsonFilename;
+    private boolean containsJson;
 
     public boolean validate() {
         Path currentRelativePath = Paths.get("");
@@ -95,11 +96,9 @@ class Validator {
 
     @VisibleForTesting
     protected void validateIfZipContainsJsonFile(String path) {
-        boolean containsJson;
-
         try {
             ZipInputStream zis = new ZipInputStream(new BufferedInputStream(request.getZipFile()));
-            containsJson = isContainsJson(path, zis);
+            isContainsJson(path, zis);
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:113002", e);
         }
@@ -112,28 +111,33 @@ class Validator {
         }
     }
 
-    private boolean isContainsJson(String path,
-                                   ZipInputStream zis) throws IOException {
+    private void isContainsJson(String path,
+                                ZipInputStream zis) throws IOException {
         ZipEntry entry;
-        boolean containsJsonFile = false;
         while ((entry = zis.getNextEntry()) != null) {
             File file = new File(path + entry.getName());
             byte[] buffer = new byte[BUFFER_SIZE];
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
-                int size;
-                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                    if (entry.getName().endsWith(".json")) {
-                        containsJsonFile = true;
-                        jsonFilename = entry.getName();
-                    }
-                    bos.write(buffer, 0, size);
-                }
+                isJson(zis, entry, buffer, bos);
                 bos.flush();
                 bos.close();
             }
         }
-        return containsJsonFile;
+    }
+
+    private void isJson(ZipInputStream zis,
+                        ZipEntry entry,
+                        byte[] buffer,
+                        BufferedOutputStream bos) throws IOException {
+        int size;
+        while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+            if (entry.getName().endsWith(".json")) {
+                containsJson = true;
+                jsonFilename = entry.getName();
+            }
+            bos.write(buffer, 0, size);
+        }
     }
 
     private static String readFileAsString(String filePath) {
