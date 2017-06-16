@@ -34,6 +34,7 @@ public class ValidatorTest {
     private String version = "0.0.1";
     private boolean containsJson = false;
     private ResponseImpl response;
+    private String path;
 
     @Mock
     private Request request;
@@ -47,6 +48,38 @@ public class ValidatorTest {
     @Before
     public void setUp() {
         response = new ResponseImpl();
+        Path currentRelativePath = Paths.get("");
+        path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasFields() {
+        // given
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        String id = "template";
+        String serverId = "3050";
+        String status = "created";
+        String version = "345435.0.3";
+
+        // when
+        validator.validateJsonFileStructure(path);
+
+        // then
+        assertThat(validator.getId()).isEqualTo(id);
+        assertThat(validator.getServerId()).isEqualTo(serverId);
+        assertThat(validator.getStatus()).isEqualTo(status);
+        assertThat(validator.getVersion()).isEqualTo(version);
+        assertThat(validator.isDefault()).isTrue();
     }
 
     @Test
@@ -65,8 +98,6 @@ public class ValidatorTest {
         );
 
         // when
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         validator.validateScriptsFormat(path);
 
         // then
@@ -89,8 +120,6 @@ public class ValidatorTest {
         );
 
         // when
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         validator.validateIfScriptsExist(path);
 
         // then
