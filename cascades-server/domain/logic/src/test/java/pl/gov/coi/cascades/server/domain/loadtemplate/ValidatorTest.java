@@ -11,6 +11,7 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -39,6 +40,9 @@ public class ValidatorTest {
     @Mock
     private Request request;
 
+    @Mock
+    private InputStream zipFile;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -50,6 +54,31 @@ public class ValidatorTest {
         response = new ResponseImpl();
         Path currentRelativePath = Paths.get("");
         path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+    }
+
+    @Test
+    public void testValidateIfZipContainsJsonFileWhenErrorOccurred() {
+        // given
+        String content = "application/rar";
+        when(request.getContentType()).thenReturn(content);
+        when(request.getZipFile()).thenReturn(zipFile);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+
+        // when
+        validator.validateIfZipContainsJsonFile(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
     }
 
     @Test
