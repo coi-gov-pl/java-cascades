@@ -119,19 +119,21 @@ class Validator {
             File file = new File(path + entry.getName());
             int size;
             byte[] buffer = new byte[BUFFER_SIZE];
-            FileOutputStream fos = new FileOutputStream(file);
-            BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
+            try (FileOutputStream fos = new FileOutputStream(file)) {
+                BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
 
-            while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
-                if (entry.getName().endsWith(".json")) {
-                    isJson = true;
-                    jsonFilename = entry.getName();
+                while ((size = zis.read(buffer, 0, buffer.length)) != -1) {
+                    if (entry.getName().endsWith(".json")) {
+                        isJson = true;
+                        jsonFilename = entry.getName();
+                    }
+                    bos.write(buffer, 0, size);
                 }
-                bos.write(buffer, 0, size);
+
+                bos.flush();
+                bos.close();
             }
 
-            bos.flush();
-            bos.close();
         }
         return isJson;
     }
