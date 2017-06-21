@@ -72,6 +72,35 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testReadFileAsStringWhenExOccurred() throws IOException {
+        // given
+        String content = "application/rar";
+        String nonExistingPath = File.separator + "nonExistingDirectory" + File.separator;
+        when(request.getContentType()).thenReturn(content);
+        InputStream is = new FileInputStream(new File(path + "test12.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        validator.validateIfZipContainsJsonFile(path);
+
+        // then
+        expectedException.expect(EidIllegalStateException.class);
+        expectedException.expectMessage(containsString("20170614:114408"));
+
+        // when
+        validator.validateJsonFileStructure(nonExistingPath);
+    }
+
+    @Test
     public void testValidateIfUndeployScriptDoesNotExists() throws IOException {
         // given
         InputStream is = new FileInputStream(new File(path + "test12.zip"));
