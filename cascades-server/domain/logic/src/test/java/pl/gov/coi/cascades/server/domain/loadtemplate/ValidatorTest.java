@@ -38,7 +38,6 @@ public class ValidatorTest {
     private String serverId = "1234";
     private String status = "created";
     private String version = "0.0.1";
-    private boolean containsJson = false;
     private ResponseImpl response;
     private String path;
 
@@ -59,6 +58,17 @@ public class ValidatorTest {
         response = new ResponseImpl();
         Path currentRelativePath = Paths.get("");
         path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            false
+        );
     }
 
     @After
@@ -79,17 +89,6 @@ public class ValidatorTest {
         when(request.getContentType()).thenReturn(content);
         InputStream is = new FileInputStream(new File(path + "test12.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // then
@@ -105,17 +104,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test12.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -137,17 +125,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test11.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -169,17 +146,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test8.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -201,17 +167,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test7.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -233,17 +188,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test6.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -265,17 +209,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test5.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -297,17 +230,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test4.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -329,17 +251,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test3.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -361,17 +272,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test2.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -393,17 +293,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test1.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -425,17 +314,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test10.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -459,17 +337,6 @@ public class ValidatorTest {
         when(request.getContentType()).thenReturn(content);
         InputStream is = new FileInputStream(new File(path + "test1.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
 
         // when
         validator.validateIfZipContainsJsonFile(path);
@@ -489,17 +356,6 @@ public class ValidatorTest {
         when(request.getContentType()).thenReturn(content);
         InputStream is = new FileInputStream(new File(path + "test9.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -515,17 +371,6 @@ public class ValidatorTest {
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
         when(request.getZipFile()).thenReturn(zipFile);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         when(request.getZipFile()).thenReturn(null);
 
         // then
@@ -542,17 +387,6 @@ public class ValidatorTest {
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
         when(request.getZipFile()).thenReturn(zipFile);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
 
         // when
         validator.validateIfZipContainsJsonFile(path);
@@ -566,17 +400,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test13.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
         String id = "template";
         String serverId = "3050";
@@ -600,17 +423,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test13.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -625,17 +437,6 @@ public class ValidatorTest {
         // given
         InputStream is = new FileInputStream(new File(path + "test13.zip"));
         when(request.getZipFile()).thenReturn(is);
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         validator.validateIfZipContainsJsonFile(path);
 
         // when
@@ -648,17 +449,6 @@ public class ValidatorTest {
     @Test
     public void testValidateZipWhenContentIsNotZip() {
         // given
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
 
@@ -672,17 +462,6 @@ public class ValidatorTest {
     @Test
     public void testValidateZipWhenContentIsZip() {
         // given
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String content = "application/zip";
         when(request.getContentType()).thenReturn(content);
 
@@ -696,17 +475,6 @@ public class ValidatorTest {
     @Test
     public void testGetId() throws Exception {
         // when
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String actual = validator.getId();
 
         // then
@@ -717,17 +485,6 @@ public class ValidatorTest {
     @Test
     public void testIsDefault() throws Exception {
         // when
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         boolean actual = validator.isDefault();
 
         // then
@@ -737,17 +494,6 @@ public class ValidatorTest {
     @Test
     public void testGetStatus() throws Exception {
         // when
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String actual = validator.getStatus();
 
         // then
@@ -758,17 +504,6 @@ public class ValidatorTest {
     @Test
     public void testGetServerId() throws Exception {
         // when
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String actual = validator.getServerId();
 
         // then
@@ -779,17 +514,6 @@ public class ValidatorTest {
     @Test
     public void testGetVersion() throws Exception {
         // when
-        validator = new Validator(
-            response,
-            request,
-            id,
-            true,
-            serverId,
-            status,
-            version,
-            jsonName,
-            containsJson
-        );
         String actual = validator.getVersion();
 
         // then
