@@ -1,21 +1,21 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Getter;
-import org.assertj.core.api.Assertions;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -23,7 +23,6 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
-import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 /**
