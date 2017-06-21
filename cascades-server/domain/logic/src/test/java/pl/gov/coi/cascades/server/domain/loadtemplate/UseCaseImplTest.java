@@ -25,6 +25,11 @@ import static org.mockito.Mockito.when;
  */
 public class UseCaseImplTest {
 
+    private static final String TEST = "src/test/resources";
+
+    @Mock
+    private Request request;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 

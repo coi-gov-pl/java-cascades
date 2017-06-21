@@ -1,14 +1,17 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.Getter;
+import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
+import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,6 +23,8 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 /**
@@ -81,6 +86,33 @@ public class ValidatorTest {
 
         // then
         assertThat(response.getViolations()).hasSize(2);
+    }
+
+    @Test
+    public void testValidateIfZipContainsJsonFileWhenExOccurred() throws IOException {
+        // given
+        String content = "application/rar";
+        when(request.getContentType()).thenReturn(content);
+        when(request.getZipFile()).thenReturn(zipFile);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        when(request.getZipFile()).thenReturn(null);
+
+        // then
+        expectedException.expect(EidIllegalStateException.class);
+        expectedException.expectMessage(containsString("20170605:113002"));
+
+        // when
+        validator.validateIfZipContainsJsonFile(path);
     }
 
     @Test
