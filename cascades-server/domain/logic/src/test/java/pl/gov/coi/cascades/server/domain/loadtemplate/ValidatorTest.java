@@ -64,6 +64,36 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testValidateIfZipContainsJsonFile() throws IOException {
+        // given
+        String content = "application/rar";
+        when(request.getContentType()).thenReturn(content);
+        InputStream is = new FileInputStream(new File(path + "test9.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+
+        // when
+        validator.validateIfZipContainsJsonFile(path);
+
+        // then
+        for(Violation violation : response.getViolations()) {
+            assertThat(violation.getMessage()).doesNotContain(
+                "Loaded zip does not contains required JSON file."
+            );
+        }
+    }
+
+    @Test
     public void testValidateWithViolations() {
         // given
         String content = "application/rar";

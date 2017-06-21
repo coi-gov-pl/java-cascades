@@ -137,7 +137,8 @@ class Validator {
         }
     }
 
-    private static String readFileAsString(String filePath) {
+    @VisibleForTesting
+    protected static String readFileAsString(String filePath) {
         StringBuilder fileData = new StringBuilder();
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
