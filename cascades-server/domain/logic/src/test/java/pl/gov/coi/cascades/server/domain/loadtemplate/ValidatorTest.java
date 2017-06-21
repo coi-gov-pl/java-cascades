@@ -61,6 +61,70 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testValidateWhenUndeployScriptFormatIsNotAppropriate() throws FileNotFoundException {
+        // given
+        InputStream is = new FileInputStream(new File(path + "test8.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        validator.validateIfZipContainsJsonFile(path);
+
+        // when
+        validator.validateScriptsFormat(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Deploy and undeploy script must be in .sql format"
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateWhenDeployScriptFormatIsNotAppropriate() throws FileNotFoundException {
+        // given
+        InputStream is = new FileInputStream(new File(path + "test7.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        validator.validateIfZipContainsJsonFile(path);
+
+        // when
+        validator.validateScriptsFormat(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Deploy and undeploy script must be in .sql format"
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
     public void testValidateJsonFileStructureIfHasNotUndeployScriptField() throws FileNotFoundException {
         // given
         InputStream is = new FileInputStream(new File(path + "test6.zip"));
