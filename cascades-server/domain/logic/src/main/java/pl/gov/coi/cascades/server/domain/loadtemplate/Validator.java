@@ -42,7 +42,6 @@ class Validator {
     public static final String USER_HOME = "user.home";
     public static final int BUFFER_SIZE = 2048;
     public static final int FILE_BUFFER_SIZE = 1024;
-    public static final String TARGET = "target";
     private final Response response;
     private final Request request;
     private String id;
@@ -53,9 +52,7 @@ class Validator {
     private String jsonFilename;
     private boolean containsJson;
 
-    public boolean validate() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
+    public boolean validate(String path) {
         validateZip();
         validateIfZipContainsJsonFile(path);
         validateJsonFileStructure(path);

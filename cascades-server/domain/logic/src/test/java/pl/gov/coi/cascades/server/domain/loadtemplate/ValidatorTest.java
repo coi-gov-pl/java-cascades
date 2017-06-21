@@ -59,6 +59,31 @@ public class ValidatorTest {
     }
 
     @Test
+    public void testValidateWithViolations() {
+        // given
+        String content = "application/rar";
+        when(request.getContentType()).thenReturn(content);
+        when(request.getZipFile()).thenReturn(zipFile);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+
+        // when
+        validator.validate(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(2);
+    }
+
+    @Test
     public void testValidateIfZipContainsJsonFileWhenErrorOccurred() throws IOException {
         // given
         String content = "application/rar";

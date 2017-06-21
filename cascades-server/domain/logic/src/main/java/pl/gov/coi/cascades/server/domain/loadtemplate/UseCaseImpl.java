@@ -3,6 +3,10 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.05.17.
@@ -11,6 +15,8 @@ import lombok.Builder;
 @AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
+    public static final String TARGET = "target";
+
     @Override
     public void execute(Request request, Response response) {
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
@@ -18,7 +24,9 @@ public class UseCaseImpl implements UseCase {
             .response(response);
 
         Validator validator = validatorBuilder.build();
-        if (validator.validate()) {
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
+        if (validator.validate(path)) {
             succeedResponse(response, validator);
         }
     }
