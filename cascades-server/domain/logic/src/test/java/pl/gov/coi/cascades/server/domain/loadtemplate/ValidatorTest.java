@@ -61,7 +61,39 @@ public class ValidatorTest {
     }
 
     @Test
-    public void testValidateJsonFileStructureIfHasNotFields() throws FileNotFoundException {
+    public void testValidateJsonFileStructureIfHasNotStatusField() throws FileNotFoundException {
+        // given
+        InputStream is = new FileInputStream(new File(path + "test2.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        validator.validateIfZipContainsJsonFile(path);
+
+        // when
+        validator.validateJsonFileStructure(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotVersionField() throws FileNotFoundException {
         // given
         InputStream is = new FileInputStream(new File(path + "test10.zip"));
         when(request.getZipFile()).thenReturn(is);
@@ -83,11 +115,13 @@ public class ValidatorTest {
 
         // then
         assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
         for(Violation violation : response.getViolations()) {
-            assertThat(violation.getMessage()).doesNotContain(
-                "Loaded zip does not contains required JSON file."
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
             );
         }
+        assertThat(containsField).isTrue();
     }
 
     @Test
