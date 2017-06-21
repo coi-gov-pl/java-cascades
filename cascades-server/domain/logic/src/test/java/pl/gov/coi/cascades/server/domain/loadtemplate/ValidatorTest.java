@@ -13,10 +13,7 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
@@ -61,6 +58,36 @@ public class ValidatorTest {
         response = new ResponseImpl();
         Path currentRelativePath = Paths.get("");
         path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotFields() throws FileNotFoundException {
+        // given
+        InputStream is = new FileInputStream(new File(path + "test10.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        validator = new Validator(
+            response,
+            request,
+            id,
+            true,
+            serverId,
+            status,
+            version,
+            jsonName,
+            containsJson
+        );
+        validator.validateIfZipContainsJsonFile(path);
+
+        // when
+        validator.validateJsonFileStructure(path);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        for(Violation violation : response.getViolations()) {
+            assertThat(violation.getMessage()).doesNotContain(
+                "Loaded zip does not contains required JSON file."
+            );
+        }
     }
 
     @Test
