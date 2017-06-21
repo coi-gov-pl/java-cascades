@@ -1,9 +1,0 @@
-{
-	"name": "template",
-	"isDefault": "true",
-	"serverId": "3050",
-	"status": "created",
-	"version": "345435.0.3",
-	"deployScript": "deploy.sql",
-	"undeployScript": "undeploy.sql"
-}
