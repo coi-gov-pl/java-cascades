@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.Getter;
+import org.junit.After;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,10 +10,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -35,6 +35,76 @@ public class UseCaseImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    @After
+    public void after() {
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "src/test/resources" + File.separator;
+        File dir = new File(path);
+        for (File file : dir.listFiles()) {
+            if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
+                file.delete();
+            }
+        }
+    }
+
+    @Test
+    public void testExecuteWhenThereAreErrors() throws IOException {
+        // given
+        String content = "application/zip";
+        when(request.getContentType()).thenReturn(content);
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .build();
+        ResponseImpl response = new ResponseImpl();
+        InputStream is = new FileInputStream(new File(path + "test14.zip"));
+        when(request.getZipFile()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        assertThat(response.isSuccessful()).isFalse();
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Missing sql file/files in zip."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testExecuteWhenThereIsNoError() throws IOException {
+        // given
+        String content = "application/zip";
+        when(request.getContentType()).thenReturn(content);
+        Path currentRelativePath = Paths.get("");
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .build();
+        ResponseImpl response = new ResponseImpl();
+        InputStream is = new FileInputStream(new File(path + "test13.zip"));
+        when(request.getZipFile()).thenReturn(is);
+        String id = "template";
+        String serverId = "3050";
+        String status = "created";
+        String version = "345435.0.3";
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(0);
+        assertThat(response.isSuccessful()).isTrue();
+        assertThat(response.isDefault()).isTrue();
+        assertThat(response.getId()).isEqualTo(id);
+        assertThat(response.getServerId()).isEqualTo(serverId);
+        assertThat(response.getStatus()).isEqualTo(status);
+        assertThat(response.getVersion()).isEqualTo(version);
+    }
 
     @Test
     public void testBuilder() throws Exception {
@@ -87,7 +157,7 @@ public class UseCaseImplTest {
         }
 
         @Override
-        public void setServerId(String versionId) {
+        public void setServerId(String serverId) {
             this.serverId = serverId;
         }
 

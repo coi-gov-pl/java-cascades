@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 @AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
-    public static final String TARGET = "target";
+    public static final String TEMPORARY_FOLDER = "target";
 
     @Override
     public void execute(Request request, Response response) {
@@ -25,7 +25,7 @@ public class UseCaseImpl implements UseCase {
 
         Validator validator = validatorBuilder.build();
         Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TARGET + File.separator;
+        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEMPORARY_FOLDER + File.separator;
         if (validator.validate(path)) {
             succeedResponse(response, validator);
         }

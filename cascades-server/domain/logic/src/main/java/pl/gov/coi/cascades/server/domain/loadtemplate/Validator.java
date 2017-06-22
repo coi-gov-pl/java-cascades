@@ -58,7 +58,17 @@ class Validator {
         validateJsonFileStructure(path);
         validateScriptsFormat(path);
         validateIfScriptsExist(path);
+        clean(path);
         return response.isSuccessful();
+    }
+
+    private void clean(String path) {
+        File dir = new File(path);
+        for (File file : dir.listFiles()) {
+            if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
+                file.delete();
+            }
+        }
     }
 
     String getId() {
