@@ -18,6 +18,7 @@ import java.util.HashSet;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
+import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -26,7 +27,7 @@ import static org.mockito.Mockito.when;
 public class UseCaseImplTest {
 
     private static final String TEST = "src/test/resources";
-    public static final String ZIP_EXTENSION = ".zip";
+    private static final String ZIP_EXTENSION = ".zip";
 
     @Mock
     private Request request;
@@ -42,6 +43,7 @@ public class UseCaseImplTest {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "src/test/resources" + File.separator;
         File dir = new File(path);
+        checkNotNull(dir.listFiles(), "20170623:124049");
         for (File file : dir.listFiles()) {
             if (!file.getName().endsWith(ZIP_EXTENSION) && !file.isDirectory()) {
                 file.delete();
@@ -80,6 +82,10 @@ public class UseCaseImplTest {
     @Test
     public void testExecuteWhenThereIsNoError() throws IOException {
         // given
+        String id = "template";
+        String serverId = "3050";
+        String status = "created";
+        String version = "345435.0.3";
         String content = "application/zip";
         when(request.getContentType()).thenReturn(content);
         Path currentRelativePath = Paths.get("");
@@ -89,10 +95,6 @@ public class UseCaseImplTest {
         ResponseImpl response = new ResponseImpl();
         InputStream is = new FileInputStream(new File(path + "test13.zip"));
         when(request.getZipFile()).thenReturn(is);
-        String id = "template";
-        String serverId = "3050";
-        String status = "created";
-        String version = "345435.0.3";
 
         // when
         useCase.execute(request, response);

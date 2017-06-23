@@ -4,7 +4,10 @@ import com.google.common.annotations.VisibleForTesting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.ViolationImpl;
+import pl.wavesoftware.eid.exceptions.Eid;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
@@ -37,6 +40,7 @@ class Validator {
     private static final String PROPERTY_PATH_JSON_STRUCTURE = "template.json.structure";
     private static final String PROPERTY_PATH_NO_SQL_FORMAT = "template.format.sql";
     private static final String PROPERTY_PATH_LACK_OF_SQL = "template.scripts";
+    private static final Logger LOGGER = LoggerFactory.getLogger(Validator.class);
     public static final String DEPLOY_SCRIPT = "deployScript";
     public static final String UNDEPLOY_SCRIPT = "undeployScript";
     public static final String USER_HOME = "user.home";
@@ -66,11 +70,28 @@ class Validator {
 
     private static void clean(String path) {
         File dir = new File(path);
+        checkNotNull(dir.listFiles(), "20170623:123919");
         for (File file : dir.listFiles()) {
             if (!file.getName().endsWith(ZIP_EXTENSION) &&
                 !file.isDirectory() &&
                 !file.getName().endsWith(JAR_EXTENSION)) {
-                file.delete();
+                checkFile(file);
+            }
+        }
+    }
+
+    private static void checkFile(File file) {
+        if (!file.delete()) {
+            if (LOGGER.isErrorEnabled()) {
+                LOGGER.error(new Eid("20170623:125510").makeLogMessage(
+                    ""
+                ));
+            }
+        } else {
+            if (LOGGER.isInfoEnabled()) {
+                LOGGER.info(new Eid("20170623:125607").makeLogMessage(
+                    ""
+                ));
             }
         }
     }

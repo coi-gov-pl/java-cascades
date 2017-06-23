@@ -24,6 +24,7 @@ import java.util.HashSet;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
+import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -74,6 +75,7 @@ public class ValidatorTest {
     @After
     public void after() {
         File dir = new File(path);
+        checkNotNull(dir.listFiles(), "20170623:124021");
         for (File file : dir.listFiles()) {
             if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
                 file.delete();

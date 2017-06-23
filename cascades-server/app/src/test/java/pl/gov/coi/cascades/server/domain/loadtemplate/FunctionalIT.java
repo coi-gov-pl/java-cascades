@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 import com.google.common.io.ByteStreams;
 import org.assertj.core.description.Description;
 import org.assertj.core.description.TextDescription;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -66,11 +65,6 @@ public class FunctionalIT {
         this.mockMvc = MockMvcBuilders
             .webAppContextSetup(this.wac)
             .build();
-    }
-
-    @After
-    public void after() {
-
     }
 
     @Test
