@@ -31,9 +31,8 @@ public class UseCaseImpl implements UseCase {
         }
     }
 
-    private void succeedResponse(Response response,
-                                 Validator validator) {
-
+    private static void succeedResponse(Response response,
+                                        Validator validator) {
         response.setId(validator.getId());
         response.setDefault(validator.isDefault());
         response.setServerId(validator.getServerId());

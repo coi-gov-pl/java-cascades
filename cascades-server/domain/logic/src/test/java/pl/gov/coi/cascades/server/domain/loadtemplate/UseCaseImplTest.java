@@ -26,6 +26,7 @@ import static org.mockito.Mockito.when;
 public class UseCaseImplTest {
 
     private static final String TEST = "src/test/resources";
+    public static final String ZIP_EXTENSION = ".zip";
 
     @Mock
     private Request request;
@@ -42,7 +43,7 @@ public class UseCaseImplTest {
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "src/test/resources" + File.separator;
         File dir = new File(path);
         for (File file : dir.listFiles()) {
-            if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
+            if (!file.getName().endsWith(ZIP_EXTENSION) && !file.isDirectory()) {
                 file.delete();
             }
         }

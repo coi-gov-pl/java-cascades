@@ -42,6 +42,7 @@ class Validator {
     public static final String USER_HOME = "user.home";
     public static final int BUFFER_SIZE = 2048;
     public static final int FILE_BUFFER_SIZE = 1024;
+    public static final String ZIP_EXTENSION = ".zip";
     private final Response response;
     private final Request request;
     private String id;
@@ -62,10 +63,10 @@ class Validator {
         return response.isSuccessful();
     }
 
-    private void clean(String path) {
+    private static void clean(String path) {
         File dir = new File(path);
         for (File file : dir.listFiles()) {
-            if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
+            if (!file.getName().endsWith(ZIP_EXTENSION) && !file.isDirectory()) {
                 file.delete();
             }
         }
