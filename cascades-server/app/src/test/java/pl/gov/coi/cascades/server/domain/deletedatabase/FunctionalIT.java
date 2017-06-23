@@ -48,9 +48,6 @@ public class FunctionalIT {
     @Inject
     private UserGateway userGateway;
 
-    @Mock
-    private DatabaseInstance databaseInstance;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 

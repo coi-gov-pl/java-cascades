@@ -43,6 +43,7 @@ class Validator {
     public static final int BUFFER_SIZE = 2048;
     public static final int FILE_BUFFER_SIZE = 1024;
     public static final String ZIP_EXTENSION = ".zip";
+    private static final String JAR_EXTENSION = ".jar";
     private final Response response;
     private final Request request;
     private String id;
@@ -66,7 +67,9 @@ class Validator {
     private static void clean(String path) {
         File dir = new File(path);
         for (File file : dir.listFiles()) {
-            if (!file.getName().endsWith(ZIP_EXTENSION) && !file.isDirectory()) {
+            if (!file.getName().endsWith(ZIP_EXTENSION) &&
+                !file.isDirectory() &&
+                !file.getName().endsWith(JAR_EXTENSION)) {
                 file.delete();
             }
         }

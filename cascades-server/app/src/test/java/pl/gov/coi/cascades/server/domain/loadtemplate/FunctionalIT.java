@@ -1,20 +1,19 @@
-package pl.gov.coi.cascades.server.domain.launchdatabase;
+package pl.gov.coi.cascades.server.domain.loadtemplate;
 
+import com.google.common.io.ByteStreams;
 import org.assertj.core.description.Description;
 import org.assertj.core.description.TextDescription;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -23,25 +22,31 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 
 import javax.inject.Inject;
+
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.InputStream;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
- * @since 14.03.17.
+ * @since 23.06.17.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @StubDevelopmentTest
 public class FunctionalIT {
 
-    private static final String ORACLE_TEMPLATE = "oracle_template";
-    private static final String NON_EXISTING_TEMPLATE_ID = "non_existing_template_id";
+    private String path;
+    private static final String TEST = "src/test/resources";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -56,56 +61,26 @@ public class FunctionalIT {
 
     @Before
     public void setup() {
+        Path currentRelativePath = Paths.get("");
+        path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         this.mockMvc = MockMvcBuilders
             .webAppContextSetup(this.wac)
             .build();
     }
 
-    @Test
-    public void testPathWithPresentDefaultTemplate() throws Exception {
-        // given
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/databases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(requestWithNoTemplateId());
+    @After
+    public void after() {
 
-        // when
-        MvcResult result = mockMvc.perform(requestBuilder)
-            .andReturn();
-        MockHttpServletResponse response = result.getResponse();
-
-        // then
-        assertThat(response.getStatus())
-            .as(buildDescription(response))
-            .isEqualTo(200);
     }
 
     @Test
-    public void testPathWithPresentGivenTemplateId() throws Exception {
+    public void testLoadingZipFileWithErrors() throws Exception {
         // given
+        String fileName = "incorrectZip.zip";
+        MockMultipartFile file = new MockMultipartFile("file", fileName,"application/zip", correctRequest(fileName));
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/databases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(requestWithTemplateId(ORACLE_TEMPLATE));
-
-        // when
-        MvcResult result = mockMvc.perform(requestBuilder)
-            .andReturn();
-        MockHttpServletResponse response = result.getResponse();
-
-        // then
-        assertThat(response.getStatus())
-            .as(buildDescription(response))
-            .isEqualTo(200);
-    }
-
-    @Test
-    public void testPathWithNotPresentGivenTemplateId() throws Exception {
-        // given
-        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
-            .post("/databases")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(requestWithTemplateId(NON_EXISTING_TEMPLATE_ID));
+            .fileUpload("")
+            .file(file);
 
         // when
         MvcResult result = mockMvc.perform(requestBuilder)
@@ -118,6 +93,26 @@ public class FunctionalIT {
             .isEqualTo(400);
     }
 
+    @Test
+    public void testLoadingZipFileWithNoErrors() throws Exception {
+        // given
+        String fileName = "correctZip.zip";
+        MockMultipartFile file = new MockMultipartFile("file", fileName,"application/zip", correctRequest(fileName));
+        MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders
+            .fileUpload("")
+            .file(file);
+
+        // when
+        MvcResult result = mockMvc.perform(requestBuilder)
+            .andReturn();
+        MockHttpServletResponse response = result.getResponse();
+
+        // then
+        assertThat(response.getStatus())
+            .as(buildDescription(response))
+            .isEqualTo(200);
+    }
+
     private Description buildDescription(MockHttpServletResponse response)
         throws UnsupportedEncodingException {
 
@@ -125,19 +120,8 @@ public class FunctionalIT {
         return new TextDescription("Response BODY is:\n\n" + content);
     }
 
-    private String requestWithNoTemplateId() throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
-        return new JSONObject()
-            .put("type", stub.getName())
-            .toString();
+    private byte[] correctRequest(String filename) throws IOException {
+        InputStream is = new FileInputStream(new File(path + filename));
+        return ByteStreams.toByteArray(is);
     }
-
-    private String requestWithTemplateId(String templateId) throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
-        return new JSONObject()
-            .put("type", stub.getName())
-            .put("templateId", templateId)
-            .toString();
-    }
-
 }
