@@ -10,7 +10,10 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
 
-import java.io.*;
+import java.io.InputStream;
+import java.io.FileInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collection;
