@@ -21,4 +21,11 @@ public interface TemplateIdGateway {
      */
     Optional<TemplateId> getDefaultTemplateId();
 
+    /**
+     * Method saves given templateId.
+     *
+     * @param templateId Given templateId to save.
+     */
+    void save(TemplateId templateId);
+
 }

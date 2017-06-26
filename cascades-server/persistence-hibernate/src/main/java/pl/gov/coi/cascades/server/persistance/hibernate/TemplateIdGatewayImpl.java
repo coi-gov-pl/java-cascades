@@ -37,7 +37,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @VisibleForTesting
-    TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper,
+    public TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper,
                           Logger logger) {
         this.templateIdMapper = templateIdMapper;
         this.logger = logger;
@@ -96,6 +96,17 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
                 )
             );
             return Optional.empty();
+        }
+    }
+
+    @Override
+    public void save(pl.gov.coi.cascades.contract.domain.TemplateId templateId) {
+        if (logger.isInfoEnabled()) {
+            logger.info(new Eid("20170626:140337")
+                .makeLogMessage(
+                    "Given templateId has been saved."
+                )
+            );
         }
     }
 

@@ -59,7 +59,9 @@ public class DomainConfigurationTest {
         DomainConfiguration domainConfiguration = new DomainConfiguration();
 
         // when
-        pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase();
+        pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase(
+            templateIdGateway
+        );
 
         // then
         assertThat(actual).isInstanceOf(pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.class);

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.service.Violation;
+import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
@@ -34,6 +35,9 @@ public class UseCaseImplTest {
 
     @Mock
     private Request request;
+
+    @Mock
+    private TemplateIdGateway templateIdGateway;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -62,6 +66,7 @@ public class UseCaseImplTest {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
             .build();
         ResponseImpl response = new ResponseImpl();
         InputStream is = new FileInputStream(new File(path + "test14.zip"));
@@ -94,6 +99,7 @@ public class UseCaseImplTest {
         Path currentRelativePath = Paths.get("");
         String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
             .build();
         ResponseImpl response = new ResponseImpl();
         InputStream is = new FileInputStream(new File(path + "test13.zip"));
@@ -116,6 +122,7 @@ public class UseCaseImplTest {
     public void testBuilder() throws Exception {
         // when
         UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
             .build();
 
         // then

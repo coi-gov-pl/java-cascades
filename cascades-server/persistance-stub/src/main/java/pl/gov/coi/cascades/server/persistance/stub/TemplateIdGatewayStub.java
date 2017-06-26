@@ -65,6 +65,11 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
         return Optional.of(TEMPLATE_ID3);
     }
 
+    @Override
+    public void save(TemplateId templateId) {
+        setTemplate(templateId);
+    }
+
     public Map<String, TemplateId> getAllTemplates() {
         return templates;
     }
