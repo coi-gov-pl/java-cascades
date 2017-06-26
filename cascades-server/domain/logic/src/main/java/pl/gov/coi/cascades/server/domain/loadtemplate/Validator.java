@@ -170,7 +170,7 @@ class Validator {
     private static String readFileAsString(String filePath) {
         StringBuilder fileData = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new StringReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             char[] buf = new char[FILE_BUFFER_SIZE];
             int numRead = 0;
             while ((numRead = reader.read(buf)) != -1) {
