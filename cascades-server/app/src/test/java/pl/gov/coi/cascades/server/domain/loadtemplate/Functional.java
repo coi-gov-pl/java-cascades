@@ -42,7 +42,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @StubDevelopmentTest
-public class FunctionalIT {
+public class Functional {
 
     private String path;
     private static final String TEST = "src/test/resources";
