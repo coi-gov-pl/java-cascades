@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 import com.google.common.annotations.VisibleForTesting;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,14 +12,7 @@ import pl.wavesoftware.eid.exceptions.Eid;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.BufferedReader;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
@@ -32,6 +26,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 class Validator {
 
     private static final String CONTENT_TYPE = "application/zip";
@@ -40,7 +35,7 @@ class Validator {
     private static final String PROPERTY_PATH_JSON_STRUCTURE = "template.json.structure";
     private static final String PROPERTY_PATH_NO_SQL_FORMAT = "template.format.sql";
     private static final String PROPERTY_PATH_LACK_OF_SQL = "template.scripts";
-    private static final Logger LOGGER = LoggerFactory.getLogger(Validator.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(Validator.class);
     public static final String DEPLOY_SCRIPT = "deployScript";
     public static final String UNDEPLOY_SCRIPT = "undeployScript";
     public static final String USER_HOME = "user.home";
@@ -68,7 +63,7 @@ class Validator {
         return response.isSuccessful();
     }
 
-    private static void clean(String path) {
+    private void clean(String path) {
         File dir = new File(path);
         checkNotNull(dir.listFiles(), "20170623:123919");
         for (File file : dir.listFiles()) {
@@ -80,17 +75,17 @@ class Validator {
         }
     }
 
-    private static void checkFile(File file) {
+    private void checkFile(File file) {
         if (!file.delete()) {
-            if (LOGGER.isErrorEnabled()) {
-                LOGGER.error(new Eid("20170623:125510").makeLogMessage(
-                    ""
+            if (DEFAULT_LOGGER.isErrorEnabled()) {
+                DEFAULT_LOGGER.error(new Eid("20170623:125510").makeLogMessage(
+                    "File or directory is NOT successfully deleted."
                 ));
             }
         } else {
-            if (LOGGER.isInfoEnabled()) {
-                LOGGER.info(new Eid("20170623:125607").makeLogMessage(
-                    ""
+            if (DEFAULT_LOGGER.isInfoEnabled()) {
+                DEFAULT_LOGGER.info(new Eid("20170623:125607").makeLogMessage(
+                    "File or directory is successfully deleted."
                 ));
             }
         }
@@ -175,7 +170,7 @@ class Validator {
     private static String readFileAsString(String filePath) {
         StringBuilder fileData = new StringBuilder();
 
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+        try (BufferedReader reader = new BufferedReader(new StringReader(filePath))) {
             char[] buf = new char[FILE_BUFFER_SIZE];
             int numRead = 0;
             while ((numRead = reader.read(buf)) != -1) {
