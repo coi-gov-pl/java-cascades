@@ -12,7 +12,14 @@ import pl.wavesoftware.eid.exceptions.Eid;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.BufferedReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
@@ -26,7 +33,6 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 @Builder
 @AllArgsConstructor
-@RequiredArgsConstructor
 class Validator {
 
     private static final String CONTENT_TYPE = "application/zip";
@@ -63,7 +69,7 @@ class Validator {
         return response.isSuccessful();
     }
 
-    private void clean(String path) {
+    private static void clean(String path) {
         File dir = new File(path);
         checkNotNull(dir.listFiles(), "20170623:123919");
         for (File file : dir.listFiles()) {
@@ -75,7 +81,7 @@ class Validator {
         }
     }
 
-    private void checkFile(File file) {
+    private static void checkFile(File file) {
         if (!file.delete()) {
             if (DEFAULT_LOGGER.isErrorEnabled()) {
                 DEFAULT_LOGGER.error(new Eid("20170623:125510").makeLogMessage(
