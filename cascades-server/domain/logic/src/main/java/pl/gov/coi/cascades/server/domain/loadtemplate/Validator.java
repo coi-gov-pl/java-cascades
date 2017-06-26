@@ -24,6 +24,7 @@ import java.nio.file.Paths;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import static java.lang.String.join;
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
 /**
@@ -147,7 +148,7 @@ class Validator {
                                 ZipInputStream zis) throws IOException {
         ZipEntry entry;
         while ((entry = zis.getNextEntry()) != null) {
-            File file = new File(path + entry.getName());
+            File file = new File(join(File.separator, path, entry.getName()));
             byte[] buffer = new byte[BUFFER_SIZE];
             try (FileOutputStream fos = new FileOutputStream(file)) {
                 BufferedOutputStream bos = new BufferedOutputStream(fos, buffer.length);
@@ -194,7 +195,7 @@ class Validator {
     protected void validateJsonFileStructure(String path) {
         boolean hasFields = false;
 
-        String jsonString = readFileAsString(path + jsonFilename);
+        String jsonString = readFileAsString(join(File.separator, path, jsonFilename));
         JSONObject jsonObject = new JSONObject(jsonString);
         if (jsonObject.has("name") &&
             jsonObject.has("isDefault") &&
@@ -226,7 +227,7 @@ class Validator {
 
     @VisibleForTesting
     protected void validateScriptsFormat(String path) {
-        String jsonString = readFileAsString(path + jsonFilename);
+        String jsonString = readFileAsString(join(File.separator, path, jsonFilename));
         JSONObject jsonObject = new JSONObject(jsonString);
         String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
         String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
@@ -240,12 +241,12 @@ class Validator {
 
     @VisibleForTesting
     protected void validateIfScriptsExist(String path) {
-        String jsonString = readFileAsString(path + jsonFilename);
+        String jsonString = readFileAsString(join(File.separator, path, jsonFilename));
         JSONObject jsonObject = new JSONObject(jsonString);
         String deployStript = jsonObject.getString(DEPLOY_SCRIPT);
         String undeployScript = jsonObject.getString(UNDEPLOY_SCRIPT);
-        Path pathToDeployScript = Paths.get(path + deployStript);
-        Path pathToUndeployScript = Paths.get(path + undeployScript);
+        Path pathToDeployScript = Paths.get(join(File.separator, path, deployStript));
+        Path pathToUndeployScript = Paths.get(join(File.separator, path, undeployScript));
 
         if (!(pathToDeployScript.toFile().exists() &&
             pathToUndeployScript.toFile().exists())) {

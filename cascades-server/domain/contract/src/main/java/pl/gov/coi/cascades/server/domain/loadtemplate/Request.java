@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
+import javax.annotation.WillNotClose;
 import java.io.InputStream;
 
 /**
@@ -16,6 +17,7 @@ import java.io.InputStream;
 public class Request {
 
     @Getter
+    @WillNotClose
     private final InputStream zipFile;
     @Getter
     private final String name;

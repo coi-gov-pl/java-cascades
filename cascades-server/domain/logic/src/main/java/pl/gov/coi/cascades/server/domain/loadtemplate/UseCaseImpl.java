@@ -42,7 +42,7 @@ public class UseCaseImpl implements UseCase {
     }
 
     private void succeedResponse(Response response,
-                                        Validator validator) {
+                                 Validator validator) {
         TemplateIdBuilder candidateBuilder = TemplateId.builder()
             .id(validator.getId())
             .isDefault(validator.isDefault())
