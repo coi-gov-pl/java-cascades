@@ -6,7 +6,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
-import static org.junit.Assert.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -39,7 +38,7 @@ public class RemoteTemplateSpecTest {
         );
 
         // then
-        assertNotNull(actual);
+        assertThat(actual).isNotNull();
     }
 
     @Test
