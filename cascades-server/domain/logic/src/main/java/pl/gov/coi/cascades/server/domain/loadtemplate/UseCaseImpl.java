@@ -2,10 +2,11 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
-import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -15,19 +16,22 @@ import java.nio.file.Paths;
 @AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
-    public static final String TEMPORARY_FOLDER = "target";
-
     @Override
     public void execute(Request request, Response response) {
-        Validator.ValidatorBuilder validatorBuilder = Validator.builder()
-            .request(request)
-            .response(response);
+        Path temporaryFolder;
+        String prefix = "Cascades_Temp_Dir";
+        try {
+            temporaryFolder = Files.createTempDirectory(prefix);
+            Validator.ValidatorBuilder validatorBuilder = Validator.builder()
+                .request(request)
+                .response(response);
 
-        Validator validator = validatorBuilder.build();
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEMPORARY_FOLDER + File.separator;
-        if (validator.validate(path)) {
-            succeedResponse(response, validator);
+            Validator validator = validatorBuilder.build();
+            if (validator.validate(temporaryFolder.toString())) {
+                succeedResponse(response, validator);
+            }
+        } catch (IOException e) {
+            throw new EidIllegalStateException("20170626:134937", e);
         }
     }
 
