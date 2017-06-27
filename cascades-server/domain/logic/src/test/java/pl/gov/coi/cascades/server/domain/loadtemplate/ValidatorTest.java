@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.rules.TemporaryFolder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
@@ -21,10 +22,10 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.HashSet;
 
+import static java.lang.String.join;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.mockito.Mockito.when;
-import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -32,7 +33,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class ValidatorTest {
 
-    private static final String TEST = "src/test/resources";
+    private String tempFolder;
     private Validator validator;
     private String id = "template_id";
     private String jsonName = "test.json";
@@ -40,13 +41,16 @@ public class ValidatorTest {
     private String status = "created";
     private String version = "0.0.1";
     private ResponseImpl response;
-    private String path;
+    private String zipPath;
 
     @Mock
     private Request request;
 
     @Mock
     private InputStream zipFile;
+
+    @Rule
+    public TemporaryFolder folder = new TemporaryFolder();
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -58,7 +62,8 @@ public class ValidatorTest {
     public void setUp() {
         response = new ResponseImpl();
         Path currentRelativePath = Paths.get("");
-        path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
+        tempFolder = folder.getRoot().getPath();
+        zipPath = join(File.separator, currentRelativePath.toAbsolutePath().toString(), "src", "test", "resources");
         validator = new Validator(
             response,
             request,
@@ -74,13 +79,7 @@ public class ValidatorTest {
 
     @After
     public void after() {
-        File dir = new File(path);
-        checkNotNull(dir.listFiles(), "20170623:124021");
-        for (File file : dir.listFiles()) {
-            if (!file.getName().endsWith(".zip") && !file.isDirectory()) {
-                file.delete();
-            }
-        }
+        folder.delete();
     }
 
     @Test
@@ -89,9 +88,9 @@ public class ValidatorTest {
         String content = "application/rar";
         String nonExistingPath = File.separator + "nonExistingDirectory" + File.separator;
         when(request.getContentType()).thenReturn(content);
-        InputStream is = new FileInputStream(new File(path + "test12.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test12.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // then
         expectedException.expect(EidIllegalStateException.class);
@@ -104,12 +103,12 @@ public class ValidatorTest {
     @Test
     public void testValidateIfUndeployScriptDoesNotExists() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test12.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test12.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateIfScriptsExist(path);
+        validator.validateIfScriptsExist(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -125,12 +124,12 @@ public class ValidatorTest {
     @Test
     public void testValidateIfDeployScriptDoesNotExists() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test11.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test11.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateIfScriptsExist(path);
+        validator.validateIfScriptsExist(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -146,12 +145,12 @@ public class ValidatorTest {
     @Test
     public void testValidateWhenUndeployScriptFormatIsNotAppropriate() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test8.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test8.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateScriptsFormat(path);
+        validator.validateScriptsFormat(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -167,12 +166,12 @@ public class ValidatorTest {
     @Test
     public void testValidateWhenDeployScriptFormatIsNotAppropriate() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test7.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test7.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateScriptsFormat(path);
+        validator.validateScriptsFormat(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -188,12 +187,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotUndeployScriptField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test6.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test6.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -209,12 +208,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotDeployScriptField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test5.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test5.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -230,12 +229,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotStatusField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test4.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test4.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -251,12 +250,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotServerIdField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test3.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test3.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -272,12 +271,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotIsDefaultField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test2.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test2.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -293,12 +292,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotNameField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test1.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test1.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -314,12 +313,12 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasNotVersionField() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test10.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test10.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -337,11 +336,11 @@ public class ValidatorTest {
         // given
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
-        InputStream is = new FileInputStream(new File(path + "test1.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test1.zip")));
         when(request.getZipFile()).thenReturn(is);
 
         // when
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // then
         for(Violation violation : response.getViolations()) {
@@ -356,12 +355,12 @@ public class ValidatorTest {
         // given
         String content = "application/rar";
         when(request.getContentType()).thenReturn(content);
-        InputStream is = new FileInputStream(new File(path + "test9.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test9.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validate(path);
+        validator.validate(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(4);
@@ -380,7 +379,7 @@ public class ValidatorTest {
         expectedException.expectMessage(containsString("20170605:113002"));
 
         // when
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
     }
 
     @Test
@@ -391,7 +390,7 @@ public class ValidatorTest {
         when(request.getZipFile()).thenReturn(zipFile);
 
         // when
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(1);
@@ -400,16 +399,16 @@ public class ValidatorTest {
     @Test
     public void testValidateJsonFileStructureIfHasFields() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test13.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test13.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
         String id = "template";
         String serverId = "3050";
         String status = "created";
         String version = "345435.0.3";
 
         // when
-        validator.validateJsonFileStructure(path);
+        validator.validateJsonFileStructure(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(0);
@@ -423,12 +422,12 @@ public class ValidatorTest {
     @Test
     public void testValidateScriptsFormat() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test13.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test13.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateScriptsFormat(path);
+        validator.validateScriptsFormat(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(0);
@@ -437,12 +436,12 @@ public class ValidatorTest {
     @Test
     public void testValidateIfScriptsExist() throws IOException {
         // given
-        InputStream is = new FileInputStream(new File(path + "test13.zip"));
+        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test13.zip")));
         when(request.getZipFile()).thenReturn(is);
-        validator.validateIfZipContainsJsonFile(path);
+        validator.validateIfZipContainsJsonFile(tempFolder);
 
         // when
-        validator.validateIfScriptsExist(path);
+        validator.validateIfScriptsExist(tempFolder);
 
         // then
         assertThat(response.getViolations()).hasSize(0);
