@@ -1,5 +1,7 @@
 package pl.gov.coi.cascades.server.domain;
 
+import pl.gov.coi.cascades.contract.domain.TemplateId;
+
 import java.nio.file.Path;
 
 /**
@@ -8,6 +10,15 @@ import java.nio.file.Path;
  */
 public interface DatabaseTemplateGateway {
 
-    void loadTemplate(Path path);
+    /**
+     * Creates a new template for templateId
+     * @param templateId
+     * @param deploySQLScriptPath
+     */
+    void createTemplate(TemplateId templateId, Path deploySQLScriptPath);
+
+    void deleteTemplate(TemplateId templateId);
+
+    boolean canBeRemoved(TemplateId templateId);
 
 }

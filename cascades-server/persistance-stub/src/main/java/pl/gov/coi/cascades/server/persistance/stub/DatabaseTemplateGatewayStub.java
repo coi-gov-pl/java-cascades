@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.stub;
 import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -27,14 +28,23 @@ public class DatabaseTemplateGatewayStub implements DatabaseTemplateGateway {
     }
 
     @Override
-    public void loadTemplate(Path path) {
+    public void createTemplate(TemplateId templateId, Path deploySQLScriptPath) {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170628:135108")
                 .makeLogMessage(
-                    "Script, loaded in " + path + " has been saved."
+                    "Script, loaded in " + deploySQLScriptPath + " has been saved."
                 )
             );
         }
     }
 
+    @Override
+    public void deleteTemplate(TemplateId templateId) {
+
+    }
+
+    @Override
+    public boolean canBeRemoved(TemplateId templateId) {
+        return false;
+    }
 }

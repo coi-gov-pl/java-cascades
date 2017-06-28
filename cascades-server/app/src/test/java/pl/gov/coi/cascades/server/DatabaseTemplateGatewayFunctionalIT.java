@@ -10,6 +10,7 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.DatabaseTemplateGatewayImpl;
 
@@ -32,6 +33,9 @@ import static org.mockito.Mockito.when;
 public class DatabaseTemplateGatewayFunctionalIT {
 
     @Mock
+    private TemplateId templateId;
+
+    @Mock
     private Logger logger;
 
     @Rule
@@ -50,7 +54,10 @@ public class DatabaseTemplateGatewayFunctionalIT {
         );
 
         // when
-        gateway.loadTemplate(path);
+        gateway.createTemplate(
+            templateId,
+            path
+        );
 
         // then
         verify(logger).info(contains("20170628:133136"));
@@ -67,7 +74,10 @@ public class DatabaseTemplateGatewayFunctionalIT {
         );
 
         // when
-        gateway.loadTemplate(path);
+        gateway.createTemplate(
+            templateId,
+            path
+        );
 
         // then
         verify(logger, times(0)).info(anyString());

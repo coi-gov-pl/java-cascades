@@ -2,8 +2,9 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.TemplateId.TemplateIdBuilder;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -31,41 +32,49 @@ public class UseCaseImpl implements UseCase {
                 Path path = zipArchive.ensureUnzipped().getPath();
                 UnzippedValidator unzippedValidator = new UnzippedValidator(zipArchive, path);
                 unzippedValidator.addViolationListener(response::addViolation);
+                MetadataHolder metadataHolder = new MetadataHolder();
+                unzippedValidator.addValidatedEntityListener(metadataHolder::setMetadata);
                 if (unzippedValidator.isValid()) {
-                    loadTemplate(path);
-                    succeedResponse(response, unzippedValidator);
+                    TemplateId templateId = createTemplate(metadataHolder);
+                    loadTemplate(templateId, path);
+                    succeedResponse(templateId, response);
                 }
             }
         }
     }
 
-    private void loadTemplate(Path path) {
-        databaseTemplateGateway.loadTemplate(path);
+    private static TemplateId createTemplate(MetadataHolder metadataHolder) {
+        return TemplateId.builder()
+            .version(metadataHolder.getTemplateMetadata().getVersion())
+            .serverId(metadataHolder.getTemplateMetadata().getServerId())
+            .isDefault(metadataHolder.getTemplateMetadata().isDefault())
+            .status(TemplateIdStatus.CREATED)
+            .id(metadataHolder.getTemplateMetadata().getId())
+            .build();
     }
 
-    private void succeedResponse(Response response,
-                                 UnzippedValidator validator) {
-        TemplateIdBuilder candidateBuilder = TemplateId.builder()
-            .id(validator.getId())
-            .isDefault(validator.isDefault())
-            .serverId(validator.getServerId())
-            .version(validator.getVersion());
+    private void loadTemplate(TemplateId templateId, Path path) {
+        databaseTemplateGateway.createTemplate(templateId, path);
+    }
 
-        if (validator.getStatus().equalsIgnoreCase(TemplateIdStatus.CREATED.name())) {
-            candidateBuilder.status(TemplateIdStatus.CREATED);
-        } else if (validator.getStatus().equals(TemplateIdStatus.DELETED.name())) {
-            candidateBuilder.status(TemplateIdStatus.DELETED);
+    private void succeedResponse(TemplateId templateId, Response response) {
+        templateIdGateway.addTemplate(templateId);
+
+        response.setId(templateId.getId());
+        response.setDefault(templateId.isDefault());
+        response.setServerId(templateId.getServerId());
+        response.setVersion(templateId.getVersion());
+        response.setStatus(templateId.getStatus().name());
+    }
+
+    private static final class MetadataHolder {
+        @Getter
+        @Setter
+        private TemplateMetadata templateMetadata;
+
+        private void setMetadata(TemplateMetadata templateMetadata) {
+            this.templateMetadata = templateMetadata;
         }
-
-        TemplateId candidateTemplateId = candidateBuilder.build();
-
-        templateIdGateway.addTemplate(candidateTemplateId);
-
-        response.setId(validator.getId());
-        response.setDefault(validator.isDefault());
-        response.setServerId(validator.getServerId());
-        response.setStatus(validator.getStatus());
-        response.setVersion(validator.getVersion());
     }
 
 }

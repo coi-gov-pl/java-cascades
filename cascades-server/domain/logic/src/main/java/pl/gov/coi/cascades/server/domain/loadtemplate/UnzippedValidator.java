@@ -24,7 +24,7 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @since 27.06.17
  */
 @RequiredArgsConstructor
-public class UnzippedValidator extends AbstractListenableValidator {
+public class UnzippedValidator extends AbstractListenableValidator<TemplateMetadata> {
 
     private static final String PROPERTY_PATH_JSON = "template.json";
     private static final String DEPLOY_SCRIPT = "deployScript";
@@ -38,21 +38,21 @@ public class UnzippedValidator extends AbstractListenableValidator {
         this::validateIfScriptsExist
     );
     private String jsonFilename;
-    private String id;
-    private boolean isDefault;
-    private String serverId;
-    private String status;
-    private String version;
+    private TemplateMetadata templateMetadata;
 
     @Override
     public boolean isValid() {
-        return validateIfZipContainsJsonFile()
+        boolean status = validateIfZipContainsJsonFile()
             ? validators
                 .stream()
                 .map(Supplier::get)
                 .reduce(UnzippedValidator::and)
                 .orElse(false)
             : false;
+        if (status) {
+            entityIsValid(templateMetadata);
+        }
+        return status;
     }
 
     private static boolean and(boolean first, boolean second) {
@@ -68,7 +68,6 @@ public class UnzippedValidator extends AbstractListenableValidator {
 
     private static boolean hasScripts(JSONObject jsonObject) {
         return jsonObject.has(DEPLOY_SCRIPT) &&
-            jsonObject.has("status") &&
             jsonObject.has("version");
     }
 
@@ -81,26 +80,6 @@ public class UnzippedValidator extends AbstractListenableValidator {
             throw new EidIllegalStateException("20170628:125113", e);
         }
         return fileData.toString();
-    }
-
-    String getId() {
-        return checkNotNull(id, "20170524:122357");
-    }
-
-    boolean isDefault() {
-        return checkNotNull(isDefault, "20170524:122601");
-    }
-
-    String getStatus() {
-        return checkNotNull(status, "20170524:122707");
-    }
-
-    String getServerId() {
-        return checkNotNull(serverId, "20170524:122732");
-    }
-
-    String getVersion() {
-        return checkNotNull(version, "20170524:122752");
     }
 
     private boolean validateScriptsFormat() {
@@ -144,11 +123,12 @@ public class UnzippedValidator extends AbstractListenableValidator {
             hasScripts(jsonObject)) {
             hasFields = true;
 
-            id = jsonObject.getString("name");
-            isDefault = jsonObject.getBoolean("isDefault");
-            serverId = jsonObject.getString("serverId");
-            status = jsonObject.getString("status");
-            version = jsonObject.getString("version");
+            templateMetadata = TemplateMetadata.builder()
+                .id(jsonObject.getString("name"))
+                .isDefault(jsonObject.getBoolean("isDefault"))
+                .serverId(jsonObject.getString("serverId"))
+                .version(jsonObject.getString("version"))
+                .build();
         }
 
         if (!hasFields) {
