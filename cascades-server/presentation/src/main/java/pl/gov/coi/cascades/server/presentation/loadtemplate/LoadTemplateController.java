@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import pl.gov.coi.cascades.contract.service.WithViolations;
 import pl.gov.coi.cascades.server.domain.loadtemplate.Request;
+import pl.gov.coi.cascades.server.domain.loadtemplate.Upload;
 import pl.gov.coi.cascades.server.domain.loadtemplate.UseCase;
 
 import javax.inject.Inject;
@@ -39,12 +40,16 @@ public class LoadTemplateController {
     public ResponseEntity<WithViolations<RemoteTemplateSpec>> checkTemplate(
         @RequestParam("file") MultipartFile request) throws IOException {
 
-        Request.RequestBuilder requestBuilder = Request.builder()
-            .zipFile(request.getInputStream())
-            .name(request.getOriginalFilename())
+        Upload upload = Upload.builder()
+            .inputStream(request.getInputStream())
             .size(request.getSize())
+            .contentType(request.getContentType())
+            .build();
+
+        Request.RequestBuilder requestBuilder = Request.builder()
+            .name(request.getOriginalFilename())
             .isEmpty(request.isEmpty())
-            .contentType(request.getContentType());
+            .upload(upload);
 
         Request templateRequest = requestBuilder.build();
         Presenter presenter = new Presenter();
@@ -53,7 +58,6 @@ public class LoadTemplateController {
             templateRequest,
             presenter
         );
-
         return presenter.createModel();
     }
 

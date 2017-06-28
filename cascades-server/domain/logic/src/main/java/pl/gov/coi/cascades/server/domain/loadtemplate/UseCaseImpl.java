@@ -3,13 +3,10 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.TemplateId.TemplateIdBuilder;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
-import pl.gov.coi.cascades.contract.domain.TemplateId.TemplateIdBuilder;
 
-import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
@@ -24,25 +21,28 @@ public class UseCaseImpl implements UseCase {
 
     @Override
     public void execute(Request request, Response response) {
-        Path temporaryFolder;
-        String prefix = "Cascades_Temp_Dir";
-        try {
-            temporaryFolder = Files.createTempDirectory(prefix);
-            Validator.ValidatorBuilder validatorBuilder = Validator.builder()
-                .request(request)
-                .response(response);
+        try (ZipArchive zipArchive = new ZipArchive(request.getUpload())) {
+            UploadValidator uploadValidator = new UploadValidator(zipArchive);
+            uploadValidator.addViolationListener(response::addViolation);
+            if (uploadValidator.isValid()) {
 
-            Validator validator = validatorBuilder.build();
-            if (validator.validate(temporaryFolder.toString())) {
-                succeedResponse(response, validator);
+                Path path = zipArchive.ensureUnzipped().getPath();
+                UnzippedValidator unzippedValidator = new UnzippedValidator(zipArchive, path);
+                unzippedValidator.addViolationListener(response::addViolation);
+                if (unzippedValidator.isValid()) {
+                    loadTemplate(path);
+                    succeedResponse(response, unzippedValidator);
+                }
             }
-        } catch (IOException e) {
-            throw new EidIllegalStateException("20170626:134937", e);
         }
     }
 
+    private void loadTemplate(Path path) {
+
+    }
+
     private void succeedResponse(Response response,
-                                 Validator validator) {
+                                 UnzippedValidator validator) {
         TemplateIdBuilder candidateBuilder = TemplateId.builder()
             .id(validator.getId())
             .isDefault(validator.isDefault())

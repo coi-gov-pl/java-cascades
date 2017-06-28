@@ -7,6 +7,8 @@ import pl.wavesoftware.eid.utils.EidPreconditions;
 import javax.annotation.WillNotClose;
 import java.io.InputStream;
 
+import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
+
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 24.05.17.
@@ -17,36 +19,26 @@ import java.io.InputStream;
 public class Request {
 
     @Getter
-    @WillNotClose
-    private final InputStream zipFile;
-    @Getter
     private final String name;
-    @Getter
-    private final Long size;
     @Getter
     private final boolean isEmpty;
     @Getter
-    private final String contentType;
+    private final Upload upload;
 
     /**
      * Default argument constructor.
      *
-     * @param zipFile Given zip file.
+     * @param upload  Given upload.
      * @param name    Given name of template.
-     * @param size    Given size of template.
      * @param isEmpty Given information if template is empty.
-     * @param contentType Type of file content.
      */
-    public Request(InputStream zipFile,
-                   String name,
-                   Long size,
+    public Request(String name,
                    boolean isEmpty,
-                   String contentType) {
-        this.zipFile = EidPreconditions.checkNotNull(zipFile, "20170524:094331");
-        this.name = EidPreconditions.checkNotNull(name, "20170524:094344");
-        this.size = EidPreconditions.checkNotNull(size, "20170524:094422");
-        this.isEmpty = EidPreconditions.checkNotNull(isEmpty, "20170524:094441");
-        this.contentType = EidPreconditions.checkNotNull(contentType, "20170529:090352");
+                   Upload upload) {
+
+        this.name = checkNotNull(name, "20170524:094344");
+        this.isEmpty = checkNotNull(isEmpty, "20170524:094441");
+        this.upload = upload;
     }
 
 }
