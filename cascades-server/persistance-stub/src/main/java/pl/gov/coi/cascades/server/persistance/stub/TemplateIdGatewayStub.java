@@ -66,7 +66,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     }
 
     @Override
-    public void save(TemplateId templateId) {
+    public void addTemplate(TemplateId templateId) {
         setTemplate(templateId);
     }
 

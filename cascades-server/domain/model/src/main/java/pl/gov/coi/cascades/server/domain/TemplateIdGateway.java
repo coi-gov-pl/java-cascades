@@ -24,8 +24,8 @@ public interface TemplateIdGateway {
     /**
      * Method saves given templateId.
      *
-     * @param templateId Given templateId to save.
+     * @param templateId Given templateId to addTemplate.
      */
-    void save(TemplateId templateId);
+    void addTemplate(TemplateId templateId);
 
 }

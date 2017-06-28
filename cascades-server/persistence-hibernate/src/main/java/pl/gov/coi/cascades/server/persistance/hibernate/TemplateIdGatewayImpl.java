@@ -100,7 +100,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public void save(pl.gov.coi.cascades.contract.domain.TemplateId templateId) {
+    public void addTemplate(pl.gov.coi.cascades.contract.domain.TemplateId templateId) {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170626:140337")
                 .makeLogMessage(

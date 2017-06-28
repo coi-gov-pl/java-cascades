@@ -58,8 +58,10 @@ public class DomainConfiguration {
 
     @Bean
     pl.gov.coi.cascades.server.domain.loadtemplate.UseCase produceLoadTemplateUseCase(
-        TemplateIdGateway templateIdGateway) {
+        TemplateIdGateway templateIdGateway,
+        DatabaseTemplateGateway databaseTemplateGateway) {
         return pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.builder()
+            .databaseTemplateGateway(databaseTemplateGateway)
             .templateIdGateway(templateIdGateway)
             .build();
     }

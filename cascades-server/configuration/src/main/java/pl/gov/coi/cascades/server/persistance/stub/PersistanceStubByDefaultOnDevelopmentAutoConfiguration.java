@@ -6,12 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.Environment;
-import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.domain.*;
 
 import javax.inject.Named;
 import java.util.HashMap;
@@ -31,6 +26,12 @@ class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
     @Named(STUB_DATABASE)
     Map<Object, User> produceStubDatabase() {
         return new HashMap<>();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    DatabaseTemplateGateway produceDatabaseTemplateGateway() {
+        return new DatabaseTemplateGatewayStub();
     }
 
     @ConditionalOnMissingBean

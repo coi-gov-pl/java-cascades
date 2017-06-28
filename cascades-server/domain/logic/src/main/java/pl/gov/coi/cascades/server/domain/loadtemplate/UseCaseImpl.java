@@ -5,6 +5,7 @@ import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.TemplateId;
 import pl.gov.coi.cascades.contract.domain.TemplateId.TemplateIdBuilder;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
+import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 
 import java.nio.file.Path;
@@ -18,6 +19,7 @@ import java.nio.file.Path;
 public class UseCaseImpl implements UseCase {
 
     private final TemplateIdGateway templateIdGateway;
+    private final DatabaseTemplateGateway databaseTemplateGateway;
 
     @Override
     public void execute(Request request, Response response) {
@@ -38,7 +40,7 @@ public class UseCaseImpl implements UseCase {
     }
 
     private void loadTemplate(Path path) {
-
+        databaseTemplateGateway.loadTemplate(path);
     }
 
     private void succeedResponse(Response response,
@@ -57,7 +59,7 @@ public class UseCaseImpl implements UseCase {
 
         TemplateId candidateTemplateId = candidateBuilder.build();
 
-        templateIdGateway.save(candidateTemplateId);
+        templateIdGateway.addTemplate(candidateTemplateId);
 
         response.setId(validator.getId());
         response.setDefault(validator.isDefault());

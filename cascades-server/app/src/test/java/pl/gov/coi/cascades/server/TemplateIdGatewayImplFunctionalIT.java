@@ -88,7 +88,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             .build();
 
         // when
-        templateIdGatewayImpl.save(templateId);
+        templateIdGatewayImpl.addTemplate(templateId);
 
         // then
         verify(logger).info(contains("20170626:140337"));
@@ -112,7 +112,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             .build();
 
         // when
-        templateIdGatewayImpl.save(templateId);
+        templateIdGatewayImpl.addTemplate(templateId);
 
         // then
         verify(logger, times(0)).info(anyString());

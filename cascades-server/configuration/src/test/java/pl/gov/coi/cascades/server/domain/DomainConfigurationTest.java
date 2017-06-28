@@ -39,6 +39,9 @@ public class DomainConfigurationTest {
     TemplateIdGateway templateIdGateway;
 
     @Mock
+    DatabaseTemplateGateway databaseTemplateGateway;
+
+    @Mock
     UserGateway userGateway;
 
     @Mock
@@ -60,7 +63,8 @@ public class DomainConfigurationTest {
 
         // when
         pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase(
-            templateIdGateway
+            templateIdGateway,
+            databaseTemplateGateway
         );
 
         // then
