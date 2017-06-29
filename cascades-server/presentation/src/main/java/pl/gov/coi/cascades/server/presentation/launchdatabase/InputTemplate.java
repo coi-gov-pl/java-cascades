@@ -1,13 +1,14 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 14.04.17.
  */
-class InputTemplateId extends TemplateId {
+class InputTemplate extends Template {
 
     private static final long serialVersionUID = 42L;
 
@@ -16,7 +17,7 @@ class InputTemplateId extends TemplateId {
     private static final String DEFAULT_SERVER_ID = null;
     private static final String VERSION = null;
 
-    InputTemplateId(String id) {
+    InputTemplate(String id) {
         super(id, DEFAULT_STATUS, IS_DEFAULT, DEFAULT_SERVER_ID, VERSION);
     }
 

@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
@@ -49,7 +50,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> find(@Nullable String templateId) {
+    public Optional<Template> find(@Nullable String templateId) {
         try {
             Long templateIdAsLong = templateId != null
                 ? Long.parseLong(templateId, RADIX_36)
@@ -77,7 +78,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public Optional<pl.gov.coi.cascades.contract.domain.TemplateId> getDefaultTemplateId() {
+    public Optional<Template> getDefaultTemplateId() {
         try {
             TypedQuery<TemplateId> query =
                 entityManager.createQuery(
@@ -100,7 +101,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @Override
-    public void addTemplate(pl.gov.coi.cascades.contract.domain.TemplateId templateId) {
+    public void addTemplate(Template template) {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170626:140337")
                 .makeLogMessage(

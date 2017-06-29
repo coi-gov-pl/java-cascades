@@ -57,9 +57,9 @@ public class DatabaseIdGatewayImplFunctionalIT {
         assertThat(actual).isNotNull();
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.get().getDatabaseId().getId()).isEqualTo(databaseId.getId());
-        assertThat(actual.get().getTemplateId().getServerId()).isEqualTo(SERVER_ID);
-        assertThat(actual.get().getTemplateId().getStatus().name()).isEqualTo(STATUS);
-        assertThat(actual.get().getTemplateId().isDefault()).isEqualTo(IS_DEFAULT);
+        assertThat(actual.get().getTemplate().getServerId()).isEqualTo(SERVER_ID);
+        assertThat(actual.get().getTemplate().getStatus().name()).isEqualTo(STATUS);
+        assertThat(actual.get().getTemplate().isDefault()).isEqualTo(IS_DEFAULT);
         assertThat(actual.get().getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.get().getReuseTimes()).isEqualTo(1);
         assertThat(actual.get().getCredentials().getUsername()).isEqualTo(USERNAME);

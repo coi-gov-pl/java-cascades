@@ -69,7 +69,7 @@ public class UseCaseImpl implements UseCase {
             .created(Date.from(Instant.now()))
             .credentials(credentials)
             .reuseTimes(0)
-            .templateId(validator.getTemplateId())
+            .template(validator.getTemplateId())
             .status(DatabaseStatus.LAUNCHED);
         request.getInstanceName()
             .ifPresent(candidateBuilder::instanceName);

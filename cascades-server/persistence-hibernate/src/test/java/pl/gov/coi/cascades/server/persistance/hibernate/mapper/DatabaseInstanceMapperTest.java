@@ -80,19 +80,19 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getId()).isEqualTo(DATABASE_ID_AS_LONG);
         assertThat(actual.getTemplateId()
             .getName())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getId());
         assertThat(actual.getTemplateId()
             .getStatus().name())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getStatus().name());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getStatus().name());
         assertThat(actual.getTemplateId()
             .getServerId())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getServerId());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getServerId());
         assertThat(actual.getTemplateId()
             .isDefault())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().isDefault());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().isDefault());
         assertThat(actual.getTemplateId()
             .getVersion())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getVersion());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getVersion());
         assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
         assertThat(actual.getReuseTimes()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getReuseTimes());
@@ -155,12 +155,12 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getDatabaseId().getId()).isEqualTo(DATABASE_ID);
-        assertThat(actual.getTemplateId().getId()).isEqualTo(TEMPLATE_ID_NAME);
-        assertThat(actual.getTemplateId().isDefault()).isEqualTo(templateId.isDefault());
-        assertThat(actual.getTemplateId().getServerId()).isEqualTo(templateId.getServerId());
-        assertThat(actual.getTemplateId().getStatus().name()).isEqualTo(templateId.getStatus().name());
-        assertThat(actual.getTemplateId().getId()).isEqualTo(templateId.getName());
-        assertThat(actual.getTemplateId().getVersion()).isEqualTo(templateId.getVersion());
+        assertThat(actual.getTemplate().getId()).isEqualTo(TEMPLATE_ID_NAME);
+        assertThat(actual.getTemplate().isDefault()).isEqualTo(templateId.isDefault());
+        assertThat(actual.getTemplate().getServerId()).isEqualTo(templateId.getServerId());
+        assertThat(actual.getTemplate().getStatus().name()).isEqualTo(templateId.getStatus().name());
+        assertThat(actual.getTemplate().getId()).isEqualTo(templateId.getName());
+        assertThat(actual.getTemplate().getVersion()).isEqualTo(templateId.getVersion());
         assertThat(actual.getDatabaseType()).isEqualTo(null);
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);

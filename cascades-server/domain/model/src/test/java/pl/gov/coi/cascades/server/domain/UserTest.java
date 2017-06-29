@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.time.Instant;
@@ -33,7 +33,7 @@ public class UserTest {
     private DatabaseId databaseId;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private DatabaseType databaseType;
@@ -66,7 +66,7 @@ public class UserTest {
         Date created = Date.from(Instant.now());
         databaseInstance = new DatabaseInstance(
             databaseId,
-            templateId,
+            template,
             databaseType,
             instanceName,
             0,
@@ -95,7 +95,7 @@ public class UserTest {
         Date created = Date.from(Instant.now());
         DatabaseInstance notUserDatabase = new DatabaseInstance(
             databaseId,
-            templateId,
+            template,
             databaseType,
             instanceName,
             1,

@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
 import org.junit.Test;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
 
@@ -10,7 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 30.03.17.
  */
-public class TemplateIdMapperTest {
+public class TemplateMapperTest {
 
     @Test
     public void testToHibernateEntityWhenTemplateIdIsDeleted() throws Exception {
@@ -19,7 +20,7 @@ public class TemplateIdMapperTest {
         String id = "58893453";
         String serverId = "gta73284";
         String version = "0.0.1";
-        pl.gov.coi.cascades.contract.domain.TemplateId templateId = new pl.gov.coi.cascades.contract.domain.TemplateId(
+        Template template = new Template(
             id,
             TemplateIdStatus.DELETED,
             true,
@@ -28,7 +29,7 @@ public class TemplateIdMapperTest {
         );
 
         // when
-        TemplateId actual = templateIdMapper.toHibernateEntity(templateId);
+        TemplateId actual = templateIdMapper.toHibernateEntity(template);
 
         // then
         assertThat(actual).isNotNull();
@@ -45,7 +46,7 @@ public class TemplateIdMapperTest {
         String id = "673735756";
         String serverId = "fre5345";
         String version = "0.0.1";
-        pl.gov.coi.cascades.contract.domain.TemplateId templateId = new pl.gov.coi.cascades.contract.domain.TemplateId(
+        Template template = new Template(
             id,
             TemplateIdStatus.CREATED,
             true,
@@ -54,7 +55,7 @@ public class TemplateIdMapperTest {
         );
 
         // when
-        TemplateId actual = templateIdMapper.toHibernateEntity(templateId);
+        TemplateId actual = templateIdMapper.toHibernateEntity(template);
 
         // then
         assertThat(actual).isNotNull();
@@ -80,7 +81,7 @@ public class TemplateIdMapperTest {
         templateId.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus.DELETED);
 
         // when
-        pl.gov.coi.cascades.contract.domain.TemplateId actual = templateIdMapper.fromHibernateEntity(
+        Template actual = templateIdMapper.fromHibernateEntity(
             templateId
         );
 

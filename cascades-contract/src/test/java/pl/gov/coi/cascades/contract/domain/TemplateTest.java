@@ -9,7 +9,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 21.02.17.
  */
-public class TemplateIdTest {
+public class TemplateTest {
 
     private String id;
     private String serverId;
@@ -29,7 +29,7 @@ public class TemplateIdTest {
     @Test
     public void testToString() {
         // given
-        TemplateId templateIdBuilder = TemplateId.builder()
+        Template templateBuilder = Template.builder()
             .id(id)
             .isDefault(isDefault)
             .serverId(serverId)
@@ -38,7 +38,7 @@ public class TemplateIdTest {
             .build();
 
         // when
-        String actual = templateIdBuilder.toString();
+        String actual = templateBuilder.toString();
 
         // then
         assertThat(actual).isNotNull();
@@ -54,7 +54,7 @@ public class TemplateIdTest {
     @Test
     public void testBuilder() {
         // when
-        TemplateId templateIdBuilder = TemplateId.builder()
+        Template templateBuilder = Template.builder()
             .id(id)
             .isDefault(true)
             .serverId(serverId)
@@ -63,21 +63,21 @@ public class TemplateIdTest {
             .build();
 
         // then
-        assertThat(templateIdBuilder).isNotNull();
-        assertThat(templateIdBuilder.getId()).isNotNull();
-        assertThat(templateIdBuilder.getId()).isEqualTo(id);
-        assertThat(templateIdBuilder.getServerId()).isNotNull();
-        assertThat(templateIdBuilder.getServerId()).isEqualTo(serverId);
-        assertThat(templateIdBuilder.getStatus()).isNotNull();
-        assertThat(templateIdBuilder.getStatus()).isEqualTo(status);
-        assertThat(templateIdBuilder.getVersion()).isNotNull();
-        assertThat(templateIdBuilder.getVersion()).isEqualTo(version);
+        assertThat(templateBuilder).isNotNull();
+        assertThat(templateBuilder.getId()).isNotNull();
+        assertThat(templateBuilder.getId()).isEqualTo(id);
+        assertThat(templateBuilder.getServerId()).isNotNull();
+        assertThat(templateBuilder.getServerId()).isEqualTo(serverId);
+        assertThat(templateBuilder.getStatus()).isNotNull();
+        assertThat(templateBuilder.getStatus()).isEqualTo(status);
+        assertThat(templateBuilder.getVersion()).isNotNull();
+        assertThat(templateBuilder.getVersion()).isEqualTo(version);
     }
 
     @Test
     public void testDefaultConstructor() throws Exception {
         // when
-        TemplateId actual = new TemplateId(
+        Template actual = new Template(
             id,
             TemplateIdStatus.CREATED,
             true,

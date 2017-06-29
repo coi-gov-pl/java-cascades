@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain;
 
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 import java.nio.file.Path;
 
@@ -12,13 +13,13 @@ public interface DatabaseTemplateGateway {
 
     /**
      * Creates a new template for templateId
-     * @param templateId
+     * @param template
      * @param deploySQLScriptPath
      */
-    void createTemplate(TemplateId templateId, Path deploySQLScriptPath);
+    void createTemplate(Template template, Path deploySQLScriptPath);
 
-    void deleteTemplate(TemplateId templateId);
+    void deleteTemplate(Template template);
 
-    boolean canBeRemoved(TemplateId templateId);
+    boolean canBeRemoved(Template template);
 
 }

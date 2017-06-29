@@ -5,11 +5,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import pl.gov.coi.cascades.contract.configuration.Driver;
-import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
+import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 /**
  * @author <a href="mailto:krzysztof.suszynski@coi.gov.pl">Krzysztof Suszynski</a>
@@ -68,7 +65,7 @@ public class CascadesRuleTest {
     public void testBefore() {
         // given
         CascadesRule rule = CascadesRule.builder()
-            .driver(new Driver(DATABASE_TYPE_STUB, new TemplateId(
+            .driver(new Driver(DATABASE_TYPE_STUB, new Template(
                 id, TemplateIdStatus.CREATED, false, serverId, version))
             )
             .instanceName("pesel-test")

@@ -2,7 +2,7 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import lombok.Builder;
 import lombok.Getter;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.wavesoftware.eid.utils.EidPreconditions;
 
@@ -20,7 +20,7 @@ public class Request {
     @Getter
     private final User user;
     @Nullable
-    private final TemplateId templateId;
+    private final Template template;
     @Nullable
     private final String instanceName;
 
@@ -29,16 +29,16 @@ public class Request {
      *
      * @param type Name of type class.
      * @param user          User of the database.
-     * @param templateId    Given id of template (Optional).
+     * @param template    Given id of template (Optional).
      * @param instanceName  Given name of database instance (Optional).
      */
     public Request(String type,
                    User user,
-                   @Nullable TemplateId templateId,
+                   @Nullable Template template,
                    @Nullable String instanceName) {
         this.type = EidPreconditions.checkNotNull(type, "20170228:153927");
         this.user = EidPreconditions.checkNotNull(user, "20170228:153954");
-        this.templateId = templateId;
+        this.template = template;
         this.instanceName = instanceName;
     }
 
@@ -48,8 +48,8 @@ public class Request {
      * @return Optional id of template.
      */
     public Optional<String> getTemplateId() {
-        String idAsString = Optional.ofNullable(templateId)
-            .map(TemplateId::getId)
+        String idAsString = Optional.ofNullable(template)
+            .map(Template::getId)
             .orElse(null);
         return Optional.ofNullable(idAsString);
     }

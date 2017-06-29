@@ -1,10 +1,7 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import lombok.*;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -35,16 +32,16 @@ public class UseCaseImpl implements UseCase {
                 MetadataHolder metadataHolder = new MetadataHolder();
                 unzippedValidator.addValidatedEntityListener(metadataHolder::setMetadata);
                 if (unzippedValidator.isValid()) {
-                    TemplateId templateId = createTemplate(metadataHolder);
-                    loadTemplate(templateId, path);
-                    succeedResponse(templateId, response);
+                    Template template = createTemplate(metadataHolder);
+                    loadTemplate(template, path);
+                    succeedResponse(template, response);
                 }
             }
         }
     }
 
-    private static TemplateId createTemplate(MetadataHolder metadataHolder) {
-        return TemplateId.builder()
+    private static Template createTemplate(MetadataHolder metadataHolder) {
+        return Template.builder()
             .version(metadataHolder.getTemplateMetadata().getVersion())
             .serverId(metadataHolder.getTemplateMetadata().getServerId())
             .isDefault(metadataHolder.getTemplateMetadata().isDefault())
@@ -53,20 +50,21 @@ public class UseCaseImpl implements UseCase {
             .build();
     }
 
-    private void loadTemplate(TemplateId templateId, Path path) {
-        databaseTemplateGateway.createTemplate(templateId, path);
+    private void loadTemplate(Template template, Path path) {
+        databaseTemplateGateway.createTemplate(template, path);
     }
 
-    private void succeedResponse(TemplateId templateId, Response response) {
-        templateIdGateway.addTemplate(templateId);
+    private void succeedResponse(Template template, Response response) {
+        templateIdGateway.addTemplate(template);
 
-        response.setId(templateId.getId());
-        response.setDefault(templateId.isDefault());
-        response.setServerId(templateId.getServerId());
-        response.setVersion(templateId.getVersion());
-        response.setStatus(templateId.getStatus().name());
+        response.setId(template.getId());
+        response.setDefault(template.isDefault());
+        response.setServerId(template.getServerId());
+        response.setVersion(template.getVersion());
+        response.setStatus(template.getStatus().name());
     }
 
+    @NoArgsConstructor
     private static final class MetadataHolder {
         @Getter
         @Setter

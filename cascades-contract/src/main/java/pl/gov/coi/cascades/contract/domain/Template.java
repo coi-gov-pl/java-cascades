@@ -10,7 +10,7 @@ import java.io.Serializable;
 @RequiredArgsConstructor
 @ToString
 @Builder
-public class TemplateId implements Serializable {
+public class Template implements Serializable {
 
     private static final long serialVersionUID = 42L;
 

@@ -7,7 +7,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.User;
 
@@ -29,7 +29,7 @@ public class RequestTest {
     private final static String SERVER_ID = "5345c3";
     private final static String VERSION = "0.0.1";
     private Request request;
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private User user;
@@ -42,7 +42,7 @@ public class RequestTest {
 
     @Before
     public void setUp() {
-        templateId = new TemplateId(
+        template = new Template(
             ID,
             TEMPLATE_ID_STATUS,
             IS_DEFAULT,
@@ -52,7 +52,7 @@ public class RequestTest {
         request = new Request(
             typeClassName,
             user,
-            templateId,
+            template,
             instanceName
         );
     }
@@ -63,7 +63,7 @@ public class RequestTest {
         Request actual = new Request(
             typeClassName,
             user,
-            templateId,
+            template,
             instanceName
         );
 
@@ -96,7 +96,7 @@ public class RequestTest {
             .instanceName(instanceName)
             .user(user)
             .type(typeClassName)
-            .templateId(templateId)
+            .template(template)
             .build();
 
         // then

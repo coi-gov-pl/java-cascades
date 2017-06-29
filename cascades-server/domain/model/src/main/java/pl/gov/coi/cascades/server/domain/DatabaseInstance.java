@@ -4,11 +4,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 import java.util.Date;
 
@@ -20,7 +17,7 @@ public class DatabaseInstance {
     @Getter
     private final DatabaseId databaseId;
     @Getter
-    private final TemplateId templateId;
+    private final Template template;
     @Getter
     private final DatabaseType databaseType;
     @Getter
@@ -44,7 +41,7 @@ public class DatabaseInstance {
      */
     public DatabaseInstance(DatabaseInstance databaseInstance) {
         this(databaseInstance.getDatabaseId(),
-            databaseInstance.getTemplateId(),
+            databaseInstance.getTemplate(),
             databaseInstance.getDatabaseType(),
             databaseInstance.getInstanceName(),
             databaseInstance.getReuseTimes(),
@@ -64,7 +61,7 @@ public class DatabaseInstance {
     private DatabaseInstance(DatabaseInstance databaseInstance,
                              NetworkBind networkBind) {
         this(databaseInstance.getDatabaseId(),
-            databaseInstance.getTemplateId(),
+            databaseInstance.getTemplate(),
             databaseInstance.getDatabaseType(),
             databaseInstance.getInstanceName(),
             databaseInstance.getReuseTimes(),
@@ -84,7 +81,7 @@ public class DatabaseInstance {
     private DatabaseInstance(DatabaseInstance databaseInstance,
                              DatabaseStatus databaseStatus) {
         this(databaseInstance.getDatabaseId(),
-            databaseInstance.getTemplateId(),
+            databaseInstance.getTemplate(),
             databaseInstance.getDatabaseType(),
             databaseInstance.getInstanceName(),
             databaseInstance.getReuseTimes(),

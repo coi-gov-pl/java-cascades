@@ -11,7 +11,8 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.TemplateIdGatewayImpl;
@@ -34,7 +35,7 @@ import static org.mockito.Mockito.when;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @HibernateDevelopmentTest
-public class TemplateIdGatewayImplFunctionalIT {
+public class TemplateGatewayImplFunctionalIT {
 
     private static final String NON_EXISTING_TEMPLATE_ID = "875785887";
     private static final String EXISTING_TEMPLATE_ID = "1";
@@ -79,7 +80,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             templateIdMapper,
             logger
         );
-        TemplateId templateId = TemplateId.builder()
+        Template template = Template.builder()
             .id(id)
             .isDefault(isDefault)
             .serverId(serverId)
@@ -88,7 +89,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             .build();
 
         // when
-        templateIdGatewayImpl.addTemplate(templateId);
+        templateIdGatewayImpl.addTemplate(template);
 
         // then
         verify(logger).info(contains("20170626:140337"));
@@ -103,7 +104,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             templateIdMapper,
             logger
         );
-        TemplateId templateId = TemplateId.builder()
+        Template template = Template.builder()
             .id(id)
             .isDefault(isDefault)
             .serverId(serverId)
@@ -112,7 +113,7 @@ public class TemplateIdGatewayImplFunctionalIT {
             .build();
 
         // when
-        templateIdGatewayImpl.addTemplate(templateId);
+        templateIdGatewayImpl.addTemplate(template);
 
         // then
         verify(logger, times(0)).info(anyString());
@@ -121,7 +122,7 @@ public class TemplateIdGatewayImplFunctionalIT {
     @Test
     public void testFindPositivePath() throws Exception {
         // when
-        Optional<TemplateId> actual = templateIdGateway.find(EXISTING_TEMPLATE_ID);
+        Optional<Template> actual = templateIdGateway.find(EXISTING_TEMPLATE_ID);
 
         // then
         assertThat(actual).isNotNull();
@@ -131,7 +132,7 @@ public class TemplateIdGatewayImplFunctionalIT {
     @Test
     public void testFindNegativePath() throws Exception {
         // when
-        Optional<TemplateId> actual = templateIdGateway.find(NON_EXISTING_TEMPLATE_ID);
+        Optional<Template> actual = templateIdGateway.find(NON_EXISTING_TEMPLATE_ID);
 
         // then
         assertThat(actual).isEmpty();
@@ -140,7 +141,7 @@ public class TemplateIdGatewayImplFunctionalIT {
     @Test
     public void testGetDefaultTemplateIdPositivePath() throws Exception {
         // when
-        Optional<TemplateId> actual = templateIdGateway.getDefaultTemplateId();
+        Optional<Template> actual = templateIdGateway.getDefaultTemplateId();
 
         // then
         assertThat(actual).isNotNull();

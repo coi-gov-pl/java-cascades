@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 04.05.17.
  */
-public class TemplateIdDataTest {
+public class TemplateDataTest {
 
     @Mock
     private EntityManager entityManager;

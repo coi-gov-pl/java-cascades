@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain;
 
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 import java.util.Optional;
 
@@ -12,20 +13,20 @@ public interface TemplateIdGateway {
      * @param templateId Given template of id.
      * @return An optional of template of id.
      */
-    Optional<TemplateId> find(String templateId);
+    Optional<Template> find(String templateId);
 
     /**
      * Method gives an optional of template id.
      *
      * @return An optional of template of id.
      */
-    Optional<TemplateId> getDefaultTemplateId();
+    Optional<Template> getDefaultTemplateId();
 
     /**
      * Method saves given templateId.
      *
-     * @param templateId Given templateId to addTemplate.
+     * @param template Given templateId to addTemplate.
      */
-    void addTemplate(TemplateId templateId);
+    void addTemplate(Template template);
 
 }

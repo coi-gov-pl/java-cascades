@@ -10,7 +10,7 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.DatabaseTemplateGatewayImpl;
 
@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 public class DatabaseTemplateGatewayFunctionalIT {
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private Logger logger;
@@ -55,7 +55,7 @@ public class DatabaseTemplateGatewayFunctionalIT {
 
         // when
         gateway.createTemplate(
-            templateId,
+            template,
             path
         );
 
@@ -75,7 +75,7 @@ public class DatabaseTemplateGatewayFunctionalIT {
 
         // when
         gateway.createTemplate(
-            templateId,
+            template,
             path
         );
 

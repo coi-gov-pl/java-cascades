@@ -2,7 +2,8 @@ package pl.gov.coi.cascades.contract.service;
 
 import com.google.common.base.Optional;
 import lombok.Getter;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class RemoteDatabaseRequest implements Serializable {
     @Getter
     private final String type;
     @Nullable
-    private final TemplateId templateId;
+    private final Template template;
     @Nullable
     private final String instanceName;
 
@@ -25,14 +26,14 @@ public class RemoteDatabaseRequest implements Serializable {
      * Required argument constructor.
      *
      * @param type         Given type of database (a name or FQCN).
-     * @param templateId   Given id of template (Optional).
+     * @param template   Given id of template (Optional).
      * @param instanceName Given name of instance (Optional).
      */
     public RemoteDatabaseRequest(String type,
-                                 @Nullable TemplateId templateId,
+                                 @Nullable Template template,
                                  @Nullable String instanceName) {
         this.type = type;
-        this.templateId = templateId;
+        this.template = template;
         this.instanceName = instanceName;
     }
 
@@ -46,11 +47,11 @@ public class RemoteDatabaseRequest implements Serializable {
     }
 
     /**
-     * Getter for optional {@link TemplateId}
+     * Getter for optional {@link Template}
      *
      * @return an optional template id
      */
-    public Optional<TemplateId> getTemplateId() {
-        return Optional.fromNullable(templateId);
+    public Optional<Template> getTemplateId() {
+        return Optional.fromNullable(template);
     }
 }

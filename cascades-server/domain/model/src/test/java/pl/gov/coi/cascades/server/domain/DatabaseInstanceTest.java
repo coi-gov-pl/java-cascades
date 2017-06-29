@@ -11,7 +11,7 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.time.Instant;
@@ -29,7 +29,7 @@ public class DatabaseInstanceTest {
     private DatabaseId databaseId;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private DatabaseType databaseType;
@@ -62,7 +62,7 @@ public class DatabaseInstanceTest {
             .instanceName(instanceName)
             .networkBind(networkBind)
             .reuseTimes(1)
-            .templateId(templateId)
+            .template(template)
             .build();
 
         // then
@@ -76,7 +76,7 @@ public class DatabaseInstanceTest {
         assertThat(requestBuilder.getInstanceName()).isEqualTo(instanceName);
         assertThat(requestBuilder.getNetworkBind()).isEqualTo(networkBind);
         assertThat(requestBuilder.getReuseTimes()).isEqualTo(1);
-        assertThat(requestBuilder.getTemplateId()).isEqualTo(templateId);
+        assertThat(requestBuilder.getTemplate()).isEqualTo(template);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class DatabaseInstanceTest {
             .instanceName(instanceName)
             .networkBind(networkBind)
             .reuseTimes(1)
-            .templateId(templateId)
+            .template(template)
             .build();
 
         // when
@@ -113,7 +113,7 @@ public class DatabaseInstanceTest {
             instanceName,
             networkBind.toString(),
             String.valueOf(1),
-            templateId.toString()
+            template.toString()
         );
     }
 
@@ -125,7 +125,7 @@ public class DatabaseInstanceTest {
         Date created = Date.from(Instant.now());
         DatabaseInstance databaseInstance = new DatabaseInstance(
             databaseId,
-            templateId,
+            template,
             databaseType,
             instanceName,
             0,
@@ -154,7 +154,7 @@ public class DatabaseInstanceTest {
         networkBindImplTest.setPort(8080);
         DatabaseInstance databaseInstance = new DatabaseInstance(
             databaseId,
-            templateId,
+            template,
             databaseType,
             instanceName,
             0,
@@ -185,7 +185,7 @@ public class DatabaseInstanceTest {
         Date created = Date.from(Instant.now());
         DatabaseInstance databaseInstance = new DatabaseInstance(
             databaseId,
-            templateId,
+            template,
             databaseType,
             instanceName,
             0,

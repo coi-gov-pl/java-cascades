@@ -7,7 +7,7 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.service.RemoteDatabaseSpec;
 import pl.gov.coi.cascades.contract.service.WithViolations;
 import pl.gov.coi.cascades.server.domain.User;
