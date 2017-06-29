@@ -1,8 +1,8 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import javax.annotation.WillNotClose;
 import java.io.InputStream;
@@ -11,8 +11,8 @@ import java.io.InputStream;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 27.06.17.
  */
-@RequiredArgsConstructor
 @Builder
+@AllArgsConstructor
 public class Upload {
     @Getter
     @WillNotClose
@@ -21,4 +21,5 @@ public class Upload {
     private final Long size;
     @Getter
     private final String contentType;
+
 }

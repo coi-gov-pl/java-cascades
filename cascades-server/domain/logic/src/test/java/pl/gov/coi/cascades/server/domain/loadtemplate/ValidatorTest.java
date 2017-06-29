@@ -34,7 +34,6 @@
 //public class ValidatorTest {
 //
 //    private String tempFolder;
-//    private Validator validator;
 //    private String id = "template_id";
 //    private String jsonName = "test.json";
 //    private String serverId = "1234";
@@ -42,12 +41,20 @@
 //    private String version = "0.0.1";
 //    private ResponseImpl response;
 //    private String zipPath;
+//    private UploadValidator uploadValidator;
+//    private UnzippedValidator unzippedValidator;
 //
 //    @Mock
 //    private Request request;
 //
 //    @Mock
-//    private InputStream zipFile;
+//    private ZipArchive zipArchive;
+//
+//    @Mock
+//    private Upload upload;
+//
+//    @Mock
+//    private InputStream inputStream;
 //
 //    @Rule
 //    public TemporaryFolder folder = new TemporaryFolder();
@@ -64,6 +71,8 @@
 //        Path currentRelativePath = Paths.get("");
 //        tempFolder = folder.getRoot().getPath();
 //        zipPath = join(File.separator, currentRelativePath.toAbsolutePath().toString(), "src", "test", "resources");
+//        uploadValidator = new UploadValidator(zipArchive);
+//        unzippedValidator = new UnzippedValidator(zipArchive, Paths.get(zipPath));
 //        validator = new Validator(
 //            response,
 //            request,
@@ -87,9 +96,9 @@
 //        // given
 //        String content = "application/rar";
 //        String nonExistingPath = File.separator + "nonExistingDirectory" + File.separator;
-//        when(request.getContentType()).thenReturn(content);
+//        when(request.getUpload()).thenReturn(upload);
 //        InputStream is = new FileInputStream(new File(join(File.separator, zipPath, "test12.zip")));
-//        when(request.getZipFile()).thenReturn(is);
+//        when(request.getUpload().getInputStream()).thenReturn(is);
 //        validator.validateIfZipContainsJsonFile(tempFolder);
 //
 //        // then
@@ -371,7 +380,7 @@
 //        // given
 //        String content = "application/rar";
 //        when(request.getContentType()).thenReturn(content);
-//        when(request.getZipFile()).thenReturn(zipFile);
+//        when(request.getZipFile()).thenReturn(inputStream);
 //        when(request.getZipFile()).thenReturn(null);
 //
 //        // then
@@ -387,7 +396,7 @@
 //        // given
 //        String content = "application/rar";
 //        when(request.getContentType()).thenReturn(content);
-//        when(request.getZipFile()).thenReturn(zipFile);
+//        when(request.getZipFile()).thenReturn(inputStream);
 //
 //        // when
 //        validator.validateIfZipContainsJsonFile(tempFolder);

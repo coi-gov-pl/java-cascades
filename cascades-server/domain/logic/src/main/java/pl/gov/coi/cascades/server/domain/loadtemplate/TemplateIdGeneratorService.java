@@ -11,10 +11,7 @@ public class TemplateIdGeneratorService {
 
     private static final int TEMPLATE_ID_LENGTH = 24;
     private static final String CHAR_ARRAY =
-        "0123456789" +
-            "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
-            "abcdefghijklmnopqrstuvwxyz" +
-            "!@#$%^&*";
+        "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz_";
     private Random rand;
 
     /**
@@ -26,9 +23,8 @@ public class TemplateIdGeneratorService {
 
     String generateTemplateId() {
         StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < TEMPLATE_ID_LENGTH; i++) {
-            char c = (char) (rand.nextInt(CHAR_ARRAY.length()));
-            stringBuilder.append(c);
+        for(int i = 0; i < TEMPLATE_ID_LENGTH; i++) {
+            stringBuilder.append(CHAR_ARRAY.charAt(rand.nextInt(CHAR_ARRAY.length())));
         }
         return stringBuilder.toString();
     }
