@@ -12,6 +12,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class TemplateTest {
 
     private String id;
+    private String name;
     private String serverId;
     private String version;
     private TemplateIdStatus status;
@@ -20,6 +21,7 @@ public class TemplateTest {
     @Before
     public void setUp() {
         id = "oracle_template";
+        name = "hbet6f73";
         serverId = "1234";
         version = "0.0.1";
         status = TemplateIdStatus.CREATED;
@@ -31,6 +33,7 @@ public class TemplateTest {
         // given
         Template templateBuilder = Template.builder()
             .id(id)
+            .name(name)
             .isDefault(isDefault)
             .serverId(serverId)
             .status(status)
@@ -47,7 +50,8 @@ public class TemplateTest {
             serverId,
             status.toString(),
             version,
-            id
+            id,
+            name
         );
     }
 
@@ -56,6 +60,7 @@ public class TemplateTest {
         // when
         Template templateBuilder = Template.builder()
             .id(id)
+            .name(name)
             .isDefault(true)
             .serverId(serverId)
             .status(status)
@@ -72,6 +77,8 @@ public class TemplateTest {
         assertThat(templateBuilder.getStatus()).isEqualTo(status);
         assertThat(templateBuilder.getVersion()).isNotNull();
         assertThat(templateBuilder.getVersion()).isEqualTo(version);
+        assertThat(templateBuilder.getName()).isNotNull();
+        assertThat(templateBuilder.getName()).isEqualTo(name);
     }
 
     @Test
@@ -79,6 +86,7 @@ public class TemplateTest {
         // when
         Template actual = new Template(
             id,
+            name,
             TemplateIdStatus.CREATED,
             true,
             serverId,
@@ -90,6 +98,7 @@ public class TemplateTest {
         assertThat(actual.getId()).isEqualTo(id);
         assertThat(actual.getStatus()).isEqualTo(TemplateIdStatus.CREATED);
         assertThat(actual.getServerId()).isEqualTo(serverId);
+        assertThat(actual.getName()).isEqualTo(name);
         assertThat(actual.getVersion()).isEqualTo(version);
         assertThat(actual.isDefault()).isTrue();
     }

@@ -3,12 +3,8 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.da
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.F4ab6a58Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.*;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 
 import java.time.Instant;
 import java.util.Date;
@@ -56,7 +52,7 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
     }
 
     @Override
-    public Class<? extends Supplier<TemplateId>> getTemplateSupplier() {
+    public Class<? extends Supplier<Template>> getTemplateSupplier() {
         return F4ab6a58Supplier.class;
     }
 

@@ -1,7 +1,8 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template;
 
 import org.junit.Test;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +22,7 @@ public class F4ab6a58SupplierTest {
         F4ab6a58Supplier f4ab6a58Supplier = new F4ab6a58Supplier();
 
         // when
-        TemplateId actual = f4ab6a58Supplier.get();
+        Template actual = f4ab6a58Supplier.get();
 
         // then
         assertThat(actual).isNotNull();

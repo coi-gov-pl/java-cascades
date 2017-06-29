@@ -24,6 +24,7 @@ public class RequestTest {
     private final static String typeClassName = "Type";
     private final static String instanceName = "PESEL";
     private final static String ID = "453v4c4c";
+    private final static String NAME = "dg5nj69s";
     private final static TemplateIdStatus TEMPLATE_ID_STATUS = TemplateIdStatus.CREATED;
     private final static boolean IS_DEFAULT = true;
     private final static String SERVER_ID = "5345c3";
@@ -44,6 +45,7 @@ public class RequestTest {
     public void setUp() {
         template = new Template(
             ID,
+            NAME,
             TEMPLATE_ID_STATUS,
             IS_DEFAULT,
             SERVER_ID,

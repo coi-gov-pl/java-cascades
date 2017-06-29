@@ -30,6 +30,13 @@ public interface Response {
     void setId(String id);
 
     /**
+     * A setter for template id.
+     *
+     * @param name Given id of database.
+     */
+    void setName(String name);
+
+    /**
      * A setter for template status.
      *
      * @param status Given template status.

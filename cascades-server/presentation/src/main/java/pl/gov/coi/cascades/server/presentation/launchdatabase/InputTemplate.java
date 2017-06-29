@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.server.presentation.launchdatabase;
 
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 
 /**
@@ -12,13 +11,14 @@ class InputTemplate extends Template {
 
     private static final long serialVersionUID = 42L;
 
-    private static final TemplateIdStatus DEFAULT_STATUS = TemplateIdStatus.CREATED;
+    private static final TemplateIdStatus DEFAULT_STATUS = null;
     private static final boolean IS_DEFAULT = false;
     private static final String DEFAULT_SERVER_ID = null;
     private static final String VERSION = null;
+    private static final String ID = null;
 
-    InputTemplate(String id) {
-        super(id, DEFAULT_STATUS, IS_DEFAULT, DEFAULT_SERVER_ID, VERSION);
+    InputTemplate(String name) {
+        super(ID, name, DEFAULT_STATUS, IS_DEFAULT, DEFAULT_SERVER_ID, VERSION);
     }
 
 }

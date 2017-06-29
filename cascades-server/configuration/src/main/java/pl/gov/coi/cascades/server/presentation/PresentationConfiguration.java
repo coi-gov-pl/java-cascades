@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorSer
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.OsgiDatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
+import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -15,6 +16,11 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCrede
  */
 @Configuration
 public class PresentationConfiguration {
+
+    @Bean
+    TemplateIdGeneratorService produceTemplateIdGeneratorService() {
+        return new TemplateIdGeneratorService();
+    }
 
     @Bean
     DatabaseIdGeneratorService produceDatabaseIdGeneratorService() {

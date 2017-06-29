@@ -33,19 +33,19 @@ public class RemoteDatabaseRequestDTOTest {
         // given
         String type = "";
         String instanceName = "oracler49903";
-        String templateId = "oracle_template";
+        String templateName = "oracle_template";
 
         // when
         RemoteDatabaseRequestDTO actual = new RemoteDatabaseRequestDTO(
             type,
-            templateId,
+            templateName,
             instanceName
         );
 
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getTemplateId().isPresent()).isTrue();
-        assertThat(actual.getTemplateId().get().getId()).isEqualTo(templateId);
+        assertThat(actual.getTemplateId().get().getName()).isEqualTo(templateName);
         assertThat(actual.getTemplateId().get()).isInstanceOf(InputTemplate.class);
     }
 

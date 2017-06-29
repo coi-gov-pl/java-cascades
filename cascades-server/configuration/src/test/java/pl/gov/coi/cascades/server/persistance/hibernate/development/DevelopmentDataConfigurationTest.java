@@ -20,7 +20,8 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.use
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MikolajRoznerskiSupplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.util.ArrayList;
@@ -69,7 +70,7 @@ public class DevelopmentDataConfigurationTest {
         DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
         // when
-        Supplier<TemplateId> actual = developmentDataConfiguration.createEaba275Provider();
+        Supplier<Template> actual = developmentDataConfiguration.createEaba275Provider();
 
         // then
         assertThat(actual).isInstanceOf(Eaba275Supplier.class);
@@ -81,7 +82,7 @@ public class DevelopmentDataConfigurationTest {
         DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 
         // when
-        Supplier<TemplateId> actual = developmentDataConfiguration.createF4ab6a58Provider();
+        Supplier<Template> actual = developmentDataConfiguration.createF4ab6a58Provider();
 
         // then
         assertThat(actual).isInstanceOf(F4ab6a58Supplier.class);
@@ -90,7 +91,7 @@ public class DevelopmentDataConfigurationTest {
     @Test
     public void testCreateTemplateIdData() throws Exception {
         // given
-        List<Supplier<TemplateId>> suppliers = new ArrayList<>();
+        List<Supplier<Template>> suppliers = new ArrayList<>();
         suppliers.add(new F4ab6a58Supplier());
         DevelopmentDataConfiguration developmentDataConfiguration = new DevelopmentDataConfiguration();
 

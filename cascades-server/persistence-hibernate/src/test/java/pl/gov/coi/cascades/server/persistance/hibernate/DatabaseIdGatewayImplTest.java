@@ -13,7 +13,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
@@ -29,10 +29,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -59,7 +56,7 @@ public class DatabaseIdGatewayImplTest {
     private DatabaseTypeDTO databaseTypeDTO;
 
     @Mock
-    private pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId hibernateTemplate;
+    private Template hibernateTemplate;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -74,6 +71,7 @@ public class DatabaseIdGatewayImplTest {
         String PASSWORD = "12345678";
         String USERNAME = "Ben Affleck";
         String HOST = "db01.lab.internal";
+        String GENERATED_ID = "fh45j32b";
         int PORT = 5432;
         Long DATABASE_ID_AS_LONG = 45L;
         String DATABASE_TYPE = "stub";
@@ -104,14 +102,15 @@ public class DatabaseIdGatewayImplTest {
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
-        TemplateId templateId = new TemplateId();
-        templateId.setDefault(false);
-        templateId.setName(TEMPLATE_ID_NAME);
-        templateId.setServerId(SERVER_ID);
-        templateId.setId(TEMPLATE_ID);
-        templateId.setVersion(VERSION);
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        hibernateInstance.setTemplateId(templateId);
+        Template template = new Template();
+        template.setDefault(false);
+        template.setGeneratedId(GENERATED_ID);
+        template.setName(TEMPLATE_ID_NAME);
+        template.setServerId(SERVER_ID);
+        template.setId(TEMPLATE_ID);
+        template.setVersion(VERSION);
+        template.setStatus(TemplateIdStatus.CREATED);
+        hibernateInstance.setTemplate(template);
         hibernateInstance.setType(DATABASE_TYPE);
         hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);

@@ -1,8 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.Mapper;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import javax.annotation.Nonnull;
@@ -13,49 +12,53 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 30.03.17.
  */
-public class TemplateIdMapper implements Mapper<TemplateId, Template> {
+public class TemplateIdMapper implements Mapper<Template, pl.gov.coi.cascades.contract.domain.Template> {
 
     @Override
-    public TemplateId toHibernateEntity(@Nonnull Template template) {
+    public Template toHibernateEntity(@Nonnull pl.gov.coi.cascades.contract.domain.Template template) {
         checkNotNull(template.getId(), "20170330:090230");
         checkNotNull(template.getServerId(), "20170403:231918");
         checkNotNull(template.getStatus(), "20170403:231935");
         checkNotNull(template.isDefault(), "20170403:231953");
         checkNotNull(template.getVersion(), "20170512:101356");
+        checkNotNull(template.getName(), "20170629:090218");
 
-        TemplateId hibernateTemplateId = new TemplateId();
+        Template hibernateTemplate = new Template();
         TemplateIdStatus templateIdStatus = template.getStatus()
             .equals(pl.gov.coi.cascades.contract.domain.TemplateIdStatus.CREATED)
             ? TemplateIdStatus.CREATED
             : TemplateIdStatus.DELETED;
 
-        hibernateTemplateId.setName(template.getId());
-        hibernateTemplateId.setDefault(template.isDefault());
-        hibernateTemplateId.setServerId(template.getServerId());
-        hibernateTemplateId.setStatus(templateIdStatus);
-        hibernateTemplateId.setVersion(template.getVersion());
-        return hibernateTemplateId;
+        hibernateTemplate.setGeneratedId(template.getId());
+        hibernateTemplate.setName(template.getName());
+        hibernateTemplate.setDefault(template.isDefault());
+        hibernateTemplate.setServerId(template.getServerId());
+        hibernateTemplate.setStatus(templateIdStatus);
+        hibernateTemplate.setVersion(template.getVersion());
+        return hibernateTemplate;
     }
 
     @Override
-    public Template fromHibernateEntity(@Nonnull TemplateId templateId) {
-        checkNotNull(templateId.getName(), "20170330:090442");
-        checkNotNull(templateId.getServerId(), "20170403:232202");
-        checkNotNull(templateId.getStatus(), "20170403:232205");
-        checkNotNull(templateId.isDefault(), "20170403:232209");
-        checkNotNull(templateId.getVersion(), "20170512:101501");
+    public pl.gov.coi.cascades.contract.domain.Template fromHibernateEntity(@Nonnull Template template) {
+        checkNotNull(template.getName(), "20170330:090442");
+        checkNotNull(template.getServerId(), "20170403:232202");
+        checkNotNull(template.getStatus(), "20170403:232205");
+        checkNotNull(template.isDefault(), "20170403:232209");
+        checkNotNull(template.getVersion(), "20170512:101501");
+        checkNotNull(template.getGeneratedId(), "20170629:090855");
 
-        pl.gov.coi.cascades.contract.domain.TemplateIdStatus templateIdStatus = templateId.getStatus()
+        pl.gov.coi.cascades.contract.domain.TemplateIdStatus templateIdStatus = template.getStatus()
             .equals(TemplateIdStatus.CREATED)
             ? pl.gov.coi.cascades.contract.domain.TemplateIdStatus.CREATED
             : pl.gov.coi.cascades.contract.domain.TemplateIdStatus.DELETED;
 
-        return new Template(
-            templateId.getName(),
+        return new pl.gov.coi.cascades.contract.domain.Template(
+            template.getGeneratedId(),
+            template.getName(),
             templateIdStatus,
-            templateId.isDefault(),
-            templateId.getServerId(),
-            templateId.getVersion()
+            template.isDefault(),
+            template.getServerId(),
+            template.getVersion()
         );
     }
 

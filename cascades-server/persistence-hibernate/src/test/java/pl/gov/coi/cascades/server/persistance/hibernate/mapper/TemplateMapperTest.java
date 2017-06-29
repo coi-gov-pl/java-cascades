@@ -1,9 +1,8 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
 import org.junit.Test;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -18,10 +17,12 @@ public class TemplateMapperTest {
         // given
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
         String id = "58893453";
+        String name = "oracle_template";
         String serverId = "gta73284";
         String version = "0.0.1";
-        Template template = new Template(
+        pl.gov.coi.cascades.contract.domain.Template template = new pl.gov.coi.cascades.contract.domain.Template(
             id,
+            name,
             TemplateIdStatus.DELETED,
             true,
             serverId,
@@ -29,11 +30,12 @@ public class TemplateMapperTest {
         );
 
         // when
-        TemplateId actual = templateIdMapper.toHibernateEntity(template);
+        Template actual = templateIdMapper.toHibernateEntity(template);
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getName()).isEqualTo(id);
+        assertThat(actual.getName()).isEqualTo(name);
+        assertThat(actual.getGeneratedId()).isEqualTo(id);
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.DELETED.name());
@@ -46,8 +48,10 @@ public class TemplateMapperTest {
         String id = "673735756";
         String serverId = "fre5345";
         String version = "0.0.1";
-        Template template = new Template(
+        String name = "oracle_template";
+        pl.gov.coi.cascades.contract.domain.Template template = new pl.gov.coi.cascades.contract.domain.Template(
             id,
+            name,
             TemplateIdStatus.CREATED,
             true,
             serverId,
@@ -55,11 +59,12 @@ public class TemplateMapperTest {
         );
 
         // when
-        TemplateId actual = templateIdMapper.toHibernateEntity(template);
+        Template actual = templateIdMapper.toHibernateEntity(template);
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getName()).isEqualTo(id);
+        assertThat(actual.getGeneratedId()).isEqualTo(id);
+        assertThat(actual.getName()).isEqualTo(name);
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.CREATED.name());
@@ -70,24 +75,27 @@ public class TemplateMapperTest {
     public void testFromHibernateEntity() throws Exception {
         // given
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
-        TemplateId templateId = new TemplateId();
-        String id = "54363463456";
+        Template template = new Template();
+        String id = "dg6jf2g7";
         String serverId = "fre5345";
         String version = "0.0.1";
-        templateId.setName(id);
-        templateId.setDefault(false);
-        templateId.setServerId(serverId);
-        templateId.setVersion(version);
-        templateId.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus.DELETED);
+        String name = "oracle_template";
+        template.setName(name);
+        template.setGeneratedId(id);
+        template.setDefault(false);
+        template.setServerId(serverId);
+        template.setVersion(version);
+        template.setStatus(pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus.DELETED);
 
         // when
-        Template actual = templateIdMapper.fromHibernateEntity(
-            templateId
+        pl.gov.coi.cascades.contract.domain.Template actual = templateIdMapper.fromHibernateEntity(
+            template
         );
 
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(id);
+        assertThat(actual.getName()).isEqualTo(name);
         assertThat(actual.isDefault()).isFalse();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getVersion()).isEqualTo(version);

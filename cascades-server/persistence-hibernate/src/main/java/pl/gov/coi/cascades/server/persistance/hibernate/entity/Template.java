@@ -21,11 +21,14 @@ import javax.persistence.Table;
 @Table
 @Entity
 @RequiredArgsConstructor
-public class TemplateId {
+public class Template {
 
     @GeneratedValue
     @Id
     private Long id;
+
+    @Column
+    private String generatedId;
 
     @Column
     private String name;

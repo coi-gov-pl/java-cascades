@@ -20,7 +20,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.use
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MikolajRoznerskiSupplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.inject.Singleton;
@@ -52,21 +52,21 @@ class DevelopmentDataConfiguration {
 
     @Bean
     @DevelopmentBean
-    Supplier<TemplateId> createEaba275Provider() {
+    Supplier<Template> createEaba275Provider() {
         return new Eaba275Supplier();
     }
 
     @Bean
     @DevelopmentBean
-    Supplier<TemplateId> createF4ab6a58Provider() {
+    Supplier<Template> createF4ab6a58Provider() {
         return new F4ab6a58Supplier();
     }
 
     @Bean
     @Transactional
     @Singleton
-    TemplateIdData createTemplateIdData(List<Supplier<TemplateId>> supplierList) {
-        Iterable<Supplier<TemplateId>> devBeans = supplierList.stream()
+    TemplateIdData createTemplateIdData(List<Supplier<Template>> supplierList) {
+        Iterable<Supplier<Template>> devBeans = supplierList.stream()
             .filter(DevelopmentDataConfiguration::isDevelopmentBean)
             .collect(Collectors.toList());
         return new TemplateIdData(devBeans);

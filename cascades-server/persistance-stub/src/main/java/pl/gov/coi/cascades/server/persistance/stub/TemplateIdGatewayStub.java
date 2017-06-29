@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 
@@ -19,6 +18,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     public static final Template TEMPLATE_ID1 = new Template(
         "oracle_template",
+        "hv5sj5mb",
         TemplateIdStatus.CREATED,
         false,
         "nv485587vmv89",
@@ -26,6 +26,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     );
     public static final Template TEMPLATE_ID2 = new Template(
         "templateId2",
+        "hstrn5k7",
         TemplateIdStatus.CREATED,
         false,
         "v589m69b968",
@@ -33,6 +34,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     );
     public static final Template TEMPLATE_ID3 = new Template(
         "templateId3",
+        "gv62mbka",
         TemplateIdStatus.CREATED,
         true,
         "mjtjbyu968y96",
@@ -40,16 +42,15 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     );
     public static final Template TEMPLATE_ID4 = new Template(
         "templateId4",
+        "budjw2m7",
         TemplateIdStatus.CREATED,
         false,
         "y6v96u8869m3tg",
         VERSION
     );
-    private Map<String, Template> templates;
+    private static Map<String, Template> templates = new HashMap<>();
 
     public TemplateIdGatewayStub() {
-        this.templates = new HashMap<>();
-
         setTemplate(TEMPLATE_ID1);
         setTemplate(TEMPLATE_ID2);
         setTemplate(TEMPLATE_ID3);
@@ -63,7 +64,12 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
 
     @Override
     public Optional<Template> getDefaultTemplateId() {
-        return Optional.of(TEMPLATE_ID3);
+        for (Map.Entry<String, Template> entry : templates.entrySet()) {
+            if (entry.getValue().isDefault()) {
+                return Optional.of(entry.getValue());
+            }
+        }
+        return Optional.empty();
     }
 
     @Override
@@ -71,7 +77,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
         setTemplate(template);
     }
 
-    public Map<String, Template> getAllTemplates() {
+    public static Map<String, Template> getAllTemplates() {
         return templates;
     }
 

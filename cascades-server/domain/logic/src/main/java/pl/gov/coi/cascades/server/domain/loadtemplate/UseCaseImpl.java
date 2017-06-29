@@ -1,6 +1,10 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
@@ -18,6 +22,7 @@ public class UseCaseImpl implements UseCase {
 
     private final TemplateIdGateway templateIdGateway;
     private final DatabaseTemplateGateway databaseTemplateGateway;
+    private final TemplateIdGeneratorService templateIdGeneratorService;
 
     @Override
     public void execute(Request request, Response response) {
@@ -40,13 +45,16 @@ public class UseCaseImpl implements UseCase {
         }
     }
 
-    private static Template createTemplate(MetadataHolder metadataHolder) {
+    private Template createTemplate(MetadataHolder metadataHolder) {
+        String generatedId = templateIdGeneratorService.generateTemplateId();
+
         return Template.builder()
+            .id(generatedId)
             .version(metadataHolder.getTemplateMetadata().getVersion())
             .serverId(metadataHolder.getTemplateMetadata().getServerId())
             .isDefault(metadataHolder.getTemplateMetadata().isDefault())
             .status(TemplateIdStatus.CREATED)
-            .id(metadataHolder.getTemplateMetadata().getId())
+            .name(metadataHolder.getTemplateMetadata().getName())
             .build();
     }
 
@@ -58,6 +66,7 @@ public class UseCaseImpl implements UseCase {
         templateIdGateway.addTemplate(template);
 
         response.setId(template.getId());
+        response.setName(template.getName());
         response.setDefault(template.isDefault());
         response.setServerId(template.getServerId());
         response.setVersion(template.getVersion());

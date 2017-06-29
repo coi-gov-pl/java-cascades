@@ -4,12 +4,12 @@ import org.assertj.core.description.Description;
 import org.assertj.core.description.TextDescription;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
+import pl.gov.coi.cascades.server.persistance.stub.TemplateIdGatewayStub;
 
 import javax.inject.Inject;
 import java.io.UnsupportedEncodingException;
@@ -59,6 +59,14 @@ public class FunctionalIT {
         this.mockMvc = MockMvcBuilders
             .webAppContextSetup(this.wac)
             .build();
+    }
+
+    @After
+    public void after() {
+        TemplateIdGatewayStub.getAllTemplates().put(
+            TemplateIdGatewayStub.TEMPLATE_ID3.getId(),
+            TemplateIdGatewayStub.TEMPLATE_ID3
+        );
     }
 
     @Test
@@ -106,6 +114,7 @@ public class FunctionalIT {
             .post("/databases")
             .contentType(MediaType.APPLICATION_JSON)
             .content(requestWithTemplateId(NON_EXISTING_TEMPLATE_ID));
+        TemplateIdGatewayStub.getAllTemplates().remove(TemplateIdGatewayStub.TEMPLATE_ID3.getId());
 
         // when
         MvcResult result = mockMvc.perform(requestBuilder)

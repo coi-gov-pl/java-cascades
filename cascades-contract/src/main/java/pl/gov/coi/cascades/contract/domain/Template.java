@@ -1,13 +1,10 @@
 package pl.gov.coi.cascades.contract.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @ToString
 @Builder
 public class Template implements Serializable {
@@ -16,6 +13,9 @@ public class Template implements Serializable {
 
     @Getter
     private final String id;
+
+    @Getter
+    private final String name;
 
     @Getter
     private final TemplateIdStatus status;

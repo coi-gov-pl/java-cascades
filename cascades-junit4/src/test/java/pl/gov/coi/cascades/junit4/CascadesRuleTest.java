@@ -18,12 +18,14 @@ public class CascadesRuleTest {
     private String id;
     private String serverId;
     private String version;
+    private String name;
 
     @Before
     public void setUp() {
         id = "gw45223";
         serverId = "898693";
         version = "0.0.1";
+        name = "oracle_template";
     }
 
     private static final ConnectionStringProducer CONNECTION_STRING_PRODUCER =
@@ -66,7 +68,12 @@ public class CascadesRuleTest {
         // given
         CascadesRule rule = CascadesRule.builder()
             .driver(new Driver(DATABASE_TYPE_STUB, new Template(
-                id, TemplateIdStatus.CREATED, false, serverId, version))
+                id,
+                name,
+                TemplateIdStatus.CREATED,
+                false,
+                serverId,
+                version))
             )
             .instanceName("pesel-test")
             .build();

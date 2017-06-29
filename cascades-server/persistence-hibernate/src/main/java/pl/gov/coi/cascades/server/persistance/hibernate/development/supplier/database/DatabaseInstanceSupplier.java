@@ -1,7 +1,8 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.util.function.Supplier;
@@ -14,6 +15,6 @@ public interface DatabaseInstanceSupplier extends Supplier<DatabaseInstance> {
 
     Class<? extends Supplier<User>> getOwnerSupplier();
 
-    Class<? extends Supplier<TemplateId>> getTemplateSupplier();
+    Class<? extends Supplier<Template>> getTemplateSupplier();
 
 }

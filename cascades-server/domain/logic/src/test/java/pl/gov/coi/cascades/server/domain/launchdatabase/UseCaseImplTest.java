@@ -122,7 +122,7 @@ public class UseCaseImplTest {
         String message = "Global limit of 0 launched database instances has been reached";
         String path = "databaseLimit.globalLimit";
         String type = "oracle";
-        Template id = new Template("", null, false, "", null);
+        Template id = new Template("", "", null, false, "", null);
         String templateId = "oracle_template";
         ResponseImpl response = new ResponseImpl();
         User jrambo = UserGatewayStub.J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);

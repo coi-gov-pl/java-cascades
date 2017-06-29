@@ -31,7 +31,6 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
     private static final String PROPERTY_PATH_DEPLOY_SCRIPT = "template.deployScript";
     private final ZipArchive zipArchive;
     private final Path path;
-    private static final int FILE_BUFFER_SIZE = 1024;
     private final Collection<Supplier<Boolean>> validators = validators(
         this::validateJsonFileStructure,
         this::validateScriptsFormat,
@@ -124,7 +123,7 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
             hasFields = true;
 
             templateMetadata = TemplateMetadata.builder()
-                .id(jsonObject.getString("name"))
+                .name(jsonObject.getString("name"))
                 .isDefault(jsonObject.getBoolean("isDefault"))
                 .serverId(jsonObject.getString("serverId"))
                 .version(jsonObject.getString("version"))

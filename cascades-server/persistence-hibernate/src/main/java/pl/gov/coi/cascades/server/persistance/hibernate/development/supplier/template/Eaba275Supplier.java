@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import java.util.function.Supplier;
@@ -11,17 +11,18 @@ import java.util.function.Supplier;
  * @since 30.03.17.
  */
 @DevelopmentBean
-public class Eaba275Supplier implements Supplier<TemplateId> {
+public class Eaba275Supplier implements Supplier<Template> {
 
     @Override
-    public TemplateId get() {
-        TemplateId templateId = new TemplateId();
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        templateId.setName("oracle_template");
-        templateId.setServerId("rgey65getg");
-        templateId.setDefault(true);
-        templateId.setVersion("0.0.1");
-        return templateId;
+    public Template get() {
+        Template template = new Template();
+        template.setStatus(TemplateIdStatus.CREATED);
+        template.setGeneratedId("dh6nd6483haurh21nt7vhf99");
+        template.setName("oracle_template");
+        template.setServerId("rgey65getg");
+        template.setDefault(true);
+        template.setVersion("0.0.1");
+        return template;
     }
 
 }

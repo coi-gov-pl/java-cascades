@@ -15,7 +15,7 @@ import lombok.ToString;
 class TemplateMetadata {
 
     @Getter
-    private final String id;
+    private final String name;
 
     @Getter
     private final boolean isDefault;

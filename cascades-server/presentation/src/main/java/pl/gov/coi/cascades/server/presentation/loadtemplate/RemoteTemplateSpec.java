@@ -18,6 +18,8 @@ public class RemoteTemplateSpec implements Serializable {
     @Getter
     private final String id;
     @Getter
+    private final String name;
+    @Getter
     private final String status;
     @Getter
     private final boolean isDefault;

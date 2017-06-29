@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.data;
 
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -16,10 +16,10 @@ import java.util.function.Supplier;
 public class TemplateIdData {
 
     private EntityManager entityManager;
-    private Map<Class<Supplier<TemplateId>>, TemplateId> instances = new HashMap<>();
-    private final Iterable<Supplier<TemplateId>> supplierList;
+    private Map<Class<Supplier<Template>>, Template> instances = new HashMap<>();
+    private final Iterable<Supplier<Template>> supplierList;
 
-    public TemplateIdData(Iterable<Supplier<TemplateId>> supplierList) {
+    public TemplateIdData(Iterable<Supplier<Template>> supplierList) {
         this.supplierList = supplierList;
     }
 
@@ -28,16 +28,16 @@ public class TemplateIdData {
         this.entityManager = entityManager;
     }
 
-    Optional<TemplateId> getTemplateIdForSupplierClass(Class<? extends Supplier<TemplateId>> key) {
+    Optional<Template> getTemplateIdForSupplierClass(Class<? extends Supplier<Template>> key) {
         return Optional
             .ofNullable(instances.get(key));
     }
 
     void up() {
-        for (Supplier<TemplateId> supplier : supplierList) {
-            TemplateId templateId = supplier.get();
-            entityManager.persist(templateId);
-            instances.put(instancesKey(supplier), templateId);
+        for (Supplier<Template> supplier : supplierList) {
+            Template template = supplier.get();
+            entityManager.persist(template);
+            instances.put(instancesKey(supplier), template);
         }
     }
 
@@ -48,13 +48,13 @@ public class TemplateIdData {
     }
 
     @SuppressWarnings("unchecked")
-    private static Class<Supplier<TemplateId>> instancesKey(Supplier<TemplateId> supplier) {
-        return (Class<Supplier<TemplateId>>) supplier.getClass();
+    private static Class<Supplier<Template>> instancesKey(Supplier<Template> supplier) {
+        return (Class<Supplier<Template>>) supplier.getClass();
     }
 
-    private void removeTemplateId(TemplateId templateId) {
-        Long id = templateId.getId();
-        TemplateId fetched = entityManager.find(TemplateId.class, id);
+    private void removeTemplateId(Template template) {
+        Long id = template.getId();
+        Template fetched = entityManager.find(Template.class, id);
         Optional.ofNullable(fetched)
             .ifPresent(entityManager::remove);
     }

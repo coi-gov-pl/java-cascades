@@ -18,6 +18,7 @@ class Presenter implements Response {
 
     private String id;
     private String status;
+    private String name;
     private boolean isDefault;
     private String versionId;
     private String version;
@@ -36,6 +37,11 @@ class Presenter implements Response {
     @Override
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -77,6 +83,7 @@ class Presenter implements Response {
     private ViewModel createSuccessfulViewModel() {
         RemoteTemplateSpec templateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             versionId,

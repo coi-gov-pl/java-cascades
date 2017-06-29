@@ -14,11 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RemoteTemplateSpecTest {
 
-    private String id;
-    private String status;
-    private boolean isDefault;
-    private String version;
-    private String serverId;
+    private static final String id = "dj5ujs749";
+    private static final String name = "oracle_template";
+    private static final String status = "created";
+    private static final boolean isDefault = false;
+    private static final String version = "1.0.1";
+    private static final String serverId = "2020";
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -31,6 +32,7 @@ public class RemoteTemplateSpecTest {
         // when
         RemoteTemplateSpec actual = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,
@@ -46,6 +48,7 @@ public class RemoteTemplateSpecTest {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,
@@ -64,6 +67,7 @@ public class RemoteTemplateSpecTest {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,
@@ -82,6 +86,7 @@ public class RemoteTemplateSpecTest {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,
@@ -100,6 +105,7 @@ public class RemoteTemplateSpecTest {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,
@@ -118,6 +124,7 @@ public class RemoteTemplateSpecTest {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
             id,
+            name,
             status,
             isDefault,
             serverId,

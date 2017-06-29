@@ -5,7 +5,8 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.tem
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.JohnRamboSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -74,7 +75,7 @@ public class Pos34t56SupplierTest {
         Pos34t56Supplier pos34t56Supplier = new Pos34t56Supplier();
 
         // when
-        Class<? extends Supplier<TemplateId>> actual = pos34t56Supplier.getTemplateSupplier();
+        Class<? extends Supplier<Template>> actual = pos34t56Supplier.getTemplateSupplier();
 
         // then
         assertThat(actual).isNotNull();
