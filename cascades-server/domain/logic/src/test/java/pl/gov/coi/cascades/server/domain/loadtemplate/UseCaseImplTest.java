@@ -291,6 +291,35 @@ public class UseCaseImplTest {
             .databaseTemplateGateway(databaseTemplateGateway)
             .templateIdGeneratorService(templateIdGeneratorService)
             .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test9.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotServerIdField() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
         InputStream is = new FileInputStream(zipPath.resolve("test5.zip").toFile());
         when(request.getUpload().getInputStream()).thenReturn(is);
 
