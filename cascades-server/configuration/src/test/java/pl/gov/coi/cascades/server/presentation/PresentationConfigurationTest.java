@@ -10,6 +10,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
+import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -24,6 +25,19 @@ public class PresentationConfigurationTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Test
+    public void testProduceTemplateIdGeneratorService() throws Exception {
+        // given
+        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
+
+        // when
+        TemplateIdGeneratorService actual = presentationConfiguration.produceTemplateIdGeneratorService();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isInstanceOf(TemplateIdGeneratorService.class);
+    }
 
     @Test
     public void testProduceDatabaseIdGeneratorService() throws Exception {

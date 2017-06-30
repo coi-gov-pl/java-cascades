@@ -4,7 +4,6 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -24,7 +23,7 @@ public class DatabaseTemplateGatewayStub implements DatabaseTemplateGateway {
     }
 
     @VisibleForTesting
-    DatabaseTemplateGatewayStub(Logger logger) {
+    public DatabaseTemplateGatewayStub(Logger logger) {
         this.logger = logger;
     }
 
@@ -33,7 +32,7 @@ public class DatabaseTemplateGatewayStub implements DatabaseTemplateGateway {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170628:135108")
                 .makeLogMessage(
-                    "Script, loaded in " + deploySQLScriptPath + " has been saved."
+                    "Script from " + deploySQLScriptPath + " has been created."
                 )
             );
         }

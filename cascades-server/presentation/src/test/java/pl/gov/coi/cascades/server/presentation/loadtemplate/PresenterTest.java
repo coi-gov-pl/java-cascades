@@ -3,17 +3,12 @@ package pl.gov.coi.cascades.server.presentation.loadtemplate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
 import pl.gov.coi.cascades.contract.service.Violation;
 
-import java.util.Collection;
-import java.util.HashSet;
-
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.*;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -29,6 +24,20 @@ public class PresenterTest {
     @Before
     public void setUp() {
         presenter = new Presenter();
+    }
+
+    @Test
+    public void testSetName() throws Exception {
+        // when
+        String name = "oracle_database";
+        presenter.setId(name);
+        ViewModel actual = presenter.createModel();
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual.getBody().getTarget()).isNotNull();
+        assertThat(actual.getBody().getTarget().getId()).isNotNull();
+        assertThat(actual.getBody().getTarget().getId()).isEqualTo(name);
     }
 
     @Test

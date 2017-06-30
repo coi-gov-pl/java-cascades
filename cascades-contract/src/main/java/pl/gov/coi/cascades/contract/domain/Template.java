@@ -1,6 +1,9 @@
 package pl.gov.coi.cascades.contract.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.io.Serializable;
 

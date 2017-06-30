@@ -4,8 +4,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.ToString;
-import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.util.Date;
 

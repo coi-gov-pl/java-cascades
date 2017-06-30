@@ -54,7 +54,7 @@ public class LaunchDatabaseController {
             .type(request.getType())
             .user(user);
 
-        optionalMapper.toJava8(request.getTemplateId())
+        optionalMapper.toJava8(request.getTemplate())
             .ifPresent(requestBuilder::template);
         optionalMapper.toJava8(request.getInstanceName())
             .ifPresent(requestBuilder::instanceName);

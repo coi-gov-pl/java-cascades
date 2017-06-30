@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.contract.service;
 import com.google.common.base.Optional;
 import lombok.Getter;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 
 import javax.annotation.Nullable;
 import java.io.Serializable;
@@ -51,7 +50,7 @@ public class RemoteDatabaseRequest implements Serializable {
      *
      * @return an optional template id
      */
-    public Optional<Template> getTemplateId() {
+    public Optional<Template> getTemplate() {
         return Optional.fromNullable(template);
     }
 }

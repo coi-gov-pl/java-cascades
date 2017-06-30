@@ -44,6 +44,25 @@ public class RemoteTemplateSpecTest {
     }
 
     @Test
+    public void testGetName() throws Exception {
+        // given
+        RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(
+            id,
+            name,
+            status,
+            isDefault,
+            serverId,
+            version
+        );
+
+        // when
+        String actual = remoteTemplateSpec.getName();
+
+        // then
+        assertThat(actual).isEqualTo(name);
+    }
+
+    @Test
     public void testGetId() throws Exception {
         // given
         RemoteTemplateSpec remoteTemplateSpec = new RemoteTemplateSpec(

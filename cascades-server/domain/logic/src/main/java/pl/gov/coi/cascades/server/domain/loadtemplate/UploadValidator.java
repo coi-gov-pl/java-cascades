@@ -17,6 +17,7 @@ class UploadValidator extends AbstractListenableValidator {
 
     private static final String APPLICATION_ZIP_CONTENT_TYPE = "application/zip";
     private static final String PROPERTY_PATH_ZIP_FORMAT = "template.format";
+    private static final String PROPERTY_PATH_SIZE = "template.size";
     private final ZipArchive zipArchive;
     private final Collection<Supplier<Boolean>> validators = validators(
         this::validateZip,
@@ -46,7 +47,14 @@ class UploadValidator extends AbstractListenableValidator {
     private boolean validateEnoughSpacePresent() {
         long dirFreeSpace = zipArchive.getPath().toFile().getFreeSpace();
         long zipSize = zipArchive.getUpload().getSize();
-        return zipSize <= dirFreeSpace;
+        if (zipSize > dirFreeSpace) {
+            newError(
+                PROPERTY_PATH_SIZE,
+                "There is not enough space to unzip given file."
+            );
+            return false;
+        }
+        return true;
     }
 
     private boolean validateZip() {

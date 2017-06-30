@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 
 import java.util.Optional;
 

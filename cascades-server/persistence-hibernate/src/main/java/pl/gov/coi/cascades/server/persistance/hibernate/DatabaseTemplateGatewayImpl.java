@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -29,7 +28,7 @@ public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170628:133136")
                 .makeLogMessage(
-                    "Script, loaded in " + deploySQLScriptPath + " has been saved."
+                    "Script from " + deploySQLScriptPath + " has been saved successfully in the database."
                 )
             );
         }
@@ -40,7 +39,7 @@ public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170629:082315")
                 .makeLogMessage(
-                    "Given template has been successfully deleted."
+                    "Given template has been successfully deleted from database."
                 )
             );
         }

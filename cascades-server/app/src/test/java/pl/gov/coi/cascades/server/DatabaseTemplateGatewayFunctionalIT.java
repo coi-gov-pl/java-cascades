@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.DatabaseTemplateGatewayImpl;
+import pl.gov.coi.cascades.server.persistance.stub.DatabaseTemplateGatewayStub;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -45,11 +45,49 @@ public class DatabaseTemplateGatewayFunctionalIT {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void testDeleteTemplateWhenLoggerIsNotInfoEnabled() {
+        // given
+        Path path = Paths.get("testPath");
+        when(logger.isInfoEnabled()).thenReturn(false);
+        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayStub(
+            logger
+        );
+
+        // when
+        gateway.deleteTemplate(
+            template
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
+    }
+
+    @Test
+    public void testDeleteTemplateWhenLoggerIsInfoEnabled() {
+        // given
+        Path path = Paths.get("testPath");
+        when(logger.isInfoEnabled()).thenReturn(true);
+        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayStub(
+            logger
+        );
+
+        // when
+        gateway.deleteTemplate(
+            template
+        );
+
+        // then
+        verify(logger).info(contains("20170629:083716"));
+        verify(logger).info(contains("Given template has been successfully deleted."));
+    }
+
+
+    @Test
     public void testLoadTemplateWhenLoggerIsInfoEnabled() {
         // given
         Path path = Paths.get("testPath");
         when(logger.isInfoEnabled()).thenReturn(true);
-        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayImpl(
+        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayStub(
             logger
         );
 
@@ -60,8 +98,8 @@ public class DatabaseTemplateGatewayFunctionalIT {
         );
 
         // then
-        verify(logger).info(contains("20170628:133136"));
-        verify(logger).info(contains("Script, loaded in " + path + " has been saved."));
+        verify(logger).info(contains("20170628:135108"));
+        verify(logger).info(contains("Script from " + path + " has been created."));
     }
 
     @Test
@@ -69,7 +107,7 @@ public class DatabaseTemplateGatewayFunctionalIT {
         // given
         Path path = Paths.get("testPath");
         when(logger.isInfoEnabled()).thenReturn(false);
-        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayImpl(
+        DatabaseTemplateGateway gateway = new DatabaseTemplateGatewayStub(
             logger
         );
 

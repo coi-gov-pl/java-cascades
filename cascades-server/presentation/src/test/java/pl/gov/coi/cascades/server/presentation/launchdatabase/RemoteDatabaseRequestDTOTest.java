@@ -25,7 +25,7 @@ public class RemoteDatabaseRequestDTOTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getTemplateId()).isEqualTo(com.google.common.base.Optional.absent());
+        assertThat(actual.getTemplate()).isEqualTo(com.google.common.base.Optional.absent());
     }
 
     @Test
@@ -44,9 +44,9 @@ public class RemoteDatabaseRequestDTOTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getTemplateId().isPresent()).isTrue();
-        assertThat(actual.getTemplateId().get().getName()).isEqualTo(templateName);
-        assertThat(actual.getTemplateId().get()).isInstanceOf(InputTemplate.class);
+        assertThat(actual.getTemplate().isPresent()).isTrue();
+        assertThat(actual.getTemplate().get().getName()).isEqualTo(templateName);
+        assertThat(actual.getTemplate().get()).isInstanceOf(InputTemplate.class);
     }
 
 }

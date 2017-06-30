@@ -2,10 +2,6 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.Builder;
 import lombok.Getter;
-import pl.wavesoftware.eid.utils.EidPreconditions;
-
-import javax.annotation.WillNotClose;
-import java.io.InputStream;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
@@ -38,7 +34,7 @@ public class Request {
 
         this.name = checkNotNull(name, "20170524:094344");
         this.isEmpty = checkNotNull(isEmpty, "20170524:094441");
-        this.upload = upload;
+        this.upload = checkNotNull(upload, "20170630:135336");
     }
 
 }

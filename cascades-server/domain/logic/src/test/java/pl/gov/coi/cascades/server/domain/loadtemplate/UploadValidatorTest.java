@@ -39,6 +39,37 @@ public class UploadValidatorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void testIsNotValidWhenThereIsNotEnoughSpaceOnDisc() throws Exception {
+        // given
+        String content = "application/zip";
+        Long size = 999999999999999999L;
+        Path path = folder.getRoot().toPath();
+        ResponseImpl response = new ResponseImpl();
+        UploadValidator uploadValidator = new UploadValidator(
+            zipArchive
+        );
+        when(zipArchive.getUpload()).thenReturn(upload);
+        when(zipArchive.getUpload().getContentType()).thenReturn(content);
+        when(zipArchive.getPath()).thenReturn(path);
+        when(zipArchive.getUpload().getSize()).thenReturn(size);
+        uploadValidator.addViolationListener(response::addViolation);
+
+        // when
+        boolean actual = uploadValidator.isValid();
+
+        // then
+        assertThat(actual).isFalse();
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "There is not enough space to unzip given file."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
     public void testIsNotValid() throws Exception {
         // given
         String content = "application/rar";

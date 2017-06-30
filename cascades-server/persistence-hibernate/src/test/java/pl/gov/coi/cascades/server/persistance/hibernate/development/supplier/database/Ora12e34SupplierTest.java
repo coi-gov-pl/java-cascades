@@ -6,7 +6,6 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.use
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;

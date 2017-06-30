@@ -35,7 +35,7 @@ public class UseCaseImpl implements UseCase {
                 UnzippedValidator unzippedValidator = new UnzippedValidator(zipArchive, path);
                 unzippedValidator.addViolationListener(response::addViolation);
                 MetadataHolder metadataHolder = new MetadataHolder();
-                unzippedValidator.addValidatedEntityListener(metadataHolder::setMetadata);
+                unzippedValidator.addValidatedEntityListener(metadataHolder::setTemplateMetadata);
                 if (unzippedValidator.isValid()) {
                     Template template = createTemplate(metadataHolder);
                     loadTemplate(template, path);
@@ -78,10 +78,6 @@ public class UseCaseImpl implements UseCase {
         @Getter
         @Setter
         private TemplateMetadata templateMetadata;
-
-        private void setMetadata(TemplateMetadata templateMetadata) {
-            this.templateMetadata = templateMetadata;
-        }
     }
 
 }

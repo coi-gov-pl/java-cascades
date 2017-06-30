@@ -1,12 +1,12 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+
 import java.io.InputStream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,23 +32,15 @@ public class RequestTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    @Before
-    public void setUp() {
-        upload = new Upload(
-            zipFile,
-            size,
-            contentType
-        );
-    }
-
     @Test
     public void testDefaultConstructor() throws Exception {
         // when
-        Upload upload = new Upload(
-            zipFile,
-            size,
-            contentType
-        );
+        Upload upload = Upload.builder()
+            .contentType(contentType)
+            .inputStream(zipFile)
+            .size(size)
+            .build();
+
         Request actual = new Request(
             name,
             isEmpty,
@@ -167,6 +159,11 @@ public class RequestTest {
     @Test
     public void testBuilder() throws Exception {
         // when
+        Upload upload = Upload.builder()
+            .size(size)
+            .inputStream(zipFile)
+            .contentType(contentType)
+            .build();
         Request requestBuilder = Request.builder()
             .isEmpty(isEmpty)
             .name(name)

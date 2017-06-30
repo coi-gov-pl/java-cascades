@@ -9,8 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -58,12 +58,21 @@ public class RemoteDatabaseRequestTest {
     }
 
     @Test
-    public void getInstanceName() throws Exception {
+    public void testGetInstanceName() throws Exception {
         // when
         Optional<String> actual = remoteDatabaseRequest.getInstanceName();
 
         // then
         assertEquals(Optional.fromNullable(instanceName), actual);
+    }
+
+    @Test
+    public void testGetTemplate() {
+        // when
+        Optional<Template> actual = remoteDatabaseRequest.getTemplate();
+
+        // then
+        assertThat(actual).isEqualTo(Optional.of(template));
     }
 
 }

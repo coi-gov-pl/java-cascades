@@ -98,8 +98,9 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
     private boolean validateIfScriptsExist() {
         String jsonString = readFileAsString(join(File.separator, path.toString(), jsonFilename));
         JSONObject jsonObject = new JSONObject(jsonString);
-        String deployScript = jsonObject.getString(DEPLOY_SCRIPT);
-        Path pathToDeployScript = Paths.get(join(File.separator, path.toString(), deployScript));
+        int position = jsonObject.getString(DEPLOY_SCRIPT).indexOf('.');
+        String deployScript = jsonObject.getString(DEPLOY_SCRIPT).substring(0, position);
+        Path pathToDeployScript = Paths.get(join(File.separator, path.toString(), deployScript + ".sql"));
 
         if (!pathToDeployScript.toFile().exists()) {
             newError(
@@ -141,7 +142,7 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
     }
 
     private boolean validateIfZipContainsJsonFile() {
-        File directory = new File(path.toString());
+        File directory = path.toFile();
         File[] fList = directory.listFiles();
         checkNotNull(fList, "20170628:104151");
         for (File file : fList){

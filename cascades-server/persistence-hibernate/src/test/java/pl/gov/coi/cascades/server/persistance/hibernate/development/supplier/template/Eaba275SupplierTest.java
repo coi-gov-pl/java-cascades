@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.te
 
 import org.junit.Test;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import static org.assertj.core.api.Assertions.assertThat;

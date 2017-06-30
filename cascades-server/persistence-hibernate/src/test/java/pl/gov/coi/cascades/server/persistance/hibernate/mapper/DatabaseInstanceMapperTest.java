@@ -11,8 +11,11 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.*;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
 
 import java.time.Instant;
@@ -53,9 +56,6 @@ public class DatabaseInstanceMapperTest {
 
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
-
-    @Mock
-    private TemplateIdMapper templateIdMapper;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();

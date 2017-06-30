@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import lombok.Getter;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -32,8 +33,8 @@ import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
  */
 public class UseCaseImplTest {
 
-    private static final String TEST = "src/test/resources";
     private static final String ZIP_EXTENSION = ".zip";
+    private Path zipPath;
 
     @Mock
     private Request request;
@@ -56,11 +57,18 @@ public class UseCaseImplTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    @Before
+    public void setUp() {
+        Path currentRelativePath = Paths.get("");
+        zipPath = currentRelativePath.toAbsolutePath()
+            .resolve("src")
+            .resolve("test")
+            .resolve("resources");
+    }
+
     @After
     public void after() {
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + "src/test/resources" + File.separator;
-        File dir = new File(path);
+        File dir = zipPath.toFile();
         checkNotNull(dir.listFiles(), "20170623:124049");
         for (File file : dir.listFiles()) {
             if (!file.getName().endsWith(ZIP_EXTENSION) && !file.isDirectory()) {
@@ -70,20 +78,249 @@ public class UseCaseImplTest {
     }
 
     @Test
+    public void testIsNotValidWhenThereIsNotEnoughSpaceOnDisc() throws Exception {
+        // given
+        String content = "application/zip";
+        Long size = 999999999999999999L;
+        ResponseImpl response = new ResponseImpl();
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test11.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+        when(request.getUpload().getSize()).thenReturn(size);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "There is not enough space to unzip given file."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateIfDeployScriptDoesNotExists() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test11.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Missing sql file/files in zip."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateIfZipContainsJsonFile() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test7.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        for(Violation violation : response.getViolations()) {
+            assertThat(violation.getMessage()).doesNotContain(
+                "Loaded zip does not contains required JSON file."
+            );
+        }
+    }
+
+    @Test
+    public void testValidateWhenDeployScriptFormatIsNotAppropriate() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test7.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean incorrectFormat = false;
+        for(Violation violation : response.getViolations()) {
+            incorrectFormat = violation.getMessage().contains(
+                "Deploy script must be in .sql format"
+            );
+        }
+        assertThat(incorrectFormat).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotIsDefaultField() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test2.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotNameField() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test1.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotVersionField() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test10.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
+    public void testValidateJsonFileStructureIfHasNotDeployScriptField() throws IOException {
+        // given
+        ResponseImpl response = new ResponseImpl();
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        InputStream is = new FileInputStream(zipPath.resolve("test5.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(1);
+        boolean containsField = false;
+        for(Violation violation : response.getViolations()) {
+            containsField = violation.getMessage().contains(
+                "Loaded JSON file does not have required fields."
+            );
+        }
+        assertThat(containsField).isTrue();
+    }
+
+    @Test
     public void testExecuteWhenThereAreErrors() throws IOException {
         // given
         String content = "application/zip";
         when(request.getUpload()).thenReturn(upload);
         when(request.getUpload().getContentType()).thenReturn(content);
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         UseCaseImpl useCase = UseCaseImpl.builder()
             .templateIdGateway(templateIdGateway)
             .databaseTemplateGateway(databaseTemplateGateway)
             .templateIdGeneratorService(templateIdGeneratorService)
             .build();
         ResponseImpl response = new ResponseImpl();
-        InputStream is = new FileInputStream(new File(path + "test15.zip"));
+        InputStream is = new FileInputStream(zipPath.resolve("test15.zip").toFile());
         when(request.getUpload().getInputStream()).thenReturn(is);
 
         // when
@@ -111,8 +348,6 @@ public class UseCaseImplTest {
         String content = "application/zip";
         when(request.getUpload()).thenReturn(upload);
         when(request.getUpload().getContentType()).thenReturn(content);
-        Path currentRelativePath = Paths.get("");
-        String path = currentRelativePath.toAbsolutePath().toString() + File.separator + TEST + File.separator;
         TemplateIdGeneratorService templateIdGeneratorService = new TemplateIdGeneratorService();
         UseCaseImpl useCase = UseCaseImpl.builder()
             .templateIdGateway(templateIdGateway)
@@ -120,7 +355,7 @@ public class UseCaseImplTest {
             .templateIdGeneratorService(templateIdGeneratorService)
             .build();
         ResponseImpl response = new ResponseImpl();
-        InputStream is = new FileInputStream(new File(path + "test13.zip"));
+        InputStream is = new FileInputStream(zipPath.resolve("test13.zip").toFile());
         when(request.getUpload().getInputStream()).thenReturn(is);
 
         // when

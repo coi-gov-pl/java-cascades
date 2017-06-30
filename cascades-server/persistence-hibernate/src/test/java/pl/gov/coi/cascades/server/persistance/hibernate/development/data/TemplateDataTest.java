@@ -7,7 +7,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.Eaba275Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import javax.persistence.EntityManager;
