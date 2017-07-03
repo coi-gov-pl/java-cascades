@@ -59,10 +59,10 @@ public class DatabaseTemplateGatewayStubTest {
         );
 
         // then
-        verify(logger).info(contains("20170628:133136"));
+        verify(logger).info(contains("20170628:135108"));
         verify(logger).info(contains("Script from " +
             folder.getRoot().toPath() +
-            " has been saved successfully in the database.")
+            " has been created.")
         );
     }
 
@@ -80,8 +80,8 @@ public class DatabaseTemplateGatewayStubTest {
         );
 
         // then
-        verify(logger).info(contains("20170629:082315"));
-        verify(logger).info(contains("Given template has been successfully deleted from database."));
+        verify(logger).info(contains("20170629:083716"));
+        verify(logger).info(contains("Given template has been successfully deleted."));
     }
 
 }
