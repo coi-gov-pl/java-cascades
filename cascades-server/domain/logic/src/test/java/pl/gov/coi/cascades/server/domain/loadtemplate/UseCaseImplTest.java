@@ -78,6 +78,39 @@ public class UseCaseImplTest {
     }
 
     @Test
+    public void testExecuteDirectoryIsInZip() throws IOException {
+        // given
+        String name = "template";
+        String serverId = "3050";
+        String status = TemplateIdStatus.CREATED.name();
+        String version = "345435.0.3";
+        String content = "application/zip";
+        when(request.getUpload()).thenReturn(upload);
+        when(request.getUpload().getContentType()).thenReturn(content);
+        TemplateIdGeneratorService templateIdGeneratorService = new TemplateIdGeneratorService();
+        UseCaseImpl useCase = UseCaseImpl.builder()
+            .templateIdGateway(templateIdGateway)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .build();
+        ResponseImpl response = new ResponseImpl();
+        InputStream is = new FileInputStream(zipPath.resolve("test16.zip").toFile());
+        when(request.getUpload().getInputStream()).thenReturn(is);
+
+        // when
+        useCase.execute(request, response);
+
+        // then
+        assertThat(response.getViolations()).hasSize(0);
+        assertThat(response.isSuccessful()).isTrue();
+        assertThat(response.isDefault()).isTrue();
+        assertThat(response.getName()).isEqualTo(name);
+        assertThat(response.getServerId()).isEqualTo(serverId);
+        assertThat(response.getStatus()).isEqualTo(status);
+        assertThat(response.getVersion()).isEqualTo(version);
+    }
+
+    @Test
     public void testIsNotValidWhenThereIsNotEnoughSpaceOnDisc() throws Exception {
         // given
         String content = "application/zip";
