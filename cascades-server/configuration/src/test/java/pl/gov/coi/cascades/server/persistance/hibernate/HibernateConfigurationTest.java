@@ -6,7 +6,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -24,18 +23,6 @@ public class HibernateConfigurationTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    @Test
-    public void testCreateDatabaseTemplateGateway() throws Exception {
-        // given
-        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
-
-        // when
-        DatabaseTemplateGateway actual = hibernateConfiguration.createDatabaseTemplateGateway();
-
-        // then
-        assertThat(actual).isInstanceOf(DatabaseTemplateGateway.class);
-    }
 
     @Test
     public void testCreateTemplateIdGateway() throws Exception {
