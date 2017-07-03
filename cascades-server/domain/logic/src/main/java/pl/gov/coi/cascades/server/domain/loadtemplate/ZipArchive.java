@@ -9,6 +9,7 @@ import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.FileVisitResult;
@@ -68,7 +69,12 @@ public class ZipArchive implements AutoCloseable {
 
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
-                unzipEntry(zis, entry);
+                if (!entry.isDirectory()) {
+                    unzipEntry(zis, entry);
+                } else {
+                    File dir = tempPath.resolve(entry.getName()).toFile();
+                    dir.mkdirs();
+                }
             }
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:113002", e);

@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-import static java.lang.String.join;
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
 /**
@@ -65,7 +64,7 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
         );
     }
 
-    private static boolean hasScripts(JSONObject jsonObject) {
+    private static boolean hasFields(JSONObject jsonObject) {
         return jsonObject.has(DEPLOY_SCRIPT) &&
             jsonObject.has("version");
     }
@@ -82,45 +81,51 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
     }
 
     private boolean validateScriptsFormat() {
-        String jsonString = readFileAsString(join(File.separator, path.toString(), jsonFilename));
+        String jsonString = readFileAsString(path.resolve(jsonFilename).toString());
         JSONObject jsonObject = new JSONObject(jsonString);
-        String deployScript = jsonObject.getString(DEPLOY_SCRIPT);
-        if (!deployScript.endsWith(".sql")) {
-            newError(
-                PROPERTY_PATH_DEPLOY_SCRIPT,
-                "Deploy script must be in .sql format"
-            );
-            return false;
+        if (jsonObject.has(DEPLOY_SCRIPT)) {
+            String deployScript = jsonObject.getString(DEPLOY_SCRIPT);
+            if (!deployScript.endsWith(".sql")) {
+                newError(
+                    PROPERTY_PATH_DEPLOY_SCRIPT,
+                    "Deploy script must be in .sql format"
+                );
+                return false;
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean validateIfScriptsExist() {
-        String jsonString = readFileAsString(join(File.separator, path.toString(), jsonFilename));
+        String jsonString = readFileAsString(path.resolve(jsonFilename).toString());
         JSONObject jsonObject = new JSONObject(jsonString);
-        int position = jsonObject.getString(DEPLOY_SCRIPT).indexOf('.');
-        String deployScript = jsonObject.getString(DEPLOY_SCRIPT).substring(0, position);
-        Path pathToDeployScript = Paths.get(join(File.separator, path.toString(), deployScript + ".sql"));
-
-        if (!pathToDeployScript.toFile().exists()) {
-            newError(
-                PROPERTY_PATH_DEPLOY_SCRIPT,
-                "Missing sql file/files in zip."
-            );
-            return false;
+        if (jsonObject.has(DEPLOY_SCRIPT)) {
+            int position = jsonObject.getString(DEPLOY_SCRIPT).indexOf('.');
+            String deployScript = jsonObject.getString(DEPLOY_SCRIPT).substring(0, position);
+            String SQLFormat = ".sql";
+            Path pathToDeployScript = path.resolve(deployScript + SQLFormat);
+            if (!pathToDeployScript.toFile().exists()) {
+                newError(
+                    PROPERTY_PATH_DEPLOY_SCRIPT,
+                    "Missing sql file/files in zip."
+                );
+                return false;
+            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean validateJsonFileStructure() {
         boolean hasFields = false;
 
-        String jsonString = readFileAsString(join(File.separator, path.toString(), jsonFilename));
+        String jsonString = readFileAsString(path.resolve(jsonFilename).toString());
         JSONObject jsonObject = new JSONObject(jsonString);
         if (jsonObject.has("name") &&
             jsonObject.has("isDefault") &&
             jsonObject.has("serverId") &&
-            hasScripts(jsonObject)) {
+            hasFields(jsonObject)) {
             hasFields = true;
 
             templateMetadata = TemplateMetadata.builder()
