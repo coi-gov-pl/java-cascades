@@ -40,7 +40,7 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
 
     @Override
     public boolean isValid() {
-        boolean status = validateIfZipContainsJsonFile()
+        boolean status = validateIfZipContainsJsonFile(path.toFile())
             ? validators
                 .stream()
                 .map(Supplier::get)
@@ -146,14 +146,14 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
         return true;
     }
 
-    private boolean validateIfZipContainsJsonFile() {
-        File directory = path.toFile();
+    private boolean validateIfZipContainsJsonFile(File directory) {
         File[] fList = directory.listFiles();
         checkNotNull(fList, "20170628:104151");
-        for (File file : fList){
+        for (File file : fList) {
             if (file.getName().endsWith(".json")) {
                 jsonFilename = file.getName();
                 return true;
+
             }
         }
 

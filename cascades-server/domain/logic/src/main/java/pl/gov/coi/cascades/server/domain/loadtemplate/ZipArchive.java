@@ -12,6 +12,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,12 +35,21 @@ public class ZipArchive implements AutoCloseable {
     @Getter(AccessLevel.PACKAGE)
     private final Upload upload;
     private Logger logger;
-    private final Path tempPath = tryToExecute(() -> Files.createTempDirectory(PREFIX), "20170627:141443");
+    private final Path tempPath;
 
     ZipArchive(Upload upload) {
         this(
             upload,
-            DEFAULT_LOGGER
+            DEFAULT_LOGGER,
+            tryToExecute(() -> Files.createTempDirectory(PREFIX), "20170627:141443")
+        );
+    }
+
+    ZipArchive(Upload upload, Logger logger) {
+        this(
+            upload,
+            logger,
+            tryToExecute(() -> Files.createTempDirectory(PREFIX), "20170703:125502")
         );
     }
 
@@ -65,21 +75,25 @@ public class ZipArchive implements AutoCloseable {
     }
 
     ZipArchive ensureUnzipped() {
-        try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(this.getUpload().getInputStream()))) {
+        Path path = tempPath;
+        try (InputStream is = this.getUpload().getInputStream();
+             BufferedInputStream bis = new BufferedInputStream(is);
+             ZipInputStream zis = new ZipInputStream(bis)) {
 
             ZipEntry entry;
             while ((entry = zis.getNextEntry()) != null) {
                 if (!entry.isDirectory()) {
                     unzipEntry(zis, entry);
                 } else {
-                    File dir = tempPath.resolve(entry.getName()).toFile();
+                    path = path.resolve(entry.getName());
+                    File dir = path.toFile();
                     dir.mkdirs();
                 }
             }
         } catch (IOException e) {
             throw new EidIllegalStateException("20170605:113002", e);
         }
-        return this;
+        return new ZipArchive(upload, logger, path);
     }
 
     private void unzipEntry(ZipInputStream zis, ZipEntry entry) throws IOException {
