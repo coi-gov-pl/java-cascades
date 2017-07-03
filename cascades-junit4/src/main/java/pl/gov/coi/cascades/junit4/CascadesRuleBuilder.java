@@ -1,6 +1,5 @@
 package pl.gov.coi.cascades.junit4;
 
-import pl.gov.coi.cascades.client.configuration.CascadesServerConfiguration;
 import pl.gov.coi.cascades.contract.configuration.Driver;
 import pl.gov.coi.cascades.contract.configuration.Migration;
 import pl.gov.coi.cascades.contract.configuration.Server;
@@ -51,8 +50,6 @@ public interface CascadesRuleBuilder {
      * @return Builder of cascades rule.
      */
     CascadesRuleBuilder tryToReuse(boolean tryToReuse);
-
-    CascadesRuleBuilder cascadesServerConfiguration(CascadesServerConfiguration cascadesServerConfiguration);
 
     /**
      * Method gives a junit rule.
