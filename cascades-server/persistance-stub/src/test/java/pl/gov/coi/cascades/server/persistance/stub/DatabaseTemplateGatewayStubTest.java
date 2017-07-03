@@ -10,7 +10,9 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -42,6 +44,41 @@ public class DatabaseTemplateGatewayStubTest {
 
         // then
         assertThat(templateGateway).isNotNull();
+    }
+
+    @Test
+    public void testDeleteTemplateWhenLoggerIsNotInfoEnabled() throws Exception {
+        // given
+        when(logger.isInfoEnabled()).thenReturn(false);
+        DatabaseTemplateGatewayStub templateGateway = new DatabaseTemplateGatewayStub(
+            logger
+        );
+
+        // when
+        templateGateway.deleteTemplate(
+            template
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
+    }
+
+    @Test
+    public void testCreateTemplateWhenLoggerIsNotInfoEnabled() throws Exception {
+        // given
+        when(logger.isInfoEnabled()).thenReturn(false);
+        DatabaseTemplateGatewayStub templateGateway = new DatabaseTemplateGatewayStub(
+            logger
+        );
+
+        // when
+        templateGateway.createTemplate(
+            template,
+            folder.getRoot().toPath()
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
     }
 
     @Test
