@@ -14,7 +14,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
 
@@ -48,6 +48,7 @@ public class DatabaseInstanceMapperTest {
     private static final long TEMPLATE_ID = 8958395489L;
     private static final long ID = -2174612783412L;
     private static final String TEMPLATE_ID_NAME = "oracle_template";
+    private static final String GENERATED_ID = "ffg456js";
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -55,9 +56,6 @@ public class DatabaseInstanceMapperTest {
 
     @Mock
     private DatabaseTypeDTO databaseTypeDTO;
-
-    @Mock
-    private TemplateIdMapper templateIdMapper;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -78,21 +76,24 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(DATABASE_ID_AS_LONG);
-        assertThat(actual.getTemplateId()
+        assertThat(actual.getTemplate()
             .getName())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getId());
-        assertThat(actual.getTemplateId()
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getName());
+        assertThat(actual.getTemplate()
+            .getGeneratedId())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getId());
+        assertThat(actual.getTemplate()
             .getStatus().name())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getStatus().name());
-        assertThat(actual.getTemplateId()
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getStatus().name());
+        assertThat(actual.getTemplate()
             .getServerId())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getServerId());
-        assertThat(actual.getTemplateId()
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getServerId());
+        assertThat(actual.getTemplate()
             .isDefault())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().isDefault());
-        assertThat(actual.getTemplateId()
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().isDefault());
+        assertThat(actual.getTemplate()
             .getVersion())
-            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplateId().getVersion());
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getVersion());
         assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
         assertThat(actual.getReuseTimes()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getReuseTimes());
@@ -129,17 +130,18 @@ public class DatabaseInstanceMapperTest {
         NetworkBind networkBind = new NetworkBind();
         networkBind.setHost(HOST);
         networkBind.setPort(PORT);
-        TemplateId templateId = new TemplateId();
-        templateId.setDefault(false);
-        templateId.setName(TEMPLATE_ID_NAME);
-        templateId.setServerId(SERVER_ID);
-        templateId.setVersion(VERSION);
-        templateId.setId(TEMPLATE_ID);
-        templateId.setStatus(TemplateIdStatus.CREATED);
+        Template template = new Template();
+        template.setDefault(false);
+        template.setName(TEMPLATE_ID_NAME);
+        template.setServerId(SERVER_ID);
+        template.setVersion(VERSION);
+        template.setId(TEMPLATE_ID);
+        template.setGeneratedId(GENERATED_ID);
+        template.setStatus(TemplateIdStatus.CREATED);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
-        hibernateInstance.setTemplateId(templateId);
+        hibernateInstance.setTemplate(template);
         hibernateInstance.setType(DATABASE_TYPE);
         hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);
@@ -155,12 +157,11 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getDatabaseId().getId()).isEqualTo(DATABASE_ID);
-        assertThat(actual.getTemplateId().getId()).isEqualTo(TEMPLATE_ID_NAME);
-        assertThat(actual.getTemplateId().isDefault()).isEqualTo(templateId.isDefault());
-        assertThat(actual.getTemplateId().getServerId()).isEqualTo(templateId.getServerId());
-        assertThat(actual.getTemplateId().getStatus().name()).isEqualTo(templateId.getStatus().name());
-        assertThat(actual.getTemplateId().getId()).isEqualTo(templateId.getName());
-        assertThat(actual.getTemplateId().getVersion()).isEqualTo(templateId.getVersion());
+        assertThat(actual.getTemplate().getId()).isEqualTo(GENERATED_ID);
+        assertThat(actual.getTemplate().isDefault()).isEqualTo(template.isDefault());
+        assertThat(actual.getTemplate().getServerId()).isEqualTo(template.getServerId());
+        assertThat(actual.getTemplate().getStatus().name()).isEqualTo(template.getStatus().name());
+        assertThat(actual.getTemplate().getVersion()).isEqualTo(template.getVersion());
         assertThat(actual.getDatabaseType()).isEqualTo(null);
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
@@ -185,14 +186,15 @@ public class DatabaseInstanceMapperTest {
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
-        TemplateId templateId = new TemplateId();
-        templateId.setDefault(false);
-        templateId.setName(TEMPLATE_ID_NAME);
-        templateId.setServerId(SERVER_ID);
-        templateId.setId(TEMPLATE_ID);
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        templateId.setVersion(VERSION);
-        hibernateInstance.setTemplateId(templateId);
+        Template template = new Template();
+        template.setDefault(false);
+        template.setGeneratedId(GENERATED_ID);
+        template.setName(TEMPLATE_ID_NAME);
+        template.setServerId(SERVER_ID);
+        template.setId(TEMPLATE_ID);
+        template.setStatus(TemplateIdStatus.CREATED);
+        template.setVersion(VERSION);
+        hibernateInstance.setTemplate(template);
         hibernateInstance.setType(DATABASE_TYPE);
         hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);

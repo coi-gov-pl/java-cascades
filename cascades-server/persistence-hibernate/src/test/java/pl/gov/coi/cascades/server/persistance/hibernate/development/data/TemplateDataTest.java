@@ -6,7 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template.Eaba275Supplier;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import javax.persistence.EntityManager;
@@ -28,7 +28,7 @@ import static org.mockito.Mockito.when;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 04.05.17.
  */
-public class TemplateIdDataTest {
+public class TemplateDataTest {
 
     @Mock
     private EntityManager entityManager;
@@ -44,7 +44,7 @@ public class TemplateIdDataTest {
         // given
         String name = "oracle_template";
         String serverId = "rgey65getg";
-        Collection<Supplier<TemplateId>> supplierList = new ArrayList<>();
+        Collection<Supplier<Template>> supplierList = new ArrayList<>();
         supplierList.add(new Eaba275Supplier());
         TemplateIdData userData = new TemplateIdData(
             supplierList
@@ -54,7 +54,7 @@ public class TemplateIdDataTest {
         userData.up();
 
         // when
-        Optional<TemplateId> actual = userData.getTemplateIdForSupplierClass(
+        Optional<Template> actual = userData.getTemplateIdForSupplierClass(
             Eaba275Supplier.class
         );
 
@@ -69,7 +69,7 @@ public class TemplateIdDataTest {
     @Test
     public void testDown() throws Exception {
         // given
-        Collection<Supplier<TemplateId>> supplierList = new ArrayList<>();
+        Collection<Supplier<Template>> supplierList = new ArrayList<>();
         supplierList.add(new Eaba275Supplier());
         TemplateIdData userData = new TemplateIdData(
             supplierList

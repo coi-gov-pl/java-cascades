@@ -5,7 +5,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.tem
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.user.MichaelSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import java.time.Instant;
@@ -74,7 +74,7 @@ public class Ora12e34SupplierTest {
         Ora12e34Supplier ora12e34Supplier = new Ora12e34Supplier();
 
         // when
-        Class<? extends Supplier<TemplateId>> actual = ora12e34Supplier.getTemplateSupplier();
+        Class<? extends Supplier<Template>> actual = ora12e34Supplier.getTemplateSupplier();
 
         // then
         assertThat(actual).isNotNull();

@@ -6,7 +6,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
@@ -50,7 +51,7 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     private DatabaseInstanceGateway databaseInstanceGateway;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -69,10 +70,10 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     public void testFindTemplateId() throws Exception {
         // given
         String template = "oracle_template";
-        when(templateIdGateway.find(anyString())).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.find(anyString())).thenReturn(Optional.of(this.template));
 
         // when
-        Optional<TemplateId> actual = facade.findTemplateId(template);
+        Optional<Template> actual = facade.findTemplateId(template);
 
         // then
         assertThat(actual).isNotNull();
@@ -82,10 +83,10 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     @Test
     public void testGetDefaultTemplateId() throws Exception {
         // given
-        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(template));
 
         // when
-        Optional<TemplateId> actual = facade.getDefaultTemplateId();
+        Optional<Template> actual = facade.getDefaultTemplateId();
 
         // then
         assertThat(actual).isNotNull();

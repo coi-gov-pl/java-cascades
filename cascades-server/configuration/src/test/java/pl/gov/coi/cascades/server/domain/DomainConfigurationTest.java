@@ -11,6 +11,7 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.LaunchNewDatabaseGateway
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCaseImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
+import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,37 +22,59 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class DomainConfigurationTest {
 
     @Mock
-    LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;
+    private LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;
 
     @Mock
-    DatabaseNameGeneratorService databaseNameGeneratorService;
+    private DatabaseNameGeneratorService databaseNameGeneratorService;
 
     @Mock
-    UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService;
+    private UsernameAndPasswordCredentialsGeneratorService credentialsGeneratorService;
 
     @Mock
-    DatabaseTypeClassNameService databaseTypeClassNameService;
+    private DatabaseTypeClassNameService databaseTypeClassNameService;
 
     @Mock
-    DatabaseIdGeneratorService databaseIdGeneratorService;
+    private DatabaseIdGeneratorService databaseIdGeneratorService;
 
     @Mock
-    TemplateIdGateway templateIdGateway;
+    private TemplateIdGateway templateIdGateway;
 
     @Mock
-    UserGateway userGateway;
+    private DatabaseTemplateGateway databaseTemplateGateway;
 
     @Mock
-    DatabaseLimitGateway databaseLimitGateway;
+    private UserGateway userGateway;
 
     @Mock
-    DatabaseInstanceGateway databaseInstanceGateway;
+    private DatabaseLimitGateway databaseLimitGateway;
 
     @Mock
-    DatabaseIdGateway databaseIdGateway;
+    private DatabaseInstanceGateway databaseInstanceGateway;
+
+    @Mock
+    private DatabaseIdGateway databaseIdGateway;
+
+    @Mock
+    private TemplateIdGeneratorService templateIdGeneratorService;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Test
+    public void testProduceLoadTemplateUseCase() throws Exception {
+        // given
+        DomainConfiguration domainConfiguration = new DomainConfiguration();
+
+        // when
+        pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase(
+            templateIdGateway,
+            databaseTemplateGateway,
+            templateIdGeneratorService
+        );
+
+        // then
+        assertThat(actual).isInstanceOf(pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.class);
+    }
 
     @Test
     public void testProduceLaunchNewDatabaseUseCase() throws Exception {

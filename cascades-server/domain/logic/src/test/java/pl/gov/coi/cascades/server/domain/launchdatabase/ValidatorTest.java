@@ -8,7 +8,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
@@ -48,7 +48,7 @@ public class ValidatorTest {
     private DatabaseTypeDTO databaseTypeDTO;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private User user;
@@ -124,7 +124,7 @@ public class ValidatorTest {
         String id = "oracle_template";
         when(request.getTemplateId()).thenReturn(Optional.of(id));
         when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.empty());
-        when(templateIdGateway.find(anyString())).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.find(anyString())).thenReturn(Optional.of(template));
         when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
         when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
         doNothing().when(databaseTypeDTO).resolve();
@@ -148,7 +148,7 @@ public class ValidatorTest {
         doNothing().when(databaseTypeDTO).resolve();
         when(databaseLimitGateway.isGlobalLimitExceeded()).thenReturn(true);
         when(databaseLimitGateway.isPersonalLimitExceeded(user)).thenReturn(true);
-        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(template));
 
         // when
         boolean actual = validator.validate();
@@ -178,7 +178,7 @@ public class ValidatorTest {
         doNothing().when(databaseTypeDTO).resolve();
         when(databaseLimitGateway.isGlobalLimitExceeded()).thenReturn(true);
         when(databaseLimitGateway.isPersonalLimitExceeded(user)).thenReturn(true);
-        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(template));
 
         // then
         expectedException.expectMessage(contains("20170228:164936"));
@@ -196,7 +196,7 @@ public class ValidatorTest {
         doNothing().when(databaseTypeDTO).resolve();
         when(databaseLimitGateway.isGlobalLimitExceeded()).thenReturn(false);
         when(databaseLimitGateway.isPersonalLimitExceeded(user)).thenReturn(false);
-        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(templateId));
+        when(templateIdGateway.getDefaultTemplateId()).thenReturn(Optional.of(template));
 
         // when
         boolean actual = validator.validate();
@@ -216,13 +216,13 @@ public class ValidatorTest {
             databaseLimitGateway,
             templateIdGateway,
             databaseTypeDTO,
-            templateId,
+            template,
             user,
             databaseType
         );
 
         // when
-        TemplateId actual = validator.getTemplateId();
+        Template actual = validator.getTemplateId();
 
         // then
         assertThat(actual).isNotNull();

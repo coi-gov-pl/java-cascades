@@ -2,7 +2,7 @@ package pl.gov.coi.cascades.contract.configuration;
 
 import com.google.common.base.Optional;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import lombok.Getter;
 
 import javax.annotation.Nullable;
@@ -14,18 +14,18 @@ public class Driver {
 
     @Getter
     private final DatabaseType type;
-    private final TemplateId templateId;
+    private final Template template;
 
     /**
      * Required argument constructor.
      *
      * @param type       Given type of driver.
-     * @param templateId Given id of template of driver.
+     * @param template Given id of template of driver.
      */
     public Driver(DatabaseType type,
-                  @Nullable TemplateId templateId) {
+                  @Nullable Template template) {
         this.type = type;
-        this.templateId = templateId;
+        this.template = template;
     }
 
     /**
@@ -33,8 +33,8 @@ public class Driver {
      *
      * @return Optional id of template.
      */
-    public Optional<TemplateId> getTemplateId() {
-        return Optional.fromNullable(templateId);
+    public Optional<Template> getTemplateId() {
+        return Optional.fromNullable(template);
     }
 
 }

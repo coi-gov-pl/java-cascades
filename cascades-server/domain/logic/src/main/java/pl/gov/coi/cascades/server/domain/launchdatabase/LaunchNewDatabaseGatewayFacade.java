@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
@@ -41,11 +41,11 @@ public class LaunchNewDatabaseGatewayFacade {
         this.databaseInstanceGateway = databaseInstanceGateway;
     }
 
-    Optional<TemplateId> findTemplateId(String templateId) {
+    Optional<Template> findTemplateId(String templateId) {
         return templateIdGateway.find(templateId);
     }
 
-    Optional<TemplateId> getDefaultTemplateId() {
+    Optional<Template> getDefaultTemplateId() {
         return templateIdGateway.getDefaultTemplateId();
     }
 

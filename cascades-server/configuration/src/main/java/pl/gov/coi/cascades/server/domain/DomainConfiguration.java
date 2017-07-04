@@ -8,6 +8,7 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.LaunchNewDatabaseGateway
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCase;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UseCaseImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
+import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -53,6 +54,18 @@ public class DomainConfiguration {
             .userGateway(userGateway)
             .databaseIdGateway(databaseIdGateway)
             .databaseInstanceGateway(databaseInstanceGateway)
+            .build();
+    }
+
+    @Bean
+    pl.gov.coi.cascades.server.domain.loadtemplate.UseCase produceLoadTemplateUseCase(
+        TemplateIdGateway templateIdGateway,
+        DatabaseTemplateGateway databaseTemplateGateway,
+        TemplateIdGeneratorService templateIdGeneratorService) {
+        return pl.gov.coi.cascades.server.domain.loadtemplate.UseCaseImpl.builder()
+            .templateIdGeneratorService(templateIdGeneratorService)
+            .databaseTemplateGateway(databaseTemplateGateway)
+            .templateIdGateway(templateIdGateway)
             .build();
     }
 

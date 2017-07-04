@@ -9,7 +9,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -26,7 +27,7 @@ public class DriverTest {
     private DatabaseType databaseType;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -38,7 +39,7 @@ public class DriverTest {
     public void setUp() {
         driver = new Driver(
                 databaseType,
-                templateId
+            template
         );
     }
 
@@ -47,7 +48,7 @@ public class DriverTest {
         // when
         Driver actual = new Driver(
                 databaseType,
-                templateId
+            template
         );
 
         // then
@@ -57,10 +58,10 @@ public class DriverTest {
     @Test
     public void testGetTemplateId() throws Exception {
         // when
-        Optional<TemplateId> actual = driver.getTemplateId();
+        Optional<Template> actual = driver.getTemplateId();
 
         // then
-        assertEquals(Optional.fromNullable(templateId), actual);
+        assertEquals(Optional.fromNullable(template), actual);
     }
 
 }

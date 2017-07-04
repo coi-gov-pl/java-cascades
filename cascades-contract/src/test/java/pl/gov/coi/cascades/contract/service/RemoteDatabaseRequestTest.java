@@ -8,8 +8,9 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
@@ -24,7 +25,7 @@ public class RemoteDatabaseRequestTest {
     private String typeClassName;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -38,7 +39,7 @@ public class RemoteDatabaseRequestTest {
         typeClassName = "typeClassName";
         remoteDatabaseRequest = new RemoteDatabaseRequest(
             typeClassName,
-            templateId,
+            template,
             instanceName
         );
     }
@@ -48,7 +49,7 @@ public class RemoteDatabaseRequestTest {
         // when
         RemoteDatabaseRequest actual = new RemoteDatabaseRequest(
             typeClassName,
-            templateId,
+            template,
             instanceName
         );
 
@@ -57,12 +58,21 @@ public class RemoteDatabaseRequestTest {
     }
 
     @Test
-    public void getInstanceName() throws Exception {
+    public void testGetInstanceName() throws Exception {
         // when
         Optional<String> actual = remoteDatabaseRequest.getInstanceName();
 
         // then
         assertEquals(Optional.fromNullable(instanceName), actual);
+    }
+
+    @Test
+    public void testGetTemplate() {
+        // when
+        Optional<Template> actual = remoteDatabaseRequest.getTemplate();
+
+        // then
+        assertThat(actual).isEqualTo(Optional.of(template));
     }
 
 }

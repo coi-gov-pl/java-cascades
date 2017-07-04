@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.template;
 
 import pl.gov.coi.cascades.server.persistance.hibernate.development.DevelopmentBean;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 
 import java.util.function.Supplier;
@@ -11,17 +11,18 @@ import java.util.function.Supplier;
  * @since 30.03.17.
  */
 @DevelopmentBean
-public class F4ab6a58Supplier implements Supplier<TemplateId> {
+public class F4ab6a58Supplier implements Supplier<Template> {
 
     @Override
-    public TemplateId get() {
-        TemplateId templateId = new TemplateId();
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        templateId.setName("postgres_template");
-        templateId.setServerId("dgrt45gtyt");
-        templateId.setDefault(false);
-        templateId.setVersion("0.0.1");
-        return templateId;
+    public Template get() {
+        Template template = new Template();
+        template.setStatus(TemplateIdStatus.CREATED);
+        template.setGeneratedId("h4gg2j953hnajfrt31hfb6hs5");
+        template.setName("postgres_template");
+        template.setServerId("dgrt45gtyt");
+        template.setDefault(false);
+        template.setVersion("0.0.1");
+        return template;
     }
 
 }

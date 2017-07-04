@@ -7,7 +7,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,7 +20,6 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
-import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
@@ -47,9 +45,6 @@ public class FunctionalIT {
 
     @Inject
     private UserGateway userGateway;
-
-    @Mock
-    private DatabaseInstance databaseInstance;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();

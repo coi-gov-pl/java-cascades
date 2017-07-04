@@ -5,6 +5,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -18,6 +19,18 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 26.04.17.
  */
 public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
+
+    @Test
+    public void testProduceDatabaseTemplateGateway() throws Exception {
+        // given
+        PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
+
+        // when
+        DatabaseTemplateGateway actual = stubs.produceDatabaseTemplateGateway();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
 
     @Test
     public void testProduceStubDatabase() throws Exception {

@@ -8,13 +8,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 26.04.17.
  */
-public class InputTemplateIdTest {
+public class InputTemplateTest {
 
     @Test
     public void testParameterConstructor() {
         // when
         String id = "oracle_template";
-        InputTemplateId actual = new InputTemplateId(id);
+        InputTemplate actual = new InputTemplate(id);
 
         // then
         assertThat(actual).isNotNull();

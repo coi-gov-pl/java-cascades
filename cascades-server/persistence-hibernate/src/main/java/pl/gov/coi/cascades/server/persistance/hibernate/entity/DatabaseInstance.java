@@ -32,7 +32,7 @@ public class DatabaseInstance {
 
     @JoinColumn
     @OneToOne(cascade = CascadeType.ALL)
-    private TemplateId templateId;
+    private Template template;
 
     @Column
     private String type;

@@ -9,7 +9,7 @@ import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.Ora12e34Supplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 
 import javax.persistence.EntityManager;
@@ -52,7 +52,7 @@ public class DatabaseInstanceDataTest {
     private User user;
 
     @Mock
-    private TemplateId templateId;
+    private Template template;
 
     @Mock
     private DatabaseInstance databaseInstance;
@@ -76,7 +76,7 @@ public class DatabaseInstanceDataTest {
         Class<? extends Supplier<User>> ownerSupplier = supplierList.iterator().next().getOwnerSupplier();
         when(userData.getUserForSupplierClass(ownerSupplier)).thenReturn(Optional.of(user));
         when(logger.isInfoEnabled()).thenReturn(false);
-        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(templateId));
+        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(template));
 
         // when
         databaseInstanceData.up();
@@ -103,7 +103,7 @@ public class DatabaseInstanceDataTest {
         Class<? extends Supplier<User>> ownerSupplier = supplierList.iterator().next().getOwnerSupplier();
         when(userData.getUserForSupplierClass(ownerSupplier)).thenReturn(Optional.of(user));
         when(logger.isInfoEnabled()).thenReturn(true);
-        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(templateId));
+        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(template));
         when(entityManager.createQuery(anyString(), any())).thenReturn(typedQuery);
 
         // when
@@ -130,7 +130,7 @@ public class DatabaseInstanceDataTest {
         databaseInstanceData.setEntityManager(entityManager);
         Class<? extends Supplier<User>> ownerSupplier = supplierList.iterator().next().getOwnerSupplier();
         when(userData.getUserForSupplierClass(ownerSupplier)).thenReturn(Optional.of(user));
-        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(templateId));
+        when(templateIdData.getTemplateIdForSupplierClass(any())).thenReturn(Optional.of(template));
         when(entityManager.createQuery(anyString(), any())).thenReturn(typedQuery);
         when(entityManager.find(any(), anyLong())).thenReturn(databaseInstance);
         databaseInstanceData.up();

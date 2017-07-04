@@ -5,11 +5,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import pl.gov.coi.cascades.contract.configuration.Driver;
-import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
+import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.Template;
 
 /**
  * @author <a href="mailto:krzysztof.suszynski@coi.gov.pl">Krzysztof Suszynski</a>
@@ -21,12 +18,14 @@ public class CascadesRuleTest {
     private String id;
     private String serverId;
     private String version;
+    private String name;
 
     @Before
     public void setUp() {
         id = "gw45223";
         serverId = "898693";
         version = "0.0.1";
+        name = "oracle_template";
     }
 
     private static final ConnectionStringProducer CONNECTION_STRING_PRODUCER =
@@ -68,8 +67,13 @@ public class CascadesRuleTest {
     public void testBefore() {
         // given
         CascadesRule rule = CascadesRule.builder()
-            .driver(new Driver(DATABASE_TYPE_STUB, new TemplateId(
-                id, TemplateIdStatus.CREATED, false, serverId, version))
+            .driver(new Driver(DATABASE_TYPE_STUB, new Template(
+                id,
+                name,
+                TemplateIdStatus.CREATED,
+                false,
+                serverId,
+                version))
             )
             .instanceName("pesel-test")
             .build();

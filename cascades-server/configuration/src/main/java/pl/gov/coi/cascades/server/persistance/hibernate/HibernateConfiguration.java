@@ -2,12 +2,11 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import org.springframework.context.annotation.Profile;
-import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import javax.transaction.Transactional;

@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
 
@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 08.05.17.
  */
-public class TemplateIdGatewayImplTest {
+public class TemplateGatewayImplTest {
 
     @Mock
     private TemplateIdMapper templateIdMapper;
@@ -44,7 +44,7 @@ public class TemplateIdGatewayImplTest {
     private Logger logger;
 
     @Mock
-    private pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId hibernateTemplate;
+    private pl.gov.coi.cascades.server.persistance.hibernate.entity.Template hibernateTemplate;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -67,7 +67,7 @@ public class TemplateIdGatewayImplTest {
         when(query.getSingleResult()).thenReturn(hibernateTemplate);
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayImpl.getDefaultTemplateId();
+        Optional<Template> actual = templateIdGatewayImpl.getDefaultTemplateId();
 
         // then
         assertThat(actual.isPresent()).isFalse();
@@ -78,32 +78,32 @@ public class TemplateIdGatewayImplTest {
     public void testGetDefaultTemplateId() throws Exception {
         // given
         String name = "123456789";
-        Long id = 123456789L;
         TemplateIdStatus status = TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
+        String generatedId = "hfb6n2jg";
         String version = "0.0.1";
-        pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId templateId =
-            new pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId();
-        templateId.setId(id);
-        templateId.setServerId(serverId);
-        templateId.setStatus(status);
-        templateId.setName(name);
-        templateId.setVersion(version);
-        templateId.setDefault(false);
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.Template template =
+            new pl.gov.coi.cascades.server.persistance.hibernate.entity.Template();
+        template.setGeneratedId(generatedId);
+        template.setServerId(serverId);
+        template.setStatus(status);
+        template.setName(name);
+        template.setVersion(version);
+        template.setDefault(false);
 
         TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl();
         templateIdGatewayImpl.setEntityManager(entityManager);
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
-        when(query.getSingleResult()).thenReturn(templateId);
+        when(query.getSingleResult()).thenReturn(template);
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayImpl.getDefaultTemplateId();
+        Optional<Template> actual = templateIdGatewayImpl.getDefaultTemplateId();
 
         // then
         assertThat(actual.isPresent()).isTrue();
-        assertThat(actual.get().getId()).isEqualTo(String.valueOf(id));
+        assertThat(actual.get().getName()).isEqualTo(name);
         assertThat(actual.get().getServerId()).isEqualTo(serverId);
         assertThat(actual.get().getStatus().name()).isEqualTo(status.name());
         assertThat(actual.get().isDefault()).isFalse();
@@ -113,12 +113,13 @@ public class TemplateIdGatewayImplTest {
     public void testFind() throws Exception {
         // given
         String name = "123456789";
-        String id = "123456789";
+        String id = "gs46h77f";
         String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.TemplateIdStatus status = pl.gov.coi.cascades.contract.domain.TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
-        TemplateId templateId = new TemplateId(
+        Template template = new Template(
             id,
+            name,
             status,
             false,
             serverId,
@@ -134,10 +135,10 @@ public class TemplateIdGatewayImplTest {
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
         when(query.getSingleResult()).thenReturn(hibernateTemplate);
-        when(templateIdMapper.fromHibernateEntity(any())).thenReturn(templateId);
+        when(templateIdMapper.fromHibernateEntity(any())).thenReturn(template);
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayImpl.find(name);
+        Optional<Template> actual = templateIdGatewayImpl.find(name);
 
         // then
         assertThat(actual.isPresent()).isTrue();
@@ -163,7 +164,7 @@ public class TemplateIdGatewayImplTest {
         when(query.setMaxResults(anyInt())).thenReturn(query);
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayImpl.find(templateId);
+        Optional<Template> actual = templateIdGatewayImpl.find(templateId);
 
         // then
         assertThat(actual.isPresent()).isFalse();

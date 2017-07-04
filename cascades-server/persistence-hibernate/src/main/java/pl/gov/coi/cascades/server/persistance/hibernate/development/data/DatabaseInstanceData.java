@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.persistance.hibernate.development.supplier.database.DatabaseInstanceSupplier;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.wavesoftware.eid.exceptions.Eid;
 
@@ -73,9 +73,9 @@ public class DatabaseInstanceData {
         }
         for (DatabaseInstanceSupplier supplier : suppliers) {
             Class<? extends Supplier<User>> ownerSupplier = supplier.getOwnerSupplier();
-            Class<? extends Supplier<TemplateId>> templateSupplier = supplier.getTemplateSupplier();
+            Class<? extends Supplier<Template>> templateSupplier = supplier.getTemplateSupplier();
             Optional<User> userOptional = userData.getUserForSupplierClass(ownerSupplier);
-            Optional<TemplateId> templateIdOptional = templateIdData.getTemplateIdForSupplierClass(templateSupplier);
+            Optional<Template> templateIdOptional = templateIdData.getTemplateIdForSupplierClass(templateSupplier);
             DatabaseInstance instance = supplier.get();
             userOptional.ifPresent(getUserConsumer(instance));
             templateIdOptional.ifPresent(getTemplateIdConsumer(instance));
@@ -88,9 +88,9 @@ public class DatabaseInstanceData {
         }
     }
 
-    private Consumer<TemplateId> getTemplateIdConsumer(DatabaseInstance instance) {
+    private Consumer<Template> getTemplateIdConsumer(DatabaseInstance instance) {
         return templateId -> {
-            instance.setTemplateId(templateId);
+            instance.setTemplate(templateId);
             entityManager.persist(instance);
             instances.add(instance);
         };

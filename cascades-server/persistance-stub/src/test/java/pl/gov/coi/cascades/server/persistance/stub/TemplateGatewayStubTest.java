@@ -1,19 +1,20 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
 import org.junit.Test;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 
 import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static pl.gov.coi.cascades.server.persistance.stub.TemplateIdGatewayStub.getAllTemplates;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 27.04.17.
  */
-public class TemplateIdGatewayStubTest {
+public class TemplateGatewayStubTest {
 
     @Test
     public void testFindWhenTemplateIdIsPresent() throws Exception {
@@ -21,7 +22,7 @@ public class TemplateIdGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayStub.find(TemplateIdGatewayStub.TEMPLATE_ID2.getId());
+        Optional<Template> actual = templateIdGatewayStub.find(TemplateIdGatewayStub.TEMPLATE_ID2.getId());
 
         // then
         assertThat(actual).isNotEqualTo(Optional.empty());
@@ -38,7 +39,7 @@ public class TemplateIdGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        Optional<TemplateId> actual = templateIdGatewayStub.getDefaultTemplateId();
+        Optional<Template> actual = templateIdGatewayStub.getDefaultTemplateId();
 
         // then
         assertThat(actual).isNotEqualTo(Optional.empty());
@@ -56,7 +57,7 @@ public class TemplateIdGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        Map<String, TemplateId> actual = templateIdGatewayStub.getAllTemplates();
+        Map<String, Template> actual = getAllTemplates();
 
         // then
         assertThat(actual).isNotNull();
@@ -73,8 +74,9 @@ public class TemplateIdGatewayStubTest {
     public void testSetTemplate() throws Exception {
         // given
         int NUMBER_OF_TEMPLATES = 5;
-        TemplateId TEMPLATE_ID = new TemplateId(
+        Template TEMPLATE_ID = new Template(
             "postgres_template",
+            "vh5n683n",
             TemplateIdStatus.CREATED,
             false,
             "aaa123456789",
@@ -84,7 +86,7 @@ public class TemplateIdGatewayStubTest {
 
         // when
         templateIdGatewayStub.setTemplate(TEMPLATE_ID);
-        Map<String, TemplateId> actual = templateIdGatewayStub.getAllTemplates();
+        Map<String, Template> actual = getAllTemplates();
 
         // then
         assertThat(actual).isNotNull();
@@ -96,6 +98,7 @@ public class TemplateIdGatewayStubTest {
             TemplateIdGatewayStub.TEMPLATE_ID4,
             TEMPLATE_ID
         );
+        templateIdGatewayStub.removeTemplate(TEMPLATE_ID.getId());
     }
 
     @Test
@@ -104,7 +107,7 @@ public class TemplateIdGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        TemplateId actual = templateIdGatewayStub.getTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
+        Template actual = templateIdGatewayStub.getTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
 
         // then
         assertThat(actual).isNotNull();
@@ -121,7 +124,7 @@ public class TemplateIdGatewayStubTest {
 
         // when
         templateIdGatewayStub.clearTemplates();
-        Map<String, TemplateId> actual = templateIdGatewayStub.getAllTemplates();
+        Map<String, Template> actual = getAllTemplates();
 
         // then
         assertThat(actual).isNotNull();
@@ -136,12 +139,13 @@ public class TemplateIdGatewayStubTest {
 
         // when
         templateIdGatewayStub.removeTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
-        Map<String, TemplateId> actual = templateIdGatewayStub.getAllTemplates();
+        Map<String, Template> actual = getAllTemplates();
 
         // then
         assertThat(actual).isNotNull();
         assertThat(actual).hasSize(NUMBER_OF_TEMPLATES);
         assertThat(actual).doesNotContainValue(TemplateIdGatewayStub.TEMPLATE_ID1);
+        templateIdGatewayStub.addTemplate(TemplateIdGatewayStub.TEMPLATE_ID1);
     }
 
 }

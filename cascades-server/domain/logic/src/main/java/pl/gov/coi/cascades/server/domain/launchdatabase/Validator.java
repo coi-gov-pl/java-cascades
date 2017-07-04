@@ -3,7 +3,7 @@ package pl.gov.coi.cascades.server.domain.launchdatabase;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
@@ -34,7 +34,7 @@ class Validator {
     private final TemplateIdGateway templateIdGateway;
     private final DatabaseTypeDTO databaseTypeDTO;
     @Nullable
-    private TemplateId templateId;
+    private Template template;
     @Nullable
     private final User user;
     private DatabaseType databaseType;
@@ -47,8 +47,8 @@ class Validator {
         return response.isSuccessful();
     }
 
-    TemplateId getTemplateId() {
-        return checkNotNull(templateId, "20170228:163337");
+    Template getTemplateId() {
+        return checkNotNull(template, "20170228:163337");
     }
 
     DatabaseType getDatabaseType() {
@@ -102,17 +102,17 @@ class Validator {
                     "Default template id is not present."
                 );
             } else {
-                templateIdGateway.getDefaultTemplateId().ifPresent(id -> templateId = id);
+                templateIdGateway.getDefaultTemplateId().ifPresent(id -> template = id);
             }
         } else {
-            Optional<TemplateId> found = templateIdGateway.find(input.get());
+            Optional<Template> found = templateIdGateway.find(input.get());
             if (!found.isPresent()) {
                 newError(
                     PROPERTY_PATH_TEMPLATE_ID,
                     "Given template id hasn't been found."
                 );
             } else {
-                templateId = found.get();
+                template = found.get();
             }
         }
     }

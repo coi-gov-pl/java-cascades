@@ -25,7 +25,7 @@ public class RemoteDatabaseRequestDTOTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getTemplateId()).isEqualTo(com.google.common.base.Optional.absent());
+        assertThat(actual.getTemplate()).isEqualTo(com.google.common.base.Optional.absent());
     }
 
     @Test
@@ -33,20 +33,20 @@ public class RemoteDatabaseRequestDTOTest {
         // given
         String type = "";
         String instanceName = "oracler49903";
-        String templateId = "oracle_template";
+        String templateName = "oracle_template";
 
         // when
         RemoteDatabaseRequestDTO actual = new RemoteDatabaseRequestDTO(
             type,
-            templateId,
+            templateName,
             instanceName
         );
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getTemplateId().isPresent()).isTrue();
-        assertThat(actual.getTemplateId().get().getId()).isEqualTo(templateId);
-        assertThat(actual.getTemplateId().get()).isInstanceOf(InputTemplateId.class);
+        assertThat(actual.getTemplate().isPresent()).isTrue();
+        assertThat(actual.getTemplate().get().getName()).isEqualTo(templateName);
+        assertThat(actual.getTemplate().get()).isInstanceOf(InputTemplate.class);
     }
 
 }

@@ -12,7 +12,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateId;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.TemplateIdStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
@@ -42,6 +42,7 @@ public class UserMapperTest {
     private static final String HOST = "db01.lab.internal";
     private static final int PORT = 5432;
     private static final Long DATABASE_ID_AS_LONG = 45L;
+    private static final String GENERATED_ID = "fh45j32b";
     private static final String DATABASE_TYPE = "stub";
     private static final String INSTANCE_NAME = "ora12e34";
     private static final String DATABASE_NAME = "oracle 12c";
@@ -108,13 +109,14 @@ public class UserMapperTest {
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
             = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
-        TemplateId templateId = new TemplateId();
-        templateId.setDefault(false);
-        templateId.setServerId(SERVER_ID);
-        templateId.setName(TEMPLATE_ID_NAME);
-        templateId.setStatus(TemplateIdStatus.CREATED);
-        templateId.setVersion(VERSION);
-        hibernateInstance.setTemplateId(templateId);
+        Template template = new Template();
+        template.setDefault(false);
+        template.setGeneratedId(GENERATED_ID);
+        template.setServerId(SERVER_ID);
+        template.setName(TEMPLATE_ID_NAME);
+        template.setStatus(TemplateIdStatus.CREATED);
+        template.setVersion(VERSION);
+        hibernateInstance.setTemplate(template);
         hibernateInstance.setType(DATABASE_TYPE);
         hibernateInstance.setInstanceName(INSTANCE_NAME);
         hibernateInstance.setReuseTimes(1);

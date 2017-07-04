@@ -35,6 +35,8 @@ public class DatabaseIdGatewayImplFunctionalIT {
     private static final int PORT = 443;
     private static final String STATUS = TemplateIdStatus.CREATED.name();
     private static final boolean IS_DEFAULT = true;
+    private static final String NAME = "oracle_template";
+    private static final String VERSION = "0.0.1";
 
     @Inject
     private UserGateway userGateway;
@@ -57,9 +59,11 @@ public class DatabaseIdGatewayImplFunctionalIT {
         assertThat(actual).isNotNull();
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.get().getDatabaseId().getId()).isEqualTo(databaseId.getId());
-        assertThat(actual.get().getTemplateId().getServerId()).isEqualTo(SERVER_ID);
-        assertThat(actual.get().getTemplateId().getStatus().name()).isEqualTo(STATUS);
-        assertThat(actual.get().getTemplateId().isDefault()).isEqualTo(IS_DEFAULT);
+        assertThat(actual.get().getTemplate().getName()).isEqualTo(NAME);
+        assertThat(actual.get().getTemplate().getServerId()).isEqualTo(SERVER_ID);
+        assertThat(actual.get().getTemplate().getStatus().name()).isEqualTo(STATUS);
+        assertThat(actual.get().getTemplate().getVersion()).isEqualTo(VERSION);
+        assertThat(actual.get().getTemplate().isDefault()).isEqualTo(IS_DEFAULT);
         assertThat(actual.get().getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.get().getReuseTimes()).isEqualTo(1);
         assertThat(actual.get().getCredentials().getUsername()).isEqualTo(USERNAME);

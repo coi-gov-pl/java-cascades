@@ -75,8 +75,6 @@ public class PresenterTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getBody().getTarget()).isNotNull();
-        assertThat(actual.getBody().getTarget().getDatabaseId()).isNotNull();
-        assertThat(actual.getBody().getTarget().getDatabaseId()).isEqualTo(databaseId);
     }
 
     @Test

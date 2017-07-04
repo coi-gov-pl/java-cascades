@@ -6,12 +6,8 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
-import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.TemplateId;
-import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
@@ -62,7 +58,7 @@ public class UseCaseImplTest {
     private User user;
 
     @Mock
-    private TemplateId id;
+    private Template id;
 
     @Mock
     private DatabaseInstance databaseInstance;
@@ -126,7 +122,7 @@ public class UseCaseImplTest {
         String message = "Global limit of 0 launched database instances has been reached";
         String path = "databaseLimit.globalLimit";
         String type = "oracle";
-        TemplateId id = new TemplateId("", null, false, "", null);
+        Template id = new Template("", "", null, false, "", null);
         String templateId = "oracle_template";
         ResponseImpl response = new ResponseImpl();
         User jrambo = UserGatewayStub.J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
