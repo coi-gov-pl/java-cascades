@@ -16,7 +16,9 @@ import java.util.Collection;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -51,6 +53,23 @@ public class CascadesOperationsLoggerImplTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
+    public void testLogDatabaseCreatedWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        when(logger.isInfoEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.logDatabaseCreated(
+            remoteDatabaseSpec
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
+    }
+
+    @Test
     public void testLogDatabaseCreated() throws Exception {
         // given
         when(logger.isInfoEnabled()).thenReturn(true);
@@ -68,6 +87,23 @@ public class CascadesOperationsLoggerImplTest {
         verify(logger).info(contains("Database: " +
             remoteDatabaseSpec.toString() +
             " has been created successfully."));
+    }
+
+    @Test
+    public void testLogDatabaseCreateFailedWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        when(logger.isErrorEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.logDatabaseCreateFailed(
+            executionException
+        );
+
+        // then
+        verify(logger, times(0)).error(anyString());
     }
 
     @Test
@@ -90,6 +126,23 @@ public class CascadesOperationsLoggerImplTest {
     }
 
     @Test
+    public void testLogDatabaseRemovedWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        when(logger.isInfoEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.logDatabaseRemoved(
+            remoteDatabaseSpec
+        );
+
+        // then
+        verify(logger, times(0)).info(anyString());
+    }
+
+    @Test
     public void testLogDatabaseRemoved() throws Exception {
         // given
         when(logger.isInfoEnabled()).thenReturn(true);
@@ -107,6 +160,23 @@ public class CascadesOperationsLoggerImplTest {
         verify(logger).info(contains("Database: " +
             remoteDatabaseSpec.toString() +
             " has been deleted successfully."));
+    }
+
+    @Test
+    public void testSinkTimeoutExceptionWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        when(logger.isErrorEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.sinkTimeoutException(
+            timeoutException
+        );
+
+        // then
+        verify(logger, times(0)).error(anyString());
     }
 
     @Test
@@ -133,6 +203,23 @@ public class CascadesOperationsLoggerImplTest {
     }
 
     @Test
+    public void testSinkInterruptedExceptionWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        when(logger.isErrorEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.sinkInterruptedException(
+            interruptedException
+        );
+
+        // then
+        verify(logger, times(0)).error(anyString());
+    }
+
+    @Test
     public void testSinkInterruptedException() throws Exception {
         // given
         when(logger.isErrorEnabled()).thenReturn(true);
@@ -153,6 +240,40 @@ public class CascadesOperationsLoggerImplTest {
             interruptedException.getMessage() +
             " localized in: " +
             interruptedException.getLocalizedMessage()));
+    }
+
+    @Test
+    public void testLogDatabaseCreateFailedWithViolationsWhenLoggerIsNotEnabled() throws Exception {
+        // given
+        Collection<Violation> violations = new ArrayList<>();
+        ServiceExecutionContext context = context(
+            "operation",
+            request
+        );
+        violations.add(new Violation() {
+            @Override
+            public String getMessage() {
+                return "An error occurred.";
+            }
+
+            @Override
+            public String getPropertyPath() {
+                return "error";
+            }
+        });
+        when(logger.isErrorEnabled()).thenReturn(false);
+        CascadesOperationsLoggerImpl cascadesOperationsLogger = new CascadesOperationsLoggerImpl(
+            logger
+        );
+
+        // when
+        cascadesOperationsLogger.logDatabaseCreateFailed(
+            context,
+            violations
+        );
+
+        // then
+        verify(logger, times(0)).error(anyString());
     }
 
     @Test
