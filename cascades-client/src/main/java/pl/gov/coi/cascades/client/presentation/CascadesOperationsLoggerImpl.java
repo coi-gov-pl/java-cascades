@@ -59,12 +59,26 @@ class CascadesOperationsLoggerImpl implements CascadesOperationsLogger {
 
     @Override
     public void sinkTimeoutException(TimeoutException ex) {
-        // TODO: write some implementation here ;-P
+        if (logger.isErrorEnabled()) {
+            logger.error(new Eid("20170705:092615").makeLogMessage(
+                "There was an error: " +
+                    ex.getMessage() +
+                    " localized in: " +
+                    ex.getLocalizedMessage()
+            ));
+        }
     }
 
     @Override
     public void sinkInterruptedException(InterruptedException ex) {
-        // TODO: write some implementation here ;-P
+        if (logger.isErrorEnabled()) {
+            logger.error(new Eid("20170705:092910").makeLogMessage(
+                "There was an error: " +
+                    ex.getMessage() +
+                    " localized in: " +
+                    ex.getLocalizedMessage()
+            ));
+        }
     }
 
     @Override
