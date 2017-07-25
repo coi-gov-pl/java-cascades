@@ -44,7 +44,7 @@ public class DatabaseTypeStubTest {
         assertThat(connectionStringProducer).isNotNull();
         assertThat(actual).isNotNull();
         assertThat(actual).contains(
-            "db://" +
+            "jdbc:oracle:thin:@//" +
             databaseNetworkBind.getHost() +
             ":" +
             databaseNetworkBind.getPort() +

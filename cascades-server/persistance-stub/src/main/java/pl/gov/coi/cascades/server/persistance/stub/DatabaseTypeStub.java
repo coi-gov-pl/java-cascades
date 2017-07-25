@@ -26,7 +26,7 @@ public class DatabaseTypeStub implements DatabaseType {
         @Override
         public String produce(NetworkBind databaseNetworkBind, String databaseName) {
             return String.format(
-                "db://%s:%d/%s",
+                "jdbc:oracle:thin:@//%s:%d/%s",
                 databaseNetworkBind.getHost(),
                 databaseNetworkBind.getPort(),
                 databaseName

@@ -24,26 +24,26 @@ public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseTemplateGatewayImpl.class);
     private Logger logger;
-    private DatabaseManager endpoint;
+    private DatabaseManager databaseManager;
 
-    DatabaseTemplateGatewayImpl(DatabaseManager endpoint) {
+    DatabaseTemplateGatewayImpl(DatabaseManager databaseManager) {
         this(
             DEFAULT_LOGGER,
-            endpoint
+            databaseManager
         );
     }
 
     @VisibleForTesting
     DatabaseTemplateGatewayImpl(Logger logger,
-                                       DatabaseManager endpoint) {
+                                DatabaseManager databaseManager) {
         this.logger = logger;
-        this.endpoint = endpoint;
+        this.databaseManager = databaseManager;
     }
 
     @Override
     public void createTemplate(Template template, Path deploySQLScriptPath) {
         try {
-            JdbcTemplate jdbcTemplate = endpoint.get(template.getServerId());
+            JdbcTemplate jdbcTemplate = databaseManager.get(template.getServerId());
             String script = readFileAsString(deploySQLScriptPath);
             String[] queries = script.split(";");
             String createQuery = "CREATE PLUGGABLE DATABASE " +
