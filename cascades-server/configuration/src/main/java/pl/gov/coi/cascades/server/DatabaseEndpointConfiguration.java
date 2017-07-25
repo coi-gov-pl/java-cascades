@@ -18,22 +18,22 @@ public class DatabaseEndpointConfiguration {
 
     private static final int DEFAULT_PORT = 1521;
 
-    @Value("${cascades.managed-servers[0].serverId}")
+    @Value("${cascades.managedServers[0].serverId}")
     private String serverId;
 
-    @Value("${cascades.managed-servers[0].user}")
+    @Value("${cascades.managedServers[0].user}")
     private String user;
 
-    @Value("${cascades.managed-servers[0].password}")
+    @Value("${cascades.managedServers[0].password}")
     private String password;
 
-    @Value("${cascades.managed-servers[0].dbname}")
+    @Value("${cascades.managedServers[0].dbname}")
     private String dbname;
 
-    @Value("${cascades.managed-servers[0].host}")
+    @Value("${cascades.managedServers[0].host}")
     private String host;
 
-    @Value("${cascades.managed-servers[0].port}")
+    @Value("${cascades.managedServers[0].port}")
     private int port = DEFAULT_PORT;
 
     @Bean
