@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
-import pl.wavesoftware.eid.exceptions.Eid;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
@@ -77,12 +76,21 @@ public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
 
     @Override
     public void deleteTemplate(Template template) {
-        if (logger.isInfoEnabled()) {
-            logger.info(new Eid("20170629:083716")
-                .makeLogMessage(
-                    "Given template has been successfully deleted."
-                )
+        try {
+            JdbcTemplate jdbcTemplate = databaseManager.get(template.getServerId());
+            String disconnectQuery = String.format(
+                "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE",
+                template.getName()
             );
+            String deleteQuery = String.format(
+                "DROP PLUGGABLE DATABASE %s INCLUDING DATAFILES",
+                template.getName()
+            );
+
+            jdbcTemplate.execute(disconnectQuery);
+            jdbcTemplate.execute(deleteQuery);
+        } catch (SQLException e) {
+            throw new EidIllegalArgumentException("20170726:135511", e);
         }
     }
 
