@@ -8,6 +8,9 @@ import org.mockito.junit.MockitoRule;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -44,10 +47,11 @@ public class DatabaseEndpointConfigurationTest {
     public void testProduceDatabaseManager() throws Exception {
         // given
         DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
+        Map<String, DriverManagerDataSource> drivers = new HashMap<>();
 
         // when
         DatabaseManager actual = conf.produceDatabaseManager(
-            driver
+            drivers
         );
 
         // then

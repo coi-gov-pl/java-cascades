@@ -5,6 +5,7 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 import javax.inject.Inject;
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -12,15 +13,16 @@ import java.sql.SQLException;
  */
 public class DatabaseEndpointManager implements DatabaseManager {
 
-    private final DriverManagerDataSource manager;
+    private final Map<String, DriverManagerDataSource> managers;
 
     @Inject
-    DatabaseEndpointManager(DriverManagerDataSource manager) {
-        this.manager = manager;
+    DatabaseEndpointManager(Map<String, DriverManagerDataSource> managers) {
+        this.managers = managers;
     }
 
     @Override
     public JdbcTemplate get(String serverId) throws SQLException {
+        DriverManagerDataSource manager = managers.get(serverId);
         return new JdbcTemplate(manager);
     }
 
