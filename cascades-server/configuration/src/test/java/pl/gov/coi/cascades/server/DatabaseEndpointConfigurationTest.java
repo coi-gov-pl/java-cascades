@@ -23,10 +23,24 @@ public class DatabaseEndpointConfigurationTest {
     private DatabaseManager databaseManager;
 
     @Mock
-    private DriverManagerDataSource driver;
+    private ServerConfigurationService service;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Test
+    public void testProduceDriverManagerDataSourceWhenMapIsEmpty() throws Exception {
+        // given
+        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
+
+        // when
+        Map<String, DriverManagerDataSource> actual = conf.produceDriverManagerDataSource(
+            service
+        );
+
+        // then
+        assertThat(actual).isEmpty();
+    }
 
     @Test
     public void testProduceDatabaseTemplateGateway() throws Exception {
