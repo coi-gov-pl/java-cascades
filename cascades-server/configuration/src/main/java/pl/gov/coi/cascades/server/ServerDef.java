@@ -17,6 +17,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ServerDef {
     private String serverId;
+    private String type;
     private String dbname;
     private String user;
     private String password;

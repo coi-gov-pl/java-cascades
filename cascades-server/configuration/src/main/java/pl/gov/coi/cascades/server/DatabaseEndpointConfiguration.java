@@ -1,10 +1,14 @@
 package pl.gov.coi.cascades.server;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
+import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,10 +25,11 @@ public class DatabaseEndpointConfiguration {
     Map<String, DriverManagerDataSource> produceDriverManagerDataSource(ServerConfigurationService service) {
         Map<String, DriverManagerDataSource> managers = new HashMap<>();
         for (ServerDef serverDef : service.getManagedServers()) {
+            ConnectionConfiguration configuration = getConnectionConfiguration(serverDef);
             DriverManagerDataSource manager = new DriverManagerDataSource();
-            manager.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-            manager.setUrl(
-                String.format("jdbc:oracle:thin:@//%s:%d/%s",
+            manager.setDriverClassName(configuration.getDriver());
+            manager.setUrl(String.format(
+                configuration.getUrl(),
                 serverDef.getHost(),
                 serverDef.getPort(),
                 serverDef.getDbname())
@@ -36,6 +41,30 @@ public class DatabaseEndpointConfiguration {
         return managers;
     }
 
+    private static ConnectionConfiguration getConnectionConfiguration(ServerDef serverDef) {
+        String driver;
+        String url;
+        switch (serverDef.getType()) {
+            case "ora12c":
+                driver = "oracle.jdbc.driver.OracleDriver";
+                url = "jdbc:oracle:thin:@//%s:%d/%s";
+                break;
+            case "pgsql":
+                driver = "org.postgresql.Driver";
+                url = "jdbc:postgresql://%s:%d/%s";
+                break;
+            default:
+                throw new EidIllegalArgumentException(
+                    "20170728:150904",
+                    "Given driver hasn't been recognised."
+                );
+        }
+        return new ConnectionConfiguration(
+            driver,
+            url
+        );
+    }
+
     @Bean
     DatabaseManager produceDatabaseManager(Map<String, DriverManagerDataSource> driver) {
         return new DatabaseEndpointManager(driver);
@@ -43,7 +72,15 @@ public class DatabaseEndpointConfiguration {
 
     @Bean
     DatabaseTemplateGateway produceDatabaseTemplateGateway(DatabaseManager manager) {
-        return new DatabaseTemplateGatewayImpl(manager);
+        return new OracleTemplateGateway(manager);
+    }
+
+    @Getter
+    @AllArgsConstructor
+    @RequiredArgsConstructor
+    private static final class ConnectionConfiguration {
+        private String driver;
+        private String url;
     }
 
 }

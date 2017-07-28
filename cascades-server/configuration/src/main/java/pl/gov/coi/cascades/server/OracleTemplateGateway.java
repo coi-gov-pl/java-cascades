@@ -19,13 +19,13 @@ import java.util.stream.Stream;
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 28.06.17
  */
-public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
+public class OracleTemplateGateway implements DatabaseTemplateGateway {
 
-    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseTemplateGatewayImpl.class);
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(OracleTemplateGateway.class);
     private Logger logger;
     private DatabaseManager databaseManager;
 
-    DatabaseTemplateGatewayImpl(DatabaseManager databaseManager) {
+    OracleTemplateGateway(DatabaseManager databaseManager) {
         this(
             DEFAULT_LOGGER,
             databaseManager
@@ -33,8 +33,8 @@ public class DatabaseTemplateGatewayImpl implements DatabaseTemplateGateway {
     }
 
     @VisibleForTesting
-    DatabaseTemplateGatewayImpl(Logger logger,
-                                DatabaseManager databaseManager) {
+    OracleTemplateGateway(Logger logger,
+                          DatabaseManager databaseManager) {
         this.logger = logger;
         this.databaseManager = databaseManager;
     }
