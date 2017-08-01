@@ -6,7 +6,6 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
@@ -58,7 +57,7 @@ public class DatabaseEndpointManagerTest {
         );
 
         // when
-        JdbcTemplate actual = databaseEndpointManager.get("test");
+        ConnectionDatabase actual = databaseEndpointManager.get("test");
 
         // then
         assertThat(actual).isNotNull();

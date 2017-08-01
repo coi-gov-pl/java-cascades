@@ -22,15 +22,20 @@ public class DatabaseEndpointManager implements DatabaseManager {
     }
 
     @Override
-    public JdbcTemplate get(String serverId) throws SQLException {
+    public ConnectionDatabase get(String serverId) throws SQLException {
         DriverManagerDataSource manager = managers.get(serverId);
+
         if (manager == null) {
             throw new EidIllegalArgumentException(
                 "20170726:121616",
                 "Given serverId hasn't been found."
             );
         }
-        return new JdbcTemplate(manager);
+
+        return new ConnectionDatabase(
+            new JdbcTemplate(manager),
+            manager.getUrl()
+        );
     }
 
 }

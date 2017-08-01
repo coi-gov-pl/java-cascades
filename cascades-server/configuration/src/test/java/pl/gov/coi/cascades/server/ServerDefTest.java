@@ -15,6 +15,7 @@ public class ServerDefTest {
         // when
         ServerDef serverDef = new ServerDef(
             "test",
+            "ora12c",
             "db_name",
             "admin",
             "pass123",

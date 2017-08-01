@@ -1,7 +1,5 @@
 package pl.gov.coi.cascades.server;
 
-import org.springframework.jdbc.core.JdbcTemplate;
-
 import java.sql.SQLException;
 
 /**
@@ -10,6 +8,6 @@ import java.sql.SQLException;
  */
 public interface DatabaseManager {
 
-    JdbcTemplate get(String serverId) throws SQLException;
+    ConnectionDatabase get(String serverId) throws SQLException;
 
 }
