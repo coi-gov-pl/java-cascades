@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class DatabaseEndpointConfiguration {
     }
 
     @Bean
-    pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway produceDatabaseTemplateGateway(DatabaseManager manager) {
+    DatabaseTemplateGateway produceDatabaseTemplateGateway(DatabaseManager manager) {
         return new GeneralTemplateGateway(manager);
     }
 
