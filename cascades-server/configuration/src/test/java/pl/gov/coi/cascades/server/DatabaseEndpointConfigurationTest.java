@@ -23,10 +23,25 @@ public class DatabaseEndpointConfigurationTest {
     private DatabaseManager databaseManager;
 
     @Mock
+    private ConnectionConfigurator connectionConfigurator;
+
+    @Mock
     private ServerConfigurationService service;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Test
+    public void testProduceConnectionConfiguration() throws Exception {
+        // given
+        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
+
+        // when
+        ConnectionConfigurator actual = conf.produceConnectionConfiguration();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
 
     @Test
     public void testProduceDriverManagerDataSourceWhenMapIsEmpty() throws Exception {
@@ -35,7 +50,8 @@ public class DatabaseEndpointConfigurationTest {
 
         // when
         Map<String, DriverManagerDataSource> actual = conf.produceDriverManagerDataSource(
-            service
+            service,
+            connectionConfigurator
         );
 
         // then
