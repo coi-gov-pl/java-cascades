@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.client.configuration;
 import org.junit.Test;
 
 import java.net.URI;
+import java.util.concurrent.TimeUnit;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,6 +24,21 @@ public class CascadesServerConfigurationImplTest {
         // then
         assertThat(uri).isNotNull();
         assertThat(uri.getAuthority()).isEqualTo("cascades.localdomain:8080");
+    }
+
+    @Test
+    public void testProduceOperationsTimeout() throws Exception {
+        // given
+        long defaultTimeout = 300000;
+        CascadesServerConfigurationImpl serverConfiguration = new CascadesServerConfigurationImpl();
+
+        // when
+        CascadesServerConfiguration.Timeout timeout = serverConfiguration.produceOperationsTimeout();
+
+        // then
+        assertThat(timeout).isNotNull();
+        assertThat(timeout.getNumber()).isEqualTo(defaultTimeout);
+        assertThat(timeout.getTimeUnit()).isEqualByComparingTo(TimeUnit.MILLISECONDS);
     }
 
 }

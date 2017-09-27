@@ -8,7 +8,6 @@ import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -31,11 +30,6 @@ class PersistanceStubConfiguration {
     @Named(STUB_DATABASE)
     Map<Object, User> produceStubDatabase() {
         return new HashMap<>();
-    }
-
-    @Bean
-    DatabaseTemplateGateway produceDatabaseTemplateGateway() {
-        return new DatabaseTemplateGatewayStub();
     }
 
     @Bean

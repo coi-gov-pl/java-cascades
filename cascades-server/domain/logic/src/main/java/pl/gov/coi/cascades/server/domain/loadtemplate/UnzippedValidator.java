@@ -1,6 +1,7 @@
 package pl.gov.coi.cascades.server.domain.loadtemplate;
 
 import com.google.common.collect.Lists;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
 import pl.gov.coi.cascades.server.domain.AbstractListenableValidator;
@@ -37,6 +38,8 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
     );
     private String jsonFilename;
     private TemplateMetadata templateMetadata;
+    @Getter
+    private Path pathToScript;
 
     @Override
     public boolean isValid() {
@@ -112,6 +115,7 @@ public class UnzippedValidator extends AbstractListenableValidator<TemplateMetad
                 );
                 return false;
             }
+            pathToScript = pathToDeployScript;
             return true;
         }
         return false;

@@ -38,7 +38,7 @@ public class UseCaseImpl implements UseCase {
                 unzippedValidator.addValidatedEntityListener(metadataHolder::setTemplateMetadata);
                 if (unzippedValidator.isValid()) {
                     Template template = createTemplate(metadataHolder);
-                    loadTemplate(template, path);
+                    loadTemplate(template, unzippedValidator.getPathToScript());
                     succeedResponse(template, response);
                 }
             }
