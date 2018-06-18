@@ -43,7 +43,7 @@ public class UsernameAndPasswordCredentialsGeneratorService {
     private char[] generatePassword() {
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            char c = (char) (rand.nextInt(CHAR_PASSWORD.length()));
+            char c = CHAR_PASSWORD.charAt(rand.nextInt(CHAR_PASSWORD.length()));
             stringBuilder.append(c);
         }
         return stringBuilder.toString().toCharArray();
