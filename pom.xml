@@ -76,7 +76,7 @@
     </distributionManagement>
 
     <properties>
-        <maven.required.version>3.0.5</maven.required.version>
+        <maven.required.version>3.5.3</maven.required.version>
         <netbeans.hint.license>apache20</netbeans.hint.license>
         <license.name>Apache License 2.0</license.name>
         <license.url>http://www.apache.org/licenses/LICENSE-2.0</license.url>
@@ -431,18 +431,12 @@
         </profile>
         <profile>
             <id>travis</id>
-            <activation>
-                <property>
-                    <name>env.TRAVIS</name>
-                    <value>true</value>
-                </property>
-            </activation>
             <build>
                 <plugins>
                     <plugin>
                         <groupId>org.eluder.coveralls</groupId>
                         <artifactId>coveralls-maven-plugin</artifactId>
-                        <version>4.1.0</version>
+                        <version>4.3.0</version>
                         <executions>
                             <execution>
                                 <id>coveralls-default</id>
