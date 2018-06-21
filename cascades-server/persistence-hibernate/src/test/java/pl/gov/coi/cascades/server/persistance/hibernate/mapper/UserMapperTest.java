@@ -38,7 +38,7 @@ public class UserMapperTest {
     private static final String EMAIL = "jrambo@example.org";
     private static final String USERNAME = "jrambo";
     private static final String ID = "12345678";
-    private static final String PASSWORD = "12345678";
+    private static final char[] PASSWORD = "12345678".toCharArray();
     private static final String HOST = "db01.lab.internal";
     private static final int PORT = 5432;
     private static final Long DATABASE_ID_AS_LONG = 45L;

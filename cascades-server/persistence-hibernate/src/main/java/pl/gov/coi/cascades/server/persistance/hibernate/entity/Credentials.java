@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Lob;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -25,6 +26,7 @@ public class Credentials {
     private String username;
 
     @Column
-    private String password;
+    @Lob
+    private char[] password;
 
 }

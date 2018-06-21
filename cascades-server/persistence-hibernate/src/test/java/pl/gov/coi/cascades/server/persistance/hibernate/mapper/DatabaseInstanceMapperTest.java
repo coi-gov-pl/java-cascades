@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
  */
 public class DatabaseInstanceMapperTest {
 
-    private static final String PASSWORD = "12345678";
+    private static final char[] PASSWORD = "12345678".toCharArray();
     private static final String USERNAME = "Ben Affleck";
     private static final String HOST = "db01.lab.internal";
     private static final int PORT = 5432;
@@ -64,7 +64,7 @@ public class DatabaseInstanceMapperTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void testToHibernateEntity() throws Exception {
+    public void testToHibernateEntity() {
         // given
         DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
             databaseTypeClassNameService
@@ -100,7 +100,7 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getDatabaseName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseName());
         assertThat(actual.getCredentials()
             .getPassword())
-            .isEqualTo(Arrays.toString(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getPassword()));
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getPassword());
         assertThat(actual.getCredentials()
             .getUsername())
             .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getCredentials().getUsername());
@@ -115,7 +115,7 @@ public class DatabaseInstanceMapperTest {
     }
 
     @Test
-    public void testFromHibernateEntity() throws Exception {
+    public void testFromHibernateEntity() {
         // given
         when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTO);
         when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
@@ -166,7 +166,7 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
         assertThat(actual.getDatabaseName()).isEqualTo(DATABASE_NAME);
-        assertThat(actual.getCredentials().getPassword()).isEqualTo(PASSWORD.toCharArray());
+        assertThat(actual.getCredentials().getPassword()).isEqualTo(PASSWORD);
         assertThat(actual.getCredentials().getUsername()).isEqualTo(USERNAME);
         assertThat(actual.getNetworkBind().getHost()).isEqualTo(HOST);
         assertThat(actual.getNetworkBind().getPort()).isEqualTo(PORT);

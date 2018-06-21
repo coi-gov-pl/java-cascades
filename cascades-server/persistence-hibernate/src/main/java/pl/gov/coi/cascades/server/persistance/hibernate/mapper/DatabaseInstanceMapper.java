@@ -20,7 +20,6 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
-import java.util.Arrays;
 
 import static pl.wavesoftware.eid.utils.EidPreconditions.checkNotNull;
 
@@ -74,7 +73,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         checkNotNull(databaseInstance.getDatabaseType(), "20170414:111248");
 
         Credentials credentials = new Credentials();
-        credentials.setPassword(Arrays.toString(databaseInstance.getCredentials().getPassword()));
+        credentials.setPassword(databaseInstance.getCredentials().getPassword());
         credentials.setUsername(databaseInstance.getCredentials().getUsername());
 
         NetworkBind networkBind = new NetworkBind();
@@ -121,7 +120,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         DatabaseType databaseType = new DtoFetcher(databaseTypeDTO).getDatabaseType();
         UsernameAndPasswordCredentials credentials = new UsernameAndPasswordCredentialsImpl(
             databaseInstance.getCredentials().getUsername(),
-            databaseInstance.getCredentials().getPassword().toCharArray()
+            databaseInstance.getCredentials().getPassword()
         );
         pl.gov.coi.cascades.contract.domain.NetworkBind networkBind = new NetworkBindImpl(
             databaseInstance.getNetworkBind().getHost(),
