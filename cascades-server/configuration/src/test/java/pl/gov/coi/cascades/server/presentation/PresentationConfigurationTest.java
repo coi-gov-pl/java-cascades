@@ -12,6 +12,10 @@ import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorSer
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
+import java.security.SecureRandom;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
@@ -26,11 +30,10 @@ public class PresentationConfigurationTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Test
-    public void testProduceTemplateIdGeneratorService() throws Exception {
-        // given
-        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
+    private final PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
 
+    @Test
+    public void testProduceTemplateIdGeneratorService() {
         // when
         TemplateIdGeneratorService actual = presentationConfiguration.produceTemplateIdGeneratorService();
 
@@ -40,10 +43,7 @@ public class PresentationConfigurationTest {
     }
 
     @Test
-    public void testProduceDatabaseIdGeneratorService() throws Exception {
-        // given
-        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
-
+    public void testProduceDatabaseIdGeneratorService() {
         // when
         DatabaseIdGeneratorService actual = presentationConfiguration.produceDatabaseIdGeneratorService();
 
@@ -53,10 +53,7 @@ public class PresentationConfigurationTest {
     }
 
     @Test
-    public void testProduceDatabaseNameGeneratorService() throws Exception {
-        // given
-        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
-
+    public void testProduceDatabaseNameGeneratorService() {
         // when
         DatabaseNameGeneratorService actual = presentationConfiguration.produceDatabaseNameGeneratorService();
 
@@ -66,12 +63,9 @@ public class PresentationConfigurationTest {
     }
 
     @Test
-    public void testProduceCredentials() throws Exception {
-        // given
-        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
-
+    public void testProduceCredentials() {
         // when
-        UsernameAndPasswordCredentialsGeneratorService actual = presentationConfiguration.produceCredentials();
+        UsernameAndPasswordCredentialsGeneratorService actual = presentationConfiguration.produceCredentials(new SecureRandom());
 
         // then
         assertThat(actual).isNotNull();
@@ -79,10 +73,17 @@ public class PresentationConfigurationTest {
     }
 
     @Test
-    public void testProduceDatabaseTypeClassName() throws Exception {
-        // given
-        PresentationConfiguration presentationConfiguration = new PresentationConfiguration();
+    public void testProduceRandomGenerator() {
+        // when
+        Random actual = presentationConfiguration.produceRandomGenerator();
 
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual).isInstanceOf(ThreadLocalRandom.class);
+    }
+
+    @Test
+    public void testProduceDatabaseTypeClassName() {
         // when
         DatabaseTypeClassNameService actual = presentationConfiguration.produceDatabaseTypeClassName(
             osgiBeanLocator

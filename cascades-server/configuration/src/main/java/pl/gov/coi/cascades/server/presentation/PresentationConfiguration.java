@@ -10,6 +10,9 @@ import pl.gov.coi.cascades.server.domain.OsgiDatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
 import pl.gov.coi.cascades.server.domain.loadtemplate.TemplateIdGeneratorService;
 
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 02.03.17.
@@ -33,8 +36,13 @@ public class PresentationConfiguration {
     }
 
     @Bean
-    UsernameAndPasswordCredentialsGeneratorService produceCredentials() {
-        return new UsernameAndPasswordCredentialsGeneratorService();
+    UsernameAndPasswordCredentialsGeneratorService produceCredentials(Random random) {
+        return new UsernameAndPasswordCredentialsGeneratorService(random);
+    }
+
+    @Bean
+    Random produceRandomGenerator() {
+        return ThreadLocalRandom.current();
     }
 
     @Bean

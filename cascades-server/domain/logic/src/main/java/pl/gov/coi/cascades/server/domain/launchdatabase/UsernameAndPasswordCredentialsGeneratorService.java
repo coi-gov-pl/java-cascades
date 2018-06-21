@@ -1,27 +1,27 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import org.apache.commons.lang.RandomStringUtils;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
-import java.security.SecureRandom;
 import java.util.Random;
-import java.util.UUID;
 
 public class UsernameAndPasswordCredentialsGeneratorService {
 
     private static final int PASSWORD_LENGTH = 24;
-    private static final int USERNAME_LENGTH = 8;
+    private static final int USERNAME_LENGTH = 10;
     private static final String CHAR_PASSWORD =
         "0123456789" +
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             "abcdefghijklmnopqrstuvwxyz" +
             "!@#$%^&*";
-    private Random rand;
+    private Random randomGenerator;
 
     /**
      * Default constructor.
+     * @param randomGenerator random generator implementation
      */
-    public UsernameAndPasswordCredentialsGeneratorService() {
-        rand = new SecureRandom();
+    public UsernameAndPasswordCredentialsGeneratorService(Random randomGenerator) {
+        this.randomGenerator = randomGenerator;
     }
 
     /**
@@ -31,22 +31,21 @@ public class UsernameAndPasswordCredentialsGeneratorService {
      */
     public UsernameAndPasswordCredentials generate() {
         String username = generateUsername();
-        char[] password = generatePassword();
+        char[] password = generateCharArrayPassword();
         return new UsernameAndPasswordCredentialsImpl(username, password);
     }
 
     private static String generateUsername() {
-        String uuid = UUID.randomUUID().toString();
-        return uuid.substring(0, USERNAME_LENGTH);
+        return RandomStringUtils.randomAlphabetic(USERNAME_LENGTH);
     }
 
-    private char[] generatePassword() {
-        StringBuilder stringBuilder = new StringBuilder();
+    private char[] generateCharArrayPassword() {
+        char[] password = new char[PASSWORD_LENGTH];
         for (int i = 0; i < PASSWORD_LENGTH; i++) {
-            char c = (char) (rand.nextInt(CHAR_PASSWORD.length()));
-            stringBuilder.append(c);
+            char c = CHAR_PASSWORD.charAt(randomGenerator.nextInt(CHAR_PASSWORD.length()));
+            password[i] = c;
         }
-        return stringBuilder.toString().toCharArray();
+        return password;
     }
 
 }

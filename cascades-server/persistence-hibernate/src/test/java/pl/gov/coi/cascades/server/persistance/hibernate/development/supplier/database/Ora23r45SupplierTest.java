@@ -30,7 +30,7 @@ public class Ora23r45SupplierTest {
         String instanceName = "Oracle is *%! hard";
         String host = "cascades.example.org";
         String username = "dje4njknjkrn";
-        String password = "vfnui34jnghie";
+        char[] password = "vfnui34jnghie".toCharArray();
         DatabaseStatus status = DatabaseStatus.LAUNCHED;
         Date created = Date.from(Instant.parse("2017-03-28T17:56:11.01Z"));
         Ora23r45Supplier ora23r45Supplier = new Ora23r45Supplier();

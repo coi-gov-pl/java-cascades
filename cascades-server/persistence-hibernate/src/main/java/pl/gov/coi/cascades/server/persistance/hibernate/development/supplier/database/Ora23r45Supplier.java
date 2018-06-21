@@ -41,7 +41,7 @@ public class Ora23r45Supplier implements DatabaseInstanceSupplier {
         db.setCredentials(
             Credentials.builder()
                 .username("dje4njknjkrn")
-                .password("vfnui34jnghie")
+                .password("vfnui34jnghie".toCharArray())
                 .build()
         );
         db.setReuseTimes(1);

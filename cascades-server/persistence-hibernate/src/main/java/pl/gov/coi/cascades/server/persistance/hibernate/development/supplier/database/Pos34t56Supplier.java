@@ -41,7 +41,7 @@ public class Pos34t56Supplier implements DatabaseInstanceSupplier {
         db.setCredentials(
             Credentials.builder()
                 .username("fdrg5yh545y")
-                .password("5h5h54jyuyr7za")
+                .password("5h5h54jyuyr7za".toCharArray())
                 .build()
         );
         db.setReuseTimes(1);

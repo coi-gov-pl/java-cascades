@@ -30,7 +30,7 @@ public class Pos45y67SupplierTest {
         String instanceName = "Postgres is *%! hard";
         String host = "cascades.example.org";
         String username = "fddfhy56ytj3";
-        String password = "hjsw5y4thaw43t5grw";
+        char[] password = "hjsw5y4thaw43t5grw".toCharArray();
         DatabaseStatus status = DatabaseStatus.DELETED;
         Date created = Date.from(Instant.parse("2017-03-28T17:56:11.01Z"));
         Pos45y67Supplier pos45y67Supplier = new Pos45y67Supplier();

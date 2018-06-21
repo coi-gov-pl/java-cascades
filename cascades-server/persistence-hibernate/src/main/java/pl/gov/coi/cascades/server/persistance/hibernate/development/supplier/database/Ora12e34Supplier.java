@@ -41,7 +41,7 @@ public class Ora12e34Supplier implements DatabaseInstanceSupplier {
         db.setCredentials(
             Credentials.builder()
                 .username("yjdr6uyjrjt")
-                .password("tgjsrt64w6ujstrjrst")
+                .password("tgjsrt64w6ujstrjrst".toCharArray())
                 .build()
         );
         db.setStatus(DatabaseStatus.LAUNCHED);

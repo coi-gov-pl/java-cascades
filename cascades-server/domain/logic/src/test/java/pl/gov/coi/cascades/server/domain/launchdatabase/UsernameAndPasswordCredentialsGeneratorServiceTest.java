@@ -1,10 +1,21 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.runners.MockitoJUnitRunner;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
-import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsGeneratorService;
+
+import java.security.SecureRandom;
+import java.util.Random;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -12,18 +23,42 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class UsernameAndPasswordCredentialsGeneratorServiceTest {
 
+    private static final int PASSWORD_LENGTH = 24;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
+    @Mock
+    private Random randomGeneratorMock;
+
     @Test
-    public void testGenerate() throws Exception {
+    public void testGenerateRandomCredentials() {
         // given
-        UsernameAndPasswordCredentialsGeneratorService credentials = new UsernameAndPasswordCredentialsGeneratorService();
+        UsernameAndPasswordCredentialsGeneratorService credentials = new UsernameAndPasswordCredentialsGeneratorService(new SecureRandom());
 
         // when
-        UsernameAndPasswordCredentials actual = credentials.generate();
+        UsernameAndPasswordCredentials firstGeneration = credentials.generate();
+        UsernameAndPasswordCredentials secondGeneration = credentials.generate();
 
         // then
-        assertThat(actual).isNotNull();
-        assertThat(actual.getUsername()).hasSize(8);
-        assertThat(actual.getPassword()).hasSize(24);
+        checkGeneratedDataIsRandom(firstGeneration, secondGeneration);
+    }
+
+    @Test
+    public void testUsePassedGenerator() {
+        //given
+        UsernameAndPasswordCredentialsGeneratorService credentials = new UsernameAndPasswordCredentialsGeneratorService(randomGeneratorMock);
+
+        //when
+        credentials.generate();
+
+        // then
+        verify(randomGeneratorMock, times(PASSWORD_LENGTH)).nextInt(any(Integer.class));
+    }
+
+    private void checkGeneratedDataIsRandom(UsernameAndPasswordCredentials firstGeneration, UsernameAndPasswordCredentials secondGeneration) {
+        assertThat(firstGeneration.getUsername()).isNotEqualTo(secondGeneration.getUsername());
+        assertThat(firstGeneration.getPassword()).isNotEqualTo(secondGeneration.getPassword());
     }
 
 }

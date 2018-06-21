@@ -68,7 +68,7 @@ public class DatabaseIdGatewayImplTest {
     public void testFind() throws Exception {
         // given
         String id = "123456789";
-        String PASSWORD = "12345678";
+        char[] PASSWORD = "12345678".toCharArray();
         String USERNAME = "Ben Affleck";
         String HOST = "db01.lab.internal";
         String GENERATED_ID = "fh45j32b";
