@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -39,4 +41,19 @@ public class HibernateConfiguration {
         );
     }
 
+    @Bean
+    @Transactional
+    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new DatabaseInstanceGatewayImpl(
+            databaseTypeClassNameService
+        );
+    }
+
+    @Bean
+    @Transactional
+    DatabaseLimitGateway createDatabaseLimitGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new DatabaseLimitGatewayImpl(
+            databaseTypeClassNameService
+        );
+    }
 }

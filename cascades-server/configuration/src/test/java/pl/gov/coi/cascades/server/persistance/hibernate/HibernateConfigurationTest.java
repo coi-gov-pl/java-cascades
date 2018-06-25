@@ -6,6 +6,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -64,4 +66,31 @@ public class HibernateConfigurationTest {
         assertThat(actual).isInstanceOf(DatabaseIdGatewayImpl.class);
     }
 
+    @Test
+    public void testDatabaseInstanceGateway() throws Exception {
+        // given
+        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
+
+        // when
+        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway(
+            databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isInstanceOf(DatabaseInstanceGatewayImpl.class);
+    }
+
+    @Test
+    public void testDatabaseLimitGateway() throws Exception {
+        // given
+        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
+
+        // when
+        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway(
+            databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isInstanceOf(DatabaseLimitGatewayImpl.class);
+    }
 }
