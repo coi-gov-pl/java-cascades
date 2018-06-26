@@ -20,6 +20,7 @@
         <module>presentation</module>
         <module>persistance-stub</module>
         <module>persistence-hibernate</module>
+        <module>plugins</module>
     </modules>
 
     <properties>

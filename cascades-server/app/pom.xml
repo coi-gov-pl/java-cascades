@@ -12,6 +12,12 @@
     <name>Cascades :: Server :: Spring Application</name>
 
     <dependencies>
+        <!-- TODO: this should be removed in future -->
+        <dependency>
+            <groupId>pl.gov.coi.cascades</groupId>
+            <artifactId>cascades-plugins-postgresql</artifactId>
+            <version>${project.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
