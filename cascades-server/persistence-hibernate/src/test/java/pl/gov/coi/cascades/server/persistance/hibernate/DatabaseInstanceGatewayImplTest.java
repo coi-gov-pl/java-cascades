@@ -46,17 +46,6 @@ public class DatabaseInstanceGatewayImplTest {
     }
 
     private DatabaseInstance getDatabaseInstance() {
-        return new DatabaseInstance(
-            null,
-            null,
-            null,
-            null,
-            0,
-            null,
-            null,
-            null,
-            null,
-            null
-        );
+        return DatabaseInstance.builder().build();
     }
 }
