@@ -1,61 +1,59 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.User;
-
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertFalse;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 /**
- * @author Łukasz Małek <lukasz.malek@coi.gov.pl>
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DatabaseLimitGatewayImplTest {
 
     private static final String USERNAME = "username";
     private static final String ID = "id";
     private static final String EMAIL = "email";
 
-    @InjectMocks
+    @Mock
+    private DatabaseInstanceMapper databaseInstanceMapper;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private DatabaseLimitGatewayImpl databaseLimitGateway;
 
-    @Test
+    @Before
+    public void init() {
+        databaseLimitGateway = new DatabaseLimitGatewayImpl(databaseInstanceMapper);
+    }
+
+
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldBePersonalLimitExceeded() {
         //when
-        boolean result = databaseLimitGateway.isPersonalLimitExceeded(getUser());
-
-        //then
-        assertFalse(result);
+        databaseLimitGateway.isPersonalLimitExceeded(getUser());
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldGetPersonalLimitPerUser() {
         //when
-        int result = databaseLimitGateway.getPersonalLimitPerUser(getUser());
-
-        //then
-        assertEquals(0, result);
+        databaseLimitGateway.getPersonalLimitPerUser(getUser());
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldGlobalLimitExceeded() {
         //when
-        boolean result = databaseLimitGateway.isGlobalLimitExceeded();
-
-        //then
-        assertFalse(result);
+        databaseLimitGateway.isGlobalLimitExceeded();
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldGetGlobalLimit() {
         //when
-        int result = databaseLimitGateway.getPersonalLimitPerUser(getUser());
-
-        //then
-        assertEquals(0, result);
+        databaseLimitGateway.getPersonalLimitPerUser(getUser());
     }
 
     private User getUser() {

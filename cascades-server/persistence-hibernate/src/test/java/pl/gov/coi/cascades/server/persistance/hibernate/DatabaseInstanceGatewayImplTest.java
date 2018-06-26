@@ -1,70 +1,62 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
 import org.mockito.runners.MockitoJUnitRunner;
-import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseStatus;
-import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
-import pl.gov.coi.cascades.server.persistance.stub.NetworkBindStub;
-import pl.gov.coi.cascades.server.persistance.stub.TemplateIdGatewayStub;
-import pl.gov.coi.cascades.server.persistance.stub.UsernameAndPasswordCredentialsStub;
-
-import java.time.Instant;
-import java.util.Date;
-
-import static junit.framework.TestCase.assertNull;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 /**
- * @author Łukasz Małek <lukasz.malek@coi.gov.pl>
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
-@RunWith(MockitoJUnitRunner.class)
 public class DatabaseInstanceGatewayImplTest {
 
-    @InjectMocks
+    @Mock
+    private DatabaseTypeClassNameService databaseTypeClassNameService;
+
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+
     private DatabaseInstanceGatewayImpl databaseInstanceGateway;
 
-    private static final DatabaseId DATABASE_ID1 = new DatabaseId("19");
-    private static final DatabaseType DATABASE_TYPE = new DatabaseTypeStub();
-    private static final UsernameAndPasswordCredentials USERNAME_AND_PASSWORD_CREDENTIALS1 =
-        new UsernameAndPasswordCredentialsStub("Ben Affleck");
-    private static final NetworkBind NETWORK_BIND = new NetworkBindStub(5432, "db01.lab.internal");
-
-    @Test
-    public void shouldLaunchDatabase() {
-        //when
-        DatabaseInstance result = databaseInstanceGateway.launchDatabase(getDatabaseInstance());
-
-        //then
-        assertNull(result);
+    @Before
+    public void init() {
+        databaseInstanceGateway =  new DatabaseInstanceGatewayImpl(
+            new DatabaseInstanceMapper(databaseTypeClassNameService)
+        );
     }
 
-    @Test
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldLaunchDatabase() {
+        //when
+        databaseInstanceGateway.launchDatabase(getDatabaseInstance());
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
     public void shouldGetRemoteServerId() {
         //when
-        String result = databaseInstanceGateway.getRemoteServerId();
-
-        //then
-        assertNull(result);
+        databaseInstanceGateway.getRemoteServerId();
     }
 
     private DatabaseInstance getDatabaseInstance() {
         return new DatabaseInstance(
-            DATABASE_ID1,
-            TemplateIdGatewayStub.TEMPLATE_ID1,
-            DATABASE_TYPE,
-            "oracle 12c",
-            1,
-            "ora12e34",
-            USERNAME_AND_PASSWORD_CREDENTIALS1,
-            NETWORK_BIND,
-            DatabaseStatus.LAUNCHED,
-            Date.from(Instant.now())
+            null,
+            null,
+            null,
+            null,
+            0,
+            null,
+            null,
+            null,
+            null,
+            null
         );
     }
 }

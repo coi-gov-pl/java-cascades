@@ -4,27 +4,24 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
-import javax.inject.Inject;
+import javax.transaction.Transactional;
 
 /**
- * @author Łukasz Małek <lukasz.malek@coi.gov.pl>
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
+@Transactional
 public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseLimitGatewayImpl.class);
     private Logger logger;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
-    @Inject
-    public DatabaseLimitGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
+    public DatabaseLimitGatewayImpl(DatabaseInstanceMapper databaseInstanceMapper) {
         this(
-            new DatabaseInstanceMapper(
-                databaseTypeClassNameService
-            ),
+            databaseInstanceMapper,
             DEFAULT_LOGGER
         );
     }
@@ -37,22 +34,30 @@ public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
     }
 
     @Override
+    @Deprecated
     public boolean isPersonalLimitExceeded(User user) {
-        return false;
+        // TODO: write an implementation
+        throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     @Override
+    @Deprecated
     public int getPersonalLimitPerUser(User user) {
-        return 0;
+        // TODO: write an implementation
+        throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     @Override
+    @Deprecated
     public boolean isGlobalLimitExceeded() {
-        return false;
+        // TODO: write an implementation
+        throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     @Override
+    @Deprecated
     public int getGlobalLimit() {
-        return 0;
+        // TODO: write an implementation
+        throw new UnsupportedOperationException("Not yet implemented!");
     }
 }

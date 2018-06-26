@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
@@ -33,16 +34,14 @@ public class UserGatewayImpl implements UserGateway {
     private EntityManager entityManager;
     private final UserMapper userMapper;
 
-    @Inject
-    public UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this(databaseTypeClassNameService, DEFAULT_LOGGER);
+    public UserGatewayImpl(UserMapper userMapper) {
+        this(userMapper, DEFAULT_LOGGER);
     }
 
-    UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService,
+    @VisibleForTesting
+    UserGatewayImpl(UserMapper userMapper,
                     Logger logger) {
-        this.userMapper = new UserMapper(
-            databaseTypeClassNameService
-        );
+        this.userMapper = userMapper;
         this.logger = logger;
     }
 

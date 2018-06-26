@@ -13,12 +13,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 30.03.17.
  */
+@Transactional
 public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TemplateIdGatewayImpl.class);

@@ -12,10 +12,13 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyVararg;
 import static org.mockito.Mockito.when;
 
+/**
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
+ */
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = AppMain.class)
 @ProductionHibernateTest
-public class AppMainStartTest {
+public class AppMainStartTestIT {
 
     @Mock
     private SpringApplicationFactory applicationFactory;
@@ -30,10 +33,9 @@ public class AppMainStartTest {
     public void shouldApplicationStartOnProductionProfile(){
         //given
         AppMain.setAppMainSupplier(() -> new AppMain(applicationFactory));
-        when(applicationFactory.create(any()))
-            .thenReturn(application);
-        when(application.run(anyVararg()))
-            .thenReturn(applicationContext);
+
+        when(applicationFactory.create(any())).thenReturn(application);
+        when(application.run(anyVararg())).thenReturn(applicationContext);
         when(applicationContext.isActive()).thenReturn(true);
 
         // when

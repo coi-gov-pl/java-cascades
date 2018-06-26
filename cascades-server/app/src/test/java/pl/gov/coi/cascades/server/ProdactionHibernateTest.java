@@ -8,7 +8,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Łukasz Małek <lukasz.malek@coi.gov.pl>
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

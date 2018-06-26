@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
@@ -10,6 +11,8 @@ import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
 import javax.transaction.Transactional;
 
@@ -22,38 +25,35 @@ import javax.transaction.Transactional;
 public class HibernateConfiguration {
 
     @Bean
-    @Transactional
     TemplateIdGateway createTemplateIdGateway() {
         return new TemplateIdGatewayImpl();
     }
 
     @Bean
-    @Transactional
     UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new UserGatewayImpl(databaseTypeClassNameService);
+        return new UserGatewayImpl(
+            new UserMapper(databaseTypeClassNameService)
+        );
     }
 
     @Bean
-    @Transactional
     DatabaseIdGateway createDatabaseIdGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseIdGatewayImpl(
-            databaseTypeClassNameService
+            new DatabaseInstanceMapper(databaseTypeClassNameService)
         );
     }
 
     @Bean
-    @Transactional
     DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseInstanceGatewayImpl(
-            databaseTypeClassNameService
+            new DatabaseInstanceMapper(databaseTypeClassNameService)
         );
     }
 
     @Bean
-    @Transactional
     DatabaseLimitGateway createDatabaseLimitGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseLimitGatewayImpl(
-            databaseTypeClassNameService
+            new DatabaseInstanceMapper(databaseTypeClassNameService)
         );
     }
 }

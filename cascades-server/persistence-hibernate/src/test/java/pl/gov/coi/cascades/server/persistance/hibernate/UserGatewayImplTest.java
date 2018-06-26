@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -9,6 +10,7 @@ import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.User;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -49,6 +51,13 @@ public class UserGatewayImplTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    private UserGatewayImpl userGateway;
+
+    @Before
+    public void init() {
+        userGateway = new UserGatewayImpl(new UserMapper(databaseTypeClassNameService));
+    }
+
     @Test
     public void testSave() throws Exception {
         // given
@@ -60,9 +69,7 @@ public class UserGatewayImplTest {
             id,
             email
         );
-        UserGatewayImpl userGateway = new UserGatewayImpl(
-            databaseTypeClassNameService
-        );
+
         userGateway.setEntityManager(entityManager);
 
         // when
@@ -84,9 +91,6 @@ public class UserGatewayImplTest {
         user.setId(Long.parseLong(id));
         user.setEmail(email);
 
-        UserGatewayImpl userGateway = new UserGatewayImpl(
-            databaseTypeClassNameService
-        );
         userGateway.setEntityManager(entityManager);
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
@@ -116,7 +120,7 @@ public class UserGatewayImplTest {
         user.setEmail(email);
 
         UserGatewayImpl userGateway = new UserGatewayImpl(
-            databaseTypeClassNameService,
+            new UserMapper(databaseTypeClassNameService),
             logger
         );
         userGateway.setEntityManager(entityManager);
@@ -131,5 +135,4 @@ public class UserGatewayImplTest {
         assertThat(actual.isPresent()).isFalse();
         verify(logger, times(1)).error(contains("20170329:171038"));
     }
-
 }

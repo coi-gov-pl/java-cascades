@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -64,6 +65,15 @@ public class DatabaseIdGatewayImplTest {
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
+    private DatabaseIdGatewayImpl databaseIdGatewayImpl;
+
+    @Before
+    public void init() {
+        databaseIdGatewayImpl = new DatabaseIdGatewayImpl(
+            new DatabaseInstanceMapper(databaseTypeClassNameService)
+        );
+    }
+
     @Test
     public void testFind() throws Exception {
         // given
@@ -90,9 +100,7 @@ public class DatabaseIdGatewayImplTest {
         when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
         when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
         doNothing().when(databaseTypeDTO).resolve();
-        DatabaseIdGatewayImpl databaseIdGatewayImpl = new DatabaseIdGatewayImpl(
-            databaseTypeClassNameService
-        );
+
         Credentials credentials = new Credentials();
         credentials.setPassword(PASSWORD);
         credentials.setUsername(USERNAME);
@@ -158,5 +166,4 @@ public class DatabaseIdGatewayImplTest {
         assertThat(actual.isPresent()).isFalse();
         verify(logger, times(1)).error(contains("20170402:222713"));
     }
-
 }

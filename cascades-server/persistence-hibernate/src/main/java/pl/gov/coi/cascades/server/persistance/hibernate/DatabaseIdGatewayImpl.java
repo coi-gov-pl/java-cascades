@@ -16,12 +16,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 02.04.17.
  */
+@Transactional
 public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseIdGatewayImpl.class);
@@ -31,12 +33,9 @@ public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
     private Logger logger;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
-    @Inject
-    public DatabaseIdGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
+    public DatabaseIdGatewayImpl(DatabaseInstanceMapper databaseInstanceMapper) {
         this(
-            new DatabaseInstanceMapper(
-                databaseTypeClassNameService
-            ),
+            databaseInstanceMapper,
             DEFAULT_LOGGER
         );
     }
