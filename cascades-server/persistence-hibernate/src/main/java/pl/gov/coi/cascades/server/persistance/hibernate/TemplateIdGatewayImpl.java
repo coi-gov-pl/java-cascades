@@ -13,12 +13,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 30.03.17.
  */
+@Transactional
 public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(TemplateIdGatewayImpl.class);
@@ -101,6 +103,8 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     @Override
     public void addTemplate(pl.gov.coi.cascades.contract.domain.Template template) {
+        Template hibernateTemplate = templateIdMapper.toHibernateEntity(template);
+        entityManager.persist(hibernateTemplate);
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170626:140337")
                 .makeLogMessage(
