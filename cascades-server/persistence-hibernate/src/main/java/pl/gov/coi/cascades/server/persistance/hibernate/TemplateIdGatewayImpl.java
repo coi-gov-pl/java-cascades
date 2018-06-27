@@ -46,7 +46,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
     }
 
     @PersistenceContext
-    void setEntityManager(EntityManager entityManager) {
+    public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
