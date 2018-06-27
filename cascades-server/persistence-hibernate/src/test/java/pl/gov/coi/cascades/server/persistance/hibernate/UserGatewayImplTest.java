@@ -40,6 +40,9 @@ public class UserGatewayImplTest {
     private EntityManager entityManager;
 
     @Mock
+    private UserMapper userMapper;
+
+    @Mock
     private TypedQuery<Object> query;
 
     @Mock
@@ -55,7 +58,9 @@ public class UserGatewayImplTest {
 
     @Before
     public void init() {
-        userGateway = new UserGatewayImpl(new UserMapper(databaseTypeClassNameService));
+        userGateway = new UserGatewayImpl(
+            userMapper
+        );
     }
 
     @Test
@@ -70,6 +75,13 @@ public class UserGatewayImplTest {
             email
         );
 
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.User userEntity =
+            new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
+        userEntity.setUsername(username);
+        userEntity.setId(Long.parseLong(id));
+        userEntity.setEmail(email);
+
+        when(userMapper.toHibernateEntity(user)).thenReturn(userEntity);
         userGateway.setEntityManager(entityManager);
 
         // when
@@ -86,16 +98,24 @@ public class UserGatewayImplTest {
         String username = "Kendrick Lamar";
         String id = "123456789";
         String email = "klamar@example.org";
-        pl.gov.coi.cascades.server.persistance.hibernate.entity.User user = new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.User user =
+            new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
         user.setUsername(username);
         user.setId(Long.parseLong(id));
         user.setEmail(email);
+
+        User userDomain = new User(
+            username,
+            id,
+            email
+        );
 
         userGateway.setEntityManager(entityManager);
         when(entityManager.createQuery(anyString(), any())).thenReturn(query);
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
         when(query.getSingleResult()).thenReturn(user);
+        when(userMapper.fromHibernateEntity(user)).thenReturn(userDomain);
 
         // when
         Optional<User> actual = userGateway.find(username);
@@ -114,7 +134,9 @@ public class UserGatewayImplTest {
         String id = "123456789";
         String email = "klamar@example.org";
         NoResultException exception = new NoResultException("There is no result.");
-        pl.gov.coi.cascades.server.persistance.hibernate.entity.User user = new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
+
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.User user =
+            new pl.gov.coi.cascades.server.persistance.hibernate.entity.User();
         user.setUsername(username);
         user.setId(Long.parseLong(id));
         user.setEmail(email);

@@ -28,7 +28,10 @@ public class DatabaseLimitGatewayImplTest {
 
     @Before
     public void init() {
-        databaseLimitGateway = new DatabaseLimitGatewayImpl(databaseInstanceMapper);
+        databaseLimitGateway =
+            new DatabaseLimitGatewayImpl(
+                databaseInstanceMapper
+            );
     }
 
 

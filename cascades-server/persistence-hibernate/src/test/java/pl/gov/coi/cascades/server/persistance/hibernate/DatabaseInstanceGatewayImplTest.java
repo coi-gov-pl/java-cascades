@@ -3,14 +3,10 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 /**
@@ -19,7 +15,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceM
 public class DatabaseInstanceGatewayImplTest {
 
     @Mock
-    private DatabaseTypeClassNameService databaseTypeClassNameService;
+    private DatabaseInstanceMapper databaseInstanceMapper;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -28,8 +24,8 @@ public class DatabaseInstanceGatewayImplTest {
 
     @Before
     public void init() {
-        databaseInstanceGateway =  new DatabaseInstanceGatewayImpl(
-            new DatabaseInstanceMapper(databaseTypeClassNameService)
+        databaseInstanceGateway = new DatabaseInstanceGatewayImpl(
+            databaseInstanceMapper
         );
     }
 

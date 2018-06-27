@@ -70,14 +70,16 @@ public class DatabaseIdGatewayImplTest {
     @Before
     public void init() {
         databaseIdGatewayImpl = new DatabaseIdGatewayImpl(
-            new DatabaseInstanceMapper(databaseTypeClassNameService)
+            databaseInstanceMapper
         );
     }
 
     @Test
     public void testFind() throws Exception {
         // given
+        String username = "Kendrick Lamar";
         String id = "123456789";
+        String email = "klamar@example.org";
         String PASSWORD = "12345678";
         String USERNAME = "Ben Affleck";
         String HOST = "db01.lab.internal";
@@ -133,6 +135,9 @@ public class DatabaseIdGatewayImplTest {
         when(query.setParameter(anyString(), anyString())).thenReturn(query);
         when(query.setMaxResults(anyInt())).thenReturn(query);
         when(query.getSingleResult()).thenReturn(hibernateInstance);
+        when(databaseInstanceMapper
+            .fromHibernateEntity(any(pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance.class)))
+            .thenReturn(DatabaseInstance.builder().build());
 
         // when
         Optional<DatabaseInstance> actual = databaseIdGatewayImpl.findInstance(databaseId);

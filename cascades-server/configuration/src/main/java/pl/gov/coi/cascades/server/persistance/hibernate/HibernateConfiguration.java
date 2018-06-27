@@ -27,30 +27,32 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new UserGatewayImpl(
-            new UserMapper(databaseTypeClassNameService)
-        );
+    UserGateway createUserGateway(UserMapper userMapper) {
+        return new UserGatewayImpl(userMapper);
     }
 
     @Bean
-    DatabaseIdGateway createDatabaseIdGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new DatabaseIdGatewayImpl(
-            new DatabaseInstanceMapper(databaseTypeClassNameService)
-        );
+    DatabaseIdGateway createDatabaseIdGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseIdGatewayImpl(databaseInstanceMapper);
     }
 
     @Bean
-    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new DatabaseInstanceGatewayImpl(
-            new DatabaseInstanceMapper(databaseTypeClassNameService)
-        );
+    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseInstanceGatewayImpl(databaseInstanceMapper);
     }
 
     @Bean
-    DatabaseLimitGateway createDatabaseLimitGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new DatabaseLimitGatewayImpl(
-            new DatabaseInstanceMapper(databaseTypeClassNameService)
-        );
+    DatabaseLimitGateway createDatabaseLimitGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseLimitGatewayImpl(databaseInstanceMapper);
+    }
+
+    @Bean
+    UserMapper createUserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new UserMapper(databaseTypeClassNameService);
+    }
+
+    @Bean
+    DatabaseInstanceMapper createDatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new DatabaseInstanceMapper(databaseTypeClassNameService);
     }
 }
