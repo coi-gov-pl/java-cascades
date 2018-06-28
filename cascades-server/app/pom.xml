@@ -98,4 +98,17 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <id>postgresql</id>
+            <dependencies>
+                <dependency>
+                    <groupId>postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>9.0-801.jdbc4</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
 </project>

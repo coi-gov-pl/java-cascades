@@ -6,6 +6,8 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -24,44 +26,55 @@ public class HibernateConfigurationTest {
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Test
-    public void testCreateTemplateIdGateway() throws Exception {
-        // given
-        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
+    private HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
 
+    @Test
+    public void testCreateTemplateIdGateway() {
         // when
         TemplateIdGateway actual = hibernateConfiguration.createTemplateIdGateway();
 
         // then
-        assertThat(actual).isInstanceOf(TemplateIdGatewayImpl.class);
+        assertThat(actual).isNotNull();
     }
 
     @Test
-    public void testCreateUserGateway() throws Exception {
-        // given
-        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
-
+    public void testCreateUserGateway() {
         // when
         UserGateway actual = hibernateConfiguration.createUserGateway(
             databaseTypeClassNameService
         );
 
         // then
-        assertThat(actual).isInstanceOf(UserGatewayImpl.class);
+        assertThat(actual).isNotNull();
     }
 
     @Test
-    public void testCreateDatabaseIdGateway() throws Exception {
-        // given
-        HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
-
+    public void testCreateDatabaseIdGateway() {
         // when
         DatabaseIdGateway actual = hibernateConfiguration.createDatabaseIdGateway(
             databaseTypeClassNameService
         );
 
         // then
-        assertThat(actual).isInstanceOf(DatabaseIdGatewayImpl.class);
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testCreateDatabaseInstanceGateway() {
+        // when
+        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testCreateDatabaseLimitGateway() {
+        // when
+        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway();
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }

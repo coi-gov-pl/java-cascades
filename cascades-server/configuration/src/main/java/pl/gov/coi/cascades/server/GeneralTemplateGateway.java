@@ -41,45 +41,62 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
     @Override
     public void createTemplate(Template template, Path deploySQLScriptPath) {
         try {
-            ConnectionDatabase connectionDatabase = databaseManager.get(template.getServerId());
-            StringBuilder commands = new StringBuilder();
-            String script = readFileAsString(deploySQLScriptPath);
-
-            if (connectionDatabase.getType().contains("oracle")) {
-                commands.append(getOracleStartCommands(template));
-            } else if (connectionDatabase.getType().contains("postgresql")) {
-                commands.append(getPostgresStartCommands(template));
-            }
-            String[] queries = commands
-                .append(script)
-                .toString()
-                .split(";");
-            for (String str : queries) {
-                connectionDatabase.getJdbcTemplate().execute(str);
-            }
+            ConnectionDatabase connectionDatabase = databaseManager.getConnectionToServer(template.getServerId());
+            runCreateDatabaseCommand(connectionDatabase, template);
+            ConnectionDatabase connectionToTemplate = databaseManager.getConnectionToTemplate(template.getServerId(), template.getName());
+            runDeployScript(connectionToTemplate, deploySQLScriptPath);
+            runAfterDeployScript(connectionToTemplate, template);
         } catch (SQLException e) {
             throw new EidIllegalArgumentException("20170711:151221", e);
+        }
+    }
+
+    private void runDeployScript(ConnectionDatabase connectionToTemplate, Path deploySQLScriptPath) {
+        String deployScript = readFileAsString(deploySQLScriptPath);
+        runSemicolonSeperatedSQL(connectionToTemplate, deployScript);
+    }
+
+    private void runAfterDeployScript(ConnectionDatabase connectionToTemplate, Template template) {
+        if (connectionToTemplate.getType().contains("postgresql")) {
+            runSemicolonSeperatedSQL(connectionToTemplate, String.format(
+            "UPDATE pg_database SET datistemplate = TRUE WHERE datname = '%s';" +
+               "UPDATE pg_database SET datallowconn = FALSE WHERE datname = '%s'",
+                template.getName(), template.getName()
+            ));
+        }
+    }
+
+    private void runCreateDatabaseCommand(ConnectionDatabase connectionDatabase, Template template) {
+        String createDatabaseCommand = "";
+        if (connectionDatabase.getType().contains("oracle")) {
+            createDatabaseCommand = getOracleStartCommands(template);
+        } else if (connectionDatabase.getType().contains("postgresql")) {
+            createDatabaseCommand = getPostgresStartCommands(template);
+        }
+        runSemicolonSeperatedSQL(connectionDatabase, createDatabaseCommand);
+    }
+
+    private void runSemicolonSeperatedSQL(ConnectionDatabase connectionDatabase, String createDatabaseCommand) {
+        String[] queries = createDatabaseCommand.split(";");
+        for (String str : queries) {
+            connectionDatabase.getJdbcTemplate().execute(str);
         }
     }
 
     @Override
     public void deleteTemplate(Template template) {
         try {
-            ConnectionDatabase connectionDatabase = databaseManager.get(template.getServerId());
+            ConnectionDatabase connectionDatabase = databaseManager.getConnectionToServer(template.getServerId());
             StringBuilder commands = new StringBuilder();
 
-            if (connectionDatabase.getType().contains("ora12c")) {
+            if (connectionDatabase.getType().contains("oracle")) {
                 commands.append(getOracleFinishCommands(template));
-            } else if (connectionDatabase.getType().contains("pgsql")) {
+            } else if (connectionDatabase.getType().contains("postgresql")) {
                 commands.append(getPostgresFinishCommands(template));
             }
 
-            String[] queries = commands
-                .toString()
-                .split(";");
-            for (String str : queries) {
-                connectionDatabase.getJdbcTemplate().execute(str);
-            }
+            runSemicolonSeperatedSQL(connectionDatabase, commands
+                .toString());
         } catch (SQLException e) {
             throw new EidIllegalArgumentException("20170726:135511", e);
         }
@@ -106,7 +123,7 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
         return fileData.toString();
     }
 
-    private static StringBuilder getOracleStartCommands(Template template) {
+    private static String getOracleStartCommands(Template template) {
         StringBuilder commands = new StringBuilder();
         String createQuery = String.format(
             "CREATE PLUGGABLE DATABASE %s ADMIN USER admin IDENTIFIED BY ksdn#2Hd;",
@@ -117,17 +134,14 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
             template.getName()
         );
         commands.append(createQuery).append(alterQuery);
-        return commands;
+        return commands.toString();
     }
 
-    private static StringBuilder getPostgresStartCommands(Template template) {
-        StringBuilder commands = new StringBuilder();
-        String createQuery = String.format(
+    private static String getPostgresStartCommands(Template template) {
+        return String.format(
             "CREATE DATABASE %s TEMPLATE template0;",
             template.getName()
         );
-        commands.append(createQuery);
-        return commands;
     }
 
     private static StringBuilder getOracleFinishCommands(Template template) {
@@ -145,7 +159,9 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
     }
 
     @Override
+    @Deprecated
     public boolean canBeRemoved(Template template) {
-        return false;
+        //TODO: implement this
+        throw new UnsupportedOperationException();
     }
 }

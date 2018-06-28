@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -13,6 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -23,44 +25,62 @@ public class DatabaseEndpointManagerTest {
     @Mock
     private DriverManagerDataSource driverManagerDataSource;
 
+    @Mock
+    private DriverManagerDataSourceHelper driverManagerDataSourceHelper;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
-    @Test
-    public void testGetWhenErrorOccurred() throws Exception {
-        // given
+    private DatabaseEndpointManager databaseEndpointManager;
+
+    @Before
+    public void setup() {
         Map<String, DriverManagerDataSource> managerDataSourceMap = new HashMap<>();
         managerDataSourceMap.put("test", driverManagerDataSource);
-        DatabaseEndpointManager databaseEndpointManager = new DatabaseEndpointManager(
-            managerDataSourceMap
+        databaseEndpointManager = new DatabaseEndpointManager(
+            managerDataSourceMap,
+            driverManagerDataSourceHelper
         );
+        when(driverManagerDataSource.getUrl()).thenReturn("jdbc://database:123");
+    }
 
+    @Test
+    public void testGetWhenErrorOccurred() {
         // then
         expectedException.expect(EidIllegalArgumentException.class);
         expectedException.expectMessage("20170726:121616");
         expectedException.expectMessage("Given serverId hasn't been found.");
 
         // when
-        databaseEndpointManager.get("not_existing_key");
+        databaseEndpointManager.getConnectionToServer("not_existing_key");
     }
 
     @Test
-    public void testGet() throws Exception {
-        // given
-        Map<String, DriverManagerDataSource> managerDataSourceMap = new HashMap<>();
-        managerDataSourceMap.put("test", driverManagerDataSource);
-        DatabaseEndpointManager databaseEndpointManager = new DatabaseEndpointManager(
-            managerDataSourceMap
-        );
-
+    public void testGetConnectionToServer() {
         // when
-        ConnectionDatabase actual = databaseEndpointManager.get("test");
+        ConnectionDatabase actual = databaseEndpointManager.getConnectionToServer("test");
 
         // then
         assertThat(actual).isNotNull();
+        assertThat(actual.getType()).isEqualTo("jdbc://database:123");
+        assertThat(actual.getJdbcTemplate().getDataSource()).isEqualTo(driverManagerDataSource);
+    }
+
+    @Test
+    public void testGetConnectionToTemplate() {
+        // given
+        when(driverManagerDataSourceHelper.getManager("serverId", "templateName")).thenReturn(driverManagerDataSource);
+
+        // when
+        ConnectionDatabase actual = databaseEndpointManager.getConnectionToTemplate("serverId", "templateName");
+
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual.getType()).isEqualTo("jdbc://database:123");
+        assertThat(actual.getJdbcTemplate().getDataSource()).isEqualTo(driverManagerDataSource);
     }
 
 }

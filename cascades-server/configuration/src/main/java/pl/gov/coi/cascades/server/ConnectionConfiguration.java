@@ -12,6 +12,6 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 @RequiredArgsConstructor
 class ConnectionConfiguration {
-    private String driver;
-    private String url;
+    private String driverClass;
+    private String jdbcUrlTemplate;
 }

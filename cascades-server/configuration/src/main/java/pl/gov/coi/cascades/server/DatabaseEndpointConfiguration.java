@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -18,29 +17,30 @@ import java.util.Map;
 public class DatabaseEndpointConfiguration {
 
     @Bean
-    Map<String, DriverManagerDataSource> produceDriverManagerDataSource(ServerConfigurationService service,
-                                                                        ConnectionConfigurator connectionConfigurator) {
-        Map<String, DriverManagerDataSource> managers = new HashMap<>();
-        for (ServerDef serverDef : service.getManagedServers()) {
-            ConnectionConfiguration configuration = connectionConfigurator.getConnectionConfiguration(serverDef);
-            DriverManagerDataSource manager = new DriverManagerDataSource();
-            manager.setDriverClassName(configuration.getDriver());
-            manager.setUrl(String.format(
-                configuration.getUrl(),
-                serverDef.getHost(),
-                serverDef.getPort(),
-                serverDef.getDbname())
-            );
-            manager.setPassword(serverDef.getPassword());
-            manager.setUsername(serverDef.getUser());
-            managers.put(serverDef.getServerId(), manager);
-        }
-        return managers;
+    Map<String, DriverManagerDataSource> produceDriverManagerDataSource(DriverManagerDataSourceHelper driverManagerDataSourceHelper) {
+        return driverManagerDataSourceHelper.getManagersMap();
     }
 
     @Bean
-    DatabaseManager produceDatabaseManager(Map<String, DriverManagerDataSource> driver) {
-        return new DatabaseEndpointManager(driver);
+    DriverManagerDataSourceProvider produceDriverManagerDataSourceProvider() {
+        return new DriverManagerDataSourceProviderImpl();
+    }
+
+    @Bean
+    DriverManagerDataSourceHelper produceDriverManagerDataSourceHelper(ConnectionConfigurator connectionConfigurator,
+                                                                 ServerConfigurationService serverConfigurationService,
+                                                                 DriverManagerDataSourceProvider driverManagerDataSourceProvider) {
+        return new DriverManagerDataSourceHelper(
+            connectionConfigurator,
+            serverConfigurationService,
+            driverManagerDataSourceProvider
+        );
+    }
+
+    @Bean
+    DatabaseManager produceDatabaseManager(Map<String, DriverManagerDataSource> driverManagerMap,
+                                           DriverManagerDataSourceHelper driverManagerDataSourceHelper) {
+        return new DatabaseEndpointManager(driverManagerMap, driverManagerDataSourceHelper);
     }
 
     @Bean
