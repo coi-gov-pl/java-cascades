@@ -57,6 +57,9 @@ public class DomainConfigurationTest {
     @Mock
     private TemplateIdGeneratorService templateIdGeneratorService;
 
+    @Mock
+    private DatabaseOperations databaseOperations;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -104,7 +107,8 @@ public class DomainConfigurationTest {
             templateIdGateway,
             userGateway,
             databaseLimitGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperations
         );
 
         // then

@@ -35,19 +35,19 @@ public class DatabaseLimitGatewayImplTest {
     }
 
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldBePersonalLimitExceeded() {
         //when
         databaseLimitGateway.isPersonalLimitExceeded(getUser());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldGetPersonalLimitPerUser() {
         //when
         databaseLimitGateway.getPersonalLimitPerUser(getUser());
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldGlobalLimitExceeded() {
         //when
         databaseLimitGateway.isGlobalLimitExceeded();
@@ -56,7 +56,7 @@ public class DatabaseLimitGatewayImplTest {
     @Test(expected = UnsupportedOperationException.class)
     public void shouldGetGlobalLimit() {
         //when
-        databaseLimitGateway.getPersonalLimitPerUser(getUser());
+        databaseLimitGateway.getGlobalLimit();
     }
 
     private User getUser() {

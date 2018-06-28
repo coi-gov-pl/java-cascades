@@ -8,7 +8,7 @@ public interface DatabaseInstanceGateway {
      * @param databaseInstance Given instance of database.
      * @return Instance of database.
      */
-    DatabaseInstance launchDatabase(DatabaseInstance databaseInstance);
+    DatabaseInstance save(DatabaseInstance databaseInstance);
 
     void deleteDatabase(DatabaseInstance databaseInstance);
 

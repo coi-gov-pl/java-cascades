@@ -157,7 +157,6 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         }
 
         @Override
-
         public String getHost() {
             return host;
         }

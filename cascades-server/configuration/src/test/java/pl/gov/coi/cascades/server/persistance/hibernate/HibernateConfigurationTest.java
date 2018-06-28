@@ -5,6 +5,8 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
+import pl.gov.coi.cascades.server.ServerConfigurationService;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
@@ -13,6 +15,8 @@ import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,6 +34,9 @@ public class HibernateConfigurationTest {
 
     @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;
+
+    @Mock
+    private List<NetworkBind> networkBindList;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();

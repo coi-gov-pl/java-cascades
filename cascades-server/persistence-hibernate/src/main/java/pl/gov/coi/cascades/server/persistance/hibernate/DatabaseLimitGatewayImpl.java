@@ -34,24 +34,21 @@ public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
     }
 
     @Override
-    @Deprecated
     public boolean isPersonalLimitExceeded(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return false;
     }
 
     @Override
-    @Deprecated
     public int getPersonalLimitPerUser(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return 100;
     }
 
     @Override
-    @Deprecated
     public boolean isGlobalLimitExceeded() {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return false;
     }
 
     @Override
