@@ -84,8 +84,7 @@ public class TemplateIdGatewayImplTest {
     public void shouldFindWhenExceptionOccurred() {
         //given
         NoResultException exception = new NoResultException(THERE_IS_NO_RESULT);
-
-        templateIdGateway.setEntityManager(entityManager);
+        
         given(entityManager.createQuery(anyString(), any())).willThrow(exception);
         given(query.setParameter(anyString(), anyString())).willReturn(query);
         given(query.setMaxResults(anyInt())).willReturn(query);
