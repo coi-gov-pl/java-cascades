@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
@@ -18,6 +19,8 @@ import pl.gov.coi.cascades.server.domain.UserGateway;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -52,6 +55,9 @@ public class LaunchNewDatabaseGatewayFacadeTest {
 
     @Mock
     private DatabaseOperations databaseOperations;
+
+    @Mock
+    private NetworkBind networkBind;
 
     @Mock
     private Template template;
@@ -124,6 +130,8 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     public void testLaunchDatabase() throws Exception {
         // given
         when(databaseInstanceGateway.save(databaseInstance)).thenReturn(databaseInstance);
+        when(databaseOperations.createDatabase(databaseInstance)).thenReturn(networkBind);
+        when(databaseInstance.setNetworkBind(networkBind)).thenReturn(databaseInstance);
 
         // when
         DatabaseInstance actual = facade.launchDatabase(databaseInstance);
@@ -131,6 +139,8 @@ public class LaunchNewDatabaseGatewayFacadeTest {
         // then
         assertThat(actual).isNotNull();
         verify(databaseInstanceGateway, times(1)).save(any(DatabaseInstance.class));
+        verify(databaseOperations, times(1)).createDatabase(any(DatabaseInstance.class));
+        verify(databaseInstance, times(1)).setNetworkBind(any(NetworkBind.class));
     }
 
     @Test

@@ -8,7 +8,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
-import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class DatabaseOperationsImpl implements DatabaseOperations {
@@ -29,19 +29,27 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
     @Override
     @Deprecated
     public void deleteDatabase(DatabaseInstance databaseInstance) {
+        // TODO: write implementation
         throw new UnsupportedOperationException("Not yet implemented!");
     }
 
     private NetworkBind getNetworkBind(String templateId) {
-        Template template =
-            templateIdGateway.find(templateId).isPresent() ? templateIdGateway.find(templateId).get() : null;
+        Optional<Template> templateOptional = templateIdGateway.find(templateId);
+        Template template = templateOptional != null ? templateOptional.orElse(null) : null;
 
         if (template != null) {
-            List<ServerDef> managedServers = serverConfigurationService.getManagedServers();
-            for (ServerDef managedServer : managedServers) {
-                if (managedServer.getServerId().equalsIgnoreCase(template.getServerId())) {
-                    return new NetworkBindImpl(managedServer.getHost(), managedServer.getPort());
-                }
+            Optional<ServerDef> correctServerDef = serverConfigurationService
+                .getManagedServers()
+                .stream()
+                .filter(p -> p.getServerId()
+                    .equalsIgnoreCase(template.getServerId())
+                )
+                .findFirst();
+
+            ServerDef serverDef = correctServerDef.orElse(null);
+
+            if (serverDef != null) {
+                return new NetworkBindImpl(serverDef.getHost(), serverDef.getPort());
             }
         }
 

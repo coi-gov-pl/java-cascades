@@ -44,15 +44,10 @@ public class LaunchNewDatabaseGatewayFacade {
     }
 
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
-        // utworzyc nową bazę z podanego templateID
         NetworkBind networkBind = databaseOperations.createDatabase(databaseInstance);
         DatabaseInstance databaseInstanceWithNetworkBind = databaseInstance.setNetworkBind(networkBind);
-
-        // metoda zwraca networkbinding
-
         // utworzyć użytkownika w bazie i nadać mu uprawnienia do nowej instancji stworzonej powyżej
-
-
+        // TODO: write implementation
         // zapis instancji databaseInstance
         return databaseInstanceGateway.save(databaseInstanceWithNetworkBind);
     }
@@ -64,5 +59,4 @@ public class LaunchNewDatabaseGatewayFacade {
     TemplateIdGateway getTemplateIdGateway() {
         return templateIdGateway;
     }
-
 }

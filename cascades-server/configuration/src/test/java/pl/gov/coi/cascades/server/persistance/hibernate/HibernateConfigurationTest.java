@@ -10,13 +10,12 @@ import pl.gov.coi.cascades.server.ServerConfigurationService;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
-
-import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,7 +35,10 @@ public class HibernateConfigurationTest {
     private DatabaseTypeClassNameService databaseTypeClassNameService;
 
     @Mock
-    private List<NetworkBind> networkBindList;
+    private ServerConfigurationService serverConfigurationService;
+
+    @Mock
+    private TemplateIdGateway templateIdGateway;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -112,6 +114,18 @@ public class HibernateConfigurationTest {
         // when
         DatabaseInstanceMapper actual = hibernateConfiguration.createDatabaseInstanceMapper(
             databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testCreateDatabaseOperations() throws Exception {
+        // when
+        DatabaseOperations actual = hibernateConfiguration.createDatabaseOperations(
+            serverConfigurationService,
+            templateIdGateway
         );
 
         // then
