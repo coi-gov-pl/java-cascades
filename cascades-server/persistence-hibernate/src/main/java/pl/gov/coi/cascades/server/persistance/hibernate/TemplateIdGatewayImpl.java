@@ -40,7 +40,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
 
     @VisibleForTesting
     public TemplateIdGatewayImpl(TemplateIdMapper templateIdMapper,
-                          Logger logger) {
+                                 Logger logger) {
         this.templateIdMapper = templateIdMapper;
         this.logger = logger;
     }
@@ -59,8 +59,8 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
                         "WHERE template.generatedId = :templateId",
                     Template.class
                 )
-                .setParameter(TEMPLATE_ID_FIELD, templateId)
-                .setMaxResults(1);
+                    .setParameter(TEMPLATE_ID_FIELD, templateId)
+                    .setMaxResults(1);
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
@@ -84,7 +84,7 @@ public class TemplateIdGatewayImpl implements TemplateIdGateway {
                         "WHERE template.isDefault = true",
                     Template.class
                 )
-                .setMaxResults(1);
+                    .setMaxResults(1);
 
             return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {
