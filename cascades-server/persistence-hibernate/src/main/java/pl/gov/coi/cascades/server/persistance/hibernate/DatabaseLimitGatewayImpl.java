@@ -16,6 +16,10 @@ import javax.transaction.Transactional;
 public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseLimitGatewayImpl.class);
+    private static final int USER_LIMIT = 100;
+    private static final boolean PERSONAL_LIMIT = false;
+    private static final boolean GLOBAL_LIMIT = false;
+
     private Logger logger;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
@@ -36,19 +40,19 @@ public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
     @Override
     public boolean isPersonalLimitExceeded(User user) {
         // TODO: write an implementation
-        return false;
+        return PERSONAL_LIMIT;
     }
 
     @Override
     public int getPersonalLimitPerUser(User user) {
         // TODO: write an implementation
-        return 100;
+        return USER_LIMIT;
     }
 
     @Override
     public boolean isGlobalLimitExceeded() {
         // TODO: write an implementation
-        return false;
+        return GLOBAL_LIMIT;
     }
 
     @Override

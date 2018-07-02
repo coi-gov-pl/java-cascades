@@ -17,7 +17,7 @@ public class F4ab6a58Supplier implements Supplier<Template> {
     public Template get() {
         Template template = new Template();
         template.setStatus(TemplateIdStatus.CREATED);
-        template.setGeneratedId("123456");
+        template.setGeneratedId("dasda34");
         template.setName("postgres_template");
         template.setServerId("dgrt45gtyt");
         template.setDefault(false);
