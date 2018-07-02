@@ -89,7 +89,7 @@ public class TemplateIdGatewayImplTest {
         given(entityManager.createQuery(anyString(), any())).willThrow(exception);
         given(query.setParameter(anyString(), anyString())).willReturn(query);
         given(query.setMaxResults(anyInt())).willReturn(query);
-        ;
+        
 
         //when
         Optional<Template> result = templateIdGateway.find("");
