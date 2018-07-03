@@ -14,9 +14,6 @@ import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceM
  */
 public class DatabaseInstanceGatewayImplTest {
 
-    @Mock
-    private DatabaseInstanceMapper databaseInstanceMapper;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -24,9 +21,7 @@ public class DatabaseInstanceGatewayImplTest {
 
     @Before
     public void init() {
-        databaseInstanceGateway = new DatabaseInstanceGatewayImpl(
-            databaseInstanceMapper
-        );
+        databaseInstanceGateway = new DatabaseInstanceGatewayImpl();
     }
 
     @Test(expected = UnsupportedOperationException.class)

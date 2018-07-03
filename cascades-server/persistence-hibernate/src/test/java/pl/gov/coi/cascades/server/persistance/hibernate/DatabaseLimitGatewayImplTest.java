@@ -18,9 +18,6 @@ public class DatabaseLimitGatewayImplTest {
     private static final String ID = "id";
     private static final String EMAIL = "email";
 
-    @Mock
-    private DatabaseInstanceMapper databaseInstanceMapper;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -29,12 +26,9 @@ public class DatabaseLimitGatewayImplTest {
     @Before
     public void init() {
         databaseLimitGateway =
-            new DatabaseLimitGatewayImpl(
-                databaseInstanceMapper
-            );
+            new DatabaseLimitGatewayImpl();
     }
-
-
+    
     @Test(expected = UnsupportedOperationException.class)
     public void shouldBePersonalLimitExceeded() {
         //when

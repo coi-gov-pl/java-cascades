@@ -70,9 +70,7 @@ public class HibernateConfigurationTest {
     @Test
     public void testDatabaseInstanceGateway() throws Exception {
         // when
-        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway(
-            databaseInstanceMapper
-        );
+        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway();
 
         // then
         assertThat(actual).isNotNull();
@@ -81,9 +79,7 @@ public class HibernateConfigurationTest {
     @Test
     public void testDatabaseLimitGateway() throws Exception {
         // when
-        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway(
-            databaseInstanceMapper
-        );
+        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway();
 
         // then
         assertThat(actual).isNotNull();
