@@ -50,7 +50,7 @@ public class DatabaseLimitGatewayImplTest {
     @Test(expected = UnsupportedOperationException.class)
     public void shouldGetGlobalLimit() {
         //when
-        databaseLimitGateway.getPersonalLimitPerUser(getUser());
+        databaseLimitGateway.getGlobalLimit();
     }
 
     private User getUser() {

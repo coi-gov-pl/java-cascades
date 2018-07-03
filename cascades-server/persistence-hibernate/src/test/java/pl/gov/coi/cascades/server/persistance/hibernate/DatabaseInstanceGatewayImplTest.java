@@ -14,10 +14,10 @@ import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceM
  */
 public class DatabaseInstanceGatewayImplTest {
 
+    private DatabaseInstanceGatewayImpl databaseInstanceGateway;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    private DatabaseInstanceGatewayImpl databaseInstanceGateway;
 
     @Before
     public void init() {
