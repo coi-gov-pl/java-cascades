@@ -31,6 +31,10 @@ import static org.mockito.Mockito.verify;
 public class TemplateIdGatewayImplTest {
 
     private static final String THERE_IS_NO_RESULT = "There is no result.";
+    private static final String EMPTY_STRING = "";
+
+    private TemplateIdGatewayImpl templateIdGateway;
+
     @Mock
     private TemplateIdMapper templateIdMapper;
 
@@ -48,8 +52,6 @@ public class TemplateIdGatewayImplTest {
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
-
-    private TemplateIdGatewayImpl templateIdGateway;
 
     @Before
     public void init() {
@@ -74,7 +76,7 @@ public class TemplateIdGatewayImplTest {
             .willReturn(Template.builder().build());
 
         //when
-        Optional<Template> result = templateIdGateway.find("");
+        Optional<Template> result = templateIdGateway.find(EMPTY_STRING);
 
         //then
         assertNotNull(result);
@@ -84,13 +86,13 @@ public class TemplateIdGatewayImplTest {
     public void shouldFindWhenExceptionOccurred() {
         //given
         NoResultException exception = new NoResultException(THERE_IS_NO_RESULT);
-        
+
         given(entityManager.createQuery(anyString(), any())).willThrow(exception);
         given(query.setParameter(anyString(), anyString())).willReturn(query);
         given(query.setMaxResults(anyInt())).willReturn(query);
 
         //when
-        Optional<Template> result = templateIdGateway.find("");
+        Optional<Template> result = templateIdGateway.find(EMPTY_STRING);
 
         // then
         assertFalse(result.isPresent());
