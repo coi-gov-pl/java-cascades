@@ -37,13 +37,13 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseInstanceMapper databaseInstanceMapper) {
-        return new DatabaseInstanceGatewayImpl(databaseInstanceMapper);
+    DatabaseInstanceGateway createDatabaseInstanceGateway() {
+        return new DatabaseInstanceGatewayImpl();
     }
 
     @Bean
-    DatabaseLimitGateway createDatabaseLimitGateway(DatabaseInstanceMapper databaseInstanceMapper) {
-        return new DatabaseLimitGatewayImpl(databaseInstanceMapper);
+    DatabaseLimitGateway createDatabaseLimitGateway() {
+        return new DatabaseLimitGatewayImpl();
     }
 
     @Bean
