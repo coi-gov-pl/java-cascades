@@ -6,12 +6,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Template;
-import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
 
 import javax.inject.Inject;
-import javax.persistence.EntityManager;
-import javax.persistence.TypedQuery;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
@@ -32,16 +28,8 @@ public class TemplateGatewayImplFunctionalIT {
     private static final TemplateIdStatus STATUS = TemplateIdStatus.CREATED;
     private static final String NAME = "newDatabase";
     private static final boolean IS_DEFAULT = true;
-    private static final String TEMPLATE_ID_FIELD = "generatedId";
 
     private TemplateIdGateway templateIdGateway;
-    private EntityManager entityManager;
-    private TemplateIdMapper templateIdMapper = new TemplateIdMapper();
-
-    @Inject
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Inject
     public void setTemplateIdGateway(TemplateIdGateway templateIdGateway) {
@@ -55,7 +43,7 @@ public class TemplateGatewayImplFunctionalIT {
 
         //when
         templateIdGateway.addTemplate(template);
-        Optional<pl.gov.coi.cascades.contract.domain.Template> result = findAddTemplateById(template.getId());
+        Optional<pl.gov.coi.cascades.contract.domain.Template> result = templateIdGateway.find(template.getId());
 
         //then
         assertNotNull(result);
@@ -78,17 +66,5 @@ public class TemplateGatewayImplFunctionalIT {
             .status(STATUS)
             .version(VERSION)
             .build();
-    }
-
-    private Optional<pl.gov.coi.cascades.contract.domain.Template> findAddTemplateById(String generatedId) {
-        TypedQuery<Template> query =
-            entityManager.createQuery(
-                "SELECT template FROM Template template " +
-                    "WHERE template.generatedId = :generatedId", Template.class
-            )
-                .setParameter(TEMPLATE_ID_FIELD, generatedId)
-                .setMaxResults(1);
-
-        return Optional.of(templateIdMapper.fromHibernateEntity(query.getSingleResult()));
     }
 }
