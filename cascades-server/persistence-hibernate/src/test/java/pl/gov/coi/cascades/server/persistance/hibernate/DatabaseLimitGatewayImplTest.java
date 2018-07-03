@@ -28,7 +28,7 @@ public class DatabaseLimitGatewayImplTest {
         databaseLimitGateway =
             new DatabaseLimitGatewayImpl();
     }
-    
+
     @Test(expected = UnsupportedOperationException.class)
     public void shouldBePersonalLimitExceeded() {
         //when
