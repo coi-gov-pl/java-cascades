@@ -5,11 +5,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import pl.gov.coi.cascades.server.ProfileType;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
-
-import javax.transaction.Transactional;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -20,23 +22,37 @@ import javax.transaction.Transactional;
 public class HibernateConfiguration {
 
     @Bean
-    @Transactional
     TemplateIdGateway createTemplateIdGateway() {
         return new TemplateIdGatewayImpl();
     }
 
     @Bean
-    @Transactional
-    UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new UserGatewayImpl(databaseTypeClassNameService);
+    UserGateway createUserGateway(UserMapper userMapper) {
+        return new UserGatewayImpl(userMapper);
     }
 
     @Bean
-    @Transactional
-    DatabaseIdGateway createDatabaseIdGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new DatabaseIdGatewayImpl(
-            databaseTypeClassNameService
-        );
+    DatabaseIdGateway createDatabaseIdGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseIdGatewayImpl(databaseInstanceMapper);
     }
 
+    @Bean
+    DatabaseInstanceGateway createDatabaseInstanceGateway() {
+        return new DatabaseInstanceGatewayImpl();
+    }
+
+    @Bean
+    DatabaseLimitGateway createDatabaseLimitGateway() {
+        return new DatabaseLimitGatewayImpl();
+    }
+
+    @Bean
+    UserMapper createUserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new UserMapper(databaseTypeClassNameService);
+    }
+
+    @Bean
+    DatabaseInstanceMapper createDatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new DatabaseInstanceMapper(databaseTypeClassNameService);
+    }
 }
