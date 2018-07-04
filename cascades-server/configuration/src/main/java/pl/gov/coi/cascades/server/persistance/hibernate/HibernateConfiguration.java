@@ -11,6 +11,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
 import javax.transaction.Transactional;
 
@@ -23,35 +24,38 @@ import javax.transaction.Transactional;
 public class HibernateConfiguration {
 
     @Bean
-    @Transactional
     TemplateIdGateway createTemplateIdGateway() {
         return new TemplateIdGatewayImpl();
     }
 
     @Bean
-    @Transactional
-    UserGateway createUserGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new UserGatewayImpl(databaseTypeClassNameService);
+    UserGateway createUserGateway(UserMapper userMapper) {
+        return new UserGatewayImpl(userMapper);
     }
 
     @Bean
-    @Transactional
-    DatabaseIdGateway createDatabaseIdGateway(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        return new DatabaseIdGatewayImpl(
-            databaseTypeClassNameService
-        );
+    DatabaseIdGateway createDatabaseIdGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseIdGatewayImpl(databaseInstanceMapper);
     }
 
     @Bean
-    @Transactional
     DatabaseInstanceGateway createDatabaseInstanceGateway() {
         return new DatabaseInstanceGatewayImpl();
     }
 
     @Bean
-    @Transactional
     DatabaseLimitGateway createDatabaseLimitGateway() {
         return new DatabaseLimitGatewayImpl();
+    }
+
+    @Bean
+    UserMapper createUserMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new UserMapper(databaseTypeClassNameService);
+    }
+
+    @Bean
+    DatabaseInstanceMapper createDatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
+        return new DatabaseInstanceMapper(databaseTypeClassNameService);
     }
 
 }

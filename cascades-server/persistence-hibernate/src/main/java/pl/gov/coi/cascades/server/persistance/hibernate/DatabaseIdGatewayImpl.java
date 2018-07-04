@@ -5,23 +5,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 02.04.17.
  */
+@Transactional
 public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseIdGatewayImpl.class);
@@ -31,12 +31,9 @@ public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
     private Logger logger;
     private final DatabaseInstanceMapper databaseInstanceMapper;
 
-    @Inject
-    public DatabaseIdGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
+    public DatabaseIdGatewayImpl(DatabaseInstanceMapper databaseInstanceMapper) {
         this(
-            new DatabaseInstanceMapper(
-                databaseTypeClassNameService
-            ),
+            databaseInstanceMapper,
             DEFAULT_LOGGER
         );
     }
@@ -65,8 +62,8 @@ public class DatabaseIdGatewayImpl implements DatabaseIdGateway {
                         "WHERE instance.id = :databaseIdAsLong",
                     DatabaseInstance.class
                 )
-                .setParameter(DATABASE_ID_FIELD, databaseIdAsLong)
-                .setMaxResults(1);
+                    .setParameter(DATABASE_ID_FIELD, databaseIdAsLong)
+                    .setMaxResults(1);
 
             return Optional.of(databaseInstanceMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {

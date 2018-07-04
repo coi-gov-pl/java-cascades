@@ -1,8 +1,8 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.User;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
@@ -10,7 +10,6 @@ import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -33,16 +32,14 @@ public class UserGatewayImpl implements UserGateway {
     private EntityManager entityManager;
     private final UserMapper userMapper;
 
-    @Inject
-    public UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService) {
-        this(databaseTypeClassNameService, DEFAULT_LOGGER);
+    public UserGatewayImpl(UserMapper userMapper) {
+        this(userMapper, DEFAULT_LOGGER);
     }
 
-    UserGatewayImpl(DatabaseTypeClassNameService databaseTypeClassNameService,
+    @VisibleForTesting
+    UserGatewayImpl(UserMapper userMapper,
                     Logger logger) {
-        this.userMapper = new UserMapper(
-            databaseTypeClassNameService
-        );
+        this.userMapper = userMapper;
         this.logger = logger;
     }
 
@@ -60,8 +57,8 @@ public class UserGatewayImpl implements UserGateway {
                         "WHERE user.username = :userName",
                     User.class
                 )
-                .setParameter(USER_NAME_FIELD, userName)
-                .setMaxResults(1);
+                    .setParameter(USER_NAME_FIELD, userName)
+                    .setMaxResults(1);
 
             return Optional.of(userMapper.fromHibernateEntity(query.getSingleResult()));
         } catch (NoResultException e) {

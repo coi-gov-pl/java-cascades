@@ -1,32 +1,17 @@
 package pl.gov.coi.cascades.server;
 
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
-import org.mockito.junit.MockitoRule;
-import org.slf4j.Logger;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.TemplateIdStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
-import pl.gov.coi.cascades.server.persistance.hibernate.TemplateIdGatewayImpl;
-import pl.gov.coi.cascades.server.persistance.hibernate.mapper.TemplateIdMapper;
 
 import javax.inject.Inject;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.contains;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -37,114 +22,49 @@ import static org.mockito.Mockito.when;
 @HibernateDevelopmentTest
 public class TemplateGatewayImplFunctionalIT {
 
-    private static final String NON_EXISTING_TEMPLATE_ID = "875785887";
-    private static final String EXISTING_TEMPLATE_ID = "1";
+    private static final String ID = "1";
+    private static final String SERVER_ID = "1234";
+    private static final String VERSION = "0.0.1";
+    private static final TemplateIdStatus STATUS = TemplateIdStatus.CREATED;
+    private static final String NAME = "newDatabase";
+    private static final boolean IS_DEFAULT = true;
+
     private TemplateIdGateway templateIdGateway;
-    private String id;
-    private String serverId;
-    private String version;
-    private TemplateIdStatus status;
-    private boolean isDefault;
 
     @Inject
-    public void setDatabaseIdGateway(TemplateIdGateway templateIdGateway) {
+    public void setTemplateIdGateway(TemplateIdGateway templateIdGateway) {
         this.templateIdGateway = templateIdGateway;
     }
 
-    @Mock
-    private TemplateIdMapper templateIdMapper;
+    @Test
+    public void shouldExecutePersistNewTemplate() {
+        //given
+        pl.gov.coi.cascades.contract.domain.Template template = createTemplate();
 
-    @Mock
-    private Logger logger;
+        //when
+        templateIdGateway.addTemplate(template);
+        Optional<pl.gov.coi.cascades.contract.domain.Template> result = templateIdGateway.find(template.getId());
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+        //then
+        assertNotNull(result);
+        pl.gov.coi.cascades.contract.domain.Template resultTemplate = result.orElse(null);
 
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
-
-    @Before
-    public void setUp() {
-        id = "oracle_template";
-        serverId = "1234";
-        version = "0.0.1";
-        status = TemplateIdStatus.CREATED;
-        isDefault = true;
+        assertNotNull(resultTemplate);
+        assertEquals(template.getId(), resultTemplate.getId());
+        assertEquals(template.getName(), resultTemplate.getName());
+        assertEquals(template.getServerId(), resultTemplate.getServerId());
+        assertEquals(template.getVersion(), resultTemplate.getVersion());
+        assertEquals(template.getStatus(), resultTemplate.getStatus());
     }
 
-    @Test
-    public void testSaveWhenLoggerIsInfoEnabled() throws Exception {
-        // given
-        when(logger.isInfoEnabled()).thenReturn(true);
-        TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
-            templateIdMapper,
-            logger
-        );
-        Template template = Template.builder()
-            .id(id)
-            .isDefault(isDefault)
-            .serverId(serverId)
-            .status(status)
-            .version(version)
+    private pl.gov.coi.cascades.contract.domain.Template createTemplate() {
+        return pl.gov.coi.cascades.contract.domain.Template.builder()
+            .id(ID)
+            .name(NAME)
+            .isDefault(IS_DEFAULT)
+            .serverId(SERVER_ID)
+            .status(STATUS)
+            .version(VERSION)
             .build();
-
-        // when
-        templateIdGatewayImpl.addTemplate(template);
-
-        // then
-        verify(logger).info(contains("20170626:140337"));
-        verify(logger).info(contains("Given templateId has been saved."));
     }
-
-    @Test
-    public void testSaveWhenLoggerIsNotInfoEnabled() throws Exception {
-        // given
-        when(logger.isInfoEnabled()).thenReturn(false);
-        TemplateIdGatewayImpl templateIdGatewayImpl = new TemplateIdGatewayImpl(
-            templateIdMapper,
-            logger
-        );
-        Template template = Template.builder()
-            .id(id)
-            .isDefault(isDefault)
-            .serverId(serverId)
-            .status(status)
-            .version(version)
-            .build();
-
-        // when
-        templateIdGatewayImpl.addTemplate(template);
-
-        // then
-        verify(logger, times(0)).info(anyString());
-    }
-
-    @Test
-    public void testFindPositivePath() throws Exception {
-        // when
-        Optional<Template> actual = templateIdGateway.find(EXISTING_TEMPLATE_ID);
-
-        // then
-        assertThat(actual).isNotNull();
-        assertThat(actual.isPresent()).isTrue();
-    }
-
-    @Test
-    public void testFindNegativePath() throws Exception {
-        // when
-        Optional<Template> actual = templateIdGateway.find(NON_EXISTING_TEMPLATE_ID);
-
-        // then
-        assertThat(actual).isEmpty();
-    }
-
-    @Test
-    public void testGetDefaultTemplateIdPositivePath() throws Exception {
-        // when
-        Optional<Template> actual = templateIdGateway.getDefaultTemplateId();
-
-        // then
-        assertThat(actual).isNotNull();
-    }
-
 }

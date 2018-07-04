@@ -11,6 +11,8 @@ import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
+import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -19,6 +21,12 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @since 26.04.17.
  */
 public class HibernateConfigurationTest {
+
+    @Mock
+    private UserMapper userMapper;
+
+    @Mock
+    private DatabaseInstanceMapper databaseInstanceMapper;
 
     @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;
@@ -41,7 +49,7 @@ public class HibernateConfigurationTest {
     public void testCreateUserGateway() {
         // when
         UserGateway actual = hibernateConfiguration.createUserGateway(
-            databaseTypeClassNameService
+            userMapper
         );
 
         // then
@@ -52,7 +60,7 @@ public class HibernateConfigurationTest {
     public void testCreateDatabaseIdGateway() {
         // when
         DatabaseIdGateway actual = hibernateConfiguration.createDatabaseIdGateway(
-            databaseTypeClassNameService
+            databaseInstanceMapper
         );
 
         // then
@@ -60,7 +68,7 @@ public class HibernateConfigurationTest {
     }
 
     @Test
-    public void testCreateDatabaseInstanceGateway() {
+    public void testDatabaseInstanceGateway() throws Exception {
         // when
         DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway();
 
@@ -69,7 +77,7 @@ public class HibernateConfigurationTest {
     }
 
     @Test
-    public void testCreateDatabaseLimitGateway() {
+    public void testDatabaseLimitGateway() throws Exception {
         // when
         DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway();
 
@@ -77,4 +85,25 @@ public class HibernateConfigurationTest {
         assertThat(actual).isNotNull();
     }
 
+    @Test
+    public void testUserMapper() throws Exception {
+        // when
+        UserMapper actual = hibernateConfiguration.createUserMapper(
+            databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testDatabaseInstanceMapper() throws Exception {
+        // when
+        DatabaseInstanceMapper actual = hibernateConfiguration.createDatabaseInstanceMapper(
+            databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+    }
 }

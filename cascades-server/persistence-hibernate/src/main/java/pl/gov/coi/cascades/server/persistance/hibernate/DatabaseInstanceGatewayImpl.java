@@ -1,8 +1,5 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 
@@ -13,20 +10,6 @@ import javax.transaction.Transactional;
  */
 @Transactional
 public class DatabaseInstanceGatewayImpl implements DatabaseInstanceGateway {
-
-    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseInstanceGatewayImpl.class);
-    private Logger logger;
-
-    public DatabaseInstanceGatewayImpl() {
-        this(
-            DEFAULT_LOGGER
-        );
-    }
-
-    @VisibleForTesting
-    DatabaseInstanceGatewayImpl(Logger logger) {
-        this.logger = logger;
-    }
 
     @Override
     @Deprecated
