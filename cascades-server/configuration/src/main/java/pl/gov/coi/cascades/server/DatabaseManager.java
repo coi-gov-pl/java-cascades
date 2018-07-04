@@ -8,6 +8,19 @@ import java.sql.SQLException;
  */
 public interface DatabaseManager {
 
-    ConnectionDatabase get(String serverId) throws SQLException;
+    /**
+     * Returns connection to database with sepcified serverId.
+     * @param serverId server ID
+     * @return connection to database
+     */
+    ConnectionDatabase getConnectionToServer(String serverId) throws SQLException;
+
+    /**
+     * Returns connection to template in database with sepcified serverId.
+     * @param serverId server ID
+     * @param templateName template name
+     * @return connection to database
+     */
+    ConnectionDatabase getConnectionToTemplate(String serverId, String templateName) throws SQLException;
 
 }

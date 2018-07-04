@@ -40,6 +40,9 @@ public class DomainConfigurationTest {
     private TemplateIdGateway templateIdGateway;
 
     @Mock
+    private DatabaseUserGateway databaseUserGateway;
+
+    @Mock
     private DatabaseTemplateGateway databaseTemplateGateway;
 
     @Mock
@@ -108,7 +111,8 @@ public class DomainConfigurationTest {
             userGateway,
             databaseLimitGateway,
             databaseInstanceGateway,
-            databaseOperations
+            databaseOperations,
+            databaseUserGateway
         );
 
         // then

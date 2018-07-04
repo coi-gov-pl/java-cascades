@@ -15,10 +15,10 @@ class InputTemplate extends Template {
     private static final boolean IS_DEFAULT = false;
     private static final String DEFAULT_SERVER_ID = null;
     private static final String VERSION = null;
-    private static final String ID = null;
+    private static final String NAME = null;
 
-    InputTemplate(String name) {
-        super(ID, name, DEFAULT_STATUS, IS_DEFAULT, DEFAULT_SERVER_ID, VERSION);
+    InputTemplate(String id) {
+        super(id, NAME, DEFAULT_STATUS, IS_DEFAULT, DEFAULT_SERVER_ID, VERSION);
     }
 
 }

@@ -7,6 +7,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -25,6 +26,7 @@ public class LaunchNewDatabaseGatewayFacade {
     private DatabaseLimitGateway databaseLimitGateway;
     private DatabaseInstanceGateway databaseInstanceGateway;
     private DatabaseOperations databaseOperations;
+    private DatabaseUserGateway databaseUserGateway;
 
     Optional<Template> findTemplateId(String templateId) {
         return templateIdGateway.find(templateId);
@@ -45,7 +47,7 @@ public class LaunchNewDatabaseGatewayFacade {
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
         NetworkBind networkBind = databaseOperations.createDatabase(databaseInstance);
         DatabaseInstance databaseInstanceWithNetworkBind = databaseInstance.setNetworkBind(networkBind);
-        // utworzyć użytkownika w bazie i nadać mu uprawnienia do nowej instancji stworzonej powyżej
+        databaseUserGateway.createUserPostgres(databaseInstanceWithNetworkBind);
         // TODO: write implementation
         // zapis instancji databaseInstance
         return databaseInstanceGateway.save(databaseInstanceWithNetworkBind);

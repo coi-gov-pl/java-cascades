@@ -37,13 +37,15 @@ public class DomainConfiguration {
                                                    UserGateway userGateway,
                                                    DatabaseLimitGateway databaseLimitGateway,
                                                    DatabaseInstanceGateway databaseInstanceGateway,
-                                                   DatabaseOperations databaseOperations) {
+                                                   DatabaseOperations databaseOperations,
+                                                   DatabaseUserGateway databaseUserGateway) {
         return new LaunchNewDatabaseGatewayFacade(
             templateIdGateway,
             userGateway,
             databaseLimitGateway,
             databaseInstanceGateway,
-            databaseOperations
+            databaseOperations,
+            databaseUserGateway
         );
     }
 

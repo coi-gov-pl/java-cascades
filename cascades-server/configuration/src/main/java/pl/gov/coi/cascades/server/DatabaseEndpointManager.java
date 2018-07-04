@@ -5,7 +5,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
 import javax.inject.Inject;
-import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -15,14 +14,17 @@ import java.util.Map;
 public class DatabaseEndpointManager implements DatabaseManager {
 
     private final Map<String, DriverManagerDataSource> managers;
+    private final DriverManagerDataSourceHelper driverManagerDataSourceHelper;
 
     @Inject
-    DatabaseEndpointManager(Map<String, DriverManagerDataSource> managers) {
+    DatabaseEndpointManager(Map<String, DriverManagerDataSource> managers,
+                            DriverManagerDataSourceHelper driverManagerDataSourceHelper) {
         this.managers = managers;
+        this.driverManagerDataSourceHelper = driverManagerDataSourceHelper;
     }
 
     @Override
-    public ConnectionDatabase get(String serverId) throws SQLException {
+    public ConnectionDatabase getConnectionToServer(String serverId) {
         DriverManagerDataSource manager = managers.get(serverId);
 
         if (manager == null) {
@@ -32,6 +34,15 @@ public class DatabaseEndpointManager implements DatabaseManager {
             );
         }
 
+        return new ConnectionDatabase(
+            new JdbcTemplate(manager),
+            manager.getUrl()
+        );
+    }
+
+    @Override
+    public ConnectionDatabase getConnectionToTemplate(String serverId, String templateName) {
+        DriverManagerDataSource manager = driverManagerDataSourceHelper.getManager(serverId, templateName);
         return new ConnectionDatabase(
             new JdbcTemplate(manager),
             manager.getUrl()

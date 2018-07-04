@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.ServerConfigurationService;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
@@ -90,9 +89,7 @@ public class HibernateConfigurationTest {
     @Test
     public void testDatabaseLimitGateway() throws Exception {
         // when
-        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway(
-            databaseInstanceMapper
-        );
+        DatabaseLimitGateway actual = hibernateConfiguration.createDatabaseLimitGateway();
 
         // then
         assertThat(actual).isNotNull();
@@ -106,7 +103,7 @@ public class HibernateConfigurationTest {
         );
 
         // then
-        assertThat(actual).isNotNull();
+        assertThat(actual).isInstanceOf(DatabaseIdGatewayImpl.class);
     }
 
     @Test
