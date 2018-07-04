@@ -37,7 +37,7 @@ public class HibernateConfigurationTest {
     private HibernateConfiguration hibernateConfiguration = new HibernateConfiguration();
 
     @Test
-    public void testCreateTemplateIdGateway() throws Exception {
+    public void testCreateTemplateIdGateway() {
         // when
         TemplateIdGateway actual = hibernateConfiguration.createTemplateIdGateway();
 
@@ -46,7 +46,7 @@ public class HibernateConfigurationTest {
     }
 
     @Test
-    public void testCreateUserGateway() throws Exception {
+    public void testCreateUserGateway() {
         // when
         UserGateway actual = hibernateConfiguration.createUserGateway(
             userMapper
@@ -57,7 +57,7 @@ public class HibernateConfigurationTest {
     }
 
     @Test
-    public void testCreateDatabaseIdGateway() throws Exception {
+    public void testCreateDatabaseIdGateway() {
         // when
         DatabaseIdGateway actual = hibernateConfiguration.createDatabaseIdGateway(
             databaseInstanceMapper

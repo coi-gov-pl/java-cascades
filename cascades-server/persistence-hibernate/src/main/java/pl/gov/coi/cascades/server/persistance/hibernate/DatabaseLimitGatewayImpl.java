@@ -1,5 +1,8 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
+import com.google.common.annotations.VisibleForTesting;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.User;
 
@@ -11,31 +14,41 @@ import javax.transaction.Transactional;
 @Transactional
 public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
 
+    private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseLimitGatewayImpl.class);
+    private Logger logger;
+
+    public DatabaseLimitGatewayImpl() {
+        this(
+            DEFAULT_LOGGER
+        );
+    }
+
+    @VisibleForTesting
+    DatabaseLimitGatewayImpl(Logger logger) {
+        this.logger = logger;
+    }
+
     @Override
-    @Deprecated
     public boolean isPersonalLimitExceeded(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return false;
     }
 
     @Override
-    @Deprecated
     public int getPersonalLimitPerUser(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return 100;
     }
 
     @Override
-    @Deprecated
     public boolean isGlobalLimitExceeded() {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return false;
     }
 
     @Override
-    @Deprecated
     public int getGlobalLimit() {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return 100;
     }
 }

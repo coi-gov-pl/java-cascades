@@ -13,6 +13,8 @@ import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.UserMapper;
 
+import javax.transaction.Transactional;
+
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 02.04.17.
@@ -55,4 +57,5 @@ public class HibernateConfiguration {
     DatabaseInstanceMapper createDatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseInstanceMapper(databaseTypeClassNameService);
     }
+
 }

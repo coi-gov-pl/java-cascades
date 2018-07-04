@@ -14,15 +14,13 @@ import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceM
  */
 public class DatabaseInstanceGatewayImplTest {
 
-    private DatabaseInstanceGatewayImpl databaseInstanceGateway;
-
+    @Rule
+    public MockitoRule mockitoRule = MockitoJUnit.rule();
+    
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Before
-    public void init() {
-        databaseInstanceGateway = new DatabaseInstanceGatewayImpl();
-    }
+    private DatabaseInstanceGatewayImpl databaseInstanceGateway = new DatabaseInstanceGatewayImpl();
 
     @Test(expected = UnsupportedOperationException.class)
     public void shouldLaunchDatabase() {
@@ -31,9 +29,15 @@ public class DatabaseInstanceGatewayImplTest {
     }
 
     @Test(expected = UnsupportedOperationException.class)
-    public void shouldGetRemoteServerId() {
+    public void testGetRemoteServerId() {
         //when
         databaseInstanceGateway.getRemoteServerId();
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void testDeleteDatabase() {
+        //when
+        databaseInstanceGateway.deleteDatabase(getDatabaseInstance());
     }
 
     private DatabaseInstance getDatabaseInstance() {
