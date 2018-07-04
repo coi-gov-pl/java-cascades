@@ -9,6 +9,7 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -128,6 +129,18 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // when
         DatabaseOperations actual = stubs.produceDatabaseOperations();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testProduceDatabaseUserGateway() throws Exception {
+        // given
+        PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
+
+        // when
+        DatabaseUserGateway actual = stubs.produceDatabaseUserGateway();
 
         // then
         assertThat(actual).isNotNull();
