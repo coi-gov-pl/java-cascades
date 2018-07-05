@@ -11,7 +11,6 @@ import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
-import javax.inject.Inject;
 import java.util.Optional;
 
 /**

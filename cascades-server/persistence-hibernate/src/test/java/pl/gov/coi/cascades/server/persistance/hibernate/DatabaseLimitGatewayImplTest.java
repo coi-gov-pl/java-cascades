@@ -7,6 +7,9 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.User;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
@@ -31,22 +34,28 @@ public class DatabaseLimitGatewayImplTest {
     @Test
     public void shouldBePersonalLimitExceeded() {
         //when
-        databaseLimitGateway.isPersonalLimitExceeded(getUser());
+        boolean result = databaseLimitGateway.isPersonalLimitExceeded(getUser());
 
-        //given
-
+        //then
+        assertFalse(result);
     }
 
     @Test
     public void shouldGetPersonalLimitPerUser() {
         //when
-        databaseLimitGateway.getPersonalLimitPerUser(getUser());
+        int result = databaseLimitGateway.getPersonalLimitPerUser(getUser());
+
+        //then
+        assertEquals(100, result);
     }
 
     @Test
     public void shouldGlobalLimitExceeded() {
         //when
-        databaseLimitGateway.isGlobalLimitExceeded();
+        boolean result = databaseLimitGateway.isGlobalLimitExceeded();
+
+        //then
+        assertFalse(result);
     }
 
     @Test(expected = UnsupportedOperationException.class)
