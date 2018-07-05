@@ -3,11 +3,9 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
-import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
@@ -18,9 +16,6 @@ public class DatabaseLimitGatewayImplTest {
     private static final String ID = "id";
     private static final String EMAIL = "email";
 
-    @Mock
-    private DatabaseInstanceMapper databaseInstanceMapper;
-
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
@@ -29,9 +24,7 @@ public class DatabaseLimitGatewayImplTest {
     @Before
     public void init() {
         databaseLimitGateway =
-            new DatabaseLimitGatewayImpl(
-                databaseInstanceMapper
-            );
+            new DatabaseLimitGatewayImpl();
     }
 
 
@@ -39,6 +32,9 @@ public class DatabaseLimitGatewayImplTest {
     public void shouldBePersonalLimitExceeded() {
         //when
         databaseLimitGateway.isPersonalLimitExceeded(getUser());
+
+        //given
+
     }
 
     @Test
