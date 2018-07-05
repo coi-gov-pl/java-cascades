@@ -9,6 +9,14 @@ import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
+import javax.persistence.EntityManager;
+
+import static org.junit.Assert.assertNotNull;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
+
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
@@ -16,6 +24,9 @@ public class DatabaseInstanceGatewayImplTest {
 
     @Mock
     private DatabaseInstanceMapper databaseInstanceMapper;
+
+    @Mock
+    private EntityManager entityManager;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -27,12 +38,29 @@ public class DatabaseInstanceGatewayImplTest {
         databaseInstanceGateway = new DatabaseInstanceGatewayImpl(
             databaseInstanceMapper
         );
+        databaseInstanceGateway.setEntityManager(entityManager);
     }
 
     @Test
-    public void shouldLaunchDatabase() {
+    public void shouldSaveDatabaseInstance() {
+        //given
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance databaseInstanceEntity
+            = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
+
+        given(databaseInstanceMapper.toHibernateEntity(any(DatabaseInstance.class))).willReturn(databaseInstanceEntity);
+
         //when
-        databaseInstanceGateway.save(getDatabaseInstance());
+        DatabaseInstance result = databaseInstanceGateway.save(getDatabaseInstance());
+
+        //then
+        verify(entityManager).persist(eq(databaseInstanceEntity));
+        assertNotNull(result);
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldDeleteDatabase (){
+        //when
+        databaseInstanceGateway.deleteDatabase(getDatabaseInstance());
     }
 
     @Test(expected = UnsupportedOperationException.class)

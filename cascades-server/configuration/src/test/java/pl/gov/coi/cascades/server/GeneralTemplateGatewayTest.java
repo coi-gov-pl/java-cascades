@@ -4,12 +4,12 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.jdbc.core.JdbcTemplate;
 import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 import pl.wavesoftware.eid.exceptions.EidIllegalStateException;
 
@@ -46,13 +46,13 @@ public class GeneralTemplateGatewayTest {
     @Mock
     private JdbcTemplate jdbcTemplate;
 
-    private GeneralTemplateGateway generalTemplateGateway;
+    private DatabaseTemplateGateway databaseTemplateGateway;
     private Template template = Template.builder().serverId(SERVER_ID).name("templateName").build();
     private Path deployScript = Paths.get("src","test","resources", "deploy.sql");
 
     @Before
     public void setup() throws SQLException {
-        generalTemplateGateway = new GeneralTemplateGateway(databaseManager);
+        databaseTemplateGateway = new GeneralTemplateGateway(databaseManager);
         when(databaseManager.getConnectionToServer(SERVER_ID)).thenReturn(connectionDatabase);
         when(connectionDatabase.getJdbcTemplate()).thenReturn(jdbcTemplate);
         when(databaseManager.getConnectionToTemplate(SERVER_ID, "templateName")).thenReturn(connectionDatabase);
@@ -64,7 +64,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(POSTGRESQL);
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         verify(jdbcTemplate).execute("CREATE DATABASE templateName TEMPLATE template0");
@@ -76,7 +76,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(POSTGRESQL);
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         verify(jdbcTemplate).execute(DEPLOY_SCRIPT_CONTENT);
@@ -88,7 +88,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(POSTGRESQL);
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         verify(jdbcTemplate).execute("UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'templateName'");
@@ -101,7 +101,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(ORACLE);
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE templateName ADMIN USER admin IDENTIFIED BY ksdn#2Hd");
@@ -114,7 +114,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(ORACLE);
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         verify(jdbcTemplate).execute(DEPLOY_SCRIPT_CONTENT);
@@ -126,7 +126,7 @@ public class GeneralTemplateGatewayTest {
         when(databaseManager.getConnectionToServer(SERVER_ID)).thenThrow(new SQLException());
 
         //when
-        generalTemplateGateway.createTemplate(template, deployScript);
+        databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
         expectedException.expectMessage("20170711:151221");
@@ -138,7 +138,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(POSTGRESQL);
 
         //when
-        generalTemplateGateway.deleteTemplate(template);
+        databaseTemplateGateway.deleteTemplate(template);
 
         //then
         verify(jdbcTemplate).execute("DROP DATABASE templateName");
@@ -150,7 +150,7 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(ORACLE);
 
         //when
-        generalTemplateGateway.deleteTemplate(template);
+        databaseTemplateGateway.deleteTemplate(template);
 
         //then
         verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName CLOSE IMMEDIATE");
@@ -163,7 +163,7 @@ public class GeneralTemplateGatewayTest {
         when(databaseManager.getConnectionToServer(SERVER_ID)).thenThrow(new SQLException());
 
         //when
-        generalTemplateGateway.deleteTemplate(template);
+        databaseTemplateGateway.deleteTemplate(template);
 
         //then
         expectedException.expectMessage("20170726:135511");
@@ -171,7 +171,7 @@ public class GeneralTemplateGatewayTest {
 
     @Test(expected = UnsupportedOperationException.class)
     public void canBeRemoved() {
-        generalTemplateGateway.canBeRemoved(template);
+        databaseTemplateGateway.canBeRemoved(template);
     }
 
     @Test(expected = EidIllegalStateException.class)
@@ -180,6 +180,6 @@ public class GeneralTemplateGatewayTest {
         when(connectionDatabase.getType()).thenReturn(POSTGRESQL);
 
         //when
-        generalTemplateGateway.createTemplate(template, Paths.get("incorrectPath"));
+        databaseTemplateGateway.createTemplate(template, Paths.get("incorrectPath"));
     }
 }

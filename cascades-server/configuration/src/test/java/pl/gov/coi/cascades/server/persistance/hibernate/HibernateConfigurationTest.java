@@ -103,7 +103,7 @@ public class HibernateConfigurationTest {
         );
 
         // then
-        assertThat(actual).isInstanceOf(DatabaseIdGatewayImpl.class);
+        assertThat(actual).isNotNull();
     }
 
     @Test

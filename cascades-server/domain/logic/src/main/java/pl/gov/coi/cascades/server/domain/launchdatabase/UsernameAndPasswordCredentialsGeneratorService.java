@@ -37,7 +37,7 @@ public class UsernameAndPasswordCredentialsGeneratorService {
 
     private static String generateUsername() {
         String uuid = UUID.randomUUID().toString();
-        return "asdasd2359994";
+        return uuid.substring(0, USERNAME_LENGTH);
     }
 
     private char[] generatePassword() {
