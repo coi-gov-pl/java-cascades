@@ -38,6 +38,7 @@ public class DatabaseOperationsImplTest {
     private static final String EXAMPLE_HOST = "example.host";
     private static final int PORT = 5342;
     private static final String ID = "a123xqw2";
+    private static final String PQSQL = "pqsql";
     private DatabaseInstance databaseInstance;
     private DatabaseOperations databaseOperations;
     private Template template;
@@ -67,6 +68,7 @@ public class DatabaseOperationsImplTest {
         ServerDef serverDef = new ServerDef();
         serverDef.setHost(EXAMPLE_HOST);
         serverDef.setPort(PORT);
+        serverDef.setType(PQSQL);
         serverDef.setServerId(SERVER_ID);
 
         List<ServerDef> serverDefList = new ArrayList<>();
