@@ -7,9 +7,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.slf4j.Logger;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
+import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
 import static org.mockito.Mockito.times;
@@ -42,12 +43,13 @@ public class DatabaseOperationsStubTest {
         when(logger.isInfoEnabled()).thenReturn(true);
 
         // when
-        NetworkBind result = databaseOperationsStub.createDatabase(
+        DatabaseInstance result = databaseOperationsStub.createDatabase(
             DatabaseIdGatewayStub.INSTANCE1
         );
 
         // then
         assertThat(result).isNotNull();
+        assertNotNull(result.getNetworkBind());
         assertThat(result).isNotEqualTo(DatabaseIdGatewayStub.INSTANCE1);
         verify(logger).info(contains("20180628:181922"));
         verify(logger).info(contains("Database has been created."));
@@ -59,7 +61,7 @@ public class DatabaseOperationsStubTest {
         when(logger.isInfoEnabled()).thenReturn(false);
 
         //when
-        NetworkBind result = databaseOperationsStub.createDatabase(
+        DatabaseInstance result = databaseOperationsStub.createDatabase(
             DatabaseIdGatewayStub.INSTANCE1
         );
 

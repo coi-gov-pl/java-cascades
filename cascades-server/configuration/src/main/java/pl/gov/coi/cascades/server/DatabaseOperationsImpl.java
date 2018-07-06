@@ -22,12 +22,9 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
     public DatabaseInstance createDatabase(DatabaseInstance databaseInstance) {
         Template template = databaseInstance.getTemplate();
         if (template != null) {
-
             DatabaseInstance databaseInstanceWithSettings = databaseInstance
                 .setNetworkBind(getNetworkBind(template))
                 .setDatabaseType(getDatabaseType(template));
-
-
             // TODO: write implementation
 
             return databaseInstanceWithSettings;

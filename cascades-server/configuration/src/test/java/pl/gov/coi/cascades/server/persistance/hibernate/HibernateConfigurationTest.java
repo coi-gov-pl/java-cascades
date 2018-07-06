@@ -121,8 +121,7 @@ public class HibernateConfigurationTest {
     public void testCreateDatabaseOperations() throws Exception {
         // when
         DatabaseOperations actual = hibernateConfiguration.createDatabaseOperations(
-            serverConfigurationService,
-            templateIdGateway
+            serverConfigurationService
         );
 
         // then

@@ -134,9 +134,8 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     @Test
     public void testLaunchDatabase() throws Exception {
         // given
-        when(databaseInstanceGateway.save(databaseInstance)).thenReturn(databaseInstance);
-        when(databaseOperations.createDatabase(databaseInstance)).thenReturn(networkBind);
-        when(databaseInstance.setNetworkBind(networkBind)).thenReturn(databaseInstance);
+        when(databaseInstanceGateway.save(any(DatabaseInstance.class))).thenReturn(databaseInstance);
+        when(databaseOperations.createDatabase(any(DatabaseInstance.class))).thenReturn(databaseInstance);
 
         // when
         DatabaseInstance actual = facade.launchDatabase(databaseInstance);
@@ -145,7 +144,6 @@ public class LaunchNewDatabaseGatewayFacadeTest {
         assertThat(actual).isNotNull();
         verify(databaseInstanceGateway, times(1)).save(any(DatabaseInstance.class));
         verify(databaseOperations, times(1)).createDatabase(any(DatabaseInstance.class));
-        verify(databaseInstance, times(1)).setNetworkBind(any(NetworkBind.class));
     }
 
     @Test

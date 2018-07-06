@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.stub;
 import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.wavesoftware.eid.exceptions.Eid;
