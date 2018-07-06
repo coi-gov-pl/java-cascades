@@ -43,12 +43,11 @@ public class LaunchNewDatabaseGatewayFacade {
     }
 
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
-        NetworkBind networkBind = databaseOperations.createDatabase(databaseInstance);
-        DatabaseInstance databaseInstanceWithNetworkBind = databaseInstance.setNetworkBind(networkBind);
+        DatabaseInstance databaseInstanceWithSettings = databaseOperations.createDatabase(databaseInstance);
         // utworzyć użytkownika w bazie i nadać mu uprawnienia do nowej instancji stworzonej powyżej
         // TODO: write implementation
         // zapis instancji databaseInstance
-        return databaseInstanceGateway.save(databaseInstanceWithNetworkBind);
+        return databaseInstanceGateway.save(databaseInstanceWithSettings);
     }
 
     DatabaseLimitGateway getDatabaseLimitGateway() {

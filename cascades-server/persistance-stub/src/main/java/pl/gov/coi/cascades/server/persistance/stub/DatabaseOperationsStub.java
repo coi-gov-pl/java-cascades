@@ -3,7 +3,6 @@ package pl.gov.coi.cascades.server.persistance.stub;
 import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.wavesoftware.eid.exceptions.Eid;
@@ -25,15 +24,16 @@ final class DatabaseOperationsStub implements DatabaseOperations {
     }
 
     @Override
-    public NetworkBind createDatabase(DatabaseInstance databaseInstance) {
+    public DatabaseInstance createDatabase(DatabaseInstance databaseInstance) {
         NetworkBindStub networkBindStub = new NetworkBindStub(PORT, EXAMPLE_HOST_COM);
+        DatabaseInstance databaseInstanceNetworkBind = databaseInstance.setNetworkBind(networkBindStub);
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20180628:181922").makeLogMessage(
                 "Database has been created. %s",
                 networkBindStub.toString() + databaseInstance.toString()
             ));
         }
-        return networkBindStub;
+        return databaseInstanceNetworkBind;
     }
 
     @Override

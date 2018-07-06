@@ -1,16 +1,14 @@
 package pl.gov.coi.cascades.server.domain;
 
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
-
 public interface DatabaseOperations {
 
     /**
      * Create new instance of database.
      *
      * @param databaseInstance Given instance of database.
-     * @return NetworkBind with connection settings
+     * @return DatabaseInstance with connection settings
      */
-    NetworkBind createDatabase(DatabaseInstance databaseInstance);
+    DatabaseInstance createDatabase(DatabaseInstance databaseInstance);
 
     /**
      * Delete database.

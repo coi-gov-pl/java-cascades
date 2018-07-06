@@ -6,18 +6,26 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
+import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
+import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
+import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.when;
 
 /**
@@ -29,6 +37,7 @@ public class DatabaseOperationsImplTest {
     private static final String SERVER_ID = "serverId";
     private static final String EXAMPLE_HOST = "example.host";
     private static final int PORT = 5342;
+    private static final String ID = "a123xqw2";
     private DatabaseInstance databaseInstance;
     private DatabaseOperations databaseOperations;
     private Template template;
@@ -45,18 +54,16 @@ public class DatabaseOperationsImplTest {
     @Before
     public void init() {
         databaseOperations = new DatabaseOperationsImpl(
-            serverConfigurationService,
-            templateIdGateway
+            serverConfigurationService
         );
 
         template = Template.builder().id(TEMPLATE_ID).serverId(SERVER_ID).build();
-        databaseInstance = DatabaseInstance.builder().template(template).build();
+        databaseInstance = createDatabaseInstance(template);
     }
 
     @Test
     public void shouldCreateDatabaseFindNetworkBind() {
         //given
-        Optional<Template> templateOptional = Optional.of(template);
         ServerDef serverDef = new ServerDef();
         serverDef.setHost(EXAMPLE_HOST);
         serverDef.setPort(PORT);
@@ -64,16 +71,20 @@ public class DatabaseOperationsImplTest {
 
         List<ServerDef> serverDefList = new ArrayList<>();
         serverDefList.add(serverDef);
+        Template template = Template.builder()
+            .serverId(SERVER_ID)
+            .build();
 
-        when(templateIdGateway.find(TEMPLATE_ID)).thenReturn(templateOptional);
         when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
 
         //when
-        NetworkBind result = databaseOperations.createDatabase(databaseInstance);
+        DatabaseInstance result = databaseOperations.createDatabase(databaseInstance);
 
         //then
-        assertEquals("example.host", result.getHost());
-        assertEquals(5342, result.getPort());
+        assertNotNull(result);
+        assertNotNull(result.getNetworkBind());
+        assertEquals("example.host", result.getNetworkBind().getHost());
+        assertEquals(5342, result.getNetworkBind().getPort());
     }
 
     @Test(expected = EidIllegalArgumentException.class)
@@ -90,5 +101,22 @@ public class DatabaseOperationsImplTest {
     public void shouldExecuteDeleteDatabase() {
         //when
         databaseOperations.deleteDatabase(databaseInstance);
+    }
+
+    private DatabaseInstance createDatabaseInstance(Template template) {
+        String databaseName = "oracle";
+        String instanceName = "my_database";
+        return DatabaseInstance.builder()
+            .databaseId(new DatabaseId(ID))
+            .status(DatabaseStatus.LAUNCHED)
+            .created(new Date())
+            .credentials(new UsernameAndPasswordCredentialsImpl(null, null))
+            .databaseName(databaseName)
+            .databaseType(new DatabaseTypeStub())
+            .instanceName(instanceName)
+            .networkBind(null)
+            .reuseTimes(1)
+            .template(template)
+            .build();
     }
 }

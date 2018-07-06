@@ -60,8 +60,7 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    DatabaseOperations createDatabaseOperations(ServerConfigurationService serverConfigurationService,
-                                                TemplateIdGateway templateIdGateway) {
-        return new DatabaseOperationsImpl(serverConfigurationService, templateIdGateway);
+    DatabaseOperations createDatabaseOperations(ServerConfigurationService serverConfigurationService) {
+        return new DatabaseOperationsImpl(serverConfigurationService);
     }
 }
