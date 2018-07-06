@@ -1,11 +1,15 @@
 package pl.gov.coi.cascades.server.persistance.hibernate.mapper;
 
 import com.google.common.annotations.VisibleForTesting;
+import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
+import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.domain.Mapper;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
@@ -14,6 +18,7 @@ import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseStatus;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Arrays;
 
@@ -66,6 +71,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         checkNotNull(databaseInstance.getCreated(), "20170414:111035");
         checkNotNull(databaseInstance.getDatabaseId(), "20170414:111216");
         checkNotNull(databaseInstance.getTemplate(), "20170414:111233");
+        checkNotNull(databaseInstance.getDatabaseType(), "20170414:111248");
 
         Credentials credentials = new Credentials();
         credentials.setPassword(Arrays.toString(databaseInstance.getCredentials().getPassword()));
@@ -83,6 +89,7 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
         DatabaseInstance instance = new DatabaseInstance();
         instance.setId(databaseIdMapper.toHibernateEntity(databaseInstance.getDatabaseId()));
         instance.setTemplate(templateIdMapper.toHibernateEntity(databaseInstance.getTemplate()));
+        instance.setType(databaseInstance.getDatabaseType().getName());
         instance.setInstanceName(databaseInstance.getInstanceName());
         instance.setReuseTimes(databaseInstance.getReuseTimes());
         instance.setDatabaseName(databaseInstance.getDatabaseName());
@@ -110,6 +117,8 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
         DatabaseId databaseId = databaseIdMapper.fromHibernateEntity(databaseInstance.getId());
         Template template = templateIdMapper.fromHibernateEntity(databaseInstance.getTemplate());
+        DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(databaseInstance.getType());
+        DatabaseType databaseType = new DtoFetcher(databaseTypeDTO).getDatabaseType();
         UsernameAndPasswordCredentials credentials = new UsernameAndPasswordCredentialsImpl(
             databaseInstance.getCredentials().getUsername(),
             databaseInstance.getCredentials().getPassword().toCharArray()
@@ -123,17 +132,18 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
             ? pl.gov.coi.cascades.server.domain.DatabaseStatus.DELETED
             : pl.gov.coi.cascades.server.domain.DatabaseStatus.LAUNCHED;
 
-        return pl.gov.coi.cascades.server.domain.DatabaseInstance.builder()
-            .databaseId(databaseId)
-            .template(template)
-            .instanceName(databaseInstance.getInstanceName())
-            .reuseTimes(databaseInstance.getReuseTimes())
-            .databaseName(databaseInstance.getDatabaseName())
-            .credentials(credentials)
-            .networkBind(networkBind)
-            .status(databaseStatus)
-            .created(databaseInstance.getCreated())
-            .build();
+        return new pl.gov.coi.cascades.server.domain.DatabaseInstance(
+            databaseId,
+            template,
+            databaseType,
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            credentials,
+            networkBind,
+            databaseStatus,
+            databaseInstance.getCreated()
+        );
     }
 
     private static final class NetworkBindImpl implements pl.gov.coi.cascades.contract.domain.NetworkBind {
@@ -156,4 +166,23 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
             return port;
         }
     }
+
+    private static final class DtoFetcher {
+        @Setter
+        private Violation violation;
+        @Setter
+        private DatabaseType databaseType;
+
+        private DtoFetcher(DatabaseTypeDTO dto) {
+            dto.onFail(this::setViolation)
+                .onSuccess(this::setDatabaseType)
+                .resolve();
+        }
+
+        @Nullable
+        DatabaseType getDatabaseType() {
+            return databaseType;
+        }
+    }
+
 }

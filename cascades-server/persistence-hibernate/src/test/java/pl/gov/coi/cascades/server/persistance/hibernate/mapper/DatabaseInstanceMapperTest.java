@@ -6,8 +6,11 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.contract.domain.ConnectionStringProducer;
+import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
@@ -20,6 +23,10 @@ import java.util.Arrays;
 import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -46,6 +53,9 @@ public class DatabaseInstanceMapperTest {
 
     @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;
+
+    @Mock
+    private DatabaseTypeDTO databaseTypeDTO;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -84,6 +94,7 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getTemplate()
             .getVersion())
             .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getVersion());
+        assertThat(actual.getType()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseType().getName());
         assertThat(actual.getInstanceName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getInstanceName());
         assertThat(actual.getReuseTimes()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getReuseTimes());
         assertThat(actual.getDatabaseName()).isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getDatabaseName());
@@ -106,6 +117,10 @@ public class DatabaseInstanceMapperTest {
     @Test
     public void testFromHibernateEntity() throws Exception {
         // given
+        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTO);
+        when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTO);
+        when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTO);
+        doNothing().when(databaseTypeDTO).resolve();
         DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
             databaseTypeClassNameService
         );
@@ -147,6 +162,7 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getTemplate().getServerId()).isEqualTo(template.getServerId());
         assertThat(actual.getTemplate().getStatus().name()).isEqualTo(template.getStatus().name());
         assertThat(actual.getTemplate().getVersion()).isEqualTo(template.getVersion());
+        assertThat(actual.getDatabaseType()).isEqualTo(null);
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
         assertThat(actual.getDatabaseName()).isEqualTo(DATABASE_NAME);
@@ -191,6 +207,8 @@ public class DatabaseInstanceMapperTest {
         DatabaseInstanceMapper databaseInstanceMapper = new DatabaseInstanceMapper(
             databaseTypeClassNameService
         );
+        when(databaseTypeClassNameService.getDatabaseType(anyString()))
+            .thenReturn(new DatabaseTypeDTOStub(DATABASE_TYPE));
 
         // when
         pl.gov.coi.cascades.server.domain.DatabaseInstance model =
@@ -202,4 +220,22 @@ public class DatabaseInstanceMapperTest {
         assertThat(mapped.getId()).isEqualTo(ID);
         assertThat(model.getDatabaseId().getId()).isEqualTo("-rr04ayic");
     }
+
+    private static final class DatabaseTypeDTOStub extends DatabaseTypeDTO {
+        private DatabaseTypeDTOStub(String type) {
+            super(new DatabaseType() {
+
+                @Override
+                public String getName() {
+                    return type;
+                }
+
+                @Override
+                public ConnectionStringProducer getConnectionStringProducer() {
+                    return null;
+                }
+            });
+        }
+    }
+
 }

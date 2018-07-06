@@ -61,6 +61,7 @@ public class UseCaseImpl implements UseCase {
         DatabaseInstanceBuilder candidateBuilder = DatabaseInstance.builder()
             .databaseId(newId)
             .databaseName(databaseName)
+            .databaseType(validator.getDatabaseType())
             .created(Date.from(Instant.now()))
             .credentials(credentials)
             .reuseTimes(0)
