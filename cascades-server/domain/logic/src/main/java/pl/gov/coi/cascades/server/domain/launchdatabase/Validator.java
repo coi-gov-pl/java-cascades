@@ -43,7 +43,6 @@ class Validator {
         validateTemplateId();
         validateUser();
         validateLimitOfDatabases();
-        validateDatabaseType();
         return response.isSuccessful();
     }
 
