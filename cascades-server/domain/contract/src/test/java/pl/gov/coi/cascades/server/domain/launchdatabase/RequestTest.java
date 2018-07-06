@@ -21,7 +21,6 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RequestTest {
 
-    private final static String typeClassName = "Type";
     private final static String instanceName = "PESEL";
     private final static String ID = "453v4c4c";
     private final static String NAME = "dg5nj69s";
@@ -52,7 +51,6 @@ public class RequestTest {
             VERSION
         );
         request = new Request(
-            typeClassName,
             user,
             template,
             instanceName
@@ -63,7 +61,6 @@ public class RequestTest {
     public void testDefaultConstructor() throws Exception {
         // when
         Request actual = new Request(
-            typeClassName,
             user,
             template,
             instanceName
@@ -97,7 +94,6 @@ public class RequestTest {
         Request requestBuilder = Request.builder()
             .instanceName(instanceName)
             .user(user)
-            .type(typeClassName)
             .template(template)
             .build();
 
@@ -113,14 +109,4 @@ public class RequestTest {
         // then
         assertThat(actual).isNotNull();
     }
-
-    @Test
-    public void testGetType() {
-        // when
-        String actual = request.getType();
-
-        // then
-        assertThat(actual).isNotNull();
-    }
-
 }

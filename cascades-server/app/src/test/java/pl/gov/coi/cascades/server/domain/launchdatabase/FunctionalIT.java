@@ -135,16 +135,13 @@ public class FunctionalIT {
     }
 
     private String requestWithNoTemplateId() throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
-            .put("type", stub.getName())
+            .put("instanceName", "dfasd")
             .toString();
     }
 
     private String requestWithTemplateId(String templateId) throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
-            .put("type", stub.getName())
             .put("templateId", templateId)
             .toString();
     }

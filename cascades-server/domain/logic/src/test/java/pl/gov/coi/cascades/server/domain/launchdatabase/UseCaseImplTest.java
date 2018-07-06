@@ -6,13 +6,14 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.*;
+import pl.gov.coi.cascades.contract.domain.DatabaseId;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
@@ -35,9 +36,6 @@ import static org.mockito.Mockito.when;
  * @since 05.05.17.
  */
 public class UseCaseImplTest {
-
-    @Mock
-    private DatabaseTypeDTO databaseTypeDTO;
 
     @Mock
     private LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;
@@ -73,9 +71,6 @@ public class UseCaseImplTest {
     private DatabaseLimitGateway databaseLimitGateway;
 
     @Mock
-    private DatabaseType databaseType;
-
-    @Mock
     private UsernameAndPasswordCredentials usernameAndPasswordCredentials;
 
     @Mock
@@ -100,7 +95,6 @@ public class UseCaseImplTest {
             databaseIdGeneratorService
         );
         when(launchNewDatabaseGatewayFacade.findUser(anyString())).thenReturn(Optional.of(user));
-        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTO);
         when(launchNewDatabaseGatewayFacade.getTemplateIdGateway()).thenReturn(templateIdGateway);
         when(templateIdGateway.find(anyString())).thenReturn(Optional.of(id));
         when(request.getTemplateId()).thenReturn(Optional.of(templateId));
@@ -140,10 +134,6 @@ public class UseCaseImplTest {
         when(templateIdGateway.find(anyString())).thenReturn(Optional.of(id));
         when(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway()).thenReturn(databaseLimitGateway);
         when(databaseLimitGateway.isGlobalLimitExceeded()).thenReturn(true);
-        DatabaseTypeDTOExtension databaseTypeDTOStub = new DatabaseTypeDTOExtension(type);
-        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTOStub);
-        when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTOStub);
-        when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTOStub);
 
         // when
         useCase.execute(
@@ -181,17 +171,12 @@ public class UseCaseImplTest {
             databaseTypeClassNameService,
             databaseIdGeneratorService
         );
-        DatabaseTypeDTOExtension databaseTypeDTOStub = new DatabaseTypeDTOExtension(type);
         when(launchNewDatabaseGatewayFacade.findUser(anyString())).thenReturn(Optional.of(jrambo));
-        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTOStub);
         when(launchNewDatabaseGatewayFacade.getTemplateIdGateway()).thenReturn(templateIdGateway);
         when(templateIdGateway.find(anyString())).thenReturn(Optional.of(id));
         when(request.getTemplateId()).thenReturn(Optional.of(templateId));
         when(request.getUser()).thenReturn(jrambo);
-        when(request.getType()).thenReturn(type);
         when(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway()).thenReturn(databaseLimitGateway);
-        when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTOStub);
-        when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTOStub);
         when(request.getInstanceName()).thenReturn(Optional.of(instanceName));
         when(databaseNameGeneratorService.generate(anyString())).thenReturn(instanceName);
         when(credentialsGeneratorService.generate()).thenReturn(usernameAndPasswordCredentials);
@@ -230,17 +215,12 @@ public class UseCaseImplTest {
             databaseTypeClassNameService,
             databaseIdGeneratorService
         );
-        DatabaseTypeDTOExtension databaseTypeDTOStub = new DatabaseTypeDTOExtension(type);
         when(launchNewDatabaseGatewayFacade.findUser(anyString())).thenReturn(Optional.of(jrambo));
-        when(databaseTypeClassNameService.getDatabaseType(anyString())).thenReturn(databaseTypeDTOStub);
         when(launchNewDatabaseGatewayFacade.getTemplateIdGateway()).thenReturn(templateIdGateway);
         when(templateIdGateway.find(anyString())).thenReturn(Optional.of(id));
         when(request.getTemplateId()).thenReturn(Optional.of(templateId));
         when(request.getUser()).thenReturn(jrambo);
-        when(request.getType()).thenReturn(type);
         when(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway()).thenReturn(databaseLimitGateway);
-        when(databaseTypeDTO.onFail(any())).thenReturn(databaseTypeDTOStub);
-        when(databaseTypeDTO.onSuccess(any())).thenReturn(databaseTypeDTOStub);
         when(request.getInstanceName()).thenReturn(Optional.empty());
         when(databaseNameGeneratorService.generate(anyString())).thenReturn(instanceName);
         when(credentialsGeneratorService.generate()).thenReturn(usernameAndPasswordCredentials);
@@ -277,23 +257,6 @@ public class UseCaseImplTest {
 
         // then
         assertThat(useCase).isNotNull();
-    }
-
-    private static final class DatabaseTypeDTOExtension extends DatabaseTypeDTO {
-        private DatabaseTypeDTOExtension(String type) {
-            super(new DatabaseType() {
-
-                @Override
-                public String getName() {
-                    return type;
-                }
-
-                @Override
-                public ConnectionStringProducer getConnectionStringProducer() {
-                    return null;
-                }
-            });
-        }
     }
 
     private static final class ResponseImpl implements Response {
