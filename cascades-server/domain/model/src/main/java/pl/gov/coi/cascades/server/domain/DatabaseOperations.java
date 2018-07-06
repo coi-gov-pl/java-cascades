@@ -10,7 +10,7 @@ public interface DatabaseOperations {
      * @param databaseInstance Given instance of database.
      * @return NetworkBind with connection settings
      */
-    NetworkBind createDatabase(DatabaseInstance databaseInstance);
+    DatabaseInstance createDatabase(DatabaseInstance databaseInstance);
 
     /**
      * Delete database.

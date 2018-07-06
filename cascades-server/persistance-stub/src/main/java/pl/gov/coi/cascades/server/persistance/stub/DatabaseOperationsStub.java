@@ -25,15 +25,17 @@ final class DatabaseOperationsStub implements DatabaseOperations {
     }
 
     @Override
-    public NetworkBind createDatabase(DatabaseInstance databaseInstance) {
+    public DatabaseInstance createDatabase(DatabaseInstance databaseInstance) {
         NetworkBindStub networkBindStub = new NetworkBindStub(PORT, EXAMPLE_HOST_COM);
+        DatabaseInstance databaseInstanceNetworkBind = databaseInstance.setNetworkBind(networkBindStub);
+
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20180628:181922").makeLogMessage(
                 "Database has been created. %s",
                 networkBindStub.toString() + databaseInstance.toString()
             ));
         }
-        return networkBindStub;
+        return databaseInstanceNetworkBind;
     }
 
     @Override
