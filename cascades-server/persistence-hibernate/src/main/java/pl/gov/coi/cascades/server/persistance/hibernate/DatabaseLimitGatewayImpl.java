@@ -1,11 +1,7 @@
 package pl.gov.coi.cascades.server.persistance.hibernate;
 
-import com.google.common.annotations.VisibleForTesting;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.persistance.hibernate.mapper.DatabaseInstanceMapper;
 
 import javax.transaction.Transactional;
 
