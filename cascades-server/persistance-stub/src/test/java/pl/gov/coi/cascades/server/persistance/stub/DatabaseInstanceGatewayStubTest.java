@@ -36,7 +36,7 @@ public class DatabaseInstanceGatewayStubTest {
         when(logger.isInfoEnabled()).thenReturn(true);
 
         // when
-        DatabaseInstance actual = databaseInstanceGatewayStub.launchDatabase(
+        DatabaseInstance actual = databaseInstanceGatewayStub.save(
             DatabaseIdGatewayStub.INSTANCE1
         );
 
@@ -56,7 +56,7 @@ public class DatabaseInstanceGatewayStubTest {
         when(logger.isInfoEnabled()).thenReturn(false);
 
         // when
-        DatabaseInstance actual = databaseInstanceGatewayStub.launchDatabase(
+        DatabaseInstance actual = databaseInstanceGatewayStub.save(
             DatabaseIdGatewayStub.INSTANCE1
         );
 

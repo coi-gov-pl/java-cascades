@@ -1,45 +1,32 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import lombok.AllArgsConstructor;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
-import javax.inject.Inject;
 import java.util.Optional;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
  * @since 05.04.17.
  */
+@AllArgsConstructor
 public class LaunchNewDatabaseGatewayFacade {
 
     private TemplateIdGateway templateIdGateway;
     private UserGateway userGateway;
     private DatabaseLimitGateway databaseLimitGateway;
     private DatabaseInstanceGateway databaseInstanceGateway;
-
-    /**
-     * Default parameter constructor.
-     *
-     * @param templateIdGateway Given gateway of templateId.
-     * @param userGateway Given gateway of user.
-     * @param databaseLimitGateway Given gateway of database limit.
-     * @param databaseInstanceGateway Given gateway of database instance.
-     */
-    @Inject
-    public LaunchNewDatabaseGatewayFacade(TemplateIdGateway templateIdGateway,
-                                          UserGateway userGateway,
-                                          DatabaseLimitGateway databaseLimitGateway,
-                                          DatabaseInstanceGateway databaseInstanceGateway) {
-        this.templateIdGateway = templateIdGateway;
-        this.userGateway = userGateway;
-        this.databaseLimitGateway = databaseLimitGateway;
-        this.databaseInstanceGateway = databaseInstanceGateway;
-    }
+    private DatabaseOperations databaseOperations;
+    private DatabaseUserGateway databaseUserGateway;
 
     Optional<Template> findTemplateId(String templateId) {
         return templateIdGateway.find(templateId);
@@ -58,7 +45,12 @@ public class LaunchNewDatabaseGatewayFacade {
     }
 
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
-        return databaseInstanceGateway.launchDatabase(databaseInstance);
+        NetworkBind networkBind = databaseOperations.createDatabase(databaseInstance);
+        DatabaseInstance databaseInstanceWithNetworkBind = databaseInstance.setNetworkBind(networkBind);
+        databaseUserGateway.createUserPostgres(databaseInstanceWithNetworkBind);
+        // TODO: write implementation
+        // zapis instancji databaseInstance
+        return databaseInstanceGateway.save(databaseInstanceWithNetworkBind);
     }
 
     DatabaseLimitGateway getDatabaseLimitGateway() {
@@ -68,5 +60,4 @@ public class LaunchNewDatabaseGatewayFacade {
     TemplateIdGateway getTemplateIdGateway() {
         return templateIdGateway;
     }
-
 }

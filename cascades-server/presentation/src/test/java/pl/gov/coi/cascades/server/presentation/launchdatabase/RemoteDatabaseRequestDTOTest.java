@@ -45,7 +45,7 @@ public class RemoteDatabaseRequestDTOTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getTemplate().isPresent()).isTrue();
-        assertThat(actual.getTemplate().get().getName()).isEqualTo(templateName);
+        assertThat(actual.getTemplate().get().getId()).isEqualTo(templateName);
         assertThat(actual.getTemplate().get()).isInstanceOf(InputTemplate.class);
     }
 

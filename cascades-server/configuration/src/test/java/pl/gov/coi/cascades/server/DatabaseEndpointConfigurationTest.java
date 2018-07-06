@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
 
 /**
  * @author <a href="agnieszka.celuch@coi.gov.pl">Agnieszka Celuch</a>
@@ -23,70 +24,94 @@ public class DatabaseEndpointConfigurationTest {
     private DatabaseManager databaseManager;
 
     @Mock
+    private DriverManagerDataSourceHelper driverManagerDataSourceHelper;
+
+    @Mock
     private ConnectionConfigurator connectionConfigurator;
 
     @Mock
-    private ServerConfigurationService service;
+    private ServerConfigurationService serverConfigurationService;
+
+    @Mock
+    private DriverManagerDataSourceProvider driverManagerDataSourceProvider;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Test
-    public void testProduceConnectionConfiguration() throws Exception {
-        // given
-        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
+    private DatabaseEndpointConfiguration databaseEndpointConfiguration = new DatabaseEndpointConfiguration();
 
+    @Test
+    public void testProduceConnectionConfiguration() {
         // when
-        ConnectionConfigurator actual = conf.produceConnectionConfiguration();
+        ConnectionConfigurator actual = databaseEndpointConfiguration.produceConnectionConfiguration();
 
         // then
         assertThat(actual).isNotNull();
     }
 
     @Test
-    public void testProduceDriverManagerDataSourceWhenMapIsEmpty() throws Exception {
+    public void testProduceDriverManagerDataSourceWhenMapIsEmpty() {
         // given
-        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
+        Map<String, DriverManagerDataSource> expectedMap = new HashMap<>();
+        when(driverManagerDataSourceHelper.getManagersMap()).thenReturn(expectedMap);
 
         // when
-        Map<String, DriverManagerDataSource> actual = conf.produceDriverManagerDataSource(
-            service,
-            connectionConfigurator
+        Map<String, DriverManagerDataSource> actual = databaseEndpointConfiguration.produceDriverManagerDataSource(
+            driverManagerDataSourceHelper
         );
 
         // then
-        assertThat(actual).isEmpty();
+        assertThat(actual).isEqualTo(expectedMap);
     }
 
     @Test
-    public void testProduceDatabaseTemplateGateway() throws Exception {
-        // given
-        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
-
+    public void testProduceDatabaseTemplateGateway() {
         // when
-        DatabaseTemplateGateway actual = conf.produceDatabaseTemplateGateway(
+        DatabaseTemplateGateway actual = databaseEndpointConfiguration.produceDatabaseTemplateGateway(
             databaseManager
         );
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseTemplateGateway.class);
+        assertThat(actual).isInstanceOf(GeneralTemplateGateway.class);
     }
 
     @Test
-    public void testProduceDatabaseManager() throws Exception {
+    public void testProduceDatabaseManager() {
         // given
-        DatabaseEndpointConfiguration conf = new DatabaseEndpointConfiguration();
         Map<String, DriverManagerDataSource> drivers = new HashMap<>();
 
         // when
-        DatabaseManager actual = conf.produceDatabaseManager(
-            drivers
+        DatabaseManager actual = databaseEndpointConfiguration.produceDatabaseManager(
+            drivers,
+            driverManagerDataSourceHelper
         );
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseManager.class);
+        assertThat(actual).isInstanceOf(DatabaseEndpointManager.class);
+    }
+
+    @Test
+    public void testProduceDriverManagerDataSourceHelper() {
+        // when
+        DriverManagerDataSourceHelper actual = databaseEndpointConfiguration.produceDriverManagerDataSourceHelper(
+            connectionConfigurator,
+            serverConfigurationService,
+            driverManagerDataSourceProvider
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testProduceDriverManagerDataSourceProvider() {
+        // when
+        DriverManagerDataSourceProvider actual = databaseEndpointConfiguration.produceDriverManagerDataSourceProvider();
+
+        // then
+        assertThat(actual).isNotNull();
     }
 
 }
