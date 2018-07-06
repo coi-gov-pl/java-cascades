@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.persistance.stub;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Setter;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 
 /**

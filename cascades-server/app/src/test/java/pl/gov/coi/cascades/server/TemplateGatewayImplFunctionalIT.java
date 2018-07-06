@@ -50,11 +50,11 @@ public class TemplateGatewayImplFunctionalIT {
         pl.gov.coi.cascades.contract.domain.Template resultTemplate = result.orElse(null);
 
         assertNotNull(resultTemplate);
-        assertEquals(template.getId(), resultTemplate.getId());
-        assertEquals(template.getName(), resultTemplate.getName());
-        assertEquals(template.getServerId(), resultTemplate.getServerId());
-        assertEquals(template.getVersion(), resultTemplate.getVersion());
-        assertEquals(template.getStatus(), resultTemplate.getStatus());
+        assertEquals("1", resultTemplate.getId());
+        assertEquals("newDatabase", resultTemplate.getName());
+        assertEquals("1234", resultTemplate.getServerId());
+        assertEquals("0.0.1", resultTemplate.getVersion());
+        assertEquals(TemplateIdStatus.CREATED, resultTemplate.getStatus());
     }
 
     private pl.gov.coi.cascades.contract.domain.Template createTemplate() {
