@@ -8,7 +8,6 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance.DatabaseInstanceBuilder;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
-import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
 import pl.gov.coi.cascades.server.domain.User;
 
 import java.sql.Date;
@@ -36,15 +35,12 @@ public class UseCaseImpl implements UseCase {
         Optional<User> user = request.getUser() != null
             ? launchNewDatabaseGatewayFacade.findUser(request.getUser().getUsername())
             : Optional.empty();
-        DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService
-            .getDatabaseType(request.getType());
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .databaseLimitGateway(launchNewDatabaseGatewayFacade.getDatabaseLimitGateway())
             .templateIdGateway(launchNewDatabaseGatewayFacade.getTemplateIdGateway())
             .request(request)
-            .response(response)
-            .databaseTypeDTO(databaseTypeDTO);
+            .response(response);
 
         user.ifPresent(validatorBuilder::user);
 
@@ -86,7 +82,7 @@ public class UseCaseImpl implements UseCase {
     }
 
     private static String generateDatabaseName(Request request,
-                                        DatabaseNameGeneratorService databaseNameGeneratorService) {
+                                               DatabaseNameGeneratorService databaseNameGeneratorService) {
         Optional<String> instanceName = request.getInstanceName();
         return instanceName.isPresent()
             ? databaseNameGeneratorService.generate(instanceName.get())

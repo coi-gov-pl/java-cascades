@@ -13,12 +13,10 @@ public class RemoteDatabaseRequestDTOTest {
     @Test
     public void testParameterConstructorWhenTemplateIdIsNotPresent() {
         // given
-        String type = "";
         String instanceName = "oracler49903";
 
         // when
         RemoteDatabaseRequestDTO actual = new RemoteDatabaseRequestDTO(
-            type,
             null,
             instanceName
         );
@@ -31,13 +29,11 @@ public class RemoteDatabaseRequestDTOTest {
     @Test
     public void testParameterConstructorWhenTemplateIdIsPresent() {
         // given
-        String type = "";
         String instanceName = "oracler49903";
         String templateName = "oracle_template";
 
         // when
         RemoteDatabaseRequestDTO actual = new RemoteDatabaseRequestDTO(
-            type,
             templateName,
             instanceName
         );
