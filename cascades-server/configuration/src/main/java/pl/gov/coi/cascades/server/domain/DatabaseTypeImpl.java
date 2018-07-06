@@ -26,13 +26,14 @@ public class DatabaseTypeImpl implements DatabaseType {
     public ConnectionStringProducer getConnectionStringProducer() {
         if (name.equalsIgnoreCase(PGPSQL)) {
             createProduce(POSTGRES_DATABASE);
+
         } else if (name.equalsIgnoreCase(ORA12C)) {
             createProduce(ORACLE_DATABASE);
         }
 
         throw new EidIllegalArgumentException(
             "20180706:154716",
-            "This type of database was not found."
+            String.format("Given database type '%s' hasn't been recognised.", name)
         );
     }
 
