@@ -53,7 +53,7 @@ public class DatabaseInstanceGatewayImplTest {
         DatabaseInstance result = databaseInstanceGateway.save(getDatabaseInstance());
 
         //then
-        verify(entityManager).persist(eq(databaseInstanceEntity));
+        verify(entityManager).merge(eq(databaseInstanceEntity));
         assertNotNull(result);
     }
 
