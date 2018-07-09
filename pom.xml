@@ -446,7 +446,7 @@
             <id>sonar</id>
             <properties>
                 <sonar.host.url>https://sonarcloud.io</sonar.host.url>
-                <sonar.organization>mincong-h-github</sonar.organization>
+                <sonar.organization>coi</sonar.organization>
             </properties>
             <build>
                 <plugins>
