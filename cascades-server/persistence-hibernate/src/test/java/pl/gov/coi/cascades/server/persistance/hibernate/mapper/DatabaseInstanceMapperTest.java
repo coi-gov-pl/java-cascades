@@ -81,6 +81,9 @@ public class DatabaseInstanceMapperTest {
             .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getName());
         assertThat(actual.getTemplate()
             .getGeneratedId())
+            .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getGeneratedId());
+        assertThat(actual.getTemplate()
+            .getId())
             .isEqualTo(DatabaseIdGatewayStub.INSTANCE1.getTemplate().getId());
         assertThat(actual.getTemplate()
             .getStatus().name())
@@ -136,6 +139,7 @@ public class DatabaseInstanceMapperTest {
         template.setServerId(SERVER_ID);
         template.setVersion(VERSION);
         template.setId(TEMPLATE_ID);
+        template.setGeneratedId(TEMPLATE_ID_NAME);
         template.setGeneratedId(GENERATED_ID);
         template.setStatus(TemplateIdStatus.CREATED);
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance hibernateInstance
@@ -157,7 +161,8 @@ public class DatabaseInstanceMapperTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getDatabaseId().getId()).isEqualTo(DATABASE_ID);
-        assertThat(actual.getTemplate().getId()).isEqualTo(GENERATED_ID);
+        assertThat(actual.getTemplate().getId()).isEqualTo(TEMPLATE_ID);
+        assertThat(actual.getTemplate().getGeneratedId()).isEqualTo(GENERATED_ID);
         assertThat(actual.getTemplate().isDefault()).isEqualTo(template.isDefault());
         assertThat(actual.getTemplate().getServerId()).isEqualTo(template.getServerId());
         assertThat(actual.getTemplate().getStatus().name()).isEqualTo(template.getStatus().name());

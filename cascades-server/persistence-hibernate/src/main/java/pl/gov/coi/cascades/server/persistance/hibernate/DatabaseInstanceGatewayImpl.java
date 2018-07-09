@@ -45,7 +45,7 @@ public class DatabaseInstanceGatewayImpl implements DatabaseInstanceGateway {
     public DatabaseInstance save(DatabaseInstance databaseInstance) {
         pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance databaseInstanceEntity
             = databaseInstanceMapper.toHibernateEntity(databaseInstance);
-        entityManager.persist(databaseInstanceEntity);
+        entityManager.merge(databaseInstanceEntity);
 
         return databaseInstance;
     }

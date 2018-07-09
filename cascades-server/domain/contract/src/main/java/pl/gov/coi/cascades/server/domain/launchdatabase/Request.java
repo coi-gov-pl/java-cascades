@@ -44,7 +44,7 @@ public class Request {
      */
     public Optional<String> getTemplateId() {
         String idAsString = Optional.ofNullable(template)
-            .map(Template::getId)
+            .map(Template::getGeneratedId)
             .orElse(null);
         return Optional.ofNullable(idAsString);
     }

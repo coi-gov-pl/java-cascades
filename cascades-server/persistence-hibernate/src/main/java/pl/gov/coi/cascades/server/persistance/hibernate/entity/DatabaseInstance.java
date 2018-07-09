@@ -12,7 +12,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -55,7 +57,6 @@ public class DatabaseInstance {
     @Enumerated(EnumType.STRING)
     private DatabaseStatus status;
 
-    @Column
     private Date created;
 
 }

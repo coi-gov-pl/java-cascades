@@ -8,21 +8,17 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
-import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -33,7 +29,8 @@ import static org.mockito.Mockito.when;
  */
 public class DatabaseOperationsImplTest {
 
-    private static final String TEMPLATE_ID = "4563462";
+    private static final String TEMPLATE_GENERATED_ID = "4563462";
+    private static final long TEMPLATE_ID = 123L;
     private static final String SERVER_ID = "serverId";
     private static final String EXAMPLE_HOST = "example.host";
     private static final int PORT = 5342;
@@ -58,7 +55,7 @@ public class DatabaseOperationsImplTest {
             serverConfigurationService
         );
 
-        template = Template.builder().id(TEMPLATE_ID).serverId(SERVER_ID).build();
+        template = Template.builder().id(TEMPLATE_ID).generatedId(TEMPLATE_GENERATED_ID).serverId(SERVER_ID).build();
         databaseInstance = createDatabaseInstance(template);
     }
 
@@ -92,7 +89,7 @@ public class DatabaseOperationsImplTest {
     @Test(expected = EidIllegalArgumentException.class)
     public void shouldCreateDatabaseNotFindTemplate() {
         //given
-        when(templateIdGateway.find(TEMPLATE_ID)).thenReturn(null);
+        when(templateIdGateway.find(TEMPLATE_GENERATED_ID)).thenReturn(null);
 
         //when
         databaseOperations.createDatabase(databaseInstance);

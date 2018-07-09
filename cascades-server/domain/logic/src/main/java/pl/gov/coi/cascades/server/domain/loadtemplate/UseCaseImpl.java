@@ -51,7 +51,7 @@ public class UseCaseImpl implements UseCase {
         String generatedId = templateIdGeneratorService.generateTemplateId();
 
         return Template.builder()
-            .id(generatedId)
+            .generatedId(generatedId)
             .version(metadataHolder.getTemplateMetadata().getVersion())
             .serverId(metadataHolder.getTemplateMetadata().getServerId())
             .isDefault(metadataHolder.getTemplateMetadata().isDefault())
@@ -67,7 +67,7 @@ public class UseCaseImpl implements UseCase {
     private void succeedResponse(Template template, Response response) {
         templateIdGateway.addTemplate(template);
 
-        response.setId(template.getId());
+        response.setId(template.getGeneratedId());
         response.setName(template.getName());
         response.setDefault(template.isDefault());
         response.setServerId(template.getServerId());

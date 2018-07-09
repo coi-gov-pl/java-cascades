@@ -64,7 +64,7 @@ public class FunctionalIT {
     @After
     public void after() {
         TemplateIdGatewayStub.getAllTemplates().put(
-            TemplateIdGatewayStub.TEMPLATE_ID3.getId(),
+            TemplateIdGatewayStub.TEMPLATE_ID3.getGeneratedId(),
             TemplateIdGatewayStub.TEMPLATE_ID3
         );
     }
