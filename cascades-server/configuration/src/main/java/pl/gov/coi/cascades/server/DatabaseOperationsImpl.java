@@ -12,6 +12,9 @@ import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
 import java.util.Optional;
 
+/**
+ * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
+ */
 @AllArgsConstructor
 public class DatabaseOperationsImpl implements DatabaseOperations {
 
@@ -45,9 +48,11 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
 
     private NetworkBind getNetworkBind(Template template) {
         ServerDef serverDef = findServerDef(template);
+        String host = serverDef.getHost();
+        int port = serverDef.getPort();
 
-        if (serverDef != null) {
-            return new NetworkBindImpl(serverDef.getHost(), serverDef.getPort());
+        if (StringUtils.isNotBlank(host) && port != 0) {
+            return new NetworkBindImpl(host, port);
         }
 
         throw new EidIllegalArgumentException(
@@ -63,8 +68,8 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
         }
 
         throw new EidIllegalArgumentException(
-            "20180706:151316",
-            "GHasn't been found database type."
+            "20180706:151716",
+            "Hasn't been found database type."
         );
     }
 
