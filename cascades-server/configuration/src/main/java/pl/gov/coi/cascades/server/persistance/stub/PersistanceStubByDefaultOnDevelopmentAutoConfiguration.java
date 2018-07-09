@@ -9,7 +9,9 @@ import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -42,6 +44,12 @@ class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
+    DatabaseUserGateway produceDatabaseUserGateway() {
+        return new DatabaseUserGatewayStub();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
     TemplateIdGateway produceTemplateIdGateway() {
         return new TemplateIdGatewayStub();
     }
@@ -50,6 +58,12 @@ class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
     @Bean
     DatabaseInstanceGateway produceDatabaseInstanceGateway() {
         return new DatabaseInstanceGatewayStub();
+    }
+
+    @ConditionalOnMissingBean
+    @Bean
+    DatabaseOperations produceDatabaseOperations() {
+        return new DatabaseOperationsStub();
     }
 
     @ConditionalOnMissingBean

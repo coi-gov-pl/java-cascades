@@ -16,7 +16,7 @@ public class TemplateIdMapper implements Mapper<Template, pl.gov.coi.cascades.co
 
     @Override
     public Template toHibernateEntity(@Nonnull pl.gov.coi.cascades.contract.domain.Template template) {
-        checkNotNull(template.getId(), "20170330:090230");
+        checkNotNull(template.getGeneratedId(), "20170330:090230");
         checkNotNull(template.getServerId(), "20170403:231918");
         checkNotNull(template.getStatus(), "20170403:231935");
         checkNotNull(template.isDefault(), "20170403:231953");
@@ -29,7 +29,8 @@ public class TemplateIdMapper implements Mapper<Template, pl.gov.coi.cascades.co
             ? TemplateIdStatus.CREATED
             : TemplateIdStatus.DELETED;
 
-        hibernateTemplate.setGeneratedId(template.getId());
+        hibernateTemplate.setId(template.getId());
+        hibernateTemplate.setGeneratedId(template.getGeneratedId());
         hibernateTemplate.setName(template.getName());
         hibernateTemplate.setDefault(template.isDefault());
         hibernateTemplate.setServerId(template.getServerId());
@@ -46,6 +47,7 @@ public class TemplateIdMapper implements Mapper<Template, pl.gov.coi.cascades.co
         checkNotNull(template.isDefault(), "20170403:232209");
         checkNotNull(template.getVersion(), "20170512:101501");
         checkNotNull(template.getGeneratedId(), "20170629:090855");
+        checkNotNull(template.getId(), "20180709:095955");
 
         pl.gov.coi.cascades.contract.domain.TemplateIdStatus templateIdStatus = template.getStatus()
             .equals(TemplateIdStatus.CREATED)
@@ -53,6 +55,7 @@ public class TemplateIdMapper implements Mapper<Template, pl.gov.coi.cascades.co
             : pl.gov.coi.cascades.contract.domain.TemplateIdStatus.DELETED;
 
         return new pl.gov.coi.cascades.contract.domain.Template(
+            template.getId(),
             template.getGeneratedId(),
             template.getName(),
             templateIdStatus,

@@ -1,11 +1,15 @@
 package pl.gov.coi.cascades.server.persistance.stub;
 
 import org.junit.Test;
+import org.mockito.Mock;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -54,7 +58,6 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(TemplateIdGatewayStub.class);
     }
 
     @Test
@@ -63,11 +66,10 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
         PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
 
         // when
-        DatabaseInstanceGateway actual = stubs.produceDatabaseInstanceGateway();
+        DatabaseOperations actual = stubs.produceDatabaseOperations();
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseInstanceGatewayStub.class);
     }
 
     @Test
@@ -82,7 +84,6 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(UserGatewayStub.class);
     }
 
     @Test
@@ -95,7 +96,6 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseLimitGatewayStub.class);
     }
 
     @Test
@@ -108,7 +108,6 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseIdGatewayStub.class);
     }
 
     @Test
@@ -121,7 +120,29 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual).isInstanceOf(DatabaseTypeStub.class);
     }
 
+    @Test
+    public void testProduceDatabaseOperations() throws Exception {
+        // given
+        PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
+
+        // when
+        DatabaseOperations actual = stubs.produceDatabaseOperations();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testProduceDatabaseUserGateway() throws Exception {
+        // given
+        PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
+
+        // when
+        DatabaseUserGateway actual = stubs.produceDatabaseUserGateway();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
 }

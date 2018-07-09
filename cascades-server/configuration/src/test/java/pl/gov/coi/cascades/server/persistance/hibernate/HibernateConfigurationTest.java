@@ -5,9 +5,11 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.server.ServerConfigurationService;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -30,6 +32,12 @@ public class HibernateConfigurationTest {
 
     @Mock
     private DatabaseTypeClassNameService databaseTypeClassNameService;
+
+    @Mock
+    private ServerConfigurationService serverConfigurationService;
+
+    @Mock
+    private TemplateIdGateway templateIdGateway;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -70,7 +78,9 @@ public class HibernateConfigurationTest {
     @Test
     public void testDatabaseInstanceGateway() throws Exception {
         // when
-        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway();
+        DatabaseInstanceGateway actual = hibernateConfiguration.createDatabaseInstanceGateway(
+            databaseInstanceMapper
+        );
 
         // then
         assertThat(actual).isNotNull();
@@ -101,6 +111,17 @@ public class HibernateConfigurationTest {
         // when
         DatabaseInstanceMapper actual = hibernateConfiguration.createDatabaseInstanceMapper(
             databaseTypeClassNameService
+        );
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void testCreateDatabaseOperations() throws Exception {
+        // when
+        DatabaseOperations actual = hibernateConfiguration.createDatabaseOperations(
+            serverConfigurationService
         );
 
         // then

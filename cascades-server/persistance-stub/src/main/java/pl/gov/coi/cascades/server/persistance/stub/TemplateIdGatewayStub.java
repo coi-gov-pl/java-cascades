@@ -17,6 +17,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     private static final String VERSION = "0.0.1";
 
     public static final Template TEMPLATE_ID1 = new Template(
+        123L,
         "oracle_template",
         "hv5sj5mb",
         TemplateIdStatus.CREATED,
@@ -25,6 +26,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
         VERSION
     );
     public static final Template TEMPLATE_ID2 = new Template(
+        1234L,
         "templateId2",
         "hstrn5k7",
         TemplateIdStatus.CREATED,
@@ -33,6 +35,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
         VERSION
     );
     public static final Template TEMPLATE_ID3 = new Template(
+        12345L,
         "templateId3",
         "gv62mbka",
         TemplateIdStatus.CREATED,
@@ -41,6 +44,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
         VERSION
     );
     public static final Template TEMPLATE_ID4 = new Template(
+        123456L,
         "templateId4",
         "budjw2m7",
         TemplateIdStatus.CREATED,
@@ -82,7 +86,7 @@ public final class TemplateIdGatewayStub implements TemplateIdGateway {
     }
 
     public void setTemplate(Template template) {
-        templates.put(template.getId(), template);
+        templates.put(template.getGeneratedId(), template);
     }
 
     public Template getTemplate(String key) {
