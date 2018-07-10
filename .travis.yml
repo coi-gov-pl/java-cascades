@@ -1,6 +1,20 @@
 language: java
+
+addons:
+  sonarcloud:
+    organization: "coi"
+    token:
+      secure: "fd76826ccd2346221132b9bdf8f52d75e46b9924"
+    branches:
+      - develop
+
 jdk:
   - oraclejdk8
+
 script: ./mvnw verify -Pci
+- mvn sonar:sonar
+
 after_success:
 - mvn coveralls:report -Ptravis
+
+
