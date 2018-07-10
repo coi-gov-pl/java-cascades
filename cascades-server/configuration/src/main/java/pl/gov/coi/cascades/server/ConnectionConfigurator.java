@@ -13,7 +13,7 @@ public class ConnectionConfigurator {
         String jdbdUrlTemplate;
         switch (databaseType) {
             case "ora12c":
-                driverClass = "oracle.jdbc.driverClass.OracleDriver";
+                driverClass = "oracle.jdbc.OracleDriver";
                 jdbdUrlTemplate = "jdbc:oracle:thin:@//%s:%d/%s";
                 break;
             case "pgsql":

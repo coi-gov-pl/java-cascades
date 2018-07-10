@@ -47,7 +47,7 @@ public class ConnectionConfiguratorTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getDriverClass()).isEqualTo("oracle.jdbc.driverClass.OracleDriver");
+        assertThat(actual.getDriverClass()).isEqualTo("oracle.jdbc.OracleDriver");
         assertThat(actual.getJdbcUrlTemplate()).isEqualTo("jdbc:oracle:thin:@//%s:%d/%s");
     }
 

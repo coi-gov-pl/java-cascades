@@ -10,6 +10,7 @@ import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseIdMapper;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeImpl;
 import pl.gov.coi.cascades.server.domain.Mapper;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
@@ -117,8 +118,8 @@ public class DatabaseInstanceMapper implements Mapper<DatabaseInstance, pl.gov.c
 
         DatabaseId databaseId = databaseIdMapper.fromHibernateEntity(databaseInstance.getId());
         Template template = templateIdMapper.fromHibernateEntity(databaseInstance.getTemplate());
-        DatabaseTypeDTO databaseTypeDTO = databaseTypeClassNameService.getDatabaseType(databaseInstance.getType());
-        DatabaseType databaseType = new DtoFetcher(databaseTypeDTO).getDatabaseType();
+
+        DatabaseType databaseType  = new DatabaseTypeImpl(databaseInstance.getType());
         UsernameAndPasswordCredentials credentials = new UsernameAndPasswordCredentialsImpl(
             databaseInstance.getCredentials().getUsername(),
             databaseInstance.getCredentials().getPassword().toCharArray()

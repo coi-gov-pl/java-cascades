@@ -125,15 +125,17 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
 
     private static String getOracleStartCommands(Template template) {
         StringBuilder commands = new StringBuilder();
-        String createQuery = String.format(
-            "CREATE PLUGGABLE DATABASE %s ADMIN USER admin IDENTIFIED BY ksdn#2Hd;",
+        commands.append("ALTER SESSION SET container = CDB$ROOT;").append(String.format(
+            "CREATE PLUGGABLE DATABASE %s ADMIN USER admin IDENTIFIED BY ksdn#2Hd",
             template.getName()
-        );
-        String alterQuery = String.format(
+        )).append(String.format(
+            " file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed', '/u01/app/oracle/oradata/orcl12c/%s');",
+            template.getName()
+        )).append(String.format(
             "ALTER PLUGGABLE DATABASE %s OPEN READ WRITE;",
             template.getName()
-        );
-        commands.append(createQuery).append(alterQuery);
+        ));
+
         return commands.toString();
     }
 

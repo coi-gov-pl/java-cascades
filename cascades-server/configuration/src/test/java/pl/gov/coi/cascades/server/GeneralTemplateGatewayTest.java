@@ -104,7 +104,10 @@ public class GeneralTemplateGatewayTest {
         databaseTemplateGateway.createTemplate(template, deployScript);
 
         //then
-        verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE templateName ADMIN USER admin IDENTIFIED BY ksdn#2Hd");
+        verify(jdbcTemplate).execute("ALTER SESSION SET container = CDB$ROOT");
+        verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE templateName ADMIN USER admin IDENTIFIED " +
+            "BY ksdn#2Hd file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed'," +
+            " '/u01/app/oracle/oradata/orcl12c/templateName')");
         verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName OPEN READ WRITE");
     }
 

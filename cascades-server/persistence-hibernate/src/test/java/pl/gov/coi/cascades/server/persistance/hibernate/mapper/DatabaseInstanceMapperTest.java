@@ -11,6 +11,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeDTO;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeImpl;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.Credentials;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance;
 import pl.gov.coi.cascades.server.persistance.hibernate.entity.NetworkBind;
@@ -167,7 +168,7 @@ public class DatabaseInstanceMapperTest {
         assertThat(actual.getTemplate().getServerId()).isEqualTo(template.getServerId());
         assertThat(actual.getTemplate().getStatus().name()).isEqualTo(template.getStatus().name());
         assertThat(actual.getTemplate().getVersion()).isEqualTo(template.getVersion());
-        assertThat(actual.getDatabaseType()).isEqualTo(null);
+        assertThat(actual.getDatabaseType()).isInstanceOfAny(DatabaseTypeImpl.class);
         assertThat(actual.getInstanceName()).isEqualTo(INSTANCE_NAME);
         assertThat(actual.getReuseTimes()).isEqualTo(1);
         assertThat(actual.getDatabaseName()).isEqualTo(DATABASE_NAME);
