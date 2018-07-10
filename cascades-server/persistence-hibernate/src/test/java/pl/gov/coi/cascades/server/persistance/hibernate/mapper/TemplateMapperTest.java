@@ -16,12 +16,13 @@ public class TemplateMapperTest {
     public void testToHibernateEntityWhenTemplateIdIsDeleted() throws Exception {
         // given
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
-        String id = "58893453";
+        String generatedId = "58893453";
         String name = "oracle_template";
         String serverId = "gta73284";
         String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.Template template = new pl.gov.coi.cascades.contract.domain.Template(
-            id,
+            null,
+            generatedId,
             name,
             TemplateIdStatus.DELETED,
             true,
@@ -34,8 +35,9 @@ public class TemplateMapperTest {
 
         // then
         assertThat(actual).isNotNull();
+        assertThat(actual.getId()).isNull();
         assertThat(actual.getName()).isEqualTo(name);
-        assertThat(actual.getGeneratedId()).isEqualTo(id);
+        assertThat(actual.getGeneratedId()).isEqualTo(generatedId);
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getStatus().name()).isEqualTo(TemplateIdStatus.DELETED.name());
@@ -45,12 +47,14 @@ public class TemplateMapperTest {
     public void testToHibernateEntity() throws Exception {
         // given
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
-        String id = "673735756";
+        String generatedId = "673735756";
+        long id = 123L;
         String serverId = "fre5345";
         String version = "0.0.1";
         String name = "oracle_template";
         pl.gov.coi.cascades.contract.domain.Template template = new pl.gov.coi.cascades.contract.domain.Template(
             id,
+            generatedId,
             name,
             TemplateIdStatus.CREATED,
             true,
@@ -63,7 +67,8 @@ public class TemplateMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getGeneratedId()).isEqualTo(id);
+        assertThat(actual.getGeneratedId()).isEqualTo(generatedId);
+        assertThat(actual.getId()).isEqualTo(id);
         assertThat(actual.getName()).isEqualTo(name);
         assertThat(actual.isDefault()).isTrue();
         assertThat(actual.getServerId()).isEqualTo(serverId);
@@ -76,12 +81,14 @@ public class TemplateMapperTest {
         // given
         TemplateIdMapper templateIdMapper = new TemplateIdMapper();
         Template template = new Template();
-        String id = "dg6jf2g7";
+        long id = 123L;
+        String generatedId = "dg6jf2g7";
         String serverId = "fre5345";
         String version = "0.0.1";
         String name = "oracle_template";
         template.setName(name);
-        template.setGeneratedId(id);
+        template.setId(id);
+        template.setGeneratedId(generatedId);
         template.setDefault(false);
         template.setServerId(serverId);
         template.setVersion(version);
@@ -94,7 +101,7 @@ public class TemplateMapperTest {
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(id);
+        assertThat(actual.getGeneratedId()).isEqualTo(generatedId);
         assertThat(actual.getName()).isEqualTo(name);
         assertThat(actual.isDefault()).isFalse();
         assertThat(actual.getServerId()).isEqualTo(serverId);

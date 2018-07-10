@@ -13,6 +13,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.0-801.jdbc4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.oracle</groupId>
+            <artifactId>ojdbc</artifactId>
+            <version>12.1.0.2</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/resources/ojdbc7.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <scope>runtime</scope>
@@ -97,5 +109,18 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>postgresql</id>
+            <dependencies>
+                <dependency>
+                    <groupId>postgresql</groupId>
+                    <artifactId>postgresql</artifactId>
+                    <version>9.0-801.jdbc4</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
 </project>

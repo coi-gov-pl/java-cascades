@@ -17,7 +17,7 @@ public class Eaba275Supplier implements Supplier<Template> {
     public Template get() {
         Template template = new Template();
         template.setStatus(TemplateIdStatus.CREATED);
-        template.setGeneratedId("dh6nd6483haurh21nt7vhf99");
+        template.setGeneratedId("sdfasdq1234");
         template.setName("oracle_template");
         template.setServerId("rgey65getg");
         template.setDefault(true);

@@ -32,7 +32,7 @@ public class ConnectionConfigurationTest {
         );
 
         // when
-        String actual = connectionConfiguration.getDriver();
+        String actual = connectionConfiguration.getDriverClass();
 
         // then
         assertThat(actual).isNotNull();
@@ -50,7 +50,7 @@ public class ConnectionConfigurationTest {
         );
 
         // when
-        String actual = connectionConfiguration.getUrl();
+        String actual = connectionConfiguration.getJdbcUrlTemplate();
 
         // then
         assertThat(actual).isNotNull();
