@@ -11,7 +11,7 @@ import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
@@ -58,10 +58,7 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     private DatabaseUserGateway databaseUserGateway;
 
     @Mock
-    private DatabaseOperations databaseOperations;
-
-    @Mock
-    private NetworkBind networkBind;
+    private DatabaseOperationsGateway databaseOperations;
 
     @Mock
     private Template template;
@@ -133,7 +130,7 @@ public class LaunchNewDatabaseGatewayFacadeTest {
 
     @Test
     public void testLaunchDatabase() throws Exception {
-        // given
+        //
         when(databaseInstanceGateway.save(any(DatabaseInstance.class))).thenReturn(databaseInstance);
         when(databaseOperations.createDatabase(any(DatabaseInstance.class))).thenReturn(databaseInstance);
 

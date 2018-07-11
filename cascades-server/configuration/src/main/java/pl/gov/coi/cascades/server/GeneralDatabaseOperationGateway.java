@@ -6,7 +6,7 @@ import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeImpl;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
@@ -17,13 +17,15 @@ import java.util.Optional;
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
 @AllArgsConstructor
-public class DatabaseOperationsImpl implements DatabaseOperations {
+public class GeneralDatabaseOperationGateway implements DatabaseOperationsGateway {
+
+    private static final String ORACLE = "ora12c";
+    private static final String POSTGRESQL = "pgsql";
 
     private ServerConfigurationService serverConfigurationService;
     private DatabaseManager databaseManager;
 
     @Override
-    @Deprecated
     public DatabaseInstance createDatabase(DatabaseInstance databaseInstance) {
         Template template = databaseInstance.getTemplate();
         if (template != null) {
@@ -31,7 +33,7 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
                 .setNetworkBind(getNetworkBind(template))
                 .setDatabaseType(getDatabaseType(template));
 
-            createInstance(databaseInstanceWithSettings, template);
+            createDatabseInstance(databaseInstanceWithSettings);
 
             return databaseInstanceWithSettings;
         }
@@ -42,34 +44,41 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
         );
     }
 
-    private void createInstance(DatabaseInstance databaseInstance, Template template) {
+    private void createDatabseInstance(DatabaseInstance databaseInstance) {
         String databaseType = databaseInstance.getDatabaseType().getName();
+        ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
 
-        if (databaseType.contains("oracle")) {
-            createScriptOracle(template);
-        } else if (databaseType.contains("postgresql")) {
-            createScriptPostgres(template);
+        if (databaseType.contains(POSTGRESQL)) {
+            // TODO: write an implementation
+            throw new UnsupportedOperationException("Not yet implemented!");
+        } else if (databaseType.contains(ORACLE)) {
+            String oracleCreateCommands = getOracleCreateCommands(databaseInstance);
+            runSemicolonSeperatedSQL(connectionDatabase, oracleCreateCommands);
+
+        } else {
+            throw new EidIllegalArgumentException(
+                "20180711:120816",
+                "Hasn't been found database type."
+            );
         }
-
-        runSemicolonSeperatedSQL(connectionDatabase, createDatabaseCommand);
     }
 
-    private void createScriptOracle(Template template) {
-        try {
-            ConnectionDatabase connectionToTemplate = databaseManager.getConnectionToTemplate(
-                template.getServerId(),
-                template.getName()
-            );
-
-            getOracleCreateInstanceCommands(template);
-            getOracleCreateUserCommands(template);
-
-            runSemicolonSeperatedSQL(connectionToTemplate, );
-
-
-        } catch (SQLException e) {
-            throw new EidIllegalArgumentException("20180710:162721", e);
-        }
+    private String getOracleCreateCommands(DatabaseInstance databaseInstance) {
+        String templateName = databaseInstance.getTemplate().getName();
+        String databaseName = databaseInstance.getDatabaseName();
+        return new StringBuilder()
+            .append("ALTER SESSION SET container = CDB$ROOT;")
+            .append(String.format("CREATE PLUGGABLE DATABASE %s from %s",
+                databaseName,
+                templateName))
+            .append(String.format(
+                " file_name_convert = ('/u01/app/oracle/oradata/orcl12c/%s', '/u01/app/oracle/oradata/orcl12c/%s');",
+                templateName,
+                databaseName
+            )).append(String.format(
+                "ALTER PLUGGABLE DATABASE %s OPEN READ WRITE;",
+                databaseName
+            )).toString();
     }
 
     @Override
@@ -116,6 +125,14 @@ public class DatabaseOperationsImpl implements DatabaseOperations {
             .findFirst();
 
         return correctServerDef.orElse(null);
+    }
+
+    private ConnectionDatabase createConnectionToServer(Template template) {
+        try {
+            return databaseManager.getConnectionToServer(template.getServerId());
+        } catch (SQLException e) {
+            throw new EidIllegalArgumentException("20180711:114808", e);
+        }
     }
 
     private void runSemicolonSeperatedSQL(ConnectionDatabase connectionDatabase, String createDatabaseCommand) {

@@ -41,7 +41,7 @@ public class DatabaseEndpointManager implements DatabaseManager {
     }
 
     @Override
-    public ConnectionDatabase getConnectionToTemplate(String serverId, String templateName) {
+    public ConnectionDatabase getConnectionToDatabase(String serverId, String templateName) {
         DriverManagerDataSource manager = driverManagerDataSourceHelper.getManager(serverId, templateName);
         return new ConnectionDatabase(
             new JdbcTemplate(manager),

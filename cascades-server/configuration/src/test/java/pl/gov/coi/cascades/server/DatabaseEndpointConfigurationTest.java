@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 
 import java.util.HashMap;
@@ -109,6 +110,18 @@ public class DatabaseEndpointConfigurationTest {
     public void testProduceDriverManagerDataSourceProvider() {
         // when
         DriverManagerDataSourceProvider actual = databaseEndpointConfiguration.produceDriverManagerDataSourceProvider();
+
+        // then
+        assertThat(actual).isNotNull();
+    }
+
+    @Test
+    public void shouldProduceDatabaseOperationsGateway() {
+        // when
+        DatabaseOperationsGateway actual = databaseEndpointConfiguration.produceDatabaseOperationGateway(
+            serverConfigurationService,
+            databaseManager
+        );
 
         // then
         assertThat(actual).isNotNull();

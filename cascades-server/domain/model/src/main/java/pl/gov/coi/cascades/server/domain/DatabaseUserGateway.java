@@ -7,11 +7,10 @@ public interface DatabaseUserGateway {
 
     /**
      * Creates a new user for the given username, password and adds permissions.
-     * For postgres database
      *
      * @param databaseInstance Given databaseInstance data for create user.
      */
-    void createUserPostgres(DatabaseInstance databaseInstance);
+    void createUser(DatabaseInstance databaseInstance);
 
     /**
      * Deletes user from database.

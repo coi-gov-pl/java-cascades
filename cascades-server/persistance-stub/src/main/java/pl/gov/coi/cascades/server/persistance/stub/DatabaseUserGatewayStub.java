@@ -25,7 +25,7 @@ public class DatabaseUserGatewayStub implements DatabaseUserGateway {
     }
 
     @Override
-    public void createUserPostgres(DatabaseInstance databaseInstance) {
+    public void createUser(DatabaseInstance databaseInstance) {
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20180704:094608")
                 .makeLogMessage(

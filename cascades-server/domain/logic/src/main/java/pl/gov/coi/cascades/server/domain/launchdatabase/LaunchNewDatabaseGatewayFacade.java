@@ -1,12 +1,11 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
 import lombok.AllArgsConstructor;
-import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
@@ -25,7 +24,7 @@ public class LaunchNewDatabaseGatewayFacade {
     private UserGateway userGateway;
     private DatabaseLimitGateway databaseLimitGateway;
     private DatabaseInstanceGateway databaseInstanceGateway;
-    private DatabaseOperations databaseOperations;
+    private DatabaseOperationsGateway databaseOperationsGateway;
     private DatabaseUserGateway databaseUserGateway;
 
     Optional<Template> findTemplateId(String templateId) {
@@ -45,10 +44,8 @@ public class LaunchNewDatabaseGatewayFacade {
     }
 
     DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
-        DatabaseInstance databaseInstanceWithSettings = databaseOperations.createDatabase(databaseInstance);
-        databaseUserGateway.createUserPostgres(databaseInstanceWithSettings);
-        // TODO: write implementation
-        // zapis instancji databaseInstance
+        DatabaseInstance databaseInstanceWithSettings = databaseOperationsGateway.createDatabase(databaseInstance);
+        databaseUserGateway.createUser(databaseInstanceWithSettings);
         return databaseInstanceGateway.save(databaseInstanceWithSettings);
     }
 

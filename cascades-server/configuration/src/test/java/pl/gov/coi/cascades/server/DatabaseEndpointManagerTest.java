@@ -75,7 +75,7 @@ public class DatabaseEndpointManagerTest {
         when(driverManagerDataSourceHelper.getManager("serverId", "templateName")).thenReturn(driverManagerDataSource);
 
         // when
-        ConnectionDatabase actual = databaseEndpointManager.getConnectionToTemplate("serverId", "templateName");
+        ConnectionDatabase actual = databaseEndpointManager.getConnectionToDatabase("serverId", "templateName");
 
         // then
         assertThat(actual).isNotNull();

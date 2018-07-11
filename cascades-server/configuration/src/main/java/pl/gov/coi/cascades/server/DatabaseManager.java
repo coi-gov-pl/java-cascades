@@ -21,6 +21,6 @@ public interface DatabaseManager {
      * @param templateName template name
      * @return connection to database
      */
-    ConnectionDatabase getConnectionToTemplate(String serverId, String templateName) throws SQLException;
+    ConnectionDatabase getConnectionToDatabase(String serverId, String templateName) throws SQLException;
 
 }

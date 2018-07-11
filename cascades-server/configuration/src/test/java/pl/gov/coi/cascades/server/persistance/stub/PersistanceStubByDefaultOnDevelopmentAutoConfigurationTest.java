@@ -7,7 +7,7 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -66,7 +66,7 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
         PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
 
         // when
-        DatabaseOperations actual = stubs.produceDatabaseOperations();
+        DatabaseOperationsGateway actual = stubs.produceDatabaseOperations();
 
         // then
         assertThat(actual).isNotNull();
@@ -128,7 +128,7 @@ public class PersistanceStubByDefaultOnDevelopmentAutoConfigurationTest {
         PersistanceStubByDefaultOnDevelopmentAutoConfiguration stubs = new PersistanceStubByDefaultOnDevelopmentAutoConfiguration();
 
         // when
-        DatabaseOperations actual = stubs.produceDatabaseOperations();
+        DatabaseOperationsGateway actual = stubs.produceDatabaseOperations();
 
         // then
         assertThat(actual).isNotNull();

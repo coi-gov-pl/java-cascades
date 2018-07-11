@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Matchers.contains;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
-public class DatabaseOperationsStubTest {
+public class DatabaseOperationsGatewayStubTest {
 
     private DatabaseOperationsStub databaseOperationsStub;
 
@@ -51,6 +52,7 @@ public class DatabaseOperationsStubTest {
         assertThat(result).isNotNull();
         assertNotNull(result.getNetworkBind());
         assertThat(result).isNotEqualTo(DatabaseIdGatewayStub.INSTANCE1);
+        assertEquals("stub" ,result.getDatabaseType().getName());
         verify(logger).info(contains("20180628:181922"));
         verify(logger).info(contains("Database has been created."));
     }

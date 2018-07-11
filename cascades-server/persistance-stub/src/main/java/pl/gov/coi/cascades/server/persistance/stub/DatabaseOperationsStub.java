@@ -4,10 +4,11 @@ import com.google.common.annotations.VisibleForTesting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.wavesoftware.eid.exceptions.Eid;
 
-final class DatabaseOperationsStub implements DatabaseOperations {
+final class DatabaseOperationsStub implements DatabaseOperationsGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(DatabaseOperationsStub.class);
     private static final int PORT = 4312;
@@ -26,7 +27,9 @@ final class DatabaseOperationsStub implements DatabaseOperations {
     @Override
     public DatabaseInstance createDatabase(DatabaseInstance databaseInstance) {
         NetworkBindStub networkBindStub = new NetworkBindStub(PORT, EXAMPLE_HOST_COM);
-        DatabaseInstance databaseInstanceNetworkBind = databaseInstance.setNetworkBind(networkBindStub);
+        DatabaseInstance databaseInstanceSettings = databaseInstance
+            .setNetworkBind(networkBindStub)
+            .setDatabaseType(new DatabaseTypeStub());
 
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20180628:181922").makeLogMessage(
@@ -34,7 +37,7 @@ final class DatabaseOperationsStub implements DatabaseOperations {
                 networkBindStub.toString() + databaseInstance.toString()
             ));
         }
-        return databaseInstanceNetworkBind;
+        return databaseInstanceSettings;
     }
 
     @Override

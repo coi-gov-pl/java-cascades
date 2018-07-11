@@ -9,7 +9,7 @@ import pl.gov.coi.cascades.server.Environment;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseTemplateGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
@@ -62,7 +62,7 @@ class PersistanceStubByDefaultOnDevelopmentAutoConfiguration {
 
     @ConditionalOnMissingBean
     @Bean
-    DatabaseOperations produceDatabaseOperations() {
+    DatabaseOperationsGateway produceDatabaseOperations() {
         return new DatabaseOperationsStub();
     }
 

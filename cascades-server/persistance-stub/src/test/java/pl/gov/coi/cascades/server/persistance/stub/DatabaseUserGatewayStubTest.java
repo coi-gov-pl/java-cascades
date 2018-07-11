@@ -64,7 +64,7 @@ public class DatabaseUserGatewayStubTest {
         );
 
         // when
-        userGatewayStub.createUserPostgres(
+        userGatewayStub.createUser(
             databaseInstance
         );
 
@@ -81,7 +81,7 @@ public class DatabaseUserGatewayStubTest {
         );
 
         // when
-        userGatewayStub.createUserPostgres(
+        userGatewayStub.createUser(
             databaseInstance
         );
 

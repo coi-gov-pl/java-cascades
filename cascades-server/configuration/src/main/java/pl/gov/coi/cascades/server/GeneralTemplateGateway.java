@@ -21,6 +21,8 @@ import java.util.stream.Stream;
 public class GeneralTemplateGateway implements DatabaseTemplateGateway {
 
     private static final Logger DEFAULT_LOGGER = LoggerFactory.getLogger(GeneralTemplateGateway.class);
+    private static final String ORACLE = "oracle";
+    private static final String POSTGRESQL = "postgresql";
     private Logger logger;
     private DatabaseManager databaseManager;
 
@@ -43,7 +45,7 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
         try {
             ConnectionDatabase connectionDatabase = databaseManager.getConnectionToServer(template.getServerId());
             runCreateDatabaseCommand(connectionDatabase, template);
-            ConnectionDatabase connectionToTemplate = databaseManager.getConnectionToTemplate(template.getServerId(), template.getName());
+            ConnectionDatabase connectionToTemplate = databaseManager.getConnectionToDatabase(template.getServerId(), template.getName());
             runDeployScript(connectionToTemplate, deploySQLScriptPath);
             runAfterDeployScript(connectionToTemplate, template);
         } catch (SQLException e) {
@@ -57,10 +59,10 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
     }
 
     private void runAfterDeployScript(ConnectionDatabase connectionToTemplate, Template template) {
-        if (connectionToTemplate.getType().contains("postgresql")) {
+        if (connectionToTemplate.getType().contains(POSTGRESQL)) {
             runSemicolonSeperatedSQL(connectionToTemplate, String.format(
-            "UPDATE pg_database SET datistemplate = TRUE WHERE datname = '%s';" +
-               "UPDATE pg_database SET datallowconn = FALSE WHERE datname = '%s'",
+                "UPDATE pg_database SET datistemplate = TRUE WHERE datname = '%s';" +
+                    "UPDATE pg_database SET datallowconn = FALSE WHERE datname = '%s'",
                 template.getName(), template.getName()
             ));
         }
@@ -68,10 +70,10 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
 
     private void runCreateDatabaseCommand(ConnectionDatabase connectionDatabase, Template template) {
         String createDatabaseCommand = "";
-        if (connectionDatabase.getType().contains("oracle")) {
-            createDatabaseCommand = getOracleStartCommands(template);
-        } else if (connectionDatabase.getType().contains("postgresql")) {
-            createDatabaseCommand = getPostgresStartCommands(template);
+        if (connectionDatabase.getType().contains(ORACLE)) {
+            createDatabaseCommand = getOracleStartCommands(template.getName());
+        } else if (connectionDatabase.getType().contains(POSTGRESQL)) {
+            createDatabaseCommand = getPostgresStartCommands(template.getName());
         }
         runSemicolonSeperatedSQL(connectionDatabase, createDatabaseCommand);
     }
@@ -89,10 +91,10 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
             ConnectionDatabase connectionDatabase = databaseManager.getConnectionToServer(template.getServerId());
             StringBuilder commands = new StringBuilder();
 
-            if (connectionDatabase.getType().contains("oracle")) {
-                commands.append(getOracleFinishCommands(template));
-            } else if (connectionDatabase.getType().contains("postgresql")) {
-                commands.append(getPostgresFinishCommands(template));
+            if (connectionDatabase.getType().contains(ORACLE)) {
+                commands.append(getOracleFinishCommands(template.getName()));
+            } else if (connectionDatabase.getType().contains(POSTGRESQL)) {
+                commands.append(getPostgresFinishCommands(template.getName()));
             }
 
             runSemicolonSeperatedSQL(connectionDatabase, commands
@@ -102,14 +104,11 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
         }
     }
 
-    private static StringBuilder getPostgresFinishCommands(Template template) {
-        StringBuilder commands = new StringBuilder();
-        String deleteQuery = String.format(
+    private static String getPostgresFinishCommands(String templateName) {
+        return String.format(
             "DROP DATABASE %s;",
-            template.getName()
+            templateName
         );
-        commands.append(deleteQuery);
-        return commands;
     }
 
     private static String readFileAsString(Path deploySQLScriptPath) {
@@ -123,41 +122,36 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
         return fileData.toString();
     }
 
-    private static String getOracleStartCommands(Template template) {
-        StringBuilder commands = new StringBuilder();
-        commands.append("ALTER SESSION SET container = CDB$ROOT;").append(String.format(
-            "CREATE PLUGGABLE DATABASE %s ADMIN USER admin IDENTIFIED BY ksdn#2Hd",
-            template.getName()
-        )).append(String.format(
-            " file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed', '/u01/app/oracle/oradata/orcl12c/%s');",
-            template.getName()
-        )).append(String.format(
-            "ALTER PLUGGABLE DATABASE %s OPEN READ WRITE;",
-            template.getName()
-        ));
-
-        return commands.toString();
+    private static String getOracleStartCommands(String templateName) {
+        return new StringBuilder().append("ALTER SESSION SET container = CDB$ROOT;")
+            .append(String.format(
+                "CREATE PLUGGABLE DATABASE %s ADMIN USER admin IDENTIFIED BY ksdn#2Hd",
+                templateName
+            )).append(String.format(
+                " file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed', '/u01/app/oracle/oradata/orcl12c/%s');",
+                templateName
+            )).append(String.format(
+                "ALTER PLUGGABLE DATABASE %s OPEN READ WRITE;",
+                templateName
+            )).toString();
     }
 
-    private static String getPostgresStartCommands(Template template) {
+    private static String getPostgresStartCommands(String templateName) {
         return String.format(
             "CREATE DATABASE %s TEMPLATE template0;",
-            template.getName()
+            templateName
         );
     }
 
-    private static StringBuilder getOracleFinishCommands(Template template) {
-        StringBuilder commands = new StringBuilder();
-        String disconnectQuery = String.format(
-            "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE;",
-            template.getName()
-        );
-        String deleteQuery = String.format(
-            "DROP PLUGGABLE DATABASE %s INCLUDING DATAFILES;",
-            template.getName()
-        );
-        commands.append(disconnectQuery).append(deleteQuery);
-        return commands;
+    private static String getOracleFinishCommands(String templateName) {
+        return new StringBuilder()
+            .append(String.format(
+                "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE;",
+                templateName
+            )).append(String.format(
+                "DROP PLUGGABLE DATABASE %s INCLUDING DATAFILES;",
+                templateName
+            )).toString();
     }
 
     @Override

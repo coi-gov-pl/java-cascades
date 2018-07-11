@@ -55,7 +55,7 @@ public class GeneralTemplateGatewayTest {
         databaseTemplateGateway = new GeneralTemplateGateway(databaseManager);
         when(databaseManager.getConnectionToServer(SERVER_ID)).thenReturn(connectionDatabase);
         when(connectionDatabase.getJdbcTemplate()).thenReturn(jdbcTemplate);
-        when(databaseManager.getConnectionToTemplate(SERVER_ID, "templateName")).thenReturn(connectionDatabase);
+        when(databaseManager.getConnectionToDatabase(SERVER_ID, "templateName")).thenReturn(connectionDatabase);
     }
 
     @Test

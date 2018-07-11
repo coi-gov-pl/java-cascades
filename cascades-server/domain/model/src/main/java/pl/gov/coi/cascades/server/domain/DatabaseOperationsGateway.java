@@ -1,6 +1,6 @@
 package pl.gov.coi.cascades.server.domain;
 
-public interface DatabaseOperations {
+public interface DatabaseOperationsGateway {
 
     /**
      * Create new instance of database.

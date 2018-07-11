@@ -7,27 +7,30 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.springframework.jdbc.core.JdbcTemplate;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseOperations;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.when;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Matchers.anyString;
 
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
  */
-public class DatabaseOperationsImplTest {
+public class GeneralDatabaseOperationGatewayTest {
 
     private static final String TEMPLATE_GENERATED_ID = "4563462";
     private static final long TEMPLATE_ID = 123L;
@@ -36,13 +39,23 @@ public class DatabaseOperationsImplTest {
     private static final int PORT = 5342;
     private static final String ID = "a123xqw2";
     private static final String PGSQL = "pqsql";
+    private static final String ORACLE = "ora12c";
     private DatabaseInstance databaseInstance;
-    private DatabaseOperations databaseOperations;
+    private DatabaseOperationsGateway databaseOperations;
     private Template template;
     private ServerDef serverDef;
 
     @Mock
     private ServerConfigurationService serverConfigurationService;
+
+    @Mock
+    private ConnectionDatabase connectionDatabase;
+
+    @Mock
+    private DatabaseManager databaseManager;
+
+    @Mock
+    private JdbcTemplate jdbcTemplate;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -52,12 +65,14 @@ public class DatabaseOperationsImplTest {
 
     @Before
     public void init() {
-        databaseOperations = new DatabaseOperationsImpl(
-            serverConfigurationService
+        databaseOperations = new GeneralDatabaseOperationGateway(
+            serverConfigurationService,
+            databaseManager
         );
 
         template = Template.builder().id(TEMPLATE_ID).generatedId(TEMPLATE_GENERATED_ID).serverId(SERVER_ID).build();
         databaseInstance = createDatabaseInstance(template);
+        given(connectionDatabase.getJdbcTemplate()).willReturn(jdbcTemplate);
 
         serverDef = new ServerDef();
         serverDef.setHost(EXAMPLE_HOST);
@@ -67,12 +82,14 @@ public class DatabaseOperationsImplTest {
     }
 
     @Test
-    public void shouldCreateDatabaseFindNetworkBind() {
+    public void shouldCreateDatabaseFindNetworkBind() throws SQLException {
         //given
         List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(ORACLE);
         serverDefList.add(serverDef);
 
-        when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
 
         //when
         DatabaseInstance result = databaseOperations.createDatabase(databaseInstance);
@@ -85,12 +102,15 @@ public class DatabaseOperationsImplTest {
     }
 
     @Test
-    public void shouldCreateDatabaseFindDatabaseType() {
+    public void shouldCreateDatabaseFindDatabaseType() throws SQLException {
         //given
         List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(ORACLE);
         serverDefList.add(serverDef);
 
-        when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
+
 
         //when
         DatabaseInstance result = databaseOperations.createDatabase(databaseInstance);
@@ -98,7 +118,7 @@ public class DatabaseOperationsImplTest {
         //then
         assertNotNull(result);
         assertNotNull(result.getDatabaseType());
-        assertEquals("pqsql", result.getDatabaseType().getName());
+        assertEquals("ora12c", result.getDatabaseType().getName());
     }
 
     @Test(expected = EidIllegalArgumentException.class)
@@ -109,7 +129,7 @@ public class DatabaseOperationsImplTest {
         List<ServerDef> serverDefList = new ArrayList<>();
         serverDefList.add(serverDef);
 
-        when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
 
         //when
         databaseOperations.createDatabase(databaseInstance);
@@ -137,7 +157,7 @@ public class DatabaseOperationsImplTest {
         List<ServerDef> serverDefList = new ArrayList<>();
         serverDefList.add(serverDef);
 
-        when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
 
         //when
         databaseOperations.createDatabase(databaseInstance);
@@ -155,7 +175,7 @@ public class DatabaseOperationsImplTest {
         List<ServerDef> serverDefList = new ArrayList<>();
         serverDefList.add(serverDef);
 
-        when(serverConfigurationService.getManagedServers()).thenReturn(serverDefList);
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
 
         //when
         databaseOperations.createDatabase(databaseInstance);

@@ -15,38 +15,56 @@ import java.sql.SQLException;
 @AllArgsConstructor
 public class GeneralUserGateway implements DatabaseUserGateway {
 
-    private static final String ORACLE = "oracle";
-    private static final String POSTGRESQL = "postgresql";
+    private static final String ORACLE = "ora12c";
+    private static final String POSTGRESQL = "pgsql";
     private DatabaseManager databaseManager;
 
     @Override
-    public void createUserPostgres(DatabaseInstance databaseInstance) {
-        ConnectionDatabase connectionDatabase = createConnection(databaseInstance.getTemplate());
-        if (connectionDatabase.getType().contains(POSTGRESQL)) {
-            StringBuilder postgresStartCommands = getPostgresStartCommands(databaseInstance);
-            runSemicolonSeperatedSQL(connectionDatabase, postgresStartCommands.toString());
+    public void createUser(DatabaseInstance databaseInstance) {
+        String databaseType = databaseInstance.getDatabaseType().getName();
+
+        if (databaseType.contains(POSTGRESQL)) {
+            ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
+            String postgresCommands = getPostgresCreateUserCommands(databaseInstance);
+            runSemicolonSeperatedSQL(connectionDatabase, postgresCommands);
+
+        } else if (databaseType.contains(ORACLE)) {
+            ConnectionDatabase connectionDatabase = createConnectionToDatabase(databaseInstance);
+            String oracleCommands = getOracleCreateUserCommands(databaseInstance);
+            runSemicolonSeperatedSQL(connectionDatabase, oracleCommands);
+        } else {
+            throw new EidIllegalArgumentException(
+                "20180711:110816",
+                "Hasn't been found database type."
+            );
         }
     }
 
     @Override
     public void deleteUser(DatabaseInstance databaseInstance) {
-        ConnectionDatabase connectionDatabase = createConnection(databaseInstance.getTemplate());
-        StringBuilder commands = new StringBuilder();
+        String databaseType = databaseInstance.getDatabaseType().getName();
 
-        if (connectionDatabase.getType().contains(ORACLE)) {
-            commands.append(getOracleDeleteUserCommands());
-        } else if (connectionDatabase.getType().contains(POSTGRESQL)) {
-            UsernameAndPasswordCredentials credentials = databaseInstance.getCredentials();
-            commands.append(
-                    getPostgresDeleteUserCommands(databaseInstance.getTemplate().getName(),
-                    credentials.getUsername())
+        if (databaseType.contains(POSTGRESQL)) {
+            ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
+            String postgresCommands = getPostgresDeleteUserCommands(
+                databaseInstance.getDatabaseName(),
+                databaseInstance.getCredentials().getUsername()
             );
+
+            runSemicolonSeperatedSQL(connectionDatabase, postgresCommands);
+
+        } else if (databaseType.contains(ORACLE)) {
+            ConnectionDatabase connectionDatabase = createConnectionToDatabase(databaseInstance);
+            String oracleCommands = getOracleDeleteUserCommands(
+                databaseInstance.getCredentials().getUsername()
+            );
+
+            runSemicolonSeperatedSQL(connectionDatabase, oracleCommands);
         }
 
-        runSemicolonSeperatedSQL(connectionDatabase, commands.toString());
     }
 
-    private ConnectionDatabase createConnection(Template template) {
+    private ConnectionDatabase createConnectionToServer(Template template) {
         try {
             return databaseManager.getConnectionToServer(template.getServerId());
         } catch (SQLException e) {
@@ -54,50 +72,79 @@ public class GeneralUserGateway implements DatabaseUserGateway {
         }
     }
 
-    private StringBuilder getPostgresStartCommands(DatabaseInstance databaseInstance) {
+    private ConnectionDatabase createConnectionToDatabase(DatabaseInstance databaseInstance) {
+        try {
+            return databaseManager.getConnectionToDatabase(databaseInstance.getTemplate().getServerId(), databaseInstance.getDatabaseName());
+        } catch (SQLException e) {
+            throw new EidIllegalArgumentException("20180711:095808", e);
+        }
+    }
+
+    private String getPostgresCreateUserCommands(DatabaseInstance databaseInstance) {
         StringBuilder command = new StringBuilder();
         UsernameAndPasswordCredentials credentials = databaseInstance.getCredentials();
 
-        command.append(getPostgresCreateUserCommand(credentials));
-        command.append(getPostgresPermissionsCommand(
-            databaseInstance.getTemplate().getName(),
+        command.append(getPostgresCreateUser(credentials));
+        command.append(getPostgresPermissions(
+            databaseInstance.getDatabaseName(),
             credentials.getUsername())
         );
 
-        return command;
+        return command.toString();
+    }
+
+    private String getOracleCreateUserCommands(DatabaseInstance databaseInstance) {
+        StringBuilder command = new StringBuilder();
+        UsernameAndPasswordCredentials credentials = databaseInstance.getCredentials();
+
+        command.append(getOracleCreateUser(credentials));
+        command.append(getOraclePermissions(
+            credentials.getUsername())
+        );
+
+        return command.toString();
     }
 
 
-    private String getPostgresCreateUserCommand(UsernameAndPasswordCredentials credentials) {
-      return String.format(
+    private String getPostgresCreateUser(UsernameAndPasswordCredentials credentials) {
+        return String.format(
             "CREATE USER %s WITH ENCRYPTED PASSWORD '%s';",
             credentials.getUsername(),
             credentials.getPassword()
         );
     }
 
-    private String getPostgresPermissionsCommand(String templateName, String username) {
+    private String getPostgresPermissions(String databaseName, String username) {
         return String.format(
             "GRANT ALL PRIVILEGES ON DATABASE %s TO %s;",
-            templateName,
+            databaseName,
             username
         );
     }
 
-    @Deprecated
-    private String getOracleDeleteUserCommands() {
-        // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+    private String getOracleCreateUser(UsernameAndPasswordCredentials credentials) {
+        return String.format(
+            "CREATE USER %s IDENTIFIED BY \"%s\";",
+            credentials.getUsername(),
+            credentials.getPassword()
+        );
     }
 
-    private String getPostgresDeleteUserCommands(String templateName, String username) {
+    private String getOraclePermissions(String username) {
+        return String.format(
+            "GRANT DBA TO %s;",
+            username
+        );
+    }
+
+    private String getPostgresDeleteUserCommands(String databaseName, String username) {
         StringBuilder commands = new StringBuilder();
         commands.append(String.format(
             "REVOKE ALL PRIVILEGES ON ALL TABLES IN SCHEMA public FROM %s;",
             username
         )).append(String.format(
             "REVOKE ALL ON DATABASE %s FROM %s;",
-            templateName,
+            databaseName,
             username
         )).append(String.format(
             "DROP USER %s;",
@@ -105,6 +152,14 @@ public class GeneralUserGateway implements DatabaseUserGateway {
         ));
 
         return commands.toString();
+    }
+
+    private String getOracleDeleteUserCommands(String username) {
+        return String.format(
+            "DROP USER %s;",
+            username
+        );
+
     }
 
     private void runSemicolonSeperatedSQL(ConnectionDatabase connectionDatabase, String createDatabaseCommand) {
