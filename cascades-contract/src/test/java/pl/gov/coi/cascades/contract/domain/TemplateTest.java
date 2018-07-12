@@ -11,7 +11,8 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class TemplateTest {
 
-    private String id;
+    private Long id;
+    private String generatedId;
     private String name;
     private String serverId;
     private String version;
@@ -20,10 +21,11 @@ public class TemplateTest {
 
     @Before
     public void setUp() {
-        id = "oracle_template";
+        id = 123L;
         name = "hbet6f73";
         serverId = "1234";
         version = "0.0.1";
+        generatedId = "gw13dqD";
         status = TemplateIdStatus.CREATED;
         isDefault = true;
     }
@@ -33,6 +35,7 @@ public class TemplateTest {
         // given
         Template templateBuilder = Template.builder()
             .id(id)
+            .generatedId(generatedId)
             .name(name)
             .isDefault(isDefault)
             .serverId(serverId)
@@ -50,7 +53,8 @@ public class TemplateTest {
             serverId,
             status.toString(),
             version,
-            id,
+            id.toString(),
+            generatedId,
             name
         );
     }
@@ -86,6 +90,7 @@ public class TemplateTest {
         // when
         Template actual = new Template(
             id,
+            generatedId,
             name,
             TemplateIdStatus.CREATED,
             true,
@@ -96,6 +101,7 @@ public class TemplateTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isEqualTo(id);
+        assertThat(actual.getGeneratedId()).isEqualTo(generatedId);
         assertThat(actual.getStatus()).isEqualTo(TemplateIdStatus.CREATED);
         assertThat(actual.getServerId()).isEqualTo(serverId);
         assertThat(actual.getName()).isEqualTo(name);

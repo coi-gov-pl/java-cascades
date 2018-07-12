@@ -70,10 +70,6 @@ class CascadesImpl implements Cascades {
     private RemoteDatabaseRequest createRequest() {
         Driver driver = configuration.getDriver();
         return new RemoteDatabaseRequest(
-            checkNotNull(
-                checkNotNull(driver, "20170330:093926").getType(),
-                "20170330:093953"
-            ).getName(),
             driver.getTemplateId().orNull(),
             configuration.getInstanceName().orNull()
         );

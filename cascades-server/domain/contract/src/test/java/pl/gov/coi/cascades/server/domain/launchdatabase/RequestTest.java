@@ -21,9 +21,9 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RequestTest {
 
-    private final static String typeClassName = "Type";
     private final static String instanceName = "PESEL";
-    private final static String ID = "453v4c4c";
+    private final static long ID = 12L;
+    private final static String GENERATED_ID = "453v4c4c";
     private final static String NAME = "dg5nj69s";
     private final static TemplateIdStatus TEMPLATE_ID_STATUS = TemplateIdStatus.CREATED;
     private final static boolean IS_DEFAULT = true;
@@ -45,6 +45,7 @@ public class RequestTest {
     public void setUp() {
         template = new Template(
             ID,
+            GENERATED_ID,
             NAME,
             TEMPLATE_ID_STATUS,
             IS_DEFAULT,
@@ -52,7 +53,6 @@ public class RequestTest {
             VERSION
         );
         request = new Request(
-            typeClassName,
             user,
             template,
             instanceName
@@ -63,7 +63,6 @@ public class RequestTest {
     public void testDefaultConstructor() throws Exception {
         // when
         Request actual = new Request(
-            typeClassName,
             user,
             template,
             instanceName
@@ -79,7 +78,7 @@ public class RequestTest {
         Optional<String> actual = request.getTemplateId();
 
         // then
-        assertThat(actual).isEqualTo(Optional.of(ID));
+        assertThat(actual).isEqualTo(Optional.of(GENERATED_ID));
     }
 
     @Test
@@ -97,7 +96,6 @@ public class RequestTest {
         Request requestBuilder = Request.builder()
             .instanceName(instanceName)
             .user(user)
-            .type(typeClassName)
             .template(template)
             .build();
 
@@ -113,14 +111,4 @@ public class RequestTest {
         // then
         assertThat(actual).isNotNull();
     }
-
-    @Test
-    public void testGetType() {
-        // when
-        String actual = request.getType();
-
-        // then
-        assertThat(actual).isNotNull();
-    }
-
 }

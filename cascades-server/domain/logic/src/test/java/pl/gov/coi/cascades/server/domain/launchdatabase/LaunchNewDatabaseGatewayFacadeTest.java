@@ -6,11 +6,13 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
-import pl.gov.coi.cascades.contract.domain.Template;
+import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -18,6 +20,8 @@ import pl.gov.coi.cascades.server.domain.UserGateway;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.times;
@@ -51,6 +55,12 @@ public class LaunchNewDatabaseGatewayFacadeTest {
     private DatabaseInstanceGateway databaseInstanceGateway;
 
     @Mock
+    private DatabaseUserGateway databaseUserGateway;
+
+    @Mock
+    private DatabaseOperationsGateway databaseOperations;
+
+    @Mock
     private Template template;
 
     @Rule
@@ -62,7 +72,9 @@ public class LaunchNewDatabaseGatewayFacadeTest {
             templateIdGateway,
             userGateway,
             databaseLimitGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperations,
+            databaseUserGateway
         );
     }
 
@@ -118,15 +130,17 @@ public class LaunchNewDatabaseGatewayFacadeTest {
 
     @Test
     public void testLaunchDatabase() throws Exception {
-        // given
-        when(databaseInstanceGateway.launchDatabase(databaseInstance)).thenReturn(databaseInstance);
+        //
+        when(databaseInstanceGateway.save(any(DatabaseInstance.class))).thenReturn(databaseInstance);
+        when(databaseOperations.createDatabase(any(DatabaseInstance.class))).thenReturn(databaseInstance);
 
         // when
         DatabaseInstance actual = facade.launchDatabase(databaseInstance);
 
         // then
         assertThat(actual).isNotNull();
-        verify(databaseInstanceGateway, times(1)).launchDatabase(any(DatabaseInstance.class));
+        verify(databaseInstanceGateway, times(1)).save(any(DatabaseInstance.class));
+        verify(databaseOperations, times(1)).createDatabase(any(DatabaseInstance.class));
     }
 
     @Test
