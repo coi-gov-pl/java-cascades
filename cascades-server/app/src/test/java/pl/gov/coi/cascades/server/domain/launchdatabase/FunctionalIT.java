@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
-import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.gov.coi.cascades.server.persistance.stub.TemplateIdGatewayStub;
 
 import javax.inject.Inject;
