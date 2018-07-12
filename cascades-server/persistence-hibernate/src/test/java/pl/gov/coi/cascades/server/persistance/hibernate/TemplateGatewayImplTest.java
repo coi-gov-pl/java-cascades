@@ -78,12 +78,14 @@ public class TemplateGatewayImplTest {
     public void testGetDefaultTemplateId() throws Exception {
         // given
         String name = "123456789";
+        long id = 123L;
         TemplateIdStatus status = TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
         String generatedId = "hfb6n2jg";
         String version = "0.0.1";
         pl.gov.coi.cascades.server.persistance.hibernate.entity.Template template =
             new pl.gov.coi.cascades.server.persistance.hibernate.entity.Template();
+        template.setId(id);
         template.setGeneratedId(generatedId);
         template.setServerId(serverId);
         template.setStatus(status);
@@ -104,6 +106,8 @@ public class TemplateGatewayImplTest {
         // then
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.get().getName()).isEqualTo(name);
+        assertThat(actual.get().getGeneratedId()).isEqualTo(generatedId);
+        assertThat(actual.get().getId()).isEqualTo(id);
         assertThat(actual.get().getServerId()).isEqualTo(serverId);
         assertThat(actual.get().getStatus().name()).isEqualTo(status.name());
         assertThat(actual.get().isDefault()).isFalse();
@@ -113,12 +117,14 @@ public class TemplateGatewayImplTest {
     public void testFind() throws Exception {
         // given
         String name = "123456789";
-        String id = "gs46h77f";
+        long id = 123;
+        String generatedId = "gs46h77f";
         String version = "0.0.1";
         pl.gov.coi.cascades.contract.domain.TemplateIdStatus status = pl.gov.coi.cascades.contract.domain.TemplateIdStatus.CREATED;
         String serverId = "hufuiht8t757";
         Template template = new Template(
             id,
+            generatedId,
             name,
             status,
             false,
@@ -143,6 +149,7 @@ public class TemplateGatewayImplTest {
         // then
         assertThat(actual.isPresent()).isTrue();
         assertThat(actual.get().getId()).isEqualTo(id);
+        assertThat(actual.get().getGeneratedId()).isEqualTo(generatedId);
         assertThat(actual.get().getServerId()).isEqualTo(serverId);
         assertThat(actual.get().getStatus()).isEqualTo(status);
         assertThat(actual.get().isDefault()).isFalse();

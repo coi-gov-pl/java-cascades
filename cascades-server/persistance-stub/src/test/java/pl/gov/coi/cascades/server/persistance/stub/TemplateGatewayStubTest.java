@@ -22,7 +22,7 @@ public class TemplateGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        Optional<Template> actual = templateIdGatewayStub.find(TemplateIdGatewayStub.TEMPLATE_ID2.getId());
+        Optional<Template> actual = templateIdGatewayStub.find(TemplateIdGatewayStub.TEMPLATE_ID2.getGeneratedId());
 
         // then
         assertThat(actual).isNotEqualTo(Optional.empty());
@@ -44,7 +44,7 @@ public class TemplateGatewayStubTest {
         // then
         assertThat(actual).isNotEqualTo(Optional.empty());
         assertThat(actual.isPresent()).isTrue();
-        assertThat(actual.get().getId()).isEqualTo(id);
+        assertThat(actual.get().getGeneratedId()).isEqualTo(id);
         assertThat(actual.get().getStatus()).isEqualTo(status);
         assertThat(actual.get().isDefault()).isTrue();
         assertThat(actual.get().getServerId()).isEqualTo(serverId);
@@ -75,6 +75,7 @@ public class TemplateGatewayStubTest {
         // given
         int NUMBER_OF_TEMPLATES = 5;
         Template TEMPLATE_ID = new Template(
+            12L,
             "postgres_template",
             "vh5n683n",
             TemplateIdStatus.CREATED,
@@ -98,7 +99,7 @@ public class TemplateGatewayStubTest {
             TemplateIdGatewayStub.TEMPLATE_ID4,
             TEMPLATE_ID
         );
-        templateIdGatewayStub.removeTemplate(TEMPLATE_ID.getId());
+        templateIdGatewayStub.removeTemplate(TEMPLATE_ID.getGeneratedId());
     }
 
     @Test
@@ -107,11 +108,11 @@ public class TemplateGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        Template actual = templateIdGatewayStub.getTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
+        Template actual = templateIdGatewayStub.getTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getGeneratedId());
 
         // then
         assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isEqualTo(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
+        assertThat(actual.getGeneratedId()).isEqualTo(TemplateIdGatewayStub.TEMPLATE_ID1.getGeneratedId());
         assertThat(actual.getServerId()).isEqualTo(TemplateIdGatewayStub.TEMPLATE_ID1.getServerId());
         assertThat(actual.getStatus()).isEqualTo(TemplateIdGatewayStub.TEMPLATE_ID1.getStatus());
     }
@@ -138,7 +139,7 @@ public class TemplateGatewayStubTest {
         TemplateIdGatewayStub templateIdGatewayStub = new TemplateIdGatewayStub();
 
         // when
-        templateIdGatewayStub.removeTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getId());
+        templateIdGatewayStub.removeTemplate(TemplateIdGatewayStub.TEMPLATE_ID1.getGeneratedId());
         Map<String, Template> actual = getAllTemplates();
 
         // then

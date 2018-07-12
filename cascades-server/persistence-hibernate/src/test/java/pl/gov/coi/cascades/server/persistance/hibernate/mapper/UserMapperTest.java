@@ -49,6 +49,7 @@ public class UserMapperTest {
     private static final String SERVER_ID = "5v36y5646";
     private static final String VERSION = "0.0.1";
     private static final String TEMPLATE_ID_NAME = "oracle_template";
+    private static final long ID_TEMPLATE = 123L;
     private Date created = Date.from(Instant.now());
 
     @Mock
@@ -111,6 +112,7 @@ public class UserMapperTest {
         hibernateInstance.setId(DATABASE_ID_AS_LONG);
         Template template = new Template();
         template.setDefault(false);
+        template.setId(ID_TEMPLATE);
         template.setGeneratedId(GENERATED_ID);
         template.setServerId(SERVER_ID);
         template.setName(TEMPLATE_ID_NAME);

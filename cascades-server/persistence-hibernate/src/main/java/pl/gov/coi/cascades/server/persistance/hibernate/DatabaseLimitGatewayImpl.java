@@ -11,25 +11,26 @@ import javax.transaction.Transactional;
 @Transactional
 public class DatabaseLimitGatewayImpl implements DatabaseLimitGateway {
 
+    private static final int USER_LIMIT = 100;
+    private static final boolean PERSONAL_LIMIT = false;
+    private static final boolean GLOBAL_LIMIT = false;
+
     @Override
-    @Deprecated
     public boolean isPersonalLimitExceeded(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return PERSONAL_LIMIT;
     }
 
     @Override
-    @Deprecated
     public int getPersonalLimitPerUser(User user) {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return USER_LIMIT;
     }
 
     @Override
-    @Deprecated
     public boolean isGlobalLimitExceeded() {
         // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return GLOBAL_LIMIT;
     }
 
     @Override
