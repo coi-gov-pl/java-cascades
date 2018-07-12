@@ -31,15 +31,17 @@ import java.util.Date;
 @ProductionHibernateTest
 public class GeneralDatabaseOperationGatewayTestIT {
 
-    private static final String TEMPLATE_NAME = "templateNameExample";
-    private static final String SERVER_ID = "asdq3";
+    private static final String TEMPLATE_NAME = "examplee";
+    private static final String SERVER_ID_ORACLE = "asdq3";
+    private static final String SERVER_ID_POSTGRES = "hdx234rd";
     private static final String ID_DATABASE = "a123xqw2";
-    private static final String DATABASE_NAME = "exampleDatabaseName";
+    private static final String DATABASE_NAME = "databasenamee";
     private static final String MY_DATABASE = "my_database";
     private static final String FILE_NAME = "tempFile.txt";
-    private static final String USERNAME = "exampleUsername";
+    private static final String USERNAME = "exampleUsernamee";
     private static final String PASSWORD = "examplePassword";
     private static final String ORACLE = "ora12c";
+    private static final String POSTGRES = "pgsql";
 
     private Template template;
     private ServerConfigurationService serverConfigurationService;
@@ -68,13 +70,6 @@ public class GeneralDatabaseOperationGatewayTestIT {
         generalUserGateway = new GeneralUserGateway(databaseManager);
         generalTemplateGateway = new GeneralTemplateGateway(databaseManager);
         generalDatabaseOperationGateway = new GeneralDatabaseOperationGateway(serverConfigurationService, databaseManager);
-        databaseInstance = createDatabaseInstance(template, ORACLE);
-        template = Template.builder()
-            .name(TEMPLATE_NAME)
-            .serverId(SERVER_ID)
-            .isDefault(false)
-            .status(TemplateIdStatus.CREATED)
-            .build();
     }
 
     @After
@@ -87,15 +82,43 @@ public class GeneralDatabaseOperationGatewayTestIT {
     //Ignored test because Travis does not have an integrated database. Only for local test.
     @Ignore
     @Test
-    public void shouldCreateDatabaseOracle() throws IOException {
+    public void shouldCreateOracleDatabase() throws IOException {
         //given
         File tempFile = tempFolder.newFile(FILE_NAME);
-        FileUtils.writeStringToFile(tempFile, "CREATE TABLE employeess (\n" +
+        FileUtils.writeStringToFile(tempFile, "CREATE TABLE employees (\n" +
             "  emp_id      number(38) unique not null,\n" +
             "  name        varchar2(32),\n" +
             "  department  number not null,\n" +
             "  hire_date   date not null);\n" +
             "\n");
+
+        template = createTemplate(SERVER_ID_ORACLE);
+        databaseInstance = createDatabaseInstance(template, ORACLE);
+
+        //when
+        generalTemplateGateway.createTemplate(template, tempFile.toPath());
+        generalDatabaseOperationGateway.createDatabase(databaseInstance);
+
+        //then
+        generalUserGateway.createUser(databaseInstance);
+    }
+
+    //Ignored test because Travis does not have an integrated database. Only for local test.
+    @Ignore
+    @Test
+    public void shouldCreatePostgresDatabase() throws IOException {
+        //given
+        File tempFile = tempFolder.newFile(FILE_NAME);
+        FileUtils.writeStringToFile(tempFile, "CREATE TABLE COMPANY(\n" +
+            "   ID INT PRIMARY KEY     NOT NULL,\n" +
+            "   NAME           TEXT    NOT NULL,\n" +
+            "   AGE            INT     NOT NULL,\n" +
+            "   ADDRESS        CHAR(50),\n" +
+            "   SALARY         REAL\n" +
+            ");");
+
+        template = createTemplate(SERVER_ID_POSTGRES);
+        databaseInstance = createDatabaseInstance(template, POSTGRES);
 
         //when
         generalTemplateGateway.createTemplate(template, tempFile.toPath());
@@ -118,6 +141,15 @@ public class GeneralDatabaseOperationGatewayTestIT {
             .networkBind(null)
             .reuseTimes(1)
             .template(template)
+            .build();
+    }
+
+    private Template createTemplate(String serverId) {
+        return Template.builder()
+            .name(TEMPLATE_NAME)
+            .serverId(serverId)
+            .isDefault(false)
+            .status(TemplateIdStatus.CREATED)
             .build();
     }
 }

@@ -50,8 +50,8 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
         ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
 
         if (databaseType.contains(POSTGRESQL)) {
-            // TODO: write an implementation
-            throw new UnsupportedOperationException("Not yet implemented!");
+            String postgresCreateCommands = getPostgresCreateCommands(databaseInstance);
+            runSemicolonSeperatedSQL(connectionDatabase, postgresCreateCommands);
         } else if (databaseType.contains(ORACLE)) {
             String oracleCreateCommands = getOracleCreateCommands(databaseInstance);
             runSemicolonSeperatedSQL(connectionDatabase, oracleCreateCommands);
@@ -62,6 +62,16 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
                 "Hasn't been found database type."
             );
         }
+    }
+
+    private String getPostgresCreateCommands(DatabaseInstance databaseInstance) {
+        String templateName = databaseInstance.getTemplate().getName();
+        String databaseName = databaseInstance.getDatabaseName();
+
+        return String.format("CREATE DATABASE %s TEMPLATE %s",
+            databaseName,
+            templateName
+        );
     }
 
     private String getOracleCreateCommands(DatabaseInstance databaseInstance) {

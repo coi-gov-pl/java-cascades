@@ -213,7 +213,7 @@ public class GeneralDatabaseOperationGatewayTest {
         verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE exampleDatabaseName OPEN READ WRITE");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldCreatePostgresDatabase() throws SQLException {
         //given
         List<ServerDef> serverDefList = new ArrayList<>();
@@ -225,6 +225,9 @@ public class GeneralDatabaseOperationGatewayTest {
 
         //when
         databaseOperations.createDatabase(databaseInstance);
+
+        //then
+        verify(jdbcTemplate).execute("CREATE DATABASE exampleDatabaseName TEMPLATE templateName");
     }
 
 
