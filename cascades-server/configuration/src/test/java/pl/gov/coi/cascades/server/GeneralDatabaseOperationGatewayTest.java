@@ -39,7 +39,7 @@ public class GeneralDatabaseOperationGatewayTest {
     private static final String EXAMPLE_HOST = "example.host";
     private static final int PORT = 5342;
     private static final String ID = "a123xqw2";
-    private static final String PGSQL = "pqsql";
+    private static final String PGSQL = "pgsql";
     private static final String ORACLE = "ora12c";
     private static final String TEMPLATE_NAME = "templateName";
     private DatabaseInstance databaseInstance;
@@ -194,7 +194,7 @@ public class GeneralDatabaseOperationGatewayTest {
     }
 
     @Test
-    public void shouldCreatePostgresDatabase() throws SQLException {
+    public void shouldCreateOracleDatabase() throws SQLException {
         //given
         List<ServerDef> serverDefList = new ArrayList<>();
         serverDef.setType(ORACLE);
@@ -211,6 +211,20 @@ public class GeneralDatabaseOperationGatewayTest {
         verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE exampleDatabaseName from templateName " +
             "file_name_convert = ('/u01/app/oracle/oradata/orcl12c/templateName', '/u01/app/oracle/oradata/orcl12c/exampleDatabaseName')");
         verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE exampleDatabaseName OPEN READ WRITE");
+    }
+
+    @Test(expected = UnsupportedOperationException.class)
+    public void shouldCreatePostgresDatabase() throws SQLException {
+        //given
+        List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(PGSQL);
+        serverDefList.add(serverDef);
+
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
+
+        //when
+        databaseOperations.createDatabase(databaseInstance);
     }
 
 
