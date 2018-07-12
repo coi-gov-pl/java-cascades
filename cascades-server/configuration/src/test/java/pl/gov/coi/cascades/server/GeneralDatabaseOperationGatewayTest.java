@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Matchers.anyString;
+import static org.mockito.Mockito.verify;
 
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
@@ -40,6 +41,7 @@ public class GeneralDatabaseOperationGatewayTest {
     private static final String ID = "a123xqw2";
     private static final String PGSQL = "pqsql";
     private static final String ORACLE = "ora12c";
+    private static final String TEMPLATE_NAME = "templateName";
     private DatabaseInstance databaseInstance;
     private DatabaseOperationsGateway databaseOperations;
     private Template template;
@@ -70,7 +72,7 @@ public class GeneralDatabaseOperationGatewayTest {
             databaseManager
         );
 
-        template = Template.builder().id(TEMPLATE_ID).generatedId(TEMPLATE_GENERATED_ID).serverId(SERVER_ID).build();
+        template = Template.builder().id(TEMPLATE_ID).name(TEMPLATE_NAME).generatedId(TEMPLATE_GENERATED_ID).serverId(SERVER_ID).build();
         databaseInstance = createDatabaseInstance(template);
         given(connectionDatabase.getJdbcTemplate()).willReturn(jdbcTemplate);
 
@@ -150,7 +152,7 @@ public class GeneralDatabaseOperationGatewayTest {
     }
 
     @Test(expected = EidIllegalArgumentException.class)
-    public void shouldCreateDatabaseNoFindHost() {
+    public void shouldCreateDatabaseNotFindHost() {
         //given
         serverDef.setHost(null);
 
@@ -191,8 +193,30 @@ public class GeneralDatabaseOperationGatewayTest {
         databaseOperations.deleteDatabase(databaseInstance);
     }
 
+    @Test
+    public void shouldCreatePostgresDatabase() throws SQLException {
+        //given
+        List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(ORACLE);
+        serverDefList.add(serverDef);
+
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
+
+        //when
+        databaseOperations.createDatabase(databaseInstance);
+
+        //then
+        verify(jdbcTemplate).execute("ALTER SESSION SET container = CDB$ROOT");
+        verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE exampleDatabaseName from templateName " +
+            "file_name_convert = ('/u01/app/oracle/oradata/orcl12c/templateName', '/u01/app/oracle/oradata/orcl12c/exampleDatabaseName')");
+        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE exampleDatabaseName OPEN READ WRITE");
+    }
+
+
+
     private DatabaseInstance createDatabaseInstance(Template template) {
-        String databaseName = "oracle";
+        String databaseName = "exampleDatabaseName";
         String instanceName = "my_database";
         return DatabaseInstance.builder()
             .databaseId(new DatabaseId(ID))
