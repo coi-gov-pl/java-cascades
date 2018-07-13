@@ -2,6 +2,7 @@ package pl.gov.coi.cascades.server.domain;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteDatabaseGatewayFacade;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.LaunchNewDatabaseGatewayFacade;
@@ -49,15 +50,28 @@ public class DomainConfiguration {
         );
     }
 
+
+    @Bean
+    DeleteDatabaseGatewayFacade produceDeleteDatabaseGateways(UserGateway userGateway,
+                                                              DatabaseIdGateway databaseIdGateway,
+                                                              DatabaseInstanceGateway databaseInstanceGateway,
+                                                              DatabaseOperationsGateway databaseOperationsGateway,
+                                                              DatabaseUserGateway databaseUserGateway) {
+        return new DeleteDatabaseGatewayFacade(
+            userGateway,
+            databaseIdGateway,
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
+        );
+    }
+
     @Bean
     pl.gov.coi.cascades.server.domain.deletedatabase.UseCase produceDeleteLaunchedDatabaseUseCase(
-        UserGateway userGateway,
-        DatabaseIdGateway databaseIdGateway,
-        DatabaseInstanceGateway databaseInstanceGateway) {
+        DeleteDatabaseGatewayFacade facade) {
+
         return pl.gov.coi.cascades.server.domain.deletedatabase.UseCaseImpl.builder()
-            .userGateway(userGateway)
-            .databaseIdGateway(databaseIdGateway)
-            .databaseInstanceGateway(databaseInstanceGateway)
+            .databaseGatewayFacade(facade)
             .build();
     }
 

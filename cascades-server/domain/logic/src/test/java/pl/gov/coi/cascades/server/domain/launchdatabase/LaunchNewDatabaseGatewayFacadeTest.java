@@ -140,6 +140,7 @@ public class LaunchNewDatabaseGatewayFacadeTest {
         // then
         assertThat(actual).isNotNull();
         verify(databaseInstanceGateway, times(1)).save(any(DatabaseInstance.class));
+        verify(databaseUserGateway, times(1)).createUser(any(DatabaseInstance.class));
         verify(databaseOperations, times(1)).createDatabase(any(DatabaseInstance.class));
     }
 

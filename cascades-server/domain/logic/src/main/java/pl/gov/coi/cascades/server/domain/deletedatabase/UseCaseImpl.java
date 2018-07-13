@@ -21,11 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
-    private final UserGateway userGateway;
-    private final DatabaseIdGateway databaseIdGateway;
-    private final DatabaseInstanceGateway databaseInstanceGateway;
-    private final DatabaseOperationsGateway databaseOperationsGateway;
-    private final DatabaseUserGateway databaseUserGateway;
+    private final DeleteDatabaseGatewayFacade databaseGatewayFacade;
 
     /**
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
@@ -36,9 +32,9 @@ public class UseCaseImpl implements UseCase {
     @Override
     public void execute(Request request, Response response) {
         Optional<User> user = request.getUser() != null
-            ? userGateway.find(request.getUser().getUsername())
+            ? databaseGatewayFacade.findUser(request.getUser().getUsername())
             : Optional.empty();
-        Optional<DatabaseInstance> databaseInstance = databaseIdGateway.findInstance(request.getDatabaseId());
+        Optional<DatabaseInstance> databaseInstance = databaseGatewayFacade.findInstance(request.getDatabaseId());
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .request(request)
@@ -60,17 +56,7 @@ public class UseCaseImpl implements UseCase {
         User user = validator.getUser();
         user = user.updateDatabaseInstance(actualDatabaseInstance);
 
-        deleteInDatabase(actualDatabaseInstance);
-        deleteInInformationDatabase(actualDatabaseInstance, user);
-    }
-
-    private void deleteInInformationDatabase(DatabaseInstance actualDatabaseInstance, User user) {
-        databaseInstanceGateway.deleteDatabase(actualDatabaseInstance);
-        userGateway.save(user);
-    }
-
-    private void deleteInDatabase(DatabaseInstance actualDatabaseInstance) {
-        databaseUserGateway.deleteUser(actualDatabaseInstance);
-        databaseOperationsGateway.deleteDatabase(actualDatabaseInstance);
+        databaseGatewayFacade.deleteDatabase(databaseInstance);
+        databaseGatewayFacade.save(user);
     }
 }
