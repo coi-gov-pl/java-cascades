@@ -5,7 +5,9 @@ import lombok.Builder;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
@@ -22,6 +24,8 @@ public class UseCaseImpl implements UseCase {
     private final UserGateway userGateway;
     private final DatabaseIdGateway databaseIdGateway;
     private final DatabaseInstanceGateway databaseInstanceGateway;
+    private final DatabaseOperationsGateway databaseOperationsGateway;
+    private final DatabaseUserGateway databaseUserGateway;
 
     /**
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
@@ -56,8 +60,17 @@ public class UseCaseImpl implements UseCase {
         User user = validator.getUser();
         user = user.updateDatabaseInstance(actualDatabaseInstance);
 
+        deleteInDatabase(actualDatabaseInstance);
+        deleteInInformationDatabase(actualDatabaseInstance, user);
+    }
+
+    private void deleteInInformationDatabase(DatabaseInstance actualDatabaseInstance, User user) {
         databaseInstanceGateway.deleteDatabase(actualDatabaseInstance);
         userGateway.save(user);
     }
 
+    private void deleteInDatabase(DatabaseInstance actualDatabaseInstance) {
+        databaseUserGateway.deleteUser(actualDatabaseInstance);
+        databaseOperationsGateway.deleteDatabase(actualDatabaseInstance);
+    }
 }

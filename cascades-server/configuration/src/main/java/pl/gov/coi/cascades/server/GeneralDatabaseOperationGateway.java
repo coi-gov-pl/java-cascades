@@ -2,7 +2,6 @@ package pl.gov.coi.cascades.server;
 
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.stereotype.Component;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
@@ -45,6 +44,26 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
         );
     }
 
+    @Override
+    public void deleteDatabase(DatabaseInstance databaseInstance) {
+        String databaseType = databaseInstance.getDatabaseType().getName();
+        ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
+
+        if (databaseType.contains(POSTGRESQL)) {
+            String postgresCreateCommands = getPostgresDeleteCommands(databaseInstance.getDatabaseName());
+            runSemicolonSeperatedSQL(connectionDatabase, postgresCreateCommands);
+        } else if (databaseType.contains(ORACLE)) {
+            String oracleCreateCommands = getOracleDeleteCommands(databaseInstance.getDatabaseName());
+            runSemicolonSeperatedSQL(connectionDatabase, oracleCreateCommands);
+
+        } else {
+            throw new EidIllegalArgumentException(
+                "20180711:120816",
+                "Hasn't been found database type."
+            );
+        }
+    }
+
     private void createDatabseInstance(DatabaseInstance databaseInstance) {
         String databaseType = databaseInstance.getDatabaseType().getName();
         ConnectionDatabase connectionDatabase = createConnectionToServer(databaseInstance.getTemplate());
@@ -58,7 +77,7 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
 
         } else {
             throw new EidIllegalArgumentException(
-                "20180711:120816",
+                "20180713:104116",
                 "Hasn't been found database type."
             );
         }
@@ -92,11 +111,22 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
             )).toString();
     }
 
-    @Override
     @Deprecated
-    public void deleteDatabase(DatabaseInstance databaseInstance) {
-        // TODO: write implementation
+    private String getPostgresDeleteCommands(String databaseName) {
+        // TODO: write an implementation
         throw new UnsupportedOperationException("Not yet implemented!");
+    }
+
+    private String getOracleDeleteCommands(String databaseName) {
+        return new StringBuilder()
+            .append("ALTER SESSION SET container = CDB$ROOT;")
+            .append(String.format(
+                "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE;",
+                databaseName
+            )).append(String.format(
+                "DROP PLUGGABLE DATABASE %s INCLUDING DATAFILES;",
+                databaseName
+            )).toString();
     }
 
     private NetworkBind getNetworkBind(Template template) {

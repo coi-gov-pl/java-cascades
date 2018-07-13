@@ -13,6 +13,7 @@ import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
+import pl.gov.coi.cascades.server.domain.DatabaseTypeImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
@@ -42,6 +43,8 @@ public class GeneralDatabaseOperationGatewayTest {
     private static final String PGSQL = "pgsql";
     private static final String ORACLE = "ora12c";
     private static final String TEMPLATE_NAME = "templateName";
+    private static final String DATABASE_NAME = "exampleDatabaseName";
+    private static final String INSTANCE_NAME = "my_database";
     private DatabaseInstance databaseInstance;
     private DatabaseOperationsGateway databaseOperations;
     private Template template;
@@ -187,10 +190,51 @@ public class GeneralDatabaseOperationGatewayTest {
         expectedException.expectMessage("Hasn't been found connection settings.");
     }
 
+    @Test
+    public void shouldExecuteDeleteOracleDatabase() throws SQLException {
+        //given
+        List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(ORACLE);
+        serverDefList.add(serverDef);
+
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
+
+        //when
+        DatabaseTypeImpl databaseType = new DatabaseTypeImpl(ORACLE);
+        databaseOperations.deleteDatabase(databaseInstance.setDatabaseType(databaseType));
+
+        //then
+        verify(jdbcTemplate).execute("ALTER SESSION SET container = CDB$ROOT");
+        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE exampleDatabaseName CLOSE IMMEDIATE");
+        verify(jdbcTemplate).execute("DROP PLUGGABLE DATABASE exampleDatabaseName INCLUDING DATAFILES");
+    }
+
     @Test(expected = UnsupportedOperationException.class)
-    public void shouldExecuteDeleteDatabase() {
+    public void shouldExecuteDeletePostgresDatabase() throws SQLException {
+        //given
+        List<ServerDef> serverDefList = new ArrayList<>();
+        serverDef.setType(PGSQL);
+        serverDefList.add(serverDef);
+
+        given(serverConfigurationService.getManagedServers()).willReturn(serverDefList);
+        given(databaseManager.getConnectionToServer(anyString())).willReturn(connectionDatabase);
+
+        //when
+        DatabaseTypeImpl databaseType = new DatabaseTypeImpl(PGSQL);
+        databaseOperations.deleteDatabase(databaseInstance.setDatabaseType(databaseType));
+
+        verify(jdbcTemplate).execute("DROP PLUGGABLE DATABASE exampleDatabaseName INCLUDING DATAFILES");
+    }
+
+    @Test(expected = EidIllegalArgumentException.class)
+    public void shouldDeleteDatabaseNotFindTemplate() {
         //when
         databaseOperations.deleteDatabase(databaseInstance);
+
+        //then
+        expectedException.expectMessage("20180711:120816");
+        expectedException.expectMessage("Hasn't been found database type.");
     }
 
     @Test
@@ -231,18 +275,15 @@ public class GeneralDatabaseOperationGatewayTest {
     }
 
 
-
     private DatabaseInstance createDatabaseInstance(Template template) {
-        String databaseName = "exampleDatabaseName";
-        String instanceName = "my_database";
         return DatabaseInstance.builder()
             .databaseId(new DatabaseId(ID))
             .status(DatabaseStatus.LAUNCHED)
             .created(new Date())
             .credentials(new UsernameAndPasswordCredentialsImpl(null, null))
-            .databaseName(databaseName)
+            .databaseName(DATABASE_NAME)
             .databaseType(new DatabaseTypeStub())
-            .instanceName(instanceName)
+            .instanceName(INSTANCE_NAME)
             .networkBind(null)
             .reuseTimes(1)
             .template(template)

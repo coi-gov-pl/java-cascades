@@ -10,6 +10,8 @@ import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
@@ -48,6 +50,12 @@ public class UseCaseImplTest {
     private DatabaseIdGateway databaseIdGateway;
 
     @Mock
+    private DatabaseOperationsGateway databaseOperationsGateway;
+
+    @Mock
+    private DatabaseUserGateway databaseUserGateway;
+
+    @Mock
     private Request request;
 
     @Mock
@@ -64,7 +72,9 @@ public class UseCaseImplTest {
         UseCaseImpl useCase = new UseCaseImpl(
             userGateway,
             databaseIdGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
         );
         when(request.getDatabaseId()).thenReturn(databaseId);
         when(databaseIdGateway.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
@@ -93,7 +103,9 @@ public class UseCaseImplTest {
         UseCaseImpl useCase = new UseCaseImpl(
             userGateway,
             databaseIdGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
         );
         when(request.getDatabaseId()).thenReturn(databaseId);
         when(databaseIdGateway.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
@@ -109,6 +121,8 @@ public class UseCaseImplTest {
         // then
         verify(userGateway, times(1)).find(anyString());
         verify(databaseIdGateway, times(1)).findInstance(any(DatabaseId.class));
+        verify(databaseUserGateway, times(0)).deleteUser(any(DatabaseInstance.class));
+        verify(databaseOperationsGateway, times(0)).deleteDatabase(any(DatabaseInstance.class));
         verify(databaseInstanceGateway, times(0)).deleteDatabase(any(DatabaseInstance.class));
         verify(userGateway, times(0)).save(any(User.class));
         assertThat(response.getViolations()).isNotEmpty();
@@ -121,7 +135,9 @@ public class UseCaseImplTest {
         UseCaseImpl useCase = new UseCaseImpl(
             userGateway,
             databaseIdGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
         );
         User jrambo = UserGatewayStub.J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
         when(request.getDatabaseId()).thenReturn(databaseId);
@@ -138,6 +154,8 @@ public class UseCaseImplTest {
         // then
         verify(userGateway, times(1)).find(anyString());
         verify(databaseIdGateway, times(1)).findInstance(any(DatabaseId.class));
+        verify(databaseUserGateway, times(1)).deleteUser(any(DatabaseInstance.class));
+        verify(databaseOperationsGateway, times(1)).deleteDatabase(any(DatabaseInstance.class));
         verify(databaseInstanceGateway, times(1)).deleteDatabase(any(DatabaseInstance.class));
         verify(userGateway, times(1)).save(any(User.class));
         assertThat(response.getViolations()).isEmpty();

@@ -75,8 +75,8 @@ public class GeneralDatabaseOperationGatewayTestIT {
     @After
     public void afterTest() {
         generalTemplateGateway.deleteTemplate(template);
-        // TODO: write implementation - remove database
         generalUserGateway.deleteUser(databaseInstance);
+        generalDatabaseOperationGateway.deleteDatabase(databaseInstance);
     }
 
     //Ignored test because Travis does not have an integrated database. Only for local test.
