@@ -223,8 +223,6 @@ public class GeneralDatabaseOperationGatewayTest {
         //when
         DatabaseTypeImpl databaseType = new DatabaseTypeImpl(PGSQL);
         databaseOperations.deleteDatabase(databaseInstance.setDatabaseType(databaseType));
-
-        verify(jdbcTemplate).execute("DROP PLUGGABLE DATABASE exampleDatabaseName INCLUDING DATAFILES");
     }
 
     @Test(expected = EidIllegalArgumentException.class)
