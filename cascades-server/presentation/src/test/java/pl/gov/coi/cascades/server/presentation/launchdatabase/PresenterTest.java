@@ -8,7 +8,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.springframework.http.HttpStatus;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
-import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 import pl.gov.coi.cascades.contract.service.Violation;
@@ -25,9 +24,6 @@ public class PresenterTest {
 
     @Mock
     private DatabaseId databaseId;
-
-    @Mock
-    private DatabaseType databaseType;
 
     @Mock
     private NetworkBind networkBind;

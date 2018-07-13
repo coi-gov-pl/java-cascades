@@ -15,14 +15,16 @@ import pl.gov.coi.cascades.contract.domain.Template;
 @Ignore
 public class CascadesRuleTest {
 
-    private String id;
+    private long id;
+    private String generatedId;
     private String serverId;
     private String version;
     private String name;
 
     @Before
     public void setUp() {
-        id = "gw45223";
+        id = 123L;
+        generatedId = "gw45223";
         serverId = "898693";
         version = "0.0.1";
         name = "oracle_template";
@@ -69,6 +71,7 @@ public class CascadesRuleTest {
         CascadesRule rule = CascadesRule.builder()
             .driver(new Driver(DATABASE_TYPE_STUB, new Template(
                 id,
+                generatedId,
                 name,
                 TemplateIdStatus.CREATED,
                 false,

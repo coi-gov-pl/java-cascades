@@ -35,7 +35,6 @@ public class LaunchDatabaseControllerTest {
     @Test
     public void testLaunchDatabasePost() throws Exception {
         // given
-        String type = "oracle";
         String templateId = "oracle_template";
         String instanceName = "ora84u8439";
         String username = "jrambo";
@@ -49,7 +48,6 @@ public class LaunchDatabaseControllerTest {
         DefaultOptionalMapper optionalMapper = new DefaultOptionalMapper();
         when(userSession.getSignedInUser()).thenReturn(user);
         RemoteDatabaseRequestDTO request = new RemoteDatabaseRequestDTO(
-            type,
             templateId,
             instanceName
         );
@@ -71,5 +69,4 @@ public class LaunchDatabaseControllerTest {
         assertThat(actual.getBody()).isNotNull();
         assertThat(actual.getBody().getViolations()).hasSize(0);
     }
-
 }

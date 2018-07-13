@@ -13,21 +13,25 @@ public class ServerDefTest {
     @Test
     public void testConstructorWithParameters() {
         // when
-        ServerDef serverDef = new ServerDef(
-            "test",
-            "ora12c",
-            "db_name",
-            "admin",
-            "pass123",
-            "172.0.0.1",
-            1234
-        );
+        ServerDef serverDef = createFullServerDef();
         // then
         assertThat(serverDef).isNotNull();
     }
 
+    private ServerDef createFullServerDef() {
+        return new ServerDef(
+                "test",
+                "ora12c",
+                "db_name",
+                "admin",
+                "pass123",
+                "172.0.0.1",
+                1234
+            );
+    }
+
     @Test
-    public void testEquals() throws Exception {
+    public void testEquals() {
         // given
         ServerDef serverDef = new ServerDef();
         ServerDef otherServerDef = new ServerDef();
@@ -41,7 +45,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    public void testHashCode() {
         // given
         ServerDef serverDef = new ServerDef();
         ServerDef otherServerDef = new ServerDef();
@@ -55,7 +59,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testCanEqual() throws Exception {
+    public void testCanEqual() {
         // given
         ServerDef serverDef = new ServerDef();
         ServerDef otherServerDef = new ServerDef();
@@ -68,7 +72,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testToString() throws Exception {
+    public void testToString() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setServerId("test");
@@ -92,7 +96,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetServerId() throws Exception {
+    public void testSetServerId() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -104,7 +108,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetDbname() throws Exception {
+    public void testSetDbname() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -116,7 +120,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetUser() throws Exception {
+    public void testSetUser() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -128,7 +132,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetPassword() throws Exception {
+    public void testSetPassword() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -140,7 +144,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetHost() throws Exception {
+    public void testSetHost() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -152,7 +156,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testSetPort() throws Exception {
+    public void testSetPort() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -164,7 +168,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetServerId() throws Exception {
+    public void testGetServerId() {
         // given
         ServerDef serverDef = new ServerDef();
 
@@ -176,7 +180,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetDbname() throws Exception {
+    public void testGetDbname() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setDbname("db_name");
@@ -189,7 +193,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetUser() throws Exception {
+    public void testGetUser() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setUser("admin");
@@ -202,7 +206,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetPassword() throws Exception {
+    public void testGetPassword() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setPassword("pass123");
@@ -215,7 +219,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetHost() throws Exception {
+    public void testGetHost() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setHost("172.0.0.1");
@@ -228,7 +232,7 @@ public class ServerDefTest {
     }
 
     @Test
-    public void testGetPort() throws Exception {
+    public void testGetPort() {
         // given
         ServerDef serverDef = new ServerDef();
         serverDef.setPort(1234);
@@ -238,6 +242,18 @@ public class ServerDefTest {
 
         // then
         assertThat(actual).isEqualTo(1234);
+    }
+
+    @Test
+    public void testGetWithNewDatabaseName() {
+        //given
+        ServerDef fullServerDef = createFullServerDef();
+
+        //when
+        ServerDef result = fullServerDef.getWithNewDatabaseName("NEW DATABASE NAME");
+
+        //then
+        assertThat(result.toString()).isEqualTo("ServerDef(serverId=test, type=ora12c, dbname=NEW DATABASE NAME, user=admin, password=pass123, host=172.0.0.1, port=1234)");
     }
 
 }

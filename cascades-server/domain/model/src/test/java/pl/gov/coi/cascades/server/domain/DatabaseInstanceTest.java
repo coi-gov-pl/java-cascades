@@ -215,6 +215,5 @@ public class DatabaseInstanceTest {
         @Getter
         @Setter
         private String host;
-
     }
 }

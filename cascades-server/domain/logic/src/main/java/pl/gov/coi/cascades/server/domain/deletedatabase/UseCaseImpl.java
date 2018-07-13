@@ -5,7 +5,9 @@ import lombok.Builder;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 
@@ -19,9 +21,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UseCaseImpl implements UseCase {
 
-    private final UserGateway userGateway;
-    private final DatabaseIdGateway databaseIdGateway;
-    private final DatabaseInstanceGateway databaseInstanceGateway;
+    private final DeleteDatabaseGatewayFacade databaseGatewayFacade;
 
     /**
      * This method takes a pair of request and response objects. That ensures decoupling of presentation from domain.
@@ -32,9 +32,9 @@ public class UseCaseImpl implements UseCase {
     @Override
     public void execute(Request request, Response response) {
         Optional<User> user = request.getUser() != null
-            ? userGateway.find(request.getUser().getUsername())
+            ? databaseGatewayFacade.findUser(request.getUser().getUsername())
             : Optional.empty();
-        Optional<DatabaseInstance> databaseInstance = databaseIdGateway.findInstance(request.getDatabaseId());
+        Optional<DatabaseInstance> databaseInstance = databaseGatewayFacade.findInstance(request.getDatabaseId());
 
         Validator.ValidatorBuilder validatorBuilder = Validator.builder()
             .request(request)
@@ -56,8 +56,7 @@ public class UseCaseImpl implements UseCase {
         User user = validator.getUser();
         user = user.updateDatabaseInstance(actualDatabaseInstance);
 
-        databaseInstanceGateway.deleteDatabase(actualDatabaseInstance);
-        userGateway.save(user);
+        databaseGatewayFacade.deleteDatabase(databaseInstance);
+        databaseGatewayFacade.save(user);
     }
-
 }
