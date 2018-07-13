@@ -1,5 +1,6 @@
 package pl.gov.coi.cascades.server.domain.launchdatabase;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
 import java.security.SecureRandom;
@@ -9,12 +10,13 @@ import java.util.UUID;
 public class UsernameAndPasswordCredentialsGeneratorService {
 
     private static final int PASSWORD_LENGTH = 24;
-    private static final int USERNAME_LENGTH = 8;
+    private static final int USERNAME_LENGTH_WITHOUT_FIRST_LETTER = 7;
     private static final String CHAR_PASSWORD =
         "0123456789" +
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
             "abcdefghijklmnopqrstuvwxyz" +
             "!@#$%^&*";
+    private static final int COUNT_LETTER = 1;
     private Random rand;
 
     /**
@@ -37,7 +39,11 @@ public class UsernameAndPasswordCredentialsGeneratorService {
 
     private static String generateUsername() {
         String uuid = UUID.randomUUID().toString();
-        return uuid.substring(0, USERNAME_LENGTH);
+        String randomLetter = RandomStringUtils.randomAlphabetic(COUNT_LETTER);
+        return String.format("%s%s",
+            randomLetter,
+            uuid.substring(0, USERNAME_LENGTH_WITHOUT_FIRST_LETTER)
+        );
     }
 
     private char[] generatePassword() {
@@ -48,5 +54,4 @@ public class UsernameAndPasswordCredentialsGeneratorService {
         }
         return stringBuilder.toString().toCharArray();
     }
-
 }

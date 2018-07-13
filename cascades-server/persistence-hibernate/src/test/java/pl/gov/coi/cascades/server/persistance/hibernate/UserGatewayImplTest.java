@@ -88,8 +88,7 @@ public class UserGatewayImplTest {
         userGateway.save(user);
 
         // then
-        verify(entityManager, times(1)).getReference(any(), anyLong());
-        verify(entityManager, times(1)).persist(any());
+        verify(entityManager, times(1)).merge(any());
     }
 
     @Test

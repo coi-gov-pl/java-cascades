@@ -51,7 +51,6 @@ public class LaunchDatabaseController {
         User user = userSession.getSignedInUser();
 
         Request.RequestBuilder requestBuilder = Request.builder()
-            .type(request.getType())
             .user(user);
 
         optionalMapper.toJava8(request.getTemplate())
