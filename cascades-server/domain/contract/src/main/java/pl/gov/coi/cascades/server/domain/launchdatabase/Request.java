@@ -16,8 +16,6 @@ import java.util.Optional;
 public class Request {
 
     @Getter
-    private final String type;
-    @Getter
     private final User user;
     @Nullable
     private final Template template;
@@ -27,16 +25,13 @@ public class Request {
     /**
      * Default argument constructor.
      *
-     * @param type Name of type class.
      * @param user          User of the database.
      * @param template    Given id of template (Optional).
      * @param instanceName  Given name of database instance (Optional).
      */
-    public Request(String type,
-                   User user,
+    public Request(User user,
                    @Nullable Template template,
                    @Nullable String instanceName) {
-        this.type = EidPreconditions.checkNotNull(type, "20170228:153927");
         this.user = EidPreconditions.checkNotNull(user, "20170228:153954");
         this.template = template;
         this.instanceName = instanceName;
@@ -49,7 +44,7 @@ public class Request {
      */
     public Optional<String> getTemplateId() {
         String idAsString = Optional.ofNullable(template)
-            .map(Template::getId)
+            .map(Template::getGeneratedId)
             .orElse(null);
         return Optional.ofNullable(idAsString);
     }

@@ -1,10 +1,12 @@
 package pl.gov.coi.cascades.server.domain;
 
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import pl.gov.coi.cascades.server.domain.deletedatabase.DeleteDatabaseGatewayFacade;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseIdGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.DatabaseNameGeneratorService;
 import pl.gov.coi.cascades.server.domain.launchdatabase.LaunchNewDatabaseGatewayFacade;
@@ -21,8 +23,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class DomainConfigurationTest {
 
+    private DomainConfiguration domainConfiguration;
+
     @Mock
     private LaunchNewDatabaseGatewayFacade launchNewDatabaseGatewayFacade;
+
+    @Mock
+    private DeleteDatabaseGatewayFacade deleteDatabaseGatewayFacade;
 
     @Mock
     private DatabaseNameGeneratorService databaseNameGeneratorService;
@@ -38,6 +45,9 @@ public class DomainConfigurationTest {
 
     @Mock
     private TemplateIdGateway templateIdGateway;
+
+    @Mock
+    private DatabaseUserGateway databaseUserGateway;
 
     @Mock
     private DatabaseTemplateGateway databaseTemplateGateway;
@@ -57,14 +67,19 @@ public class DomainConfigurationTest {
     @Mock
     private TemplateIdGeneratorService templateIdGeneratorService;
 
+    @Mock
+    private DatabaseOperationsGateway databaseOperationsGateway;
+
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
 
+    @Before
+    public void init() {
+       domainConfiguration = new DomainConfiguration();
+    }
+
     @Test
     public void testProduceLoadTemplateUseCase() throws Exception {
-        // given
-        DomainConfiguration domainConfiguration = new DomainConfiguration();
-
         // when
         pl.gov.coi.cascades.server.domain.loadtemplate.UseCase actual = domainConfiguration.produceLoadTemplateUseCase(
             templateIdGateway,
@@ -78,9 +93,6 @@ public class DomainConfigurationTest {
 
     @Test
     public void testProduceLaunchNewDatabaseUseCase() throws Exception {
-        // given
-        DomainConfiguration domainConfiguration = new DomainConfiguration();
-
         // when
         UseCase actual = domainConfiguration.produceLaunchNewDatabaseUseCase(
             launchNewDatabaseGatewayFacade,
@@ -96,15 +108,14 @@ public class DomainConfigurationTest {
 
     @Test
     public void testProduceGateways() throws Exception {
-        // given
-        DomainConfiguration domainConfiguration = new DomainConfiguration();
-
         // when
         LaunchNewDatabaseGatewayFacade actual = domainConfiguration.produceGateways(
             templateIdGateway,
             userGateway,
             databaseLimitGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
         );
 
         // then
@@ -112,15 +123,25 @@ public class DomainConfigurationTest {
     }
 
     @Test
-    public void testProduceDeleteLaunchedDatabaseUseCase() throws Exception {
-        // given
-        DomainConfiguration domainConfiguration = new DomainConfiguration();
-
+    public void shouldDeleteDatabaseGateways() {
         // when
-        pl.gov.coi.cascades.server.domain.deletedatabase.UseCase actual = domainConfiguration.produceDeleteLaunchedDatabaseUseCase(
+        DeleteDatabaseGatewayFacade actual = domainConfiguration.produceDeleteDatabaseGateways(
             userGateway,
             databaseIdGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperationsGateway,
+            databaseUserGateway
+        );
+
+        // then
+        assertThat(actual).isInstanceOf(DeleteDatabaseGatewayFacade.class);
+    }
+
+    @Test
+    public void testProduceDeleteLaunchedDatabaseUseCase() throws Exception {
+        // when
+        pl.gov.coi.cascades.server.domain.deletedatabase.UseCase actual = domainConfiguration.produceDeleteLaunchedDatabaseUseCase(
+            deleteDatabaseGatewayFacade
         );
 
         // then

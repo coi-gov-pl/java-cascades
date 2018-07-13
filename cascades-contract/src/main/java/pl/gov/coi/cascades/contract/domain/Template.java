@@ -15,7 +15,10 @@ public class Template implements Serializable {
     private static final long serialVersionUID = 42L;
 
     @Getter
-    private final String id;
+    private final Long id;
+
+    @Getter
+    private final String generatedId;
 
     @Getter
     private final String name;

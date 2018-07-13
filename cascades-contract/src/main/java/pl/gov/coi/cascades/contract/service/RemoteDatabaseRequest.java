@@ -1,7 +1,6 @@
 package pl.gov.coi.cascades.contract.service;
 
 import com.google.common.base.Optional;
-import lombok.Getter;
 import pl.gov.coi.cascades.contract.domain.Template;
 
 import javax.annotation.Nullable;
@@ -14,8 +13,6 @@ public class RemoteDatabaseRequest implements Serializable {
 
     private static final long serialVersionUID = 42L;
 
-    @Getter
-    private final String type;
     @Nullable
     private final Template template;
     @Nullable
@@ -24,14 +21,11 @@ public class RemoteDatabaseRequest implements Serializable {
     /**
      * Required argument constructor.
      *
-     * @param type         Given type of database (a name or FQCN).
      * @param template   Given id of template (Optional).
      * @param instanceName Given name of instance (Optional).
      */
-    public RemoteDatabaseRequest(String type,
-                                 @Nullable Template template,
+    public RemoteDatabaseRequest(@Nullable Template template,
                                  @Nullable String instanceName) {
-        this.type = type;
         this.template = template;
         this.instanceName = instanceName;
     }

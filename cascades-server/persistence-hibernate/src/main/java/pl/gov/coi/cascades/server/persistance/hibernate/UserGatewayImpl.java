@@ -76,9 +76,6 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     public void save(@Nonnull pl.gov.coi.cascades.server.domain.User user) {
         User hibernateUser = userMapper.toHibernateEntity(user);
-        Long id = hibernateUser.getId();
-        User reference = entityManager.getReference(hibernateUser.getClass(), id);
-        entityManager.persist(reference);
+        entityManager.merge(hibernateUser);
     }
-
 }
