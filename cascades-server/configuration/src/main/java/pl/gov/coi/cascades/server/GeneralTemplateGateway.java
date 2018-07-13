@@ -105,10 +105,14 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
     }
 
     private static String getPostgresFinishCommands(String templateName) {
-        return String.format(
-            "DROP DATABASE %s;",
-            templateName
-        );
+        return new StringBuilder()
+                .append(String.format(
+                "UPDATE pg_database SET datistemplate='false' WHERE datname='%s';",
+                templateName
+                )).append(String.format(
+                "DROP DATABASE %s;",
+                templateName
+        )).toString();
     }
 
     private static String readFileAsString(Path deploySQLScriptPath) {
@@ -145,6 +149,7 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
 
     private static String getOracleFinishCommands(String templateName) {
         return new StringBuilder()
+            .append("ALTER SESSION SET container = CDB$ROOT;")
             .append(String.format(
                 "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE;",
                 templateName

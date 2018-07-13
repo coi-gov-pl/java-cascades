@@ -144,6 +144,7 @@ public class GeneralTemplateGatewayTest {
         databaseTemplateGateway.deleteTemplate(template);
 
         //then
+        verify(jdbcTemplate).execute("UPDATE pg_database SET datistemplate='false' WHERE datname='templateName'");
         verify(jdbcTemplate).execute("DROP DATABASE templateName");
     }
 
@@ -156,6 +157,7 @@ public class GeneralTemplateGatewayTest {
         databaseTemplateGateway.deleteTemplate(template);
 
         //then
+        verify(jdbcTemplate).execute("ALTER SESSION SET container = CDB$ROOT");
         verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName CLOSE IMMEDIATE");
         verify(jdbcTemplate).execute("DROP PLUGGABLE DATABASE templateName INCLUDING DATAFILES");
     }
