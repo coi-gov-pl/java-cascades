@@ -52,7 +52,9 @@ public class DatabaseInstanceGatewayImpl implements DatabaseInstanceGateway {
 
     @Override
     public void deleteDatabase(DatabaseInstance databaseInstance) {
-        entityManager.remove(databaseInstance);
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance databaseInstanceEntity
+            = databaseInstanceMapper.toHibernateEntity(databaseInstance);
+        entityManager.merge(databaseInstanceEntity);
     }
 
     @Override

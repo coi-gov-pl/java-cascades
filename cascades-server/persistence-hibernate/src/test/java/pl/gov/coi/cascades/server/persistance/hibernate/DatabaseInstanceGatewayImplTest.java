@@ -57,10 +57,19 @@ public class DatabaseInstanceGatewayImplTest {
         assertNotNull(result);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void shouldDeleteDatabase (){
+    @Test
+    public void shouldDeleteDatabase () {
+        //given
+        pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance databaseInstanceEntity
+            = new pl.gov.coi.cascades.server.persistance.hibernate.entity.DatabaseInstance();
+
+        given(databaseInstanceMapper.toHibernateEntity(any(DatabaseInstance.class))).willReturn(databaseInstanceEntity);
+
         //when
         databaseInstanceGateway.deleteDatabase(getDatabaseInstance());
+
+        //then
+        verify(entityManager).merge(eq(databaseInstanceEntity));
     }
 
     @Test(expected = UnsupportedOperationException.class)

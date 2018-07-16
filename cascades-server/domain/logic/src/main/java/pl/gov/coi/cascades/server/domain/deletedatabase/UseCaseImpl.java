@@ -56,7 +56,7 @@ public class UseCaseImpl implements UseCase {
         User user = validator.getUser();
         user = user.updateDatabaseInstance(actualDatabaseInstance);
 
-        databaseGatewayFacade.deleteDatabase(databaseInstance);
+        databaseGatewayFacade.deleteDatabase(actualDatabaseInstance);
         databaseGatewayFacade.save(user);
     }
 }

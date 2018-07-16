@@ -210,7 +210,7 @@ public class GeneralDatabaseOperationGatewayTest {
         verify(jdbcTemplate).execute("DROP PLUGGABLE DATABASE exampleDatabaseName INCLUDING DATAFILES");
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shouldExecuteDeletePostgresDatabase() throws SQLException {
         //given
         List<ServerDef> serverDefList = new ArrayList<>();
@@ -223,6 +223,9 @@ public class GeneralDatabaseOperationGatewayTest {
         //when
         DatabaseTypeImpl databaseType = new DatabaseTypeImpl(PGSQL);
         databaseOperations.deleteDatabase(databaseInstance.setDatabaseType(databaseType));
+
+        //then
+        verify(jdbcTemplate).execute("DROP DATABASE exampleDatabaseName");
     }
 
     @Test(expected = EidIllegalArgumentException.class)

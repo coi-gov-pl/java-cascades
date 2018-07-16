@@ -111,10 +111,12 @@ public class GeneralDatabaseOperationGateway implements DatabaseOperationsGatewa
             )).toString();
     }
 
-    @Deprecated
     private String getPostgresDeleteCommands(String databaseName) {
-        // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        return new StringBuilder()
+            .append(String.format(
+                "DROP DATABASE %s;",
+                databaseName
+            )).toString();
     }
 
     private String getOracleDeleteCommands(String databaseName) {
