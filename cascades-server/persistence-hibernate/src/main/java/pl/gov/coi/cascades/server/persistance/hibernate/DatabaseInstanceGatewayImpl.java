@@ -51,10 +51,8 @@ public class DatabaseInstanceGatewayImpl implements DatabaseInstanceGateway {
     }
 
     @Override
-    @Deprecated
     public void deleteDatabase(DatabaseInstance databaseInstance) {
-        // TODO: write an implementation
-        throw new UnsupportedOperationException("Not yet implemented!");
+        entityManager.remove(databaseInstance);
     }
 
     @Override
