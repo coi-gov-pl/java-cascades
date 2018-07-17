@@ -48,7 +48,7 @@ public class GeneralTemplateGatewayTest {
 
     private DatabaseTemplateGateway databaseTemplateGateway;
     private Template template = Template.builder().serverId(SERVER_ID).name("templateName").build();
-    private Path deployScript = Paths.get("src","test","resources", "deploy.sql");
+    private Path deployScript = Paths.get("src", "test", "resources", "deploy.sql");
 
     @Before
     public void setup() throws SQLException {

@@ -2,14 +2,9 @@ package pl.gov.coi.cascades.server.domain.deletedatabase;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
-import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
-import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
-import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.User;
-import pl.gov.coi.cascades.server.domain.UserGateway;
 
 import java.util.Optional;
 
