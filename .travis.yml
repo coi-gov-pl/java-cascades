@@ -4,3 +4,10 @@ jdk:
 script: ./mvnw verify -Pci
 after_success:
 - mvn coveralls:report -Ptravis
+services:
+  - postgresql
+
+before_script:
+  - psql -c 'create database travisdb;' -U postgres
+  - psql -c 'create USER admin WITH ENCRYPTED PASSWORD 'admin';' -U postgres
+  - psql -c 'grant all PRIVILEGES on DATABASE travisdb to admin;' -U postgres
