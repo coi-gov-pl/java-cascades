@@ -78,12 +78,12 @@ class OsgiContainer implements SmartLifecycle {
         return status.ordinal();
     }
 
-    @EventListener(ContextRefreshedEvent.class)
+ /*   @EventListener(ContextRefreshedEvent.class)
     private synchronized void ensureContainerIsStated() {
         if (framework.getState() != Bundle.ACTIVE) {
             startContainer();
         }
-    }
+    }*/
 
     private void startContainer() {
         changeStatus(Status.RUNNING);
