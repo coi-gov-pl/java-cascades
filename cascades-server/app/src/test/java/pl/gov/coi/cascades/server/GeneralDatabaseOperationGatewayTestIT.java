@@ -31,14 +31,14 @@ import java.util.Date;
 @ProductionHibernateTest
 public class GeneralDatabaseOperationGatewayTestIT {
 
-    private static final String TEMPLATE_NAME = "examplvve";
+    private static final String TEMPLATE_NAME = "example";
     private static final String SERVER_ID_ORACLE = "asdq3";
     private static final String SERVER_ID_POSTGRES = "forPostgresTest";
     private static final String ID_DATABASE = "a123xqw2";
-    private static final String DATABASE_NAME = "databasenvame";
+    private static final String DATABASE_NAME = "databasename";
     private static final String MY_DATABASE = "my_database";
     private static final String FILE_NAME = "tempFile.txt";
-    private static final String USERNAME = "exampleUvsername";
+    private static final String USERNAME = "exampleUsername";
     private static final String PASSWORD = "examplePassword";
     private static final String ORACLE = "ora12c";
     private static final String POSTGRES = "pgsql";
