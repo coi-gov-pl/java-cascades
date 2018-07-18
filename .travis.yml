@@ -4,8 +4,3 @@ jdk:
 script: ./mvnw verify -Pci
 after_success:
 - mvn coveralls:report -Ptravis
-services:
-  - postgresql
-
-before_script:
-  - psql -c 'create database travisdb;' -U postgres

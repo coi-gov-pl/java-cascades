@@ -1,7 +1,7 @@
 package pl.gov.coi.cascades.server;
 
+import com.opentable.db.postgres.embedded.EmbeddedPostgres;
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -33,7 +33,7 @@ public class GeneralDatabaseOperationGatewayTestIT {
 
     private static final String TEMPLATE_NAME = "examplvve";
     private static final String SERVER_ID_ORACLE = "asdq3";
-    private static final String SERVER_ID_POSTGRES = "hdx234rd";
+    private static final String SERVER_ID_POSTGRES = "forPostgresTest";
     private static final String ID_DATABASE = "a123xqw2";
     private static final String DATABASE_NAME = "databasenvame";
     private static final String MY_DATABASE = "my_database";
@@ -50,7 +50,6 @@ public class GeneralDatabaseOperationGatewayTestIT {
     private GeneralDatabaseOperationGateway generalDatabaseOperationGateway;
     private GeneralUserGateway generalUserGateway;
     private DatabaseInstance databaseInstance;
-
 
     @Inject
     public void setServerConfigurationService(ServerConfigurationService serverConfigurationService) {
@@ -70,13 +69,6 @@ public class GeneralDatabaseOperationGatewayTestIT {
         generalUserGateway = new GeneralUserGateway(databaseManager);
         generalTemplateGateway = new GeneralTemplateGateway(databaseManager);
         generalDatabaseOperationGateway = new GeneralDatabaseOperationGateway(serverConfigurationService, databaseManager);
-    }
-
-    @After
-    public void afterTest() {
-        generalTemplateGateway.deleteTemplate(template);
-        generalUserGateway.deleteUser(databaseInstance);
-        generalDatabaseOperationGateway.deleteDatabase(databaseInstance);
     }
 
     //Ignored test because Travis does not have an integrated database. Only for local test.
@@ -101,10 +93,9 @@ public class GeneralDatabaseOperationGatewayTestIT {
 
         //then
         generalUserGateway.createUser(databaseInstance);
+        deleteAfterTest();
     }
 
-    //Ignored test because Travis does not have an integrated database. Only for local test.
-    //@Ignore
     @Test
     public void shouldCreatePostgresDatabase() throws IOException {
         //given
@@ -116,8 +107,9 @@ public class GeneralDatabaseOperationGatewayTestIT {
             "   ADDRESS        CHAR(50),\n" +
             "   SALARY         REAL\n" +
             ");");
+        EmbeddedPostgres embeddedPostgres = EmbeddedPostgres.builder().setPort(4444).start();
 
-        template = createTemplate("forTest");
+        template = createTemplate(SERVER_ID_POSTGRES);
         databaseInstance = createDatabaseInstance(template, POSTGRES);
 
         //when
@@ -126,6 +118,14 @@ public class GeneralDatabaseOperationGatewayTestIT {
 
         //then
         generalUserGateway.createUser(databaseInstance);
+        deleteAfterTest();
+        embeddedPostgres.close();
+    }
+
+    private void deleteAfterTest() {
+        generalTemplateGateway.deleteTemplate(template);
+        generalUserGateway.deleteUser(databaseInstance);
+        generalDatabaseOperationGateway.deleteDatabase(databaseInstance);
     }
 
 
