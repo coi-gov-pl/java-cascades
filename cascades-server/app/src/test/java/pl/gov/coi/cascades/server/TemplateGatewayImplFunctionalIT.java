@@ -43,23 +43,23 @@ public class TemplateGatewayImplFunctionalIT {
 
         //when
         templateIdGateway.addTemplate(template);
-        Optional<pl.gov.coi.cascades.contract.domain.Template> result = templateIdGateway.find(template.getId());
+        Optional<pl.gov.coi.cascades.contract.domain.Template> result = templateIdGateway.find(template.getGeneratedId());
 
         //then
         assertNotNull(result);
         pl.gov.coi.cascades.contract.domain.Template resultTemplate = result.orElse(null);
 
         assertNotNull(resultTemplate);
-        assertEquals(template.getId(), resultTemplate.getId());
-        assertEquals(template.getName(), resultTemplate.getName());
-        assertEquals(template.getServerId(), resultTemplate.getServerId());
-        assertEquals(template.getVersion(), resultTemplate.getVersion());
-        assertEquals(template.getStatus(), resultTemplate.getStatus());
+        assertEquals("1", resultTemplate.getGeneratedId());
+        assertEquals("newDatabase", resultTemplate.getName());
+        assertEquals("1234", resultTemplate.getServerId());
+        assertEquals("0.0.1", resultTemplate.getVersion());
+        assertEquals(TemplateIdStatus.CREATED, resultTemplate.getStatus());
     }
 
     private pl.gov.coi.cascades.contract.domain.Template createTemplate() {
         return pl.gov.coi.cascades.contract.domain.Template.builder()
-            .id(ID)
+            .generatedId(ID)
             .name(NAME)
             .isDefault(IS_DEFAULT)
             .serverId(SERVER_ID)

@@ -37,8 +37,8 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    DatabaseInstanceGateway createDatabaseInstanceGateway() {
-        return new DatabaseInstanceGatewayImpl();
+    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseInstanceGatewayImpl(databaseInstanceMapper);
     }
 
     @Bean

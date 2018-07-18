@@ -10,6 +10,8 @@ import pl.gov.coi.cascades.contract.service.Violation;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperationsGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseUserGateway;
 import pl.gov.coi.cascades.server.domain.User;
 import pl.gov.coi.cascades.server.domain.UserGateway;
 import pl.gov.coi.cascades.server.persistance.stub.DatabaseIdGatewayStub;
@@ -33,9 +35,6 @@ import static org.mockito.Mockito.when;
 public class UseCaseImplTest {
 
     @Mock
-    private UserGateway userGateway;
-
-    @Mock
     private User user;
 
     @Mock
@@ -45,13 +44,11 @@ public class UseCaseImplTest {
     private DatabaseInstance databaseInstance;
 
     @Mock
-    private DatabaseIdGateway databaseIdGateway;
+    private DeleteDatabaseGatewayFacade facade;
+
 
     @Mock
     private Request request;
-
-    @Mock
-    private DatabaseInstanceGateway databaseInstanceGateway;
 
     @Rule
     public MockitoRule mockitoRule = MockitoJUnit.rule();
@@ -59,16 +56,14 @@ public class UseCaseImplTest {
     @Test
     public void testExecuteWhenUserIsNotPresent() throws Exception {
         // given
-        String message = "Given user is invalid.";
         Response response = new ResponseImpl();
         UseCaseImpl useCase = new UseCaseImpl(
-            userGateway,
-            databaseIdGateway,
-            databaseInstanceGateway
+            facade
         );
+
         when(request.getDatabaseId()).thenReturn(databaseId);
-        when(databaseIdGateway.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
-        when(userGateway.find(anyString())).thenReturn(Optional.of(user));
+        when(facade.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
+        when(facade.findUser(anyString())).thenReturn(Optional.of(user));
         when(request.getUser()).thenReturn(null);
 
         // when
@@ -78,10 +73,10 @@ public class UseCaseImplTest {
         );
 
         // then
-        verify(userGateway, times(0)).find(anyString());
-        verify(databaseIdGateway, times(1)).findInstance(any(DatabaseId.class));
-        verify(databaseInstanceGateway, times(0)).deleteDatabase(any(DatabaseInstance.class));
-        verify(userGateway, times(0)).save(any(User.class));
+        verify(facade, times(0)).findUser(anyString());
+        verify(facade, times(1)).findInstance(any(DatabaseId.class));
+        verify(facade, times(0)).deleteDatabase(any(DatabaseInstance.class));
+        verify(facade, times(0)).save(any(User.class));
         assertThat(response.getViolations()).isNotEmpty();
         assertThat(response.getViolations()).hasSize(2);
     }
@@ -91,13 +86,12 @@ public class UseCaseImplTest {
         // given
         Response response = new ResponseImpl();
         UseCaseImpl useCase = new UseCaseImpl(
-            userGateway,
-            databaseIdGateway,
-            databaseInstanceGateway
+            facade
         );
+
         when(request.getDatabaseId()).thenReturn(databaseId);
-        when(databaseIdGateway.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
-        when(userGateway.find(anyString())).thenReturn(Optional.of(user));
+        when(facade.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(databaseInstance));
+        when(facade.findUser(anyString())).thenReturn(Optional.of(user));
         when(request.getUser()).thenReturn(user);
 
         // when
@@ -107,10 +101,10 @@ public class UseCaseImplTest {
         );
 
         // then
-        verify(userGateway, times(1)).find(anyString());
-        verify(databaseIdGateway, times(1)).findInstance(any(DatabaseId.class));
-        verify(databaseInstanceGateway, times(0)).deleteDatabase(any(DatabaseInstance.class));
-        verify(userGateway, times(0)).save(any(User.class));
+        verify(facade, times(1)).findUser(anyString());
+        verify(facade, times(1)).findInstance(any(DatabaseId.class));
+        verify(facade, times(0)).deleteDatabase(any(DatabaseInstance.class));
+        verify(facade, times(0)).save(any(User.class));
         assertThat(response.getViolations()).isNotEmpty();
     }
 
@@ -119,14 +113,13 @@ public class UseCaseImplTest {
         // given
         Response response = new ResponseImpl();
         UseCaseImpl useCase = new UseCaseImpl(
-            userGateway,
-            databaseIdGateway,
-            databaseInstanceGateway
+            facade
         );
+
         User jrambo = UserGatewayStub.J_RAMBO.addDatabaseInstance(DatabaseIdGatewayStub.INSTANCE1);
         when(request.getDatabaseId()).thenReturn(databaseId);
-        when(databaseIdGateway.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(DatabaseIdGatewayStub.INSTANCE1));
-        when(userGateway.find(anyString())).thenReturn(Optional.of(jrambo));
+        when(facade.findInstance(any(DatabaseId.class))).thenReturn(Optional.of(DatabaseIdGatewayStub.INSTANCE1));
+        when(facade.findUser(anyString())).thenReturn(Optional.of(jrambo));
         when(request.getUser()).thenReturn(jrambo);
 
         // when
@@ -136,10 +129,10 @@ public class UseCaseImplTest {
         );
 
         // then
-        verify(userGateway, times(1)).find(anyString());
-        verify(databaseIdGateway, times(1)).findInstance(any(DatabaseId.class));
-        verify(databaseInstanceGateway, times(1)).deleteDatabase(any(DatabaseInstance.class));
-        verify(userGateway, times(1)).save(any(User.class));
+        verify(facade, times(1)).findUser(anyString());
+        verify(facade, times(1)).findInstance(any(DatabaseId.class));
+        verify(facade, times(1)).deleteDatabase(any(DatabaseInstance.class));
+        verify(facade, times(1)).save(any(User.class));
         assertThat(response.getViolations()).isEmpty();
     }
 
@@ -147,9 +140,7 @@ public class UseCaseImplTest {
     public void testBuilder() throws Exception {
         // when
         UseCaseImpl useCase = UseCaseImpl.builder()
-            .userGateway(userGateway)
-            .databaseIdGateway(databaseIdGateway)
-            .databaseInstanceGateway(databaseInstanceGateway)
+            .databaseGatewayFacade(facade)
             .build();
 
         // then
@@ -174,6 +165,5 @@ public class UseCaseImplTest {
         public Iterable<Violation> getViolations() {
             return violations;
         }
-
     }
 }
