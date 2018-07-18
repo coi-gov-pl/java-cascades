@@ -117,7 +117,7 @@ public class GeneralDatabaseOperationGatewayTestIT {
             "   SALARY         REAL\n" +
             ");");
 
-        template = createTemplate(SERVER_ID_POSTGRES);
+        template = createTemplate("forTest");
         databaseInstance = createDatabaseInstance(template, POSTGRES);
 
         //when
