@@ -17,11 +17,15 @@ import pl.gov.coi.cascades.server.domain.DatabaseInstance;
 import pl.gov.coi.cascades.server.domain.DatabaseStatus;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeImpl;
 import pl.gov.coi.cascades.server.domain.launchdatabase.UsernameAndPasswordCredentialsImpl;
+import ru.yandex.qatools.embed.postgresql.EmbeddedPostgres;
 
 import javax.inject.Inject;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+
+import static ru.yandex.qatools.embed.postgresql.distribution.Version.Main.V10;
+import static ru.yandex.qatools.embed.postgresql.distribution.Version.Main.V9_6;
 
 /**
  * @author <a href="mailto:lukasz.malek@coi.gov.pl">Łukasz Małek</a>
@@ -70,6 +74,7 @@ public class GeneralDatabaseOperationGatewayTestIT {
         generalUserGateway = new GeneralUserGateway(databaseManager);
         generalTemplateGateway = new GeneralTemplateGateway(databaseManager);
         generalDatabaseOperationGateway = new GeneralDatabaseOperationGateway(serverConfigurationService, databaseManager);
+        postgresEmbedded();
     }
 
     @After
@@ -104,7 +109,6 @@ public class GeneralDatabaseOperationGatewayTestIT {
     }
 
     //Ignored test because Travis does not have an integrated database. Only for local test.
-    @Ignore
     @Test
     public void shouldCreatePostgresDatabase() throws IOException {
         //given
@@ -117,7 +121,7 @@ public class GeneralDatabaseOperationGatewayTestIT {
             "   SALARY         REAL\n" +
             ");");
 
-        template = createTemplate(SERVER_ID_POSTGRES);
+        template = createTemplate("forTest");
         databaseInstance = createDatabaseInstance(template, POSTGRES);
 
         //when
@@ -151,5 +155,14 @@ public class GeneralDatabaseOperationGatewayTestIT {
             .isDefault(false)
             .status(TemplateIdStatus.CREATED)
             .build();
+    }
+
+    private void postgresEmbedded() {
+        final EmbeddedPostgres postgres = new EmbeddedPostgres(V10);
+        try {
+            postgres.start("localhost", 5432, "dbName", "userName", "password");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
