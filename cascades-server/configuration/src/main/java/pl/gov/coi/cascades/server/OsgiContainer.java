@@ -78,12 +78,13 @@ class OsgiContainer implements SmartLifecycle {
         return status.ordinal();
     }
 
- /*   @EventListener(ContextRefreshedEvent.class)
+    @EventListener(ContextRefreshedEvent.class)
     private synchronized void ensureContainerIsStated() {
         if (framework.getState() != Bundle.ACTIVE) {
-            startContainer();
+            // TODO: There is an error while starting the container during testing: ./mvnw clean install
+            //startContainer();
         }
-    }*/
+    }
 
     private void startContainer() {
         changeStatus(Status.RUNNING);
