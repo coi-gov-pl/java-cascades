@@ -95,6 +95,20 @@ public class GeneralTemplateGatewayTest {
         verify(jdbcTemplate).execute("UPDATE pg_database SET datallowconn = FALSE WHERE datname = 'templateName'");
     }
 
+
+    @Test
+    public void shouldChangeTemplateAttributesInOracle() {
+        //given
+        when(connectionDatabase.getType()).thenReturn(ORACLE);
+
+        //when
+        databaseTemplateGateway.createTemplate(template, deployScript);
+
+        //then
+        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName CLOSE IMMEDIATE");
+        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName OPEN READ ONLY");
+    }
+
     @Test
     public void shouldRunCreateDatabaseCommandInOracle() {
         //given
@@ -108,7 +122,7 @@ public class GeneralTemplateGatewayTest {
         verify(jdbcTemplate).execute("CREATE PLUGGABLE DATABASE templateName ADMIN USER admin IDENTIFIED " +
             "BY ksdn#2Hd file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed'," +
             " '/u01/app/oracle/oradata/orcl12c/templateName')");
-        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName OPEN READ WRITE");
+        verify(jdbcTemplate).execute("ALTER PLUGGABLE DATABASE templateName OPEN");
     }
 
     @Test

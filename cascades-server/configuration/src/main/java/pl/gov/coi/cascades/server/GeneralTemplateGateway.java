@@ -47,7 +47,7 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
             runCreateDatabaseCommand(connectionDatabase, template);
             ConnectionDatabase connectionToTemplate = databaseManager.getConnectionToDatabase(template.getServerId(), template.getName());
             runDeployScript(connectionToTemplate, deploySQLScriptPath);
-            runAfterDeployScript(connectionToTemplate, template);
+            runAfterDeployScript(connectionToTemplate, connectionDatabase, template);
         } catch (SQLException e) {
             throw new EidIllegalArgumentException("20170711:151221", e);
         }
@@ -58,11 +58,17 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
         runSemicolonSeperatedSQL(connectionToTemplate, deployScript);
     }
 
-    private void runAfterDeployScript(ConnectionDatabase connectionToTemplate, Template template) {
+    private void runAfterDeployScript(ConnectionDatabase connectionToTemplate, ConnectionDatabase connectionDatabase, Template template) {
         if (connectionToTemplate.getType().contains(POSTGRESQL)) {
             runSemicolonSeperatedSQL(connectionToTemplate, String.format(
                 "UPDATE pg_database SET datistemplate = TRUE WHERE datname = '%s';" +
                     "UPDATE pg_database SET datallowconn = FALSE WHERE datname = '%s'",
+                template.getName(), template.getName()
+            ));
+        } else if (connectionDatabase.getType().contains(ORACLE)) {
+            runSemicolonSeperatedSQL(connectionDatabase, String.format(
+                "ALTER PLUGGABLE DATABASE %s CLOSE IMMEDIATE;" +
+                    "ALTER PLUGGABLE DATABASE %s OPEN READ ONLY;",
                 template.getName(), template.getName()
             ));
         }
@@ -135,7 +141,7 @@ public class GeneralTemplateGateway implements DatabaseTemplateGateway {
                 " file_name_convert = ('/u01/app/oracle/oradata/orcl12c/pdbseed', '/u01/app/oracle/oradata/orcl12c/%s');",
                 templateName
             )).append(String.format(
-                "ALTER PLUGGABLE DATABASE %s OPEN READ WRITE;",
+                "ALTER PLUGGABLE DATABASE %s OPEN;",
                 templateName
             )).toString();
     }
