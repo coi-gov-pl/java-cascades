@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.server.OsgiBeanLocator;
+import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.wavesoftware.eid.exceptions.Eid;
 
 import javax.inject.Inject;

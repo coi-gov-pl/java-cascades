@@ -36,12 +36,16 @@ public class DomainConfiguration {
     LaunchNewDatabaseGatewayFacade produceGateways(TemplateIdGateway templateIdGateway,
                                                    UserGateway userGateway,
                                                    DatabaseLimitGateway databaseLimitGateway,
-                                                   DatabaseInstanceGateway databaseInstanceGateway) {
+                                                   DatabaseInstanceGateway databaseInstanceGateway,
+                                                   DatabaseOperations databaseOperations,
+                                                   DatabaseUserGateway databaseUserGateway) {
         return new LaunchNewDatabaseGatewayFacade(
             templateIdGateway,
             userGateway,
             databaseLimitGateway,
-            databaseInstanceGateway
+            databaseInstanceGateway,
+            databaseOperations,
+            databaseUserGateway
         );
     }
 

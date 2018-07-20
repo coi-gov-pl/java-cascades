@@ -3,10 +3,13 @@ package pl.gov.coi.cascades.server.persistance.hibernate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import pl.gov.coi.cascades.server.DatabaseOperationsImpl;
 import pl.gov.coi.cascades.server.ProfileType;
+import pl.gov.coi.cascades.server.ServerConfigurationService;
 import pl.gov.coi.cascades.server.domain.DatabaseIdGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseInstanceGateway;
 import pl.gov.coi.cascades.server.domain.DatabaseLimitGateway;
+import pl.gov.coi.cascades.server.domain.DatabaseOperations;
 import pl.gov.coi.cascades.server.domain.DatabaseTypeClassNameService;
 import pl.gov.coi.cascades.server.domain.TemplateIdGateway;
 import pl.gov.coi.cascades.server.domain.UserGateway;
@@ -37,8 +40,8 @@ public class HibernateConfiguration {
     }
 
     @Bean
-    DatabaseInstanceGateway createDatabaseInstanceGateway() {
-        return new DatabaseInstanceGatewayImpl();
+    DatabaseInstanceGateway createDatabaseInstanceGateway(DatabaseInstanceMapper databaseInstanceMapper) {
+        return new DatabaseInstanceGatewayImpl(databaseInstanceMapper);
     }
 
     @Bean
@@ -54,5 +57,10 @@ public class HibernateConfiguration {
     @Bean
     DatabaseInstanceMapper createDatabaseInstanceMapper(DatabaseTypeClassNameService databaseTypeClassNameService) {
         return new DatabaseInstanceMapper(databaseTypeClassNameService);
+    }
+
+    @Bean
+    DatabaseOperations createDatabaseOperations(ServerConfigurationService serverConfigurationService) {
+        return new DatabaseOperationsImpl(serverConfigurationService);
     }
 }

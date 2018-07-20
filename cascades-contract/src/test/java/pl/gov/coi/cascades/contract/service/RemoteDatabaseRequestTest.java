@@ -22,7 +22,6 @@ public class RemoteDatabaseRequestTest {
 
     private RemoteDatabaseRequest remoteDatabaseRequest;
     private String instanceName;
-    private String typeClassName;
 
     @Mock
     private Template template;
@@ -36,9 +35,7 @@ public class RemoteDatabaseRequestTest {
     @Before
     public void setUp() {
         instanceName = "PESEL";
-        typeClassName = "typeClassName";
-        remoteDatabaseRequest = new RemoteDatabaseRequest(
-            typeClassName,
+             remoteDatabaseRequest = new RemoteDatabaseRequest(
             template,
             instanceName
         );
@@ -48,7 +45,6 @@ public class RemoteDatabaseRequestTest {
     public void testDefaultConstructor() throws Exception {
         // when
         RemoteDatabaseRequest actual = new RemoteDatabaseRequest(
-            typeClassName,
             template,
             instanceName
         );

@@ -10,7 +10,6 @@ import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
 import pl.gov.coi.cascades.contract.domain.Template;
-import pl.gov.coi.cascades.contract.domain.Template;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -38,7 +37,7 @@ public class DriverTest {
     @Before
     public void setUp() {
         driver = new Driver(
-                databaseType,
+            databaseType,
             template
         );
     }
@@ -47,7 +46,7 @@ public class DriverTest {
     public void testDefaultConstructor() throws Exception {
         // when
         Driver actual = new Driver(
-                databaseType,
+            databaseType,
             template
         );
 

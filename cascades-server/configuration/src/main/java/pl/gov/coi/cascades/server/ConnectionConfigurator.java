@@ -8,27 +8,27 @@ import pl.wavesoftware.eid.exceptions.EidIllegalArgumentException;
  */
 public class ConnectionConfigurator {
 
-    ConnectionConfiguration getConnectionConfiguration(ServerDef serverDef) {
-        String driver;
-        String url;
-        switch (serverDef.getType()) {
+    ConnectionConfiguration getConnectionConfiguration(String databaseType) {
+        String driverClass;
+        String jdbdUrlTemplate;
+        switch (databaseType) {
             case "ora12c":
-                driver = "oracle.jdbc.driver.OracleDriver";
-                url = "jdbc:oracle:thin:@//%s:%d/%s";
+                driverClass = "oracle.jdbc.driverClass.OracleDriver";
+                jdbdUrlTemplate = "jdbc:oracle:thin:@//%s:%d/%s";
                 break;
             case "pgsql":
-                driver = "org.postgresql.Driver";
-                url = "jdbc:postgresql://%s:%d/%s";
+                driverClass = "org.postgresql.Driver";
+                jdbdUrlTemplate = "jdbc:postgresql://%s:%d/%s";
                 break;
             default:
                 throw new EidIllegalArgumentException(
                     "20170728:150904",
-                    "Given driver hasn't been recognised."
+                    String.format("Given database type '%s' hasn't been recognised.", databaseType)
                 );
         }
         return new ConnectionConfiguration(
-            driver,
-            url
+            driverClass,
+            jdbdUrlTemplate
         );
     }
 
