@@ -15,7 +15,7 @@ public interface UserGateway {
     /**
      * Method saves given user.
      *
-     * @param user Given user to save.
+     * @param user Given user to createInstance.
      */
     void save(User user);
 

@@ -5,8 +5,8 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
+maven-wrapper.jar
 *.ear
 
 # Config file

@@ -32,7 +32,7 @@ final class DatabaseInstanceGatewayStub implements DatabaseInstanceGateway {
     }
 
     @Override
-    public DatabaseInstance launchDatabase(DatabaseInstance databaseInstance) {
+    public DatabaseInstance save(DatabaseInstance databaseInstance) {
         DatabaseInstance databaseInstanceCopy = databaseInstance.setNetworkBind(NETWORK_BIND_STUB);
         if (logger.isInfoEnabled()) {
             logger.info(new Eid("20170419:001122").makeLogMessage(

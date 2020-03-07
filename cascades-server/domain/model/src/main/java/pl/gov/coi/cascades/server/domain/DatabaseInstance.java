@@ -3,6 +3,7 @@ package pl.gov.coi.cascades.server.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 import pl.gov.coi.cascades.contract.domain.DatabaseId;
 import pl.gov.coi.cascades.contract.domain.DatabaseType;
@@ -10,6 +11,7 @@ import pl.gov.coi.cascades.contract.domain.NetworkBind;
 import pl.gov.coi.cascades.contract.domain.Template;
 import pl.gov.coi.cascades.contract.domain.UsernameAndPasswordCredentials;
 
+import javax.xml.crypto.Data;
 import java.util.Date;
 
 @ToString
@@ -97,6 +99,26 @@ public class DatabaseInstance {
     }
 
     /**
+     * Copy constructor to set database type of database.
+     *
+     * @param databaseInstance Given instance of database to copy.
+     */
+    private DatabaseInstance(DatabaseInstance databaseInstance,
+                             DatabaseType databaseType) {
+        this(databaseInstance.getDatabaseId(),
+            databaseInstance.getTemplate(),
+            databaseType,
+            databaseInstance.getInstanceName(),
+            databaseInstance.getReuseTimes(),
+            databaseInstance.getDatabaseName(),
+            databaseInstance.getCredentials(),
+            databaseInstance.getNetworkBind(),
+            databaseInstance.getStatus(),
+            databaseInstance.getCreated()
+        );
+    }
+
+    /**
      * Method gives date of database creation.
      *
      * @return Date of database creation.
@@ -113,6 +135,16 @@ public class DatabaseInstance {
      */
     public DatabaseInstance setNetworkBind(NetworkBind networkBind) {
         return new DatabaseInstance(this, networkBind);
+    }
+
+    /**
+     * Setter for database type.
+     *
+     * @param databaseType Given database type.
+     * @return Instance of database.
+     */
+    public DatabaseInstance setDatabaseType(DatabaseType databaseType) {
+        return new DatabaseInstance(this, databaseType);
     }
 
     /**

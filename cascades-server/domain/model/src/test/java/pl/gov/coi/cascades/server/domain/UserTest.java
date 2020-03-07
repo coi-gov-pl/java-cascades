@@ -178,7 +178,7 @@ public class UserTest {
     }
 
     @Test
-    public void testUpdateDatabaseInstance() throws Exception {
+    public void testUpdateDatabaseInstanceDeleteDatabase() throws Exception {
         // given
         User newUser = user.addDatabaseInstance(databaseInstance);
         DatabaseInstance instance = databaseInstance.setStatus(DatabaseStatus.DELETED);
@@ -189,6 +189,7 @@ public class UserTest {
         // then
         assertThat(actual).isNotNull();
         assertThat(actual).isNotSameAs(newUser);
+        assertThat(actual.getDatabases()).isEmpty();
     }
 
     @Test
