@@ -63,10 +63,10 @@ public class User {
     public User updateDatabaseInstance(DatabaseInstance databaseInstance) {
         User user = new User(this);
         user.databases.addAll(databases);
-        for (DatabaseInstance instance : user.getDatabases()) {
+        for (DatabaseInstance instance : user.databases) {
             checkNotNull(instance, "20170320:160547");
             checkNotNull(instance.getDatabaseId(), "20170320:160607");
-            if (instance.getDatabaseId().equals(databaseInstance.getDatabaseId())) {
+            if (instance.getDatabaseId().getId().equals(databaseInstance.getDatabaseId().getId())) {
                 user.databases.remove(instance);
                 return user;
             }

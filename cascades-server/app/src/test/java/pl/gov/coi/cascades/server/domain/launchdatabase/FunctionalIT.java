@@ -23,7 +23,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import pl.gov.coi.cascades.server.StubDevelopmentTest;
-import pl.gov.coi.cascades.server.persistance.stub.DatabaseTypeStub;
 import pl.gov.coi.cascades.server.persistance.stub.TemplateIdGatewayStub;
 
 import javax.inject.Inject;
@@ -64,7 +63,7 @@ public class FunctionalIT {
     @After
     public void after() {
         TemplateIdGatewayStub.getAllTemplates().put(
-            TemplateIdGatewayStub.TEMPLATE_ID3.getId(),
+            TemplateIdGatewayStub.TEMPLATE_ID3.getGeneratedId(),
             TemplateIdGatewayStub.TEMPLATE_ID3
         );
     }
@@ -135,16 +134,13 @@ public class FunctionalIT {
     }
 
     private String requestWithNoTemplateId() throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
-            .put("type", stub.getName())
+            .put("instanceName", "dfasd")
             .toString();
     }
 
     private String requestWithTemplateId(String templateId) throws JSONException {
-        DatabaseTypeStub stub = new DatabaseTypeStub();
         return new JSONObject()
-            .put("type", stub.getName())
             .put("templateId", templateId)
             .toString();
     }
